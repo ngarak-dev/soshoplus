@@ -1,13 +1,16 @@
-package com.soshoplus.timeline;
+package com.soshoplus.timeline.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 
-public class splash extends AppCompatActivity {
+import com.soshoplus.timeline.R;
+
+public class signup extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_signup);
     }
 }

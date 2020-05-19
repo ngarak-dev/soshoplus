@@ -1,10 +1,17 @@
+<!--
+  ~ Ngara K
+  ~ Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="566.4706"
-    android:viewportHeight="566.4706">
-  <group android:translateX="178.23529"
-      android:translateY="132.11275">
+    android:viewportWidth="708.08826"
+    android:viewportHeight="708.08826">
+  <group android:translateX="249.04411"
+      android:translateY="202.26593">
     <path
         android:pathData="m57.172,295.651c-4.961,-0.159 -9.366,-2.381 -12.541,-6.866 -8.89,-12.7 -17.779,-25.399 -26.629,-38.099 -2.262,-3.254 -4.564,-6.509 -6.826,-9.802 -5.358,-7.659 -3.691,-17.303 4.008,-22.661 15.874,-11.112 31.749,-22.264 47.623,-33.376 7.58,-5.318 17.224,-3.611 22.542,3.969 11.152,15.914 22.304,31.868 33.455,47.782 5.278,7.54 3.572,17.184 -3.969,22.502 -15.914,11.152 -31.789,22.264 -47.703,33.455 -2.897,1.984 -5.993,3.056 -9.961,3.096z"
         android:fillColor="#0079bb"/>

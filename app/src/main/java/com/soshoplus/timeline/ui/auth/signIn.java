@@ -1,9 +1,8 @@
-/*
- * Ngara K
- * Android Application Developer
+/*******************************************************************************
+ * Ngara K. Android Application Developer
  * ngarakiringo@gmail.com
  * Copyright (c) 2020
- */
+ ******************************************************************************/
 
 package com.soshoplus.timeline.ui.auth;
 
@@ -109,15 +108,14 @@ public class signIn extends AppCompatActivity {
                         Log.d(TAG, "onResponse: " + response.body().getUserId());
                         
                         //storing user session
-                        SharedPreferences pref = getApplicationContext().getSharedPreferences("session", 0); // 0 - for private mode
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                                "userCred", 0); // 0 - for private mode
                         SharedPreferences.Editor editor = pref.edit();
                         
                         editor.putString("userId", response.body().getUserId());
                         editor.putString("timezone", response.body().getTimezone());
                         editor.putString("accessToken", response.body().getAccessToken());
                         editor.apply();
-                        editor.commit();
-                        
                         
                         String[] strings = {response.body().getTimezone(), response.body().getUserId(), response.body().getAccessToken()};
                         

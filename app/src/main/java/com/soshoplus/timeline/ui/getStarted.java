@@ -1,39 +1,36 @@
-package com.soshoplus.timeline.ui;
+/*
+ * Ngara K
+ * Android Application Developer
+ * ngarakiringo@gmail.com
+ * Copyright (c) 2020
+ */
 
-import androidx.appcompat.app.AppCompatActivity;
+package com.soshoplus.timeline.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.soshoplus.timeline.ui.auth.signin;
-import com.soshoplus.timeline.ui.auth.signup;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.soshoplus.timeline.databinding.ActivityGetstartedBinding;
+import com.soshoplus.timeline.ui.auth.signIn;
+import com.soshoplus.timeline.ui.auth.signUp;
 
-public class getstarted extends AppCompatActivity {
-
-    private ActivityGetstartedBinding getstartedBinding;
-
+public class getStarted extends AppCompatActivity {
+    
+    private ActivityGetstartedBinding getStartedBinding;
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getstartedBinding  = ActivityGetstartedBinding.inflate(getLayoutInflater());
-        View view = getstartedBinding.getRoot();
+        getStartedBinding = ActivityGetstartedBinding.inflate(getLayoutInflater());
+        View view = getStartedBinding.getRoot();
         setContentView(view);
-
-        getstartedBinding.btnToSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getstarted.this, signin.class));
-            }
-        });
-
-        getstartedBinding.btnToSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getstarted.this, signup.class));
-            }
-        });
-
+        
+        getStartedBinding.btnToSignIn.setOnClickListener(v -> startActivity(new Intent(getStarted.this, signIn.class)));
+        
+        getStartedBinding.btnToSignUp.setOnClickListener(v -> startActivity(new Intent(getStarted.this, signUp.class)));
+        
     }
 }

@@ -1,4 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Ngara K
+  ~ Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  -->
+
 <resources>
-    <color name="ic_launcher_background">#FFFDFC</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 </resources>

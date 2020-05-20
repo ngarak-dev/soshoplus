@@ -1,12 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Ngara K
+  ~ Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  -->
 
-    <color name="textPrimary"></color>
-    <color name="textSecondary"></color>
-    <color name="bgPrimary"></color>
+<resources>
+    <color name="colorPrimary">#0079BB</color>
+    <color name="colorPrimaryDark">#0F273C</color>
+    <color name="colorAccent">#008CC9</color>
+
+
+    <color name="textPrimary">#0F273C</color>
+    <color name="textSecondary" />
+    <color name="bgPrimary" />
 
     //custom colors
     <color name="white">#FFFFFF</color>

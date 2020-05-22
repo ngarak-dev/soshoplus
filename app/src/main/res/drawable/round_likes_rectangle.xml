@@ -5,6 +5,6 @@
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/cornsilk" />
+    <solid android:color="@color/dark_sea_green" />
     <corners android:radius="@dimen/_5sdp"/>
 </shape>

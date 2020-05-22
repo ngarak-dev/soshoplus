@@ -10,6 +10,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class userData implements Serializable {
     
@@ -51,7 +52,7 @@ public class userData implements Serializable {
     private String workingLink;
     @SerializedName("about")
     @Expose
-    private Object about;
+    private String about;
     @SerializedName("school")
     @Expose
     private String school;
@@ -315,7 +316,7 @@ public class userData implements Serializable {
     private String name;
     @SerializedName("mutual_friends_data")
     @Expose
-    private String mutualFriendsData;
+    private ArrayList mutualFriendsData;
     @SerializedName("lastseen_unix_time")
     @Expose
     private String lastseenUnixTime;
@@ -462,7 +463,7 @@ public class userData implements Serializable {
     public userData (String userId, String username, String email, String firstName,
                      String lastName, String avatar, String cover, String backgroundImage,
                      String relationshipId, String address, String working, String workingLink,
-                     Object about, String school, String gender, String birthday,
+                     String about, String school, String gender, String birthday,
                      String countryId, String website, String facebook, String google,
                      String twitter, String linkedin, String youtube, String vk, String instagram
             , String language, String ipAddress, String followPrivacy, String friendPrivacy,
@@ -486,7 +487,7 @@ public class userData implements Serializable {
                      String twoFactorVerified,  String newPhone, String infoFile, String city,
                      String state, String zip, String schoolCompleted, String weatherUnit,
                      String paystackRef, String userPlatform, String url, String name,
-                     String mutualFriendsData, String lastseenUnixTime, String lastseenStatus,
+                     ArrayList mutualFriendsData, String lastseenUnixTime, String lastseenStatus,
                      int isFollowing, int canFollow, int isFollowingMe, String genderText,
                      String lastseenTimeText, boolean isBlocked) {
         super();
@@ -757,15 +758,15 @@ public class userData implements Serializable {
         return this;
     }
     
-    public Object getAbout() {
+    public String getAbout() {
         return about;
     }
     
-    public void setAbout(Object about) {
+    public void setAbout(String about) {
         this.about = about;
     }
     
-    public userData withAbout(Object about) {
+    public userData withAbout(String about) {
         this.about = about;
         return this;
     }
@@ -1901,15 +1902,15 @@ public class userData implements Serializable {
         return this;
     }
     
-    public String getMutualFriendsData() {
+    public ArrayList getMutualFriendsData() {
         return mutualFriendsData;
     }
     
-    public void setMutualFriendsData(String mutualFriendsData) {
+    public void setMutualFriendsData(ArrayList mutualFriendsData) {
         this.mutualFriendsData = mutualFriendsData;
     }
     
-    public userData withMutualFriendsData(String mutualFriendsData) {
+    public userData withMutualFriendsData(ArrayList mutualFriendsData) {
         this.mutualFriendsData = mutualFriendsData;
         return this;
     }

@@ -11,7 +11,7 @@
 
     <color name="textPrimary">#F5F5F5</color>
     <color name="textSecondary" />
-    <color name="bgPrimary" />
+    <color name="bgPrimary">#0F273C</color>
 
     //custom colors
     <color name="white">#FFFFFF</color>

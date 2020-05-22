@@ -58,6 +58,12 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     //fragment
     implementation "androidx.fragment:fragment:1.2.4"
+    //image library
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //tooltip library
+    implementation "com.github.skydoves:balloon:1.1.7"
+    //inapp browser
+    implementation "androidx.browser:browser:1.2.0"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

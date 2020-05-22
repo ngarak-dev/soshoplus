@@ -40,7 +40,7 @@ public class splash extends AppCompatActivity {
                 Log.d(TAG, "run: " + accessToken);
                 
                 //go to testing profile
-                Intent intent = new Intent(splash.this, myProfile.class);
+                Intent intent = new Intent(splash.this, main.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("user_id", userId);
                 bundle.putString("timezone", timezone);

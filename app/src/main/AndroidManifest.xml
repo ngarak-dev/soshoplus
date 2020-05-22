@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ~ Ngara K. Android Application Developer
-  ~ ngarakiringo@gmail.com
-  ~ Copyright (c) 2020
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soshoplus.timeline">
     <!-- PERMISSION -->
@@ -21,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/soshoDayNight_noActionBar">
-        <activity android:name=".ui.myProfile"></activity>
+        <activity android:name=".ui.main"></activity>
+        <activity android:name=".ui.myProfile" />
         <activity android:name=".ui.auth.forgotPassword" />
         <activity android:name=".ui.auth.signUp" />
         <activity android:name=".ui.getStarted" />

@@ -3,5 +3,9 @@
     <module2copyright>
       <element module="All" copyright="Ngara K" />
     </module2copyright>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+    </LanguageOptions>
   </settings>
 </component>

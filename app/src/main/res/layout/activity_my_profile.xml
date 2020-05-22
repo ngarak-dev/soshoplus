@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_doodles">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        tools:context=".ui.myProfile">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/arrow_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@null"
+            app:chipEndPadding="@dimen/_minus5sdp"
+            app:chipIcon="@drawable/ic_arrow_back"
+            app:chipSurfaceColor="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/share_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share profile"
+            app:chipBackgroundColor="@null"
+            app:chipEndPadding="@dimen/_minus3sdp"
+            app:chipIcon="@drawable/ic_share"
+            app:chipSurfaceColor="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/followers_layout"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_rectangle"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp"
+            android:weightSum="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/arrow_back">
+
+            <TextView
+                android:id="@+id/number_of_followers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Followers" />
+
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            app:layout_constraintTop_toBottomOf="@id/arrow_back"
+            app:layout_constraintLeft_toRightOf="@id/followers_layout"
+            app:layout_constraintRight_toLeftOf="@id/following_layout" />
+
+        <LinearLayout
+            android:id="@+id/following_layout"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_rectangle"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp"
+            android:weightSum="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/arrow_back">
+
+            <TextView
+                android:id="@+id/number_of_following"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Following" />
+
+        </LinearLayout>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/user_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@null"
+            app:chipEndPadding="@dimen/_minus5sdp"
+            app:chipIconSize="@dimen/_25sdp"
+            app:chipSurfaceColor="@null"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+            app:layout_constraintEnd_toEndOf="@+id/profile_pic"
+            app:layout_constraintStart_toStartOf="@+id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/verified_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipBackgroundColor="@null"
+            app:chipEndPadding="@dimen/_minus5sdp"
+            app:chipIconSize="@dimen/_25sdp"
+            app:chipSurfaceColor="@null"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+            app:layout_constraintEnd_toEndOf="@+id/profile_pic"
+            app:layout_constraintStart_toEndOf="@+id/profile_pic" />
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_level" />
+
+        <TextView
+            android:id="@+id/full_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bgPrimary"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@id/full_name">
+
+            <TextView
+                android:id="@+id/about_me"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/about_me" />
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/birthday" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/gender" />
+
+            <TextView
+                android:id="@+id/registeredOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone" />
+
+            <TextView
+                android:id="@+id/working"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/registeredOn" />
+
+            <TextView
+                android:id="@+id/website"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/working" />
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/website" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/facebook_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:chipBackgroundColor="@null"
+                app:chipEndPadding="@dimen/_minus5sdp"
+                app:chipIconSize="@dimen/_25sdp"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintEnd_toStartOf="@+id/twitter_link"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/twitter_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:chipBackgroundColor="@null"
+                app:chipEndPadding="@dimen/_minus5sdp"
+                app:chipIconSize="@dimen/_25sdp"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintStart_toEndOf="@id/facebook_link"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/instagram_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:chipBackgroundColor="@null"
+                app:chipEndPadding="@dimen/_minus5sdp"
+                app:chipIconSize="@dimen/_25sdp"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintStart_toEndOf="@id/twitter_link"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/linkedin_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:chipBackgroundColor="@null"
+                app:chipEndPadding="@dimen/_minus5sdp"
+                app:chipIconSize="@dimen/_25sdp"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintStart_toEndOf="@id/instagram_link"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/youtube_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:chipBackgroundColor="@null"
+                app:chipEndPadding="@dimen/_minus5sdp"
+                app:chipIconSize="@dimen/_25sdp"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintStart_toEndOf="@id/linkedin_link"
+                app:layout_constraintTop_toBottomOf="@id/city" />
+
+            <LinearLayout
+                android:id="@+id/no_posts_layout"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_posts_rectangle"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/facebook_link">
+
+                <TextView
+                    android:id="@+id/no_of_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Posts" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/no_points_layout"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_points_rectangle"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@id/no_groups_layout"
+                app:layout_constraintStart_toEndOf="@id/no_posts_layout"
+                app:layout_constraintTop_toBottomOf="@id/facebook_link">
+
+                <TextView
+                    android:id="@+id/no_of_points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Points" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/no_groups_layout"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_groups_rectangle"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/facebook_link">
+
+                <TextView
+                    android:id="@+id/no_of_groups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Groups" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/no_album_layout"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_album_rectangle"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/no_posts_layout">
+
+                <TextView
+                    android:id="@+id/no_of_album"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Album" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/no_likes_layout"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_likes_rectangle"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintEnd_toStartOf="@id/no_groups_layout"
+                app:layout_constraintStart_toEndOf="@id/no_posts_layout"
+                app:layout_constraintTop_toBottomOf="@id/no_points_layout">
+
+                <TextView
+                    android:id="@+id/no_of_likes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Likes" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/wallet_layout"
+                android:layout_width="@dimen/_85sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/round_wallet_rectangle"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/no_groups_layout">
+
+                <TextView
+                    android:id="@+id/wallet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wallet" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,9 +1,8 @@
-/*
- * Ngara K
- * Android Application Developer
+/*******************************************************************************
+ * Ngara K. Android Application Developer
  * ngarakiringo@gmail.com
  * Copyright (c) 2020
- */
+ ******************************************************************************/
 
 package com.soshoplus.timeline.ui;
 
@@ -28,21 +27,30 @@ public class splash extends AppCompatActivity {
         
         new Handler().postDelayed(() -> {
             //storing user session
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("session", 0); // 0 - for private mode
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("userCred", 0); // 0 - for private mode
             
-            if (pref != null) {
-                String userId = pref.getString("userId", null);
-                String timezone = pref.getString("timezone", null);
-                String accessToken = pref.getString("accessToken", null);
+            if (pref.contains("userId")) {
+                String userId = pref.getString("userId", "0");
+                String timezone = pref.getString("timezone", "UTC");
+                String accessToken = pref.getString("accessToken", "0");
                 
                 Log.d(TAG, "run: " + "hey we have an active session here");
                 Log.d(TAG, "run: " + userId);
                 Log.d(TAG, "run: " + timezone);
                 Log.d(TAG, "run: " + accessToken);
                 
-                //go to mainActivity
-                startActivity(new Intent(splash.this, getStarted.class));
+                //go to testing profile
+                Intent intent = new Intent(splash.this, myProfile.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("user_id", userId);
+                bundle.putString("timezone", timezone);
+                bundle.putString("access_token", accessToken);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 finish();
+                
+//                startActivity(new Intent(splash.this, getStarted.class));
+//                finish();
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted

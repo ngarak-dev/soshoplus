@@ -1,9 +1,8 @@
-/*
- * Ngara K
- * Android Application Developer
+/*******************************************************************************
+ * Ngara K. Android Application Developer
  * ngarakiringo@gmail.com
  * Copyright (c) 2020
- */
+ ******************************************************************************/
 
 apply plugin: 'com.android.application'
 
@@ -17,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.soshoplus.timeline"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -47,9 +46,9 @@ dependencies {
     //AC Progress
     implementation 'cc.cloudist.acplibrary:library:1.2.1'
     //Retrofit Client
-    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.8.2'
     //Gson Retrofit
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.2'
     //Google Material Design
     implementation 'com.google.android.material:material:1.2.0-alpha06'
     //Constraint Layout
@@ -57,6 +56,14 @@ dependencies {
     //size units ssp and sdp
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
+    //fragment
+    implementation "androidx.fragment:fragment:1.2.4"
+    //image library
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //tooltip library
+    implementation "com.github.skydoves:balloon:1.1.7"
+    //inapp browser
+    implementation "androidx.browser:browser:1.2.0"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

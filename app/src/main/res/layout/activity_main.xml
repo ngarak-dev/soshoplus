@@ -8,9 +8,73 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/_10sdp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_soshoplus_txt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12ssp"
+        android:padding="@dimen/_2sdp"
+        app:layout_constraintStart_toEndOf="@id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintTop_toTopOf="@id/profile_pic"
+        app:layout_constraintBottom_toTopOf="@id/username"/>
+
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toEndOf="@id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@id/full_name"
+        app:layout_constraintBottom_toBottomOf="@id/profile_pic"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipBackgroundColor="@null"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipEndPadding="@dimen/_minus3sdp"
+        app:chipIcon="@drawable/ic_search"
+        app:chipSurfaceColor="@null"
+        app:layout_constraintEnd_toStartOf="@id/settings"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipBackgroundColor="@null"
+        app:chipEndPadding="@dimen/_minus3sdp"
+        app:chipIcon="@drawable/ic_settings"
+        app:chipSurfaceColor="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.fxn.BubbleTabBar
         android:id="@+id/bottom_navigation"
@@ -19,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="@dimen/_8sdp"
         app:bubbletab_menuResource="@menu/bottom_navigation"
-        app:bubbletab_disabled_icon_color="@color/colorPrimaryDark"
+        app:bubbletab_disabled_icon_color="@color/faint"
         app:bubbletab_horizontal_padding="@dimen/_10sdp"
         app:bubbletab_icon_size="@dimen/_15sdp"
         app:bubbletab_title_size="@dimen/_10ssp"

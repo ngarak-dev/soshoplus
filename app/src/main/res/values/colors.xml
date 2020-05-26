@@ -11,8 +11,15 @@
 
 
     <color name="textPrimary">#0F273C</color>
-    <color name="textSecondary" />
     <color name="bgPrimary">#F5F5F5</color>
+
+    <!-- NAV BAR COLORS   -->
+    <color name="home">#0F273C</color>
+    <color name="friends">#0079BB</color>
+    <color name="groups">#CD5C5C</color>
+    <color name="profile">#483D8B</color>
+    <color name="more">#8B4513</color>
+    <color name="faint">#0F273C</color>
 
     //custom colors
     <color name="white">#FFFFFF</color>

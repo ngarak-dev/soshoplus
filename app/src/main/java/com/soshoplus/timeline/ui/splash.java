@@ -26,7 +26,7 @@ public class splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         
         new Handler().postDelayed(() -> {
-            //storing user session
+            //retreiving user session
             SharedPreferences pref = getApplicationContext().getSharedPreferences("userCred", 0); // 0 - for private mode
             
             if (pref.contains("userId")) {

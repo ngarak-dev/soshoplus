@@ -67,7 +67,7 @@ public class myProfile extends AppCompatActivity {
             user_id = bundle.getString("user_id");
         }
         
-        //Initializing Retrofit Instance for Login
+        //Initializing Retrofit Instance for profile
         profileQueries = retrofitInstance.getRetrofitInst().create(queries.class);
         userInfoCall = profileQueries.getUserData(access_token, server_key, fetch, user_id);
         

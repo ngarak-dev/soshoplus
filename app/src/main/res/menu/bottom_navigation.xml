@@ -12,30 +12,30 @@
         android:title="Home"
         android:checked="true"
         android:id="@+id/home"
-        android:iconTint="@color/colorPrimaryDark"/>
+        android:iconTint="@color/home"/>
 
     <item
         android:icon="@drawable/ic_friends"
         android:title="Friends"
         android:id="@+id/friends"
-        android:iconTint="@color/colorPrimary"/>
+        android:iconTint="@color/friends"/>
 
     <item
         android:icon="@drawable/ic_groups"
         android:title="Groups"
         android:id="@+id/groups"
-        android:iconTint="@color/indian_red"/>
+        android:iconTint="@color/groups"/>
 
     <item
         android:icon="@drawable/ic_account"
         android:title="Profile"
         android:id="@+id/profile"
-        android:iconTint="@color/dark_slate_blue"/>
+        android:iconTint="@color/profile"/>
 
     <item
         android:icon="@drawable/ic_more"
         android:title="More"
         android:id="@+id/more"
-        android:iconTint="@color/saddle_brown"/>
+        android:iconTint="@color/more"/>
 
 </menu>

@@ -51,7 +51,6 @@ public class myProfile extends AppCompatActivity {
     private Call<userInfo> userInfoCall;
     private String access_token, user_id;
     private userData userData = new userData();
-    
     private ActivityMyProfileBinding myProfileBinding;
     private String facebook, twitter, instagram, youtube, linkedln;
     

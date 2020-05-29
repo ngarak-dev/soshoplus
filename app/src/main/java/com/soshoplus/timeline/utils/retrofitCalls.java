@@ -32,7 +32,7 @@ public class retrofitCalls {
     private Call<userInfo> userInfoCall;
     private String accessToken, userId, timezone;
     private static String TAG = "Calls class";
-    private static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
+    public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
     private String fetch_profile = "user_data,family,liked_pages,joined_groups";
     
     private userData userData;
@@ -65,10 +65,6 @@ public class retrofitCalls {
 
                     if (response.body().getApiStatus() == 200) {
                         userData = response.body().getUserData();
-                        details = response.body().getUserData().getDetails();
-                        userInfo = response.body();
-
-                        Log.i(TAG, "onResponse: " + userData.getWebsite());
 
                         full_name.setText(userData.getName());
                         username.setText("@" + userData.getUsername());

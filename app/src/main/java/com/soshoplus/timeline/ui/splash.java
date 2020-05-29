@@ -49,8 +49,6 @@ public class splash extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 
-//                startActivity(new Intent(splash.this, getStarted.class));
-//                finish();
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted

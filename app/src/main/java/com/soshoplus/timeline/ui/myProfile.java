@@ -23,6 +23,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import com.google.gson.Gson;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
@@ -49,6 +50,7 @@ public class myProfile extends AppCompatActivity {
     private queries profileQueries;
     private Call<userInfo> userInfoCall;
     private String access_token, user_id;
+    private userData userData = new userData();
     
     private ActivityMyProfileBinding myProfileBinding;
     private String facebook, twitter, instagram, youtube, linkedln;
@@ -77,7 +79,7 @@ public class myProfile extends AppCompatActivity {
                 if (response.body() != null) {
                     
                     if (response.body().getApiStatus() == 200) {
-                        userData userData = response.body().getUserData();
+                        userData = response.body().getUserData();
                         details details = response.body().getUserData().getDetails();
                         userInfo userInfo = response.body();
                         
@@ -587,10 +589,12 @@ public class myProfile extends AppCompatActivity {
                             myProfileBinding.youtubeLink.setChipIconResource(R.drawable.ic_youtube);
                         }
                         
-//                        Gson gson = new Gson();
-//                        String userdata = gson.toJson(userData);
-//                        String userdetails = gson.toJson(details);
-//                        String userinfo = gson.toJson(userInfo);
+                        Gson gson = new Gson();
+                        String userdata = gson.toJson(userData);
+                        String userdetails = gson.toJson(details);
+                        String userinfo = gson.toJson(userInfo);
+    
+                        Log.d(TAG, "onResponse: " + userdata);
                     }
                     else {
                         apiErrors apiErrors = response.body().getErrors();

@@ -6,4 +6,6 @@
 
 <resources>
     <string name="app_name">Soshoplus</string>
+    <!--Fetch Type-->
+    <string name="fetch_profile">user_data,family,liked_pages,joined_groups</string>
 </resources>

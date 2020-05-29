@@ -34,11 +34,6 @@ public class splash extends AppCompatActivity {
                 String timezone = pref.getString("timezone", "0");
                 String accessToken = pref.getString("accessToken", "0");
                 
-                Log.d(TAG, "run: " + "hey we have an active session here");
-                Log.d(TAG, "run: " + userId);
-                Log.d(TAG, "run: " + timezone);
-                Log.d(TAG, "run: " + accessToken);
-                
                 //go to testing profile
                 Intent intent = new Intent(splash.this, soshoTimeline.class);
                 Bundle bundle = new Bundle();

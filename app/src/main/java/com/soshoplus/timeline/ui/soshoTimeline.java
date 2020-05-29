@@ -73,7 +73,6 @@ public class soshoTimeline extends AppCompatActivity {
     }
     
     private void bottomNavigationListener () {
-        
         bubbleTabBar.setupBubbleTabBar(sosho_viewPager);
         bubbleTabBar.addBubbleListener(new OnBubbleClickListener() {
             @Override
@@ -106,5 +105,16 @@ public class soshoTimeline extends AppCompatActivity {
     private void getProfile () {
         calls = new retrofitCalls(this);
         calls.getProfile(profile_pic, full_name, username);
+    }
+    
+    //overriding back button
+    @Override
+    public void onBackPressed() {
+        if (sosho_viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            // go to previous step
+            sosho_viewPager.setCurrentItem(sosho_viewPager.getCurrentItem() - 1);
+        }
     }
 }

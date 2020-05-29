@@ -24,6 +24,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.chip.Chip;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerFamily;
 import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
@@ -36,6 +38,7 @@ import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitCalls;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -111,6 +114,15 @@ public class profileFragment extends Fragment {
                         profileBinding.noOfAlbum.setText(details.getAlbumCount());
                         profileBinding.noOfLikes.setText(details.getLikesCount());
                         profileBinding.wallet.setText(userData.getWallet());
+    
+                        //profile pic
+                        ShapeableImageView profilePic = profileBinding.profilePic;
+                        profilePic.setShapeAppearanceModel(profilePic
+                                .getShapeAppearanceModel()
+                                .toBuilder()
+                                .setAllCorners(CornerFamily.ROUNDED, 50)
+                                .build());
+                        Picasso.get().load(userData.getAvatar()).into(profilePic);
                         
                         //getting about user
                         aboutUser(userData);

@@ -26,12 +26,12 @@ public class splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         
         new Handler().postDelayed(() -> {
-            //storing user session
+            //retrieving user session
             SharedPreferences pref = getApplicationContext().getSharedPreferences("userCred", 0); // 0 - for private mode
             
             if (pref.contains("userId")) {
                 String userId = pref.getString("userId", "0");
-                String timezone = pref.getString("timezone", "UTC");
+                String timezone = pref.getString("timezone", "0");
                 String accessToken = pref.getString("accessToken", "0");
                 
                 Log.d(TAG, "run: " + "hey we have an active session here");
@@ -40,7 +40,7 @@ public class splash extends AppCompatActivity {
                 Log.d(TAG, "run: " + accessToken);
                 
                 //go to testing profile
-                Intent intent = new Intent(splash.this, myProfile.class);
+                Intent intent = new Intent(splash.this, soshoTimeline.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("user_id", userId);
                 bundle.putString("timezone", timezone);
@@ -49,8 +49,6 @@ public class splash extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 
-//                startActivity(new Intent(splash.this, getStarted.class));
-//                finish();
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted

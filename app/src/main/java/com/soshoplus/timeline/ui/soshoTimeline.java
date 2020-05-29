@@ -16,10 +16,10 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.soshoplus.timeline.databinding.ActivityMainBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
 
-public class main extends AppCompatActivity {
+public class soshoTimeline extends AppCompatActivity {
     
     private ActivityMainBinding mainBinding;
-    private static String TAG = "main Activity";
+    private static String TAG = "soshoTimeline Activity";
     private ShapeableImageView profile_pic;
     private TextView full_name, username;
     private retrofitCalls calls;

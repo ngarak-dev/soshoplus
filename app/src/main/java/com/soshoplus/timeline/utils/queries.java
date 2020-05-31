@@ -16,17 +16,23 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface queries {
+    /*SignIn*/
     @FormUrlEncoded
     @POST("auth")
     Call<accessToken> signIn (@Field("server_key") String server_key, @Field("username") String username, @Field("password") String password);
     
+    /*Creating Account*/
     @FormUrlEncoded
     @POST("create-account")
     Call<accessToken> createAccount (@Field("server_key") String server_key, @Field("email") String email, @Field("username") String username, @Field("password") String password, @Field("confirm_password") String confirm_password, @Field("phone_num") String phone_num);
     
+    /*Get User Info*/
     @FormUrlEncoded
     @POST("get-user-data")
     Call<userInfo> getUserData (@Query("access_token") String access_token,
                                 @Field("server_key") String server_key,
                                 @Field("fetch") String fetch, @Field("user_id") String user_id);
+    
+    /*Timeline Posts*/
+    Call<Object> getTimelinePosts (@Query("access_token") String access_token, @Field("server_key") String server_key, @Field("fetch") String fetch, @Field("limit") String limit);
 }

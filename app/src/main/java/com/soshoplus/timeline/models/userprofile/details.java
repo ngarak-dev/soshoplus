@@ -8,6 +8,7 @@ package com.soshoplus.timeline.models.userprofile;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.soshoplus.timeline.models.apiErrors;
 
 import java.io.Serializable;
 
@@ -34,6 +35,9 @@ public class details implements Serializable {
     @SerializedName("mutual_friends_count")
     @Expose
     private int mutualFriendsCount;
+    @SerializedName("errors")
+    @Expose
+    private apiErrors errors;
     private final static long serialVersionUID = 109176243499019434L;
     
     /**
@@ -44,18 +48,16 @@ public class details implements Serializable {
     }
     
     /**
-     *
-     * @param likesCount
-     * @param groupsCount
-     * @param mutualFriendsCount
+     *  @param postCount
      * @param albumCount
-     * @param postCount
-     * @param followersCount
      * @param followingCount
+     * @param followersCount
+     * @param groupsCount
+     * @param likesCount
+     * @param mutualFriendsCount
+     * @param errors
      */
-    public details (String postCount, String albumCount, String followingCount,
-                   String followersCount,
-             String groupsCount, String likesCount, int mutualFriendsCount) {
+    public details (String postCount, String albumCount, String followingCount, String followersCount, String groupsCount, String likesCount, int mutualFriendsCount, apiErrors errors) {
         super();
         this.postCount = postCount;
         this.albumCount = albumCount;
@@ -64,6 +66,7 @@ public class details implements Serializable {
         this.groupsCount = groupsCount;
         this.likesCount = likesCount;
         this.mutualFriendsCount = mutualFriendsCount;
+        this.errors = errors;
     }
     
     public String getPostCount() {
@@ -155,5 +158,13 @@ public class details implements Serializable {
     public details withMutualFriendsCount(int mutualFriendsCount) {
         this.mutualFriendsCount = mutualFriendsCount;
         return this;
+    }
+    
+    public apiErrors getErrors () {
+        return errors;
+    }
+    
+    public void setErrors (apiErrors errors) {
+        this.errors = errors;
     }
 }

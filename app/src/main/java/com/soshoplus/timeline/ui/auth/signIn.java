@@ -20,6 +20,8 @@ import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.soshoplus.timeline.databinding.ActivitySigninBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.ui.soshoTimeline;
+import com.soshoplus.timeline.ui.splash;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
@@ -102,11 +104,6 @@ public class signIn extends AppCompatActivity {
                         //dismiss progress dialog
                         acProgressFlower.dismiss();
                         
-                        Log.d(TAG, "onResponse: " + response.body().getApiStatus());
-                        Log.d(TAG, "onResponse: " + response.body().getAccessToken());
-                        Log.d(TAG, "onResponse: " + response.body().getTimezone());
-                        Log.d(TAG, "onResponse: " + response.body().getUserId());
-                        
                         //storing user session
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(
                                 "userCred", 0); // 0 - for private mode
@@ -116,14 +113,12 @@ public class signIn extends AppCompatActivity {
                         editor.putString("timezone", response.body().getTimezone());
                         editor.putString("accessToken", response.body().getAccessToken());
                         editor.apply();
-                        
-                        String[] strings = {response.body().getTimezone(), response.body().getUserId(), response.body().getAccessToken()};
-                        
-                        //show alert
-                        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(signIn.this).setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET).setTitle("Successful").setItems(strings, (dialog, which) -> {
-                            //null
-                        }).addButton("DISMISS", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (dialog, which) -> dialog.dismiss());
-                        builder.show();
+    
+                        /*TO MAIN ACTIVITY FOR NOW*/
+                        /*TODO*/
+                        /*LATER IMPLEMENT KITU KINGINE*/
+                        startActivity(new Intent(signIn.this, soshoTimeline.class));
+                        finish();
                         
                     } else {
                         //dismiss dialog and log output

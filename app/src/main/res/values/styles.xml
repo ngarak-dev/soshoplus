@@ -39,4 +39,11 @@
         <item name="cornerRadius">@dimen/_50sdp</item>
     </style>
 
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
 </resources>

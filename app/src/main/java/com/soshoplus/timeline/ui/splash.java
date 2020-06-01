@@ -33,15 +33,11 @@ public class splash extends AppCompatActivity {
                 String userId = pref.getString("userId", "0");
                 String timezone = pref.getString("timezone", "0");
                 String accessToken = pref.getString("accessToken", "0");
-                
-                //go to testing profile
-                Intent intent = new Intent(splash.this, soshoTimeline.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("user_id", userId);
-                bundle.putString("timezone", timezone);
-                bundle.putString("access_token", accessToken);
-                intent.putExtras(bundle);
-                startActivity(intent);
+    
+                /*TO MAIN ACTIVITY FOR NOW*/
+                /*TODO*/
+                /*LATER IMPLEMENT KITU KINGINE*/
+                startActivity(new Intent(splash.this, soshoTimeline.class));
                 finish();
                 
             } else {

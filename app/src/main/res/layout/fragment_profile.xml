@@ -9,6 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="none"
     tools:context=".ui.mainfragments.profileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -299,6 +300,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/linkedin_link"
             app:layout_constraintTop_toBottomOf="@id/social_links_title" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linkedin_link"
+            android:id="@+id/info_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

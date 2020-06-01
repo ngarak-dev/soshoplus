@@ -6,6 +6,7 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -18,7 +19,11 @@ import android.widget.TextView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -28,14 +33,18 @@ import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.databinding.FragmentProfileBinding;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.userprofile.details;
+import com.soshoplus.timeline.models.userprofile.infoList;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
+import com.soshoplus.timeline.utils.infoListAdapter;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitCalls;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +69,8 @@ public class profileFragment extends Fragment {
     private apiErrors apiErrors;
     //
     String userId, timezone, accessToken;
+    
+    private ArrayList<infoList> infoList;
     
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -141,15 +152,32 @@ public class profileFragment extends Fragment {
                 else {
                     //response is null
                     Log.d(TAG, "onResponse: " + "Response is Null");
-                    
-                    /*TODO*/
-                    /*Display appropriate Message*/
+    
+                    //show alert
+                    CFAlertDialog.Builder builder =
+                            new CFAlertDialog.Builder(requireContext())
+                                    .setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT)
+                                    .setTitle("Oops !")
+                                    .setMessage("Please try again")
+                                    .addButton("RETRY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick (DialogInterface dialog, int which) {
+                                            loadProfile();
+                                        }
+                                    })
+                                    .addButton("DISMISS", -1, -1,
+                                            CFAlertDialog.CFAlertActionStyle.NEGATIVE,
+                                            CFAlertDialog.CFAlertActionAlignment.JUSTIFIED,
+                                            (dialog, which) -> dialog.dismiss());
+                    builder.show();
                 }
             }
     
             @Override
             public void onFailure (@NotNull Call<userInfo> call, @NotNull Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
+                Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
+                Log.d(TAG, "onFailure: " + t.getCause());
                 
                 /*TODO*/
                 /*Display Error Message*/
@@ -513,44 +541,73 @@ public class profileFragment extends Fragment {
             profileBinding.aboutMe.setTextColor(getResources().getColor(R.color.indian_red));
         }
     
-        //personal info
-//        if (userData.getGenderText().isEmpty()) {
-//            profileBinding.gender.setText("Update gender");
-//            profileBinding.gender.setTextColor(getResources().getColor(R.color.indian_red));
-//        } else {
-//            profileBinding.gender.setText("Gender: " + userData.getGenderText());
-//        }
-//        profileBinding.registeredOn.setText("Registered on : " + userData.getRegistered());
-//        if (userData.getCity().isEmpty()) {
-//            profileBinding.city.setText("City : " + "Update city");
-//            profileBinding.city.setTextColor(getResources().getColor(R.color.indian_red));
-//        } else {
-//            profileBinding.city.setText("City : " + userData.getCity());
-//        }
-//        if (userData.getWorking().isEmpty()) {
-//            profileBinding.working.setText("Working at : " + "none");
-//            profileBinding.working.setTextColor(getResources().getColor(R.color.indian_red));;
-//        }else {
-//            profileBinding.working.setText("Working at : " + userData.getWorking());
-//        }
-//        if (userData.getBirthday().isEmpty()) {
-//            profileBinding.birthday.setText("Birthday : " + "none");
-//            profileBinding.birthday.setTextColor(getResources().getColor(R.color.indian_red));
-//        }else {
-//            profileBinding.birthday.setText("Birthday : " + userData.getBirthday());
-//        }
-//        if (userData.getWebsite().isEmpty()) {
-//            profileBinding.website.setText("Website : " + "none");
-//            profileBinding.website.setTextColor(getResources().getColor(R.color.indian_red));
-//        }else {
-//            profileBinding.website.setText("Website : " + userData.getWebsite());
-//        }
         if (userData.getPhoneNumber().isEmpty()) {
             profileBinding.phone.setText("Empty");
             profileBinding.phone.setTextColor(getResources().getColor(R.color.indian_red));
         }else {
             profileBinding.phone.setText(userData.getPhoneNumber());
         }
+    
+        /*Initializing List*/
+        infoList = new ArrayList<>();
+        
+        if (userData.getBirthday().isEmpty()) {
+            Log.d(TAG, "Birthday: Empty");
+        }else {
+            infoList.add(new infoList(R.drawable.ic_birthday, "Birthday", userData.getBirthday()));
+        }
+        
+        if (userData.getGenderText().isEmpty()) {
+            Log.d(TAG, "Gender: Empty");
+        } else {
+           infoList.add(new infoList(R.drawable.ic_gender, "Gender", userData.getGenderText()));
+        }
+    
+        if (userData.getWorking().isEmpty()) {
+            Log.d(TAG, "Working: Empty");
+        }else {
+            infoList.add(new infoList(R.drawable.ic_working, "Working at", userData.getWorking()));
+        }
+    
+        if (userData.getWebsite().isEmpty()) {
+            Log.d(TAG, "Website: Empty");
+        }else {
+            infoList.add(new infoList(R.drawable.ic_website, "Website", userData.getWebsite()));
+        }
+        
+        if (userData.getCity().isEmpty()) {
+            Log.d(TAG, "City: Empty");
+        } else {
+           infoList.add(new infoList(R.drawable.ic_city, "City", userData.getCity()));
+        }
+        
+        if(userData.getSchool().isEmpty()) {
+            Log.d(TAG, "School: Empty");
+        }
+        else {
+            infoList.add(new infoList(R.drawable.ic_school, "School", userData.getSchool()));
+        }
+        
+        if (userData.getLanguage().isEmpty()) {
+            Log.d(TAG, "Language: Empty");
+        }
+        else {
+           infoList.add(new infoList(R.drawable.ic_languages, "Languages", userData.getLanguage()));
+        }
+        
+        addInfoList();
+    }
+    
+    private void addInfoList () {
+        /*Initializing Adapter*/
+        infoListAdapter infoListAdapter = new infoListAdapter(requireContext(), infoList);
+        /*Setting Layout*/
+        profileBinding.infoList.setLayoutManager(new LinearLayoutManager(requireContext()));
+        profileBinding.infoList.setItemAnimator(new DefaultItemAnimator());
+        profileBinding.infoList.addItemDecoration(new DividerItemDecoration(requireContext(),
+                DividerItemDecoration.VERTICAL));
+        /*Setting Adapter*/
+        profileBinding.infoList.setAdapter(infoListAdapter);
     }
     
     @Override

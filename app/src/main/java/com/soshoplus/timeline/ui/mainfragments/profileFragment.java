@@ -21,6 +21,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.crowdfire.cfalertdialog.CFAlertDialog;
@@ -32,10 +33,12 @@ import com.skydoves.balloon.BalloonAnimation;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.databinding.FragmentProfileBinding;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.userprofile.countsGrid;
 import com.soshoplus.timeline.models.userprofile.details;
 import com.soshoplus.timeline.models.userprofile.infoList;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
+import com.soshoplus.timeline.utils.countsGridAdapter;
 import com.soshoplus.timeline.utils.infoListAdapter;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitCalls;
@@ -71,6 +74,7 @@ public class profileFragment extends Fragment {
     String userId, timezone, accessToken;
     
     private ArrayList<infoList> infoList;
+    private ArrayList<countsGrid> countsList;
     
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,22 +109,17 @@ public class profileFragment extends Fragment {
                     if (response.body().getApiStatus() == 200) {
                         userData = response.body().getUserData();
                         details = response.body().getUserData().getDetails();
-    
-                        //upper section
+                        
+                        /*upper section*/
                         profileBinding.fullName.setText(userData.getName());
                         profileBinding.email.setText(userData.getEmail());
                         profileBinding.username.setText("@ " + userData.getUsername());
+                        
+                        /*upper counts*/
                         profileBinding.numberOfFollowers.setText(details.getFollowersCount());
                         profileBinding.numberOfFollowing.setText(details.getFollowingCount());
-                        profileBinding.aboutMe.setText(userData.getAbout());
-    
-                        //counts
                         profileBinding.noOfPosts.setText(details.getPostCount());
-//                        profileBinding.noOfGroups.setText(details.getGroupsCount());
-//                        profileBinding.noOfPoints.setText(details.getPostCount());
-//                        profileBinding.noOfAlbum.setText(details.getAlbumCount());
-//                        profileBinding.noOfLikes.setText(details.getLikesCount());
-//                        profileBinding.wallet.setText(userData.getWallet());
+                        profileBinding.aboutMe.setText(userData.getAbout());
     
                         //profile pic
                         ShapeableImageView profilePic = profileBinding.profilePic;
@@ -131,12 +130,14 @@ public class profileFragment extends Fragment {
                                 .build());
                         Picasso.get().load(userData.getAvatar()).into(profilePic);
                         
-                        //getting about user
-                        aboutUser(userData);
                         //get verified and user level badge
                         badges(userData);
                         //updating social icons links
                         socialLinks(userData);
+                        //getting about user
+                        aboutUser(userData);
+                        /*get counts*/
+                        counts(userData, details);
                     }
                     
                     else {
@@ -608,6 +609,25 @@ public class profileFragment extends Fragment {
                 DividerItemDecoration.VERTICAL));
         /*Setting Adapter*/
         profileBinding.infoList.setAdapter(infoListAdapter);
+    }
+    
+    private void counts (userData userData, details details) {
+        /*initializing list*/
+        countsList = new ArrayList<>();
+        /*adding data to a list*/
+        countsList.add(new countsGrid(R.drawable.ic_gallery, details.getAlbumCount(), "Album"));
+        countsList.add(new countsGrid(R.drawable.ic_wallet, userData.getWallet(), "Wallet"));
+        countsList.add(new countsGrid(R.drawable.ic_points, userData.getPoints(), "Points"));
+        countsList.add(new countsGrid(R.drawable.ic_group, details.getGroupsCount(), "Groups"));
+        countsList.add(new countsGrid(R.drawable.ic_likes, details.getLikesCount(), "Likes"));
+    
+        /*Initializing Adapter*/
+        countsGridAdapter countsGridAdapter = new countsGridAdapter(requireContext(), countsList);
+        /*Setting Layout*/
+        profileBinding.countsGrid.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        profileBinding.countsGrid.setItemAnimator(new DefaultItemAnimator());
+        /*Setting Adapter*/
+        profileBinding.countsGrid.setAdapter(countsGridAdapter);
     }
     
     @Override

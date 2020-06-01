@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fxn.BubbleTabBar;
@@ -38,6 +39,7 @@ public class soshoTimeline extends AppCompatActivity {
     private ViewPager sosho_viewPager;
     private viewPagerAdapter viewPagerAdapter;
     private BubbleTabBar bubbleTabBar;
+    private ConstraintLayout upper_profile;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class soshoTimeline extends AppCompatActivity {
         username = soshoTimelineBinding.username;
         bubbleTabBar = soshoTimelineBinding.bottomNavigation;
         sosho_viewPager = soshoTimelineBinding.soshoViewPager;
+        upper_profile = soshoTimelineBinding.upperProfile;
+        
         
         //getCurrent Profile
         getProfile();
@@ -80,22 +84,27 @@ public class soshoTimeline extends AppCompatActivity {
                 switch (id) {
                     case R.id.home:
                         sosho_viewPager.setCurrentItem(0);
+                        upper_profile.setVisibility(View.VISIBLE);
                         break;
                 
                     case R.id.friends:
                         sosho_viewPager.setCurrentItem(1);
+                        upper_profile.setVisibility(View.VISIBLE);
                         break;
                 
                     case R.id.groups:
                         sosho_viewPager.setCurrentItem(2);
+                        upper_profile.setVisibility(View.VISIBLE);
                         break;
                 
                     case R.id.profile:
                         sosho_viewPager.setCurrentItem(3);
+                        upper_profile.setVisibility(View.GONE);
                         break;
                 
                     case R.id.more:
                         sosho_viewPager.setCurrentItem(4);
+                        upper_profile.setVisibility(View.GONE);
                         break;
                 }
             }

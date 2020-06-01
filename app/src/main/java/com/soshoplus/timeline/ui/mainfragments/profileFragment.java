@@ -16,17 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
-import com.skydoves.balloon.ArrowOrientation;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.soshoplus.timeline.R;
@@ -103,17 +98,18 @@ public class profileFragment extends Fragment {
                         //upper section
                         profileBinding.fullName.setText(userData.getName());
                         profileBinding.email.setText(userData.getEmail());
+                        profileBinding.username.setText("@ " + userData.getUsername());
                         profileBinding.numberOfFollowers.setText(details.getFollowersCount());
                         profileBinding.numberOfFollowing.setText(details.getFollowingCount());
                         profileBinding.aboutMe.setText(userData.getAbout());
     
                         //counts
                         profileBinding.noOfPosts.setText(details.getPostCount());
-                        profileBinding.noOfGroups.setText(details.getGroupsCount());
-                        profileBinding.noOfPoints.setText(details.getPostCount());
-                        profileBinding.noOfAlbum.setText(details.getAlbumCount());
-                        profileBinding.noOfLikes.setText(details.getLikesCount());
-                        profileBinding.wallet.setText(userData.getWallet());
+//                        profileBinding.noOfGroups.setText(details.getGroupsCount());
+//                        profileBinding.noOfPoints.setText(details.getPostCount());
+//                        profileBinding.noOfAlbum.setText(details.getAlbumCount());
+//                        profileBinding.noOfLikes.setText(details.getLikesCount());
+//                        profileBinding.wallet.setText(userData.getWallet());
     
                         //profile pic
                         ShapeableImageView profilePic = profileBinding.profilePic;
@@ -136,18 +132,27 @@ public class profileFragment extends Fragment {
                         apiErrors = response.body().getErrors();
                         Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                         Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                        
+                        /*TODO*/
+                        /*Get error code from server and display a message*/
                     }
                 }
                 
                 else {
                     //response is null
                     Log.d(TAG, "onResponse: " + "Response is Null");
+                    
+                    /*TODO*/
+                    /*Display appropriate Message*/
                 }
             }
     
             @Override
             public void onFailure (@NotNull Call<userInfo> call, @NotNull Throwable t) {
-        
+                Log.d(TAG, "onFailure: " + t.getMessage());
+                
+                /*TODO*/
+                /*Display Error Message*/
             }
         });
     }
@@ -469,86 +474,35 @@ public class profileFragment extends Fragment {
         //user level
         switch (userData.getProType()) {
             case "0":
-                profileBinding.userLevel.setChipIconResource(R.drawable.ic_free_badge);
-                level_tooltip = "You have a free user badge";
+                profileBinding.userLevel.setText("FREE");
+                profileBinding.userLevel.setChipBackgroundColorResource(R.color.gray);
                 break;
             case "1":
-                profileBinding.userLevel.setChipIconResource(R.drawable.ic_star_badge);
-                level_tooltip = "You have a star user badge";
+                profileBinding.userLevel.setText("STAR");
+                profileBinding.userLevel.setChipBackgroundColorResource(R.color.green);
                 break;
             case "2":
-                profileBinding.userLevel.setChipIconResource(R.drawable.ic_hot_badge);
-                level_tooltip = "You have a hot user badge";
+                profileBinding.userLevel.setText("HOT");
+                profileBinding.userLevel.setChipBackgroundColorResource(R.color.red);
                 break;
             case "3":
-                profileBinding.userLevel.setChipIconResource(R.drawable.ic_ultimate_badge);
-                level_tooltip = "You have an ultimate user badge";
+                profileBinding.userLevel.setText("ULTIMATE");
+                profileBinding.userLevel.setChipBackgroundColorResource(R.color.yellow);
                 break;
             case "4":
-                profileBinding.userLevel.setChipIconResource(R.drawable.ic_pro_badge);
-                level_tooltip = "You have a PRO user badge";
+                profileBinding.userLevel.setText("PRO");
+                profileBinding.userLevel.setChipBackgroundColorResource(R.color.colorAccent);
                 break;
         }
     
         //verification status
         if (userData.getVerified().equals("1")) {
-            profileBinding.verifiedBadge.setChipIconResource(R.drawable.ic_verified_badge);
-            verified_tooltip = "You are a verified user";
+            profileBinding.verifiedBadge.setText("VERIFIED");
+            profileBinding.verifiedBadge.setChipBackgroundColorResource(R.color.green);
         }
         else {
-            profileBinding.verifiedBadge.setChipIconResource(R.drawable.ic_not_verified_badge);
-            verified_tooltip = "You are  not a verified user";
+            profileBinding.verifiedBadge.setText("NOT VERIFIED");
         }
-    
-        //level_tooltip
-        profileBinding.userLevel.setOnClickListener(v -> {
-            Balloon balloon = new Balloon.Builder(requireContext())
-                    .setArrowSize(10)
-                    .setArrowOrientation(ArrowOrientation.BOTTOM)
-                    .setArrowVisible(true)
-                    .setPadding(10)
-                    .setText(level_tooltip)
-                    .setTextColor(ContextCompat.getColor(requireContext(),
-                            R.color.white))
-                    .setBackgroundColor(ContextCompat.getColor(requireContext(),
-                            R.color.colorPrimaryDark))
-                    .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
-                    .setAutoDismissDuration(2500L)
-                    .setLifecycleOwner(new LifecycleOwner() {
-                        @NonNull
-                        @Override
-                        public Lifecycle getLifecycle () {
-                            return null;
-                        }
-                    })
-                    .build();
-            balloon.show(profileBinding.userLevel);
-        });
-    
-        //verified_tooltip
-        profileBinding.verifiedBadge.setOnClickListener(v -> {
-            Balloon balloon = new Balloon.Builder(requireContext())
-                    .setArrowSize(10)
-                    .setArrowOrientation(ArrowOrientation.BOTTOM)
-                    .setArrowVisible(true)
-                    .setPadding(10)
-                    .setText(verified_tooltip)
-                    .setTextColor(ContextCompat.getColor(requireContext(),
-                            R.color.white))
-                    .setBackgroundColor(ContextCompat.getColor(requireContext(),
-                            R.color.colorPrimaryDark))
-                    .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
-                    .setAutoDismissDuration(2500L)
-                    .setLifecycleOwner(new LifecycleOwner() {
-                        @NonNull
-                        @Override
-                        public Lifecycle getLifecycle () {
-                            return null;
-                        }
-                    })
-                    .build();
-            balloon.show(profileBinding.verifiedBadge);
-        });
     }
     
     private void aboutUser (userData userData) {
@@ -560,42 +514,42 @@ public class profileFragment extends Fragment {
         }
     
         //personal info
-        if (userData.getGenderText().isEmpty()) {
-            profileBinding.gender.setText("Update gender");
-            profileBinding.gender.setTextColor(getResources().getColor(R.color.indian_red));
-        } else {
-            profileBinding.gender.setText("Gender: " + userData.getGenderText());
-        }
-        profileBinding.registeredOn.setText("Registered on : " + userData.getRegistered());
-        if (userData.getCity().isEmpty()) {
-            profileBinding.city.setText("City : " + "Update city");
-            profileBinding.city.setTextColor(getResources().getColor(R.color.indian_red));
-        } else {
-            profileBinding.city.setText("City : " + userData.getCity());
-        }
-        if (userData.getWorking().isEmpty()) {
-            profileBinding.working.setText("Working at : " + "none");
-            profileBinding.working.setTextColor(getResources().getColor(R.color.indian_red));;
-        }else {
-            profileBinding.working.setText("Working at : " + userData.getWorking());
-        }
-        if (userData.getBirthday().isEmpty()) {
-            profileBinding.birthday.setText("Birthday : " + "none");
-            profileBinding.birthday.setTextColor(getResources().getColor(R.color.indian_red));
-        }else {
-            profileBinding.birthday.setText("Birthday : " + userData.getBirthday());
-        }
-        if (userData.getWebsite().isEmpty()) {
-            profileBinding.website.setText("Website : " + "none");
-            profileBinding.website.setTextColor(getResources().getColor(R.color.indian_red));
-        }else {
-            profileBinding.website.setText("Website : " + userData.getWebsite());
-        }
+//        if (userData.getGenderText().isEmpty()) {
+//            profileBinding.gender.setText("Update gender");
+//            profileBinding.gender.setTextColor(getResources().getColor(R.color.indian_red));
+//        } else {
+//            profileBinding.gender.setText("Gender: " + userData.getGenderText());
+//        }
+//        profileBinding.registeredOn.setText("Registered on : " + userData.getRegistered());
+//        if (userData.getCity().isEmpty()) {
+//            profileBinding.city.setText("City : " + "Update city");
+//            profileBinding.city.setTextColor(getResources().getColor(R.color.indian_red));
+//        } else {
+//            profileBinding.city.setText("City : " + userData.getCity());
+//        }
+//        if (userData.getWorking().isEmpty()) {
+//            profileBinding.working.setText("Working at : " + "none");
+//            profileBinding.working.setTextColor(getResources().getColor(R.color.indian_red));;
+//        }else {
+//            profileBinding.working.setText("Working at : " + userData.getWorking());
+//        }
+//        if (userData.getBirthday().isEmpty()) {
+//            profileBinding.birthday.setText("Birthday : " + "none");
+//            profileBinding.birthday.setTextColor(getResources().getColor(R.color.indian_red));
+//        }else {
+//            profileBinding.birthday.setText("Birthday : " + userData.getBirthday());
+//        }
+//        if (userData.getWebsite().isEmpty()) {
+//            profileBinding.website.setText("Website : " + "none");
+//            profileBinding.website.setTextColor(getResources().getColor(R.color.indian_red));
+//        }else {
+//            profileBinding.website.setText("Website : " + userData.getWebsite());
+//        }
         if (userData.getPhoneNumber().isEmpty()) {
-            profileBinding.phone.setText("Phone : " + "none");
+            profileBinding.phone.setText("Empty");
             profileBinding.phone.setTextColor(getResources().getColor(R.color.indian_red));
         }else {
-            profileBinding.phone.setText("Phone : " + userData.getPhoneNumber());
+            profileBinding.phone.setText(userData.getPhoneNumber());
         }
     }
     

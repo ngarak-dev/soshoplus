@@ -37,7 +37,7 @@ public interface queries {
     @POST("fetch-recommended")
     Call<Object> getRecommended(@Query("access_token") String access_token,
                                 @Field("server_key") String server_key,
-                                @Field("fetch") String fetch);
+                                @Field("fetch") String fetch, @Field("limit") String limit);
     
     /*Joined Groups*/
     @FormUrlEncoded
@@ -47,6 +47,7 @@ public interface queries {
                                 @Field("fetch") String fetch, @Field("user_id") String user_id);
     
     /*My Groups*/
+    /*TODO Implement this on new Version*/
     @FormUrlEncoded
     @POST("get-my-groups")
     Call<Object> getMyGroups(@Query("access_token") String access_token,

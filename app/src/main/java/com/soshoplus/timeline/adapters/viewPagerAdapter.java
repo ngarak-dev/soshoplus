@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.soshoplus.timeline.utils;
+package com.soshoplus.timeline.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

@@ -25,7 +25,7 @@ import com.soshoplus.timeline.ui.mainfragments.moreFragment;
 import com.soshoplus.timeline.ui.mainfragments.profileFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
 import com.soshoplus.timeline.utils.retrofitCalls;
-import com.soshoplus.timeline.utils.viewPagerAdapter;
+import com.soshoplus.timeline.adapters.viewPagerAdapter;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 

@@ -21,7 +21,6 @@ import com.soshoplus.timeline.databinding.ActivitySigninBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.ui.soshoTimeline;
-import com.soshoplus.timeline.ui.splash;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
@@ -50,6 +49,7 @@ public class signIn extends AppCompatActivity {
         View view = signInBinding.getRoot();
         setContentView(view);
         
+        /*initializing progress dialog*/
         acProgressFlower = new ACProgressFlower.Builder(signIn.this).direction(ACProgressConstant.DIRECT_CLOCKWISE).themeColor(Color.WHITE).text("Please Wait").textSize(16).petalCount(15).speed(18).petalThickness(2).build();
         acProgressFlower.setCanceledOnTouchOutside(false);
         
@@ -105,6 +105,7 @@ public class signIn extends AppCompatActivity {
                         acProgressFlower.dismiss();
                         
                         //storing user session
+                        /*TODO Baadae tengeneza local DB for this*/
                         SharedPreferences pref = getApplicationContext().getSharedPreferences(
                                 "userCred", 0); // 0 - for private mode
                         SharedPreferences.Editor editor = pref.edit();
@@ -135,12 +136,14 @@ public class signIn extends AppCompatActivity {
                 } else {
                     //response is null
                     Log.d(TAG, "onResponse: " + "Response is Null");
+                    /*TODO Display a message response is null*/
                 }
             }
             
             @Override
             public void onFailure (@NonNull Call<accessToken> call, @NonNull Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
+                /*TODO Login failed after a call display a message*/
             }
         });
     }

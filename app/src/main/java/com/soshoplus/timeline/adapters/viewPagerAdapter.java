@@ -15,9 +15,10 @@ import java.util.ArrayList;
 
 public class viewPagerAdapter extends FragmentStatePagerAdapter {
     
+    /*array list for fragments*/
     private ArrayList<Fragment> arrayList = new ArrayList<>();
     
-    
+    /*constructor*/
     public viewPagerAdapter (@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
@@ -28,11 +29,13 @@ public class viewPagerAdapter extends FragmentStatePagerAdapter {
         return arrayList.get(position);
     }
     
+    /*creating a new fragment*/
     @NonNull
     public Fragment createFragment (int position) {
         return arrayList.get(position);
     }
     
+    /*adding a fragment*/
     public void addFragment(Fragment fragment) {
         arrayList.add(fragment);
     }

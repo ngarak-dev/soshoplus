@@ -31,10 +31,10 @@ public class infoListAdapter extends RecyclerView.Adapter<infoListAdapter.InfoHo
         this.infoList = list;
     }
     
+    /*inflating and initializing a view*/
     @NonNull
     @Override
     public infoListAdapter.InfoHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.info_list_row, parent, false);
         View view = LayoutInflater.from(context).inflate(R.layout.info_list_row, parent, false);
         return new InfoHolder(view);
     }

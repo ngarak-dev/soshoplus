@@ -22,7 +22,6 @@ import com.soshoplus.timeline.databinding.ActivitySignupBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.ui.soshoTimeline;
-import com.soshoplus.timeline.ui.splash;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
@@ -146,12 +145,14 @@ public class signUp extends AppCompatActivity {
                 } else {
                     //response is null
                     Log.d(TAG, "onResponse: " + "Response is Null");
+                    /*TODO Display a message response is null*/
                 }
             }
             
             @Override
             public void onFailure (@NonNull Call<accessToken> call, @NonNull Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
+                /*TODO Login failed after a call display a message*/
             }
         });
     }

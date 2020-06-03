@@ -11,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
 import com.squareup.picasso.Picasso;
@@ -33,6 +34,7 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
         this.groupInfoList = list;
     }
     
+    /*inflating and initializing a view*/
     @NonNull
     @Override
     public groupsListAdapter.GroupsHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +45,14 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
     @Override
     public void onBindViewHolder (@NonNull groupsListAdapter.GroupsHolder holder, int position) {
         groupInfo list =  groupInfoList.get(position);
+    
+        holder.profile_pic.setShapeAppearanceModel(holder.profile_pic
+                .getShapeAppearanceModel()
+                .toBuilder()
+                .setAllCorners(CornerFamily.ROUNDED, 20)
+                .build());
         Picasso.get().load(list.getAvatar()).into(holder.profile_pic);
+        
         holder.group_title.setText(list.getGroupTitle());
         holder.group_category.setText(list.getCategory());
         holder.total_members.setText(list.getMembers());
@@ -58,7 +67,7 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
     
     public class GroupsHolder extends RecyclerView.ViewHolder{
         
-        ImageView profile_pic;
+        ShapeableImageView profile_pic;
         TextView group_title;
         TextView group_category;
         TextView total_members;

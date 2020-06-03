@@ -56,7 +56,6 @@ public class soshoTimeline extends AppCompatActivity {
         sosho_viewPager = soshoTimelineBinding.soshoViewPager;
         upper_profile = soshoTimelineBinding.upperProfile;
         
-        
         //getCurrent Profile
         getProfile();
         
@@ -123,6 +122,7 @@ public class soshoTimeline extends AppCompatActivity {
             super.onBackPressed();
         } else {
             // go to previous step
+            /*TODO should go to previous clicked*/
             sosho_viewPager.setCurrentItem(sosho_viewPager.getCurrentItem() - 1);
         }
     }

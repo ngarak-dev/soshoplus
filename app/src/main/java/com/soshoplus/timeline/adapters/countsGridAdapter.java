@@ -31,6 +31,7 @@ public class countsGridAdapter extends RecyclerView.Adapter<countsGridAdapter.Co
         this.countsGridList = gridList;
     }
     
+    /*inflating and initializing a view*/
     @NonNull
     @Override
     public countsGridAdapter.CountsHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {

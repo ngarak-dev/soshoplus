@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/group_profile_pic"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
@@ -35,6 +35,8 @@
         android:id="@+id/group_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:maxLength="45"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/group_category"
         app:layout_constraintEnd_toStartOf="@id/btn_join"
         app:layout_constraintStart_toStartOf="@id/group_title"
@@ -44,7 +46,7 @@
         android:id="@+id/group_category"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_8ssp"
+        android:textSize="@dimen/_10ssp"
         android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_join"

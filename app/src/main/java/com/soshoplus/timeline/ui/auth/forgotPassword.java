@@ -34,6 +34,7 @@ public class forgotPassword extends AppCompatActivity {
         View view = forgotPasswordBinding.getRoot();
         setContentView(view);
         
+        /*initialize progress dialog*/
         acProgressFlower = new ACProgressFlower.Builder(forgotPassword.this).direction(ACProgressConstant.DIRECT_CLOCKWISE).themeColor(Color.WHITE).text("Please Wait").textSize(16).petalCount(15).speed(18).petalThickness(2).build();
         acProgressFlower.setCanceledOnTouchOutside(false);
         
@@ -64,6 +65,6 @@ public class forgotPassword extends AppCompatActivity {
     }
     
     private void callResetInfo () {
-        //TO-DO
+        /*TODO Documentation imeshapatikana implement reseting password*/
     }
 }

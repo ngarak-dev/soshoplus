@@ -72,6 +72,8 @@ public class retrofitCalls {
         queries = retrofitInstance.getRetrofitInst().create(queries.class);
     }
     
+    /*TODO NULL exception zipo AVOID AVOID*/
+    
     /*get profile on main activity*/
     public void getProfile (ShapeableImageView profile_pic, TextView full_name, TextView username) {
         userInfoCall = queries.getUserData(accessToken, serverKey, fetch_profile, userId);
@@ -82,8 +84,12 @@ public class retrofitCalls {
                 if (response.body() != null) {
 
                     if (response.body().getApiStatus() == 200) {
-                        userData = response.body().getUserData();
 
+                        if (userData == null) {
+                            userData = new userData();
+                            userData = response.body().getUserData();
+                        }
+                        
                         full_name.setText(userData.getName());
                         username.setText("@" + userData.getUsername());
 

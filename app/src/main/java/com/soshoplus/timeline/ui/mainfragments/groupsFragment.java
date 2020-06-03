@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import com.soshoplus.timeline.databinding.FragmentGroupsBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -28,8 +30,11 @@ public class groupsFragment extends Fragment {
     private FragmentGroupsBinding groupsBinding;
     private retrofitCalls calls;
     
+    /*TODO NULL exception zipo AVOID AVOID*/
+    
+    /*initializing a view and inflate it */
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         groupsBinding = FragmentGroupsBinding.inflate(inflater, container, false);
         

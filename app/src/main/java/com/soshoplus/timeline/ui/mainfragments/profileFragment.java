@@ -76,6 +76,7 @@ public class profileFragment extends Fragment {
     private ArrayList<infoList> infoList;
     private ArrayList<countsGrid> countsList;
     
+    /*initializing a view and inflate it */
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -101,6 +102,7 @@ public class profileFragment extends Fragment {
         return profileBinding.getRoot();
     }
     
+    /*TODO Null Exception inatokea hapa rekebisha*/
     private void loadProfile () {
         userInfoCall.enqueue(new Callback<userInfo>() {
             @Override
@@ -108,10 +110,14 @@ public class profileFragment extends Fragment {
                 if (response.body() != null) {
                     if (response.body().getApiStatus() == 200) {
                         if(userData == null) {
+                            userData = new userData();
                             userData = response.body().getUserData();
                         }
                         
-                        details = response.body().getUserData().getDetails();
+                        if (details == null) {
+                            details = new details();
+                            details = response.body().getUserData().getDetails();
+                        }
                         
                         /*upper section*/
                         profileBinding.fullName.setText(userData.getName());
@@ -183,8 +189,7 @@ public class profileFragment extends Fragment {
                 Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
                 Log.d(TAG, "onFailure: " + t.getCause());
                 
-                /*TODO*/
-                /*Display Error Message*/
+                /*TODO Display Error Message*/
             }
         });
     }
@@ -538,11 +543,19 @@ public class profileFragment extends Fragment {
     }
     
     private void aboutUser (userData userData) {
+        
+        if (userData == null) {
+            userData = new userData();
+        }
     
+        /**/
         //about data
-        if(userData.getAbout().isEmpty()) {
+        if(userData.getAbout() == null) {
             profileBinding.aboutMe.setText("Please update your info here");
             profileBinding.aboutMe.setTextColor(getResources().getColor(R.color.indian_red));
+        }
+        else {
+            profileBinding.aboutMe.setText(userData.getAbout());
         }
     
         if (userData.getPhoneNumber().isEmpty()) {

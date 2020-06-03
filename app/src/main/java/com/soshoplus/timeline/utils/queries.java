@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
+import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
@@ -54,4 +55,10 @@ public interface queries {
     Call<Object> getMyGroups(@Query("access_token") String access_token,
                              @Field("server_key") String server_key,
                              @Field("fetch") String fetch);
+    /*Group Info*/
+    @FormUrlEncoded
+    @POST("get-group-data")
+    Call<group> getGroupInfo(@Query("access_token") String access_token,
+                             @Field("server_key") String server_key,
+                             @Field("group_id") String group_id);
 }

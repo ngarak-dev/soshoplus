@@ -7,8 +7,10 @@
 package com.soshoplus.timeline.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,15 +18,18 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.adapters.groupsListAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.userprofile.details;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
+import com.soshoplus.timeline.ui.groups.viewGroup;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +46,7 @@ public class retrofitCalls {
     private Context context;
     private queries queries;
     private Call<userInfo> userInfoCall;
+    private Call<group> groupCall;
     private Call<groupList> groupListCall;
     private String accessToken, userId, timezone;
     private static String TAG = "Calls class";
@@ -53,6 +59,10 @@ public class retrofitCalls {
     private details details = null;
     
     private List<groupInfo> groupInfoList = null;
+    
+    /*TODO Check this later*/
+    private static String group_id;
+    private groupInfo groupInfo;
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -137,7 +147,14 @@ public class retrofitCalls {
                                     @Override
                                     public void onGroupClick (groupInfo groupInfo) {
                                         Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
+                                        
                                         /*TODO implement group view or preview*/
+                                        /*setting group id*/
+                                        group_id = groupInfo.getGroupId();
+                                        
+                                        Intent intent = new Intent();
+                                        intent.setClass(context, viewGroup.class);
+                                        context.startActivity(intent);
                                     }
     
                                     @Override
@@ -171,6 +188,71 @@ public class retrofitCalls {
             public void onFailure (@NotNull Call<groupList> call, @NotNull Throwable t) {
                 Log.i(TAG, "onFailure: " + t.getMessage());
                 /*TODO failed to get recommends*/
+            }
+        });
+    }
+    
+    public void getGroupInfo (ShapeableImageView profile_pic, ImageView cover_pic, Chip members, Chip privacy, Chip category) {
+        groupCall = queries.getGroupInfo(accessToken, serverKey, group_id);
+        groupCall.enqueue(new Callback<group>() {
+            @Override
+            public void onResponse (@NotNull Call<group> call, @NotNull Response<group> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        
+                        if (groupInfo == null) {
+                            groupInfo = response.body().getGroupInfo();
+                        }
+    
+                        Log.d(TAG, "onResponse: " + groupInfo.getMembers() + groupInfo.getType() +
+                                groupInfo.getName() + groupInfo.getJoinPrivacy() + groupInfo.getPrivacy());
+                        
+                        /*JoinPrivacy
+                            1: Join moja kwa moja
+                            2: Hapa ni request
+                        * Privacy
+                            1: Public
+                            2: Private
+                        * */
+                        
+                        /*load group info*/
+                        members.setText(groupInfo.getMembers() + " Members");
+                        /*setting group privacy*/
+                        if (groupInfo.getPrivacy().equals("1")) {
+                            privacy.setText("Public");
+                        } else {
+                            privacy.setText("Private");
+                        }
+                        /*setting category*/
+                        category.setText(groupInfo.getCategory());
+                        /*group cover*/
+                        Picasso.get().load(groupInfo.getCover()).fit().centerCrop().into(cover_pic);
+                        /*group profile pic*/
+                        profile_pic.setShapeAppearanceModel(profile_pic
+                                .getShapeAppearanceModel()
+                                .toBuilder()
+                                .setAllCorners(CornerFamily.ROUNDED, 20)
+                                .build());
+                        Picasso.get().load(groupInfo.getAvatar()).into(profile_pic);
+                        
+                    }
+                    else {
+                        /*TODO Error from API itself*/
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    Log.i(TAG, "onResponse: " + "is null");
+                    /*TODO response is null*/
+                }
+            }
+    
+            @Override
+            public void onFailure (@NotNull Call<group> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+                /*TODO failed to get group info*/
             }
         });
     }

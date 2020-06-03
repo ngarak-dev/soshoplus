@@ -46,4 +46,13 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
+    <style name="soshoDayNight_default.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="soshoDayNight_default.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="soshoDayNight_default.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

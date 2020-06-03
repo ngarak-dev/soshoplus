@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -151,8 +150,6 @@ public class retrofitCalls {
                         /*Setting Layout*/
                         suggestedGroupsList.setLayoutManager(new LinearLayoutManager(context));
                         suggestedGroupsList.setItemAnimator(new DefaultItemAnimator());
-                        suggestedGroupsList.addItemDecoration(new DividerItemDecoration(context,
-                                DividerItemDecoration.VERTICAL));
                         
                         /*Setting Adapter*/
                         suggestedGroupsList.setAdapter(listAdapter);

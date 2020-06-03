@@ -61,7 +61,6 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
         TextView group_title;
         TextView group_category;
         TextView total_members;
-        TextView group_descr;
         Button is_joined;
         
         public GroupsHolder (@NonNull View itemView) {
@@ -71,7 +70,6 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
             group_category = itemView.findViewById(R.id.group_category);
             total_members = itemView.findViewById(R.id.total_members);
             is_joined = itemView.findViewById(R.id.btn_join);
-            group_descr = itemView.findViewById(R.id.group_description);
         }
     
         public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener) {
@@ -85,8 +83,7 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
     
             group_title.setText(groupInfo.getGroupTitle());
             group_category.setText(groupInfo.getCategory());
-            total_members.setText(groupInfo.getMembers());
-            group_descr.setText(groupInfo.getAbout());
+            total_members.setText(groupInfo.getMembers() + " Members");
             
             /*on Row click*/
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -4,82 +4,75 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="@dimen/_5sdp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/group_profile_pic"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/group_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        app:layout_constraintBottom_toTopOf="@id/group_description"
-        app:layout_constraintEnd_toStartOf="@id/btn_join"
-        app:layout_constraintStart_toEndOf="@id/group_profile_pic"
-        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/group_profile_pic"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/group_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLength="45"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/group_category"
-        app:layout_constraintEnd_toStartOf="@id/btn_join"
-        app:layout_constraintStart_toStartOf="@id/group_title"
-        app:layout_constraintTop_toBottomOf="@id/group_title" />
+        <TextView
+            android:id="@+id/group_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/group_category"
+            app:layout_constraintEnd_toStartOf="@id/btn_join"
+            app:layout_constraintStart_toEndOf="@id/group_profile_pic"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/group_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/_10ssp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_join"
-        app:layout_constraintStart_toStartOf="@id/group_title"
-        app:layout_constraintTop_toBottomOf="@id/group_description" />
+        <TextView
+            android:id="@+id/group_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/group_title"
+            app:layout_constraintStart_toStartOf="@id/group_title"
+            app:layout_constraintEnd_toEndOf="@id/group_title"
+            app:layout_constraintBottom_toTopOf="@id/total_members"/>
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/btn_join"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
-        android:text="Join"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/icon_group"/>
+        <TextView
+            android:id="@+id/total_members"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/group_category"
+            app:layout_constraintStart_toStartOf="@id/group_category"
+            app:layout_constraintEnd_toEndOf="@id/group_category"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <ImageView
-        android:id="@+id/icon_group"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_25sdp"
-        android:src="@drawable/ic_group"
-        app:layout_constraintEnd_toEndOf="@id/btn_join"
-        app:layout_constraintTop_toBottomOf="@id/btn_join"
-        app:layout_constraintStart_toStartOf="@id/btn_join"
-        app:layout_constraintBottom_toTopOf="@id/total_members"/>
 
-    <TextView
-        android:id="@+id/total_members"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/icon_group"
-        app:layout_constraintTop_toBottomOf="@id/icon_group"
-        app:layout_constraintStart_toStartOf="@id/icon_group"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/btn_join"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_35sdp"
+            android:text="Join"
+            app:chipCornerRadius="@dimen/_5sdp"
+            android:textStyle="bold"
+            app:chipIconSize="@dimen/_15sdp"
+            app:chipBackgroundColor="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:chipIcon="@drawable/ic_outline_add_circle_outline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -17,7 +17,7 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/soshoDayNight_noActionBar">
+        android:theme="@style/soshoDayNight_default">
         <activity android:name=".ui.soshoTimeline" />
         <activity android:name=".ui.auth.forgotPassword" />
         <activity android:name=".ui.auth.signUp" />

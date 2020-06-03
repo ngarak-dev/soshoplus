@@ -22,6 +22,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <com.google.android.material.chip.Chip
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Groups"
+        android:padding="@dimen/_5sdp"
+        app:chipIcon="@drawable/ic_groups"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:id="@+id/my_group_chip"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/create_group_chip"/>
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -37,7 +48,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp"
         android:id="@+id/suggested_groups_list"
         app:layout_constraintTop_toBottomOf="@id/suggested_groups_title"
         app:layout_constraintStart_toStartOf="parent"

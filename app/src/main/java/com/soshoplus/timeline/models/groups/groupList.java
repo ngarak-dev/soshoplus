@@ -10,7 +10,7 @@ public class groupList {
 
 	@SerializedName("data")
 	@Expose
-	private List<groupInfo> data;
+	private List<groupInfo> info;
 
 	@SerializedName("api_status")
 	@Expose
@@ -24,18 +24,18 @@ public class groupList {
 	
 	}
 	
-	public groupList (List<groupInfo> data, int apiStatus, apiErrors errors) {
-		this.data = data;
+	public groupList (List<groupInfo> info, int apiStatus, apiErrors errors) {
+		this.info = info;
 		this.apiStatus = apiStatus;
 		this.errors = errors;
 	}
 	
-	public List<groupInfo> getData () {
-		return data;
+	public List<groupInfo> getInfo () {
+		return info;
 	}
 	
-	public void setData (List<groupInfo> data) {
-		this.data = data;
+	public void setInfo (List<groupInfo> info) {
+		this.info = info;
 	}
 	
 	public int getApiStatus () {

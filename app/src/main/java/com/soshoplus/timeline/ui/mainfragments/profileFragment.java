@@ -68,7 +68,7 @@ public class profileFragment extends Fragment {
     private queries profileQueries;
     private Call<userInfo> userInfoCall;
     private details details;
-    private userData userData;
+    private userData userData = null;
     private apiErrors apiErrors;
     //
     String userId, timezone, accessToken;
@@ -107,7 +107,10 @@ public class profileFragment extends Fragment {
             public void onResponse (@NotNull Call<userInfo> call, @NotNull Response<userInfo> response) {
                 if (response.body() != null) {
                     if (response.body().getApiStatus() == 200) {
-                        userData = response.body().getUserData();
+                        if(userData == null) {
+                            userData = response.body().getUserData();
+                        }
+                        
                         details = response.body().getUserData().getDetails();
                         
                         /*upper section*/

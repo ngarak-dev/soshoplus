@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
+import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import retrofit2.Call;
@@ -35,14 +36,14 @@ public interface queries {
     /*Recommended Groups*/
     @FormUrlEncoded
     @POST("fetch-recommended")
-    Call<Object> getRecommended(@Query("access_token") String access_token,
-                                @Field("server_key") String server_key,
-                                @Field("fetch") String fetch, @Field("limit") String limit);
+    Call<groupList> getRecommended(@Query("access_token") String access_token,
+                                   @Field("server_key") String server_key,
+                                   @Field("type") String type, @Field("limit") String limit);
     
     /*Joined Groups*/
     @FormUrlEncoded
     @POST("get-my-groups")
-    Call<Object> getJoinedGroups(@Query("access_token") String access_token,
+    Call<groupList> getJoinedGroups(@Query("access_token") String access_token,
                                 @Field("server_key") String server_key,
                                 @Field("fetch") String fetch, @Field("user_id") String user_id);
     

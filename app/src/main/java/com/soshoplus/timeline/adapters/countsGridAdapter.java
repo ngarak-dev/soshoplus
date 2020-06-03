@@ -21,7 +21,7 @@ import com.soshoplus.timeline.models.userprofile.countsGrid;
 
 import java.util.List;
 
-public class countsGridAdapter extends RecyclerView.Adapter<countsGridAdapter.InfoHolder> {
+public class countsGridAdapter extends RecyclerView.Adapter<countsGridAdapter.CountsHolder> {
     
     private List<countsGrid> countsGridList;
     private Context context;
@@ -33,13 +33,13 @@ public class countsGridAdapter extends RecyclerView.Adapter<countsGridAdapter.In
     
     @NonNull
     @Override
-    public countsGridAdapter.InfoHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
+    public countsGridAdapter.CountsHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.counts_grids, parent, false);
-        return new InfoHolder(view);
+        return new CountsHolder(view);
     }
     
     @Override
-    public void onBindViewHolder (@NonNull countsGridAdapter.InfoHolder holder, int position) {
+    public void onBindViewHolder (@NonNull countsGridAdapter.CountsHolder holder, int position) {
        countsGrid list =  countsGridList.get(position);
        holder.icon.setImageResource(list.getIcon());
        holder.count.setText(list.getCount());
@@ -51,13 +51,13 @@ public class countsGridAdapter extends RecyclerView.Adapter<countsGridAdapter.In
         return countsGridList.size();
     }
     
-    public class InfoHolder extends RecyclerView.ViewHolder{
+    public class CountsHolder extends RecyclerView.ViewHolder{
         
         ImageView icon;
         TextView count;
         TextView count_info;
         
-        public InfoHolder (@NonNull View itemView) {
+        public CountsHolder (@NonNull View itemView) {
             super(itemView);
             icon = itemView.findViewById(R.id.grid_icon);
             count = itemView.findViewById(R.id.grid_count);

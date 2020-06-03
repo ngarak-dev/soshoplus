@@ -10,7 +10,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class userData implements Serializable {
     
@@ -314,9 +313,9 @@ public class userData implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("mutual_friends_data")
-    @Expose
-    private ArrayList mutualFriendsData;
+//    @SerializedName("mutual_friends_data")
+//    @Expose
+//    private ArrayList mutualFriendsData;
     @SerializedName("lastseen_unix_time")
     @Expose
     private String lastseenUnixTime;
@@ -416,7 +415,7 @@ public class userData implements Serializable {
      * @param details
      * @param lat
      * @param eWondered
-     * @param mutualFriendsData
+//     * @param mutualFriendsData
      * @param ipAddress
      * @param userPlatform
      * @param birthPrivacy
@@ -487,7 +486,7 @@ public class userData implements Serializable {
                      String twoFactorVerified,  String newPhone, String infoFile, String city,
                      String state, String zip, String schoolCompleted, String weatherUnit,
                      String paystackRef, String userPlatform, String url, String name,
-                     ArrayList mutualFriendsData, String lastseenUnixTime, String lastseenStatus,
+                     String lastseenUnixTime, String lastseenStatus,
                      int isFollowing, int canFollow, int isFollowingMe, String genderText,
                      String lastseenTimeText, boolean isBlocked) {
         super();
@@ -591,7 +590,7 @@ public class userData implements Serializable {
         this.userPlatform = userPlatform;
         this.url = url;
         this.name = name;
-        this.mutualFriendsData = mutualFriendsData;
+//        this.mutualFriendsData = mutualFriendsData;
         this.lastseenUnixTime = lastseenUnixTime;
         this.lastseenStatus = lastseenStatus;
         this.isFollowing = isFollowing;
@@ -1902,18 +1901,18 @@ public class userData implements Serializable {
         return this;
     }
     
-    public ArrayList getMutualFriendsData() {
-        return mutualFriendsData;
-    }
-    
-    public void setMutualFriendsData(ArrayList mutualFriendsData) {
-        this.mutualFriendsData = mutualFriendsData;
-    }
-    
-    public userData withMutualFriendsData(ArrayList mutualFriendsData) {
-        this.mutualFriendsData = mutualFriendsData;
-        return this;
-    }
+//    public ArrayList getMutualFriendsData() {
+//        return mutualFriendsData;
+//    }
+//
+//    public void setMutualFriendsData(ArrayList mutualFriendsData) {
+//        this.mutualFriendsData = mutualFriendsData;
+//    }
+//
+//    public userData withMutualFriendsData(ArrayList mutualFriendsData) {
+//        this.mutualFriendsData = mutualFriendsData;
+//        return this;
+//    }
     
     public String getLastseenUnixTime() {
         return lastseenUnixTime;

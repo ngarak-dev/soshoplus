@@ -132,8 +132,21 @@ public class retrofitCalls {
                         groupInfoList = response.body().getInfo();
                         
                         /*initializing adapter*/
-                        groupsListAdapter listAdapter = new groupsListAdapter(context,
-                                groupInfoList);
+                        groupsListAdapter listAdapter =
+                                new groupsListAdapter(context,
+                                groupInfoList, new groupsListAdapter.onGroupClickListener() {
+                                    @Override
+                                    public void onGroupClick (groupInfo groupInfo) {
+                                        Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
+                                        /*TODO implement group view or preview*/
+                                    }
+    
+                                    @Override
+                                    public void onJoinClick (groupInfo groupInfo) {
+                                        Log.d(TAG, "onJoinClick: " + groupInfo.getGroupId());
+                                        /*TODO implement group join or request or remove*/
+                                    }
+                                });
                         
                         /*Setting Layout*/
                         suggestedGroupsList.setLayoutManager(new LinearLayoutManager(context));

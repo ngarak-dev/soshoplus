@@ -26,12 +26,14 @@ import java.util.List;
 
 public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.GroupsHolder> {
     
-    private List<groupInfo> groupInfoList;
+    private final onGroupClickListener groupClickListener;
+    private final List<groupInfo> groupInfoList;
     private Context context;
     
-    public groupsListAdapter (Context context, List<groupInfo> list) {
+    public groupsListAdapter (Context context, List<groupInfo> list, onGroupClickListener groupClickListener) {
         this.context = context;
         this.groupInfoList = list;
+        this.groupClickListener = groupClickListener;
     }
     
     /*inflating and initializing a view*/
@@ -44,20 +46,8 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
     
     @Override
     public void onBindViewHolder (@NonNull groupsListAdapter.GroupsHolder holder, int position) {
-        groupInfo list =  groupInfoList.get(position);
-    
-        holder.profile_pic.setShapeAppearanceModel(holder.profile_pic
-                .getShapeAppearanceModel()
-                .toBuilder()
-                .setAllCorners(CornerFamily.ROUNDED, 20)
-                .build());
-        Picasso.get().load(list.getAvatar()).into(holder.profile_pic);
-        
-        holder.group_title.setText(list.getGroupTitle());
-        holder.group_category.setText(list.getCategory());
-        holder.total_members.setText(list.getMembers());
-        holder.group_descr.setText(list.getAbout());
-        /*TODO change button stated accordingly*/
+        /*bind items and set onclick listener*/
+        holder.bind(groupInfoList.get(position), groupClickListener);
     }
     
     @Override
@@ -83,5 +73,45 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
             is_joined = itemView.findViewById(R.id.btn_join);
             group_descr = itemView.findViewById(R.id.group_description);
         }
+    
+        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener) {
+
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(groupInfo.getAvatar()).into(profile_pic);
+    
+            group_title.setText(groupInfo.getGroupTitle());
+            group_category.setText(groupInfo.getCategory());
+            total_members.setText(groupInfo.getMembers());
+            group_descr.setText(groupInfo.getAbout());
+            
+            /*on Row click*/
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View v) {
+                    groupClickListener.onGroupClick(groupInfo);
+                }
+            });
+            
+            /*on Button join click*/
+            is_joined.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View v) {
+                    groupClickListener.onJoinClick(groupInfo);
+                    /*TODO change button stated accordingly*/
+                }
+            });
+        }
+    }
+    
+    /*interface for click listener*/
+    public interface onGroupClickListener {
+        /*onclick for a row*/
+        void onGroupClick (groupInfo groupInfo);
+        /*onclick for a button*/
+        void onJoinClick (groupInfo groupInfo);
     }
 }

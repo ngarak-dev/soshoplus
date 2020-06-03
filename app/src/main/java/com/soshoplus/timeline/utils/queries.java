@@ -46,7 +46,7 @@ public interface queries {
     @POST("get-my-groups")
     Call<groupList> getJoinedGroups(@Query("access_token") String access_token,
                                 @Field("server_key") String server_key,
-                                @Field("fetch") String fetch, @Field("user_id") String user_id);
+                                @Field("type") String fetch, @Field("user_id") String user_id);
     
     /*My Groups*/
     /*TODO Implement this on new Version*/
@@ -54,7 +54,7 @@ public interface queries {
     @POST("get-my-groups")
     Call<Object> getMyGroups(@Query("access_token") String access_token,
                              @Field("server_key") String server_key,
-                             @Field("fetch") String fetch);
+                             @Field("type") String fetch);
     /*Group Info*/
     @FormUrlEncoded
     @POST("get-group-data")

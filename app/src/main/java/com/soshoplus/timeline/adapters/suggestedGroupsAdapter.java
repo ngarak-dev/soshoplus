@@ -24,13 +24,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.GroupsHolder> {
+public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroupsAdapter.GroupsHolder> {
     
     private final onGroupClickListener groupClickListener;
     private final List<groupInfo> groupInfoList;
     private Context context;
     
-    public groupsListAdapter (Context context, List<groupInfo> list, onGroupClickListener groupClickListener) {
+    public suggestedGroupsAdapter (Context context, List<groupInfo> list, onGroupClickListener groupClickListener) {
         this.context = context;
         this.groupInfoList = list;
         this.groupClickListener = groupClickListener;
@@ -39,13 +39,13 @@ public class groupsListAdapter extends RecyclerView.Adapter<groupsListAdapter.Gr
     /*inflating and initializing a view*/
     @NonNull
     @Override
-    public groupsListAdapter.GroupsHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
-        View view =  LayoutInflater.from(context).inflate(R.layout.group_list_row, parent, false);
+    public suggestedGroupsAdapter.GroupsHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
+        View view =  LayoutInflater.from(context).inflate(R.layout.suggested_group_list_row, parent, false);
         return new GroupsHolder(view);
     }
     
     @Override
-    public void onBindViewHolder (@NonNull groupsListAdapter.GroupsHolder holder, int position) {
+    public void onBindViewHolder (@NonNull suggestedGroupsAdapter.GroupsHolder holder, int position) {
         /*bind items and set onclick listener*/
         holder.bind(groupInfoList.get(position), groupClickListener);
     }

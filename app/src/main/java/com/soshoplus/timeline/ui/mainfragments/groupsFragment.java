@@ -41,6 +41,9 @@ public class groupsFragment extends Fragment {
         /*get recommended groups*/
         getRecommends();
         
+        /*get joined groups*/
+        getJoined();
+        
         return groupsBinding.getRoot();
     }
     
@@ -48,5 +51,11 @@ public class groupsFragment extends Fragment {
     private void getRecommends () {
         calls = new retrofitCalls(requireContext());
         calls.getRecommends(groupsBinding.suggestedGroupsList);
+    }
+    
+    /*retrieve joined groups*/
+    private void getJoined () {
+        calls = new retrofitCalls(requireContext());
+        calls.getJoined(groupsBinding.joinedGroupsList);
     }
 }

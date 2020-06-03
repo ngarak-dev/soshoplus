@@ -21,7 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
-import com.soshoplus.timeline.adapters.groupsListAdapter;
+import com.soshoplus.timeline.adapters.joinedGroupsAdapter;
+import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupInfo;
@@ -53,6 +54,7 @@ public class retrofitCalls {
     public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String fetch_recommended = "groups";
+    private static String joined_groups = "joined_groups";
     
     private userData userData = null;
     private userInfo userInfo = null;
@@ -141,9 +143,9 @@ public class retrofitCalls {
                         groupInfoList = response.body().getInfo();
                         
                         /*initializing adapter*/
-                        groupsListAdapter listAdapter =
-                                new groupsListAdapter(context,
-                                groupInfoList, new groupsListAdapter.onGroupClickListener() {
+                        suggestedGroupsAdapter listAdapter =
+                                new suggestedGroupsAdapter(context,
+                                groupInfoList, new suggestedGroupsAdapter.onGroupClickListener() {
                                     @Override
                                     public void onGroupClick (groupInfo groupInfo) {
                                         Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
@@ -253,6 +255,62 @@ public class retrofitCalls {
             public void onFailure (@NotNull Call<group> call, @NotNull Throwable t) {
                 Log.i(TAG, "onFailure: " + t.getMessage());
                 /*TODO failed to get group info*/
+            }
+        });
+    }
+    
+    public void getJoined (RecyclerView joinedGroupsList) {
+        groupListCall = queries.getJoinedGroups(accessToken, serverKey, joined_groups, userId);
+        groupListCall.enqueue(new Callback<groupList>() {
+            @Override
+            public void onResponse (@NotNull Call<groupList> call, @NotNull Response<groupList> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        /*initializing list*/
+                        groupInfoList = new ArrayList<>();
+                        groupInfoList = response.body().getInfo();
+                    
+                        /*initializing adapter*/
+                        joinedGroupsAdapter listAdapter =
+                                new joinedGroupsAdapter(context,
+                                        groupInfoList, new joinedGroupsAdapter.onGroupClickListener() {
+                                    @Override
+                                    public void onGroupClick (groupInfo groupInfo) {
+                                        Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
+                                    
+                                        /*TODO implement group view or preview*/
+                                        /*setting group id*/
+                                        group_id = groupInfo.getGroupId();
+                                    
+                                        Intent intent = new Intent();
+                                        intent.setClass(context, viewGroup.class);
+                                        context.startActivity(intent);
+                                    }
+                                });
+                    
+                        /*Setting Layout*/
+                        joinedGroupsList.setItemAnimator(new DefaultItemAnimator());
+                    
+                        /*Setting Adapter*/
+                        joinedGroupsList.setAdapter(listAdapter);
+                    }
+                    else {
+                        /*TODO Error from API itself*/
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    Log.i(TAG, "onResponse: " + "is null");
+                    /*TODO response is null*/
+                }
+            }
+        
+            @Override
+            public void onFailure (@NotNull Call<groupList> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+                /*TODO failed to get recommends*/
             }
         });
     }

@@ -83,27 +83,22 @@ public class soshoTimeline extends AppCompatActivity {
                 switch (id) {
                     case R.id.home:
                         sosho_viewPager.setCurrentItem(0);
-                        upper_profile.setVisibility(View.VISIBLE);
                         break;
                 
                     case R.id.friends:
                         sosho_viewPager.setCurrentItem(1);
-                        upper_profile.setVisibility(View.VISIBLE);
                         break;
                 
                     case R.id.groups:
                         sosho_viewPager.setCurrentItem(2);
-                        upper_profile.setVisibility(View.VISIBLE);
                         break;
                 
                     case R.id.profile:
                         sosho_viewPager.setCurrentItem(3);
-                        upper_profile.setVisibility(View.GONE);
                         break;
                 
                     case R.id.more:
                         sosho_viewPager.setCurrentItem(4);
-                        upper_profile.setVisibility(View.GONE);
                         break;
                 }
             }

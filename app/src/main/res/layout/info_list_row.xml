@@ -15,8 +15,8 @@
         android:id="@+id/info_icon"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
-        android:src="@drawable/ic_points"
         android:padding="@dimen/_5sdp"
+        android:src="@drawable/ic_points"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />

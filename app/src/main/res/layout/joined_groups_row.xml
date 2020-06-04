@@ -9,9 +9,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/_180sdp"
     android:layout_height="wrap_content"
-    app:contentPadding="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_10sdp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    app:contentPadding="@dimen/_5sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

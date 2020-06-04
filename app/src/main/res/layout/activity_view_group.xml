@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgPrimary"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.groups.viewGroup">
+
+    <!--TODO Make Collapsible Layout-->
+
+    <ImageView
+        android:id="@+id/group_cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/group_profile_pic"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/group_cover"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_cover" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/join_edit_btn"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:text="Join"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:chipBackgroundColor="@color/colorPrimary"
+        app:chipCornerRadius="@dimen/_5sdp"
+        app:chipIcon="@drawable/ic_outline_add_circle_outline"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipIconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
+        app:layout_constraintEnd_toStartOf="@id/add_member_btn"
+        app:layout_constraintStart_toEndOf="@id/group_profile_pic" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/add_member_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_40sdp"
+        android:text="Add"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:chipBackgroundColor="@color/colorPrimary"
+        app:chipCornerRadius="@dimen/_5sdp"
+        app:chipIcon="@drawable/ic_outline_group_add"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipIconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
+        app:layout_constraintEnd_toStartOf="@id/more_btn"
+        app:layout_constraintStart_toEndOf="@id/join_edit_btn" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/more_btn"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:visibility="gone"
+        app:chipBackgroundColor="@color/colorPrimary"
+        app:chipCornerRadius="@dimen/_5sdp"
+        app:chipIcon="@drawable/ic_baseline_more"
+        app:chipIconTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/add_member_btn" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/no_members"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        app:chipBackgroundColor="@color/bgPrimary"
+        app:chipCornerRadius="0dp"
+        app:chipIcon="@drawable/ic_groups"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipStartPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/group_profile_pic"
+        app:rippleColor="@null" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/group_privacy"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        app:chipBackgroundColor="@color/bgPrimary"
+        app:chipCornerRadius="0dp"
+        app:chipIcon="@drawable/ic_privacy"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipStartPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_members"
+        app:rippleColor="@null" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/group_category"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        app:chipBackgroundColor="@color/bgPrimary"
+        app:chipCornerRadius="0dp"
+        app:chipIcon="@drawable/ic_category"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipStartPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/group_privacy"
+        app:rippleColor="@null" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_post_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/group_category" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

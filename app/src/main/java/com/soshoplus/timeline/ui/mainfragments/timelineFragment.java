@@ -24,7 +24,9 @@ public class timelineFragment extends Fragment {
         // Required empty public constructor
     }
     
+    /*TODO NULL exception zipo AVOID AVOID*/
     
+    /*initializing a view and inflate it */
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment

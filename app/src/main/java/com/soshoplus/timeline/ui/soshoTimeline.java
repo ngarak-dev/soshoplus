@@ -25,7 +25,7 @@ import com.soshoplus.timeline.ui.mainfragments.moreFragment;
 import com.soshoplus.timeline.ui.mainfragments.profileFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
 import com.soshoplus.timeline.utils.retrofitCalls;
-import com.soshoplus.timeline.utils.viewPagerAdapter;
+import com.soshoplus.timeline.adapters.viewPagerAdapter;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -55,7 +55,6 @@ public class soshoTimeline extends AppCompatActivity {
         bubbleTabBar = soshoTimelineBinding.bottomNavigation;
         sosho_viewPager = soshoTimelineBinding.soshoViewPager;
         upper_profile = soshoTimelineBinding.upperProfile;
-        
         
         //getCurrent Profile
         getProfile();
@@ -123,6 +122,7 @@ public class soshoTimeline extends AppCompatActivity {
             super.onBackPressed();
         } else {
             // go to previous step
+            /*TODO should go to previous clicked*/
             sosho_viewPager.setCurrentItem(sosho_viewPager.getCurrentItem() - 1);
         }
     }

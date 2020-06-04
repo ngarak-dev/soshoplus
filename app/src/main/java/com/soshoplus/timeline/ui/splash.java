@@ -29,6 +29,8 @@ public class splash extends AppCompatActivity {
             //retrieving user session
             SharedPreferences pref = getApplicationContext().getSharedPreferences("userCred", 0); // 0 - for private mode
             
+            /*TODO Tumia local DB for storing this*/
+            /*TODO Baadae kuwa na activity ya kucheki hizi mambo splash ibaki clean*/
             if (pref.contains("userId")) {
                 String userId = pref.getString("userId", "0");
                 String timezone = pref.getString("timezone", "0");

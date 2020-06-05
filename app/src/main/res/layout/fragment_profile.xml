@@ -4,8 +4,7 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,117 +15,86 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/profile_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/edit_profile_chip"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            app:chipBackgroundColor="@null"
-            app:chipIcon="@drawable/ic_edit"
-            app:chipSurfaceColor="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/share_profile"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            app:chipBackgroundColor="@null"
-            app:chipIcon="@drawable/ic_share"
-            app:chipSurfaceColor="@null"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            app:layout_constraintEnd_toStartOf="@id/full_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_profile_chip" />
-
-        <TextView
-            android:id="@+id/full_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/username"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/profile_pic"
-            app:layout_constraintTop_toTopOf="@+id/profile_pic" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@id/verified_badge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@+id/full_name" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/user_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:chipBackgroundColor="@null"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
-            app:layout_constraintEnd_toStartOf="@id/verified_badge"
-            app:layout_constraintStart_toEndOf="@id/profile_pic"
-            app:layout_constraintStart_toStartOf="@+id/username"
-            app:layout_constraintTop_toBottomOf="@id/username" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/verified_badge"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:chipBackgroundColor="@null"
-            app:chipSurfaceColor="@null"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
-            app:layout_constraintStart_toEndOf="@id/user_level"
-            app:layout_constraintTop_toBottomOf="@id/username" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/aboutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/white"
-            android:elevation="@dimen/_5sdp"
             android:padding="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/profile_pic">
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                app:layout_constraintEnd_toStartOf="@id/full_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/full_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_pic"
+                app:layout_constraintTop_toTopOf="@+id/profile_pic" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toTopOf="@id/verified_badge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_pic"
+                app:layout_constraintTop_toBottomOf="@+id/full_name" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/user_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+                app:layout_constraintEnd_toStartOf="@id/verified_badge"
+                app:layout_constraintStart_toEndOf="@id/profile_pic"
+                app:layout_constraintStart_toStartOf="@+id/username"
+                app:layout_constraintTop_toBottomOf="@id/username" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/verified_badge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@null"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+                app:layout_constraintStart_toEndOf="@id/user_level"
+                app:layout_constraintTop_toBottomOf="@id/username" />
 
             <TextView
                 android:id="@+id/email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:drawableStart="@drawable/ic_outline_contact_mail"
                 android:drawablePadding="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/profile_pic" />
 
             <TextView
                 android:id="@+id/phone"
@@ -143,7 +111,6 @@
                 android:id="@+id/about_me"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:padding="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

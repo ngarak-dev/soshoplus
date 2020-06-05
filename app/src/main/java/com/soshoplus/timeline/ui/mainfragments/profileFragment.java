@@ -98,7 +98,6 @@ public class profileFragment extends Fragment {
         
         //call profile method
         loadProfile();
-        
         return profileBinding.getRoot();
     }
     
@@ -147,6 +146,11 @@ public class profileFragment extends Fragment {
                         aboutUser(userData);
                         /*get counts*/
                         counts(userData, details);
+    
+                        /*stop loading skeleton loading*/
+                        if (profileBinding.aboutLayout.isLoading()) {
+                            profileBinding.aboutLayout.stopLoading();
+                        }
                     }
                     
                     else {

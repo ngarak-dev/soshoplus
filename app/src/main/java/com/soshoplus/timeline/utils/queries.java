@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
+import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.userprofile.userInfo;
@@ -50,15 +51,22 @@ public interface queries {
     
     /*My Groups*/
     /*TODO Implement this on new Version*/
-    @FormUrlEncoded
-    @POST("get-my-groups")
-    Call<Object> getMyGroups(@Query("access_token") String access_token,
-                             @Field("server_key") String server_key,
-                             @Field("type") String fetch);
+//    @FormUrlEncoded
+//    @POST("get-my-groups")
+//    Call<Object> getMyGroups(@Query("access_token") String access_token,
+//                             @Field("server_key") String server_key,
+//                             @Field("type") String fetch);
     /*Group Info*/
     @FormUrlEncoded
     @POST("get-group-data")
     Call<group> getGroupInfo(@Query("access_token") String access_token,
                              @Field("server_key") String server_key,
                              @Field("group_id") String group_id);
+    
+    /*Get Followers (Friends)*/
+    @FormUrlEncoded
+    @POST("get-friends")
+    Call<friends> getFriendsFollowers(@Query("access_token") String access_token,
+                                      @Field("server_key") String server_key,
+                                      @Field("type") String fetch, @Field("user_id") String user_id);
 }

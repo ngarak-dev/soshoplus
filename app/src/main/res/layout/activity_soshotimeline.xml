@@ -49,6 +49,8 @@
                     android:id="@+id/profile_pic"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/full_name"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,7 +63,7 @@
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toTopOf="@id/username"
                     app:layout_constraintStart_toEndOf="@id/profile_pic"
-                    app:layout_constraintTop_toTopOf="@id/profile_pic" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/username"
@@ -71,9 +73,23 @@
                     android:padding="@dimen/_2sdp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_10ssp"
-                    app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/profile_pic"
                     app:layout_constraintTop_toBottomOf="@id/full_name" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/whats_new"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:text="What's on your mind ?"
+                    android:textAlignment="textStart"
+                    app:chipBackgroundColor="@null"
+                    app:chipStrokeColor="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/full_name"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -83,7 +99,6 @@
             android:id="@+id/soshoViewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_100sdp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

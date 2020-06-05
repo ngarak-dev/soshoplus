@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -29,6 +31,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
     private final onGroupClickListener groupClickListener;
     private final List<groupInfo> groupInfoList;
     private Context context;
+    private static String TAG = "Suggested Groups";
     
     public suggestedGroupsAdapter (Context context, List<groupInfo> list, onGroupClickListener groupClickListener) {
         this.context = context;
@@ -79,7 +82,19 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
                     .toBuilder()
                     .setAllCorners(CornerFamily.ROUNDED, 20)
                     .build());
-            Picasso.get().load(groupInfo.getAvatar()).into(profile_pic);
+            Picasso.get().load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).into(profile_pic, new Callback() {
+                @Override
+                public void onSuccess () {
+                    Log.d(TAG, "onSuccess: " + "Image loaded");
+                }
+    
+                @Override
+                public void onError (Exception e) {
+                    Log.d(TAG, "onError: " + e.getMessage());
+                    profile_pic.setImageResource(R.drawable.ic_image_placeholder);
+                    /*TODO reload icon*/
+                }
+            });
     
             group_title.setText(groupInfo.getGroupTitle());
             group_category.setText(groupInfo.getCategory());

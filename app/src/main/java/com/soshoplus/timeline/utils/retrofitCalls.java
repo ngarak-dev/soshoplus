@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.joinedGroupsAdapter;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
@@ -110,7 +111,19 @@ public class retrofitCalls {
                                 .toBuilder()
                                 .setAllCorners(CornerFamily.ROUNDED, 20)
                                 .build());
-                        Picasso.get().load(userData.getAvatar()).into(profile_pic);
+                        Picasso.get().load(userData.getAvatar()).placeholder(R.drawable.ic_image_placeholder).into(profile_pic, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess () {
+                                Log.d(TAG, "onSuccess: " + "Image loaded");
+                            }
+    
+                            @Override
+                            public void onError (Exception e) {
+                                Log.d(TAG, "onError: " + e.getMessage());
+                                profile_pic.setImageResource(R.drawable.ic_image_placeholder);
+                                /*TODO reload icon*/
+                            }
+                        });
 
                     } else {
                         apiErrors apiErrors = response.body().getErrors();
@@ -228,14 +241,38 @@ public class retrofitCalls {
                         /*setting category*/
                         category.setText(groupInfo.getCategory());
                         /*group cover*/
-                        Picasso.get().load(groupInfo.getCover()).fit().centerCrop().into(cover_pic);
+                        Picasso.get().load(groupInfo.getCover()).fit().centerCrop().placeholder(R.drawable.ic_image_placeholder).into(cover_pic, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess () {
+                                Log.d(TAG, "onSuccess: " + "Image loaded");
+                            }
+    
+                            @Override
+                            public void onError (Exception e) {
+                                Log.d(TAG, "onError: " + e.getMessage());
+                                cover_pic.setImageResource(R.drawable.ic_image_placeholder);
+                                /*TODO reload icon*/
+                            }
+                        });
                         /*group profile pic*/
                         profile_pic.setShapeAppearanceModel(profile_pic
                                 .getShapeAppearanceModel()
                                 .toBuilder()
                                 .setAllCorners(CornerFamily.ROUNDED, 20)
                                 .build());
-                        Picasso.get().load(groupInfo.getAvatar()).into(profile_pic);
+                        Picasso.get().load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).into(profile_pic, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess () {
+                                Log.d(TAG, "onSuccess: " + "Image loaded");
+                            }
+    
+                            @Override
+                            public void onError (Exception e) {
+                                Log.d(TAG, "onError: " + e.getMessage());
+                                profile_pic.setImageResource(R.drawable.ic_image_placeholder);
+                                /*TODO reload icon*/
+                            }
+                        });
                         
                     }
                     else {

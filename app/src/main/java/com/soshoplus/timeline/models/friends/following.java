@@ -60,8 +60,8 @@ public class following implements Serializable {
 	@SerializedName("state")
 	private String state;
 
-	@SerializedName("mutual_friends_data")
-	private String mutualFriendsData;
+//	@SerializedName("mutual_friends_data")
+//	private String mutualFriendsData;
 
 	@SerializedName("two_factor")
 	private String twoFactor;
@@ -347,7 +347,6 @@ public class following implements Serializable {
 		this.iosNDeviceId = iosNDeviceId;
 		this.notificationsSound = notificationsSound;
 		this.state = state;
-		this.mutualFriendsData = mutualFriendsData;
 		this.twoFactor = twoFactor;
 		this.newEmail = newEmail;
 		this.shareMyData = shareMyData;
@@ -579,14 +578,6 @@ public class following implements Serializable {
 	
 	public void setState (String state) {
 		this.state = state;
-	}
-	
-	public String getMutualFriendsData () {
-		return mutualFriendsData;
-	}
-	
-	public void setMutualFriendsData (String mutualFriendsData) {
-		this.mutualFriendsData = mutualFriendsData;
 	}
 	
 	public String getTwoFactor () {

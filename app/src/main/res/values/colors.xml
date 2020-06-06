@@ -21,6 +21,8 @@
     <color name="more">#8B4513</color>
     <color name="faint">#0F273C</color>
 
+    <color name="transparent">#00F0F8FF</color>
+
     //custom colors
     <color name="white">#FFFFFF</color>
     <color name="ivory">#FFFFF0</color>

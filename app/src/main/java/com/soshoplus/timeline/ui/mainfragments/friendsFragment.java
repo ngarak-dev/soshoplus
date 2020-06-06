@@ -39,7 +39,15 @@ public class friendsFragment extends Fragment {
         /*get followers*/
         getFollowers();
         
+        /*get Following*/
+        getFollowing();
+        
         return friendsBinding.getRoot();
+    }
+    
+    private void getFollowing () {
+        calls = new retrofitCalls(requireContext());
+        calls.getFollowing(friendsBinding.friendsFollowingList);
     }
     
     private void getFollowers () {

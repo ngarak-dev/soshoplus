@@ -25,16 +25,24 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
+        <View
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:background="@drawable/ic_gradient"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintEnd_toEndOf="@id/profile_pic"
+            app:layout_constraintStart_toStartOf="@id/profile_pic" />
+
         <TextView
             android:id="@+id/full_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textAlignment="textStart"
             android:layout_margin="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintEnd_toEndOf="@id/profile_pic"
+            app:layout_constraintStart_toStartOf="@id/profile_pic" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

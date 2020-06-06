@@ -68,5 +68,16 @@ public interface queries {
     @POST("get-friends")
     Call<friends> getFriendsFollowers(@Query("access_token") String access_token,
                                       @Field("server_key") String server_key,
-                                      @Field("type") String fetch, @Field("user_id") String user_id);
+                                      @Field("type") String fetch,
+                                      @Field("user_id") String user_id,
+                                      @Field("limit") String limit);
+    
+    /*Get Followers (Friends)*/
+    @FormUrlEncoded
+    @POST("get-friends")
+    Call<friends> getFriendsFollowing(@Query("access_token") String access_token,
+                                      @Field("server_key") String server_key,
+                                      @Field("type") String fetch,
+                                      @Field("user_id") String user_id,
+                                      @Field("limit") String limit);
 }

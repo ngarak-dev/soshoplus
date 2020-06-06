@@ -25,10 +25,12 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
+import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
 import com.soshoplus.timeline.adapters.joinedGroupsAdapter;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.friends.followers;
+import com.soshoplus.timeline.models.friends.following;
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupInfo;
@@ -62,7 +64,7 @@ public class retrofitCalls {
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String fetch_recommended = "groups";
     private static String joined_groups = "joined_groups";
-    private static String friends_followers = "followers,following";
+    private static String friends_followers = "followers";
     private static String friends_following = "following";
     
     
@@ -74,6 +76,7 @@ public class retrofitCalls {
     private List<groupInfo> groupInfoList = null;
     /*FRIENDS*/
     private List<followers> followersList = null;
+    private List<following> followingList = null;
     
     /*TODO Check this later*/
     private static String group_id;
@@ -369,7 +372,7 @@ public class retrofitCalls {
     /*get friends followers*/
     public void getFollowers (RecyclerView friendsFollowersList) {
         friendsListCall = queries.getFriendsFollowers(accessToken, serverKey, friends_followers,
-                userId);
+                userId, "6");
         friendsListCall.enqueue(new Callback<friends>() {
             @Override
             public void onResponse (@NotNull Call<friends> call, @NotNull Response<friends> response) {
@@ -411,6 +414,59 @@ public class retrofitCalls {
                 }
             }
     
+            @Override
+            public void onFailure (@NotNull Call<friends> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+                /*TODO failed to get recommends*/
+            }
+        });
+    }
+    
+    /*get friends followers*/
+    public void getFollowing (RecyclerView friendsFollowingList) {
+        friendsListCall = queries.getFriendsFollowing(accessToken, serverKey, friends_following,
+                userId, "6");
+        friendsListCall.enqueue(new Callback<friends>() {
+            @Override
+            public void onResponse (@NotNull Call<friends> call, @NotNull Response<friends> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        /*initializing list*/
+                        followingList = new ArrayList<>();
+                        followingList = response.body().getFriendsList().getFollowing();
+                    
+                        /*initializing adapter*/
+                        friendsFollowingAdapter listAdapter =
+                                new friendsFollowingAdapter(context,
+                                        followingList,
+                                        new friendsFollowingAdapter.onFriendClickListener() {
+                                            @Override
+                                            public void onFriendClick (following following) {
+                                                Toast.makeText(context, following.getName(),
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                    
+                        /*Setting Layout*/
+                        friendsFollowingList.setLayoutManager(new GridLayoutManager(context, 3));
+                        friendsFollowingList.setItemAnimator(new DefaultItemAnimator());
+                    
+                        /*Setting Adapter*/
+                        friendsFollowingList.setAdapter(listAdapter);
+                    }
+                    else {
+                        /*TODO Error from API itself*/
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    Log.i(TAG, "onResponse: " + "is null");
+                    /*TODO response is null*/
+                }
+            }
+        
             @Override
             public void onFailure (@NotNull Call<friends> call, @NotNull Throwable t) {
                 Log.i(TAG, "onFailure: " + t.getMessage());

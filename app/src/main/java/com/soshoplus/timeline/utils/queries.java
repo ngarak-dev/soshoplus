@@ -8,6 +8,7 @@ package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.friends.friends;
+import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.userprofile.userInfo;
@@ -80,4 +81,12 @@ public interface queries {
                                       @Field("type") String fetch,
                                       @Field("user_id") String user_id,
                                       @Field("limit") String limit);
+    
+    /*Get Recommended users*/
+    @FormUrlEncoded
+    @POST("fetch-recommended")
+    Call<suggestedList> getPeopleYouMayKnow (@Query("access_token") String access_token,
+                                             @Field("server_key") String server_key,
+                                             @Field("type") String fetch,
+                                             @Field("limit") String limit);
 }

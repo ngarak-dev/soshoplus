@@ -42,6 +42,8 @@
             android:id="@+id/about_me"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/full_name"
             app:layout_constraintStart_toStartOf="@id/full_name"

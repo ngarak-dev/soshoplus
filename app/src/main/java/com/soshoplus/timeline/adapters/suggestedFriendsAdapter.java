@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
         public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener) {
             
             full_name.setText(suggestedInfo.getName());
-            about.setText((CharSequence) suggestedInfo.getAbout());
+            about.setText(Html.fromHtml(String.valueOf(suggestedInfo.getAbout())));
 
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()

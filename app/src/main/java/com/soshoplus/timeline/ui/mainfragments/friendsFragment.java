@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.databinding.FragmentFriendsBinding;
+import com.soshoplus.timeline.utils.retrofitCalls;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,12 +25,41 @@ public class friendsFragment extends Fragment {
         // Required empty public constructor
     }
     
+    private FragmentFriendsBinding friendsBinding;
+    private retrofitCalls calls;
+    
     /*TODO NULL exception zipo AVOID AVOID*/
     
     /*initializing a view and inflate it */
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friends, container, false);
+        friendsBinding = FragmentFriendsBinding.inflate(inflater, container, false);
+        
+        /*get Suggested friends*/
+        getSuggestedFriends();
+    
+        /*get Followers*/
+        getFollowers();
+        
+        /*get Following*/
+        getFollowing();
+        
+        return friendsBinding.getRoot();
+    }
+    
+    private void getSuggestedFriends () {
+        calls = new retrofitCalls(requireContext());
+        calls.getSuggestedFriends(friendsBinding.suggestedFriendsList);
+    }
+    
+    private void getFollowing () {
+        calls = new retrofitCalls(requireContext());
+        calls.getFollowing(friendsBinding.friendsFollowingList);
+    }
+    
+    private void getFollowers () {
+        calls = new retrofitCalls(requireContext());
+        calls.getFollowers(friendsBinding.friendsFollowersList);
     }
 }

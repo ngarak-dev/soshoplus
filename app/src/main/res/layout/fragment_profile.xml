@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <aglibs.loading.skeleton.layout.SkeletonConstraintLayout
             android:id="@+id/aboutLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -276,7 +276,7 @@
                 app:layout_constraintStart_toEndOf="@id/linkedin_link"
                 app:layout_constraintTop_toBottomOf="@id/social_links_title" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </aglibs.loading.skeleton.layout.SkeletonConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/info_list"
@@ -285,6 +285,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/white"
             android:elevation="@dimen/_5sdp"
+            android:nestedScrollingEnabled="false"
             android:padding="@dimen/_10sdp"
             app:layout_constraintBottom_toTopOf="@+id/counts_grid"
             app:layout_constraintEnd_toEndOf="parent"
@@ -298,6 +299,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/white"
             android:elevation="@dimen/_5sdp"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

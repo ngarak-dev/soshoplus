@@ -12,9 +12,11 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,9 +24,17 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
+import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
 import com.soshoplus.timeline.adapters.joinedGroupsAdapter;
+import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.friends.followers;
+import com.soshoplus.timeline.models.friends.following;
+import com.soshoplus.timeline.models.friends.friends;
+import com.soshoplus.timeline.models.friends.suggested.suggestedInfo;
+import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.models.groups.groupList;
@@ -47,21 +57,33 @@ public class retrofitCalls {
     
     private Context context;
     private queries queries;
-    private Call<userInfo> userInfoCall;
-    private Call<group> groupCall;
-    private Call<groupList> groupListCall;
     private String accessToken, userId, timezone;
     private static String TAG = "Calls class";
     public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String fetch_recommended = "groups";
     private static String joined_groups = "joined_groups";
+    private static String friends_followers = "followers";
+    private static String friends_following = "following";
+    private static String suggested_friends = "users";
     
     private userData userData = null;
     private userInfo userInfo = null;
     private details details = null;
     
+    /*CALLS*/
+    private Call<userInfo> userInfoCall;
+    private Call<group> groupCall;
+    private Call<groupList> groupListCall;
+    private Call<friends> friendsListCall;
+    private Call<suggestedList> suggestedListCall;
+    
+    /*GROUPS*/
     private List<groupInfo> groupInfoList = null;
+    /*FRIENDS*/
+    private List<followers> followersList = null;
+    private List<following> followingList = null;
+    private List<suggestedInfo> suggestedInfoList = null;
     
     /*TODO Check this later*/
     private static String group_id;
@@ -207,6 +229,7 @@ public class retrofitCalls {
         });
     }
     
+    /*get group info*/
     public void getGroupInfo (ShapeableImageView profile_pic, ImageView cover_pic, Chip members, Chip privacy, Chip category) {
         groupCall = queries.getGroupInfo(accessToken, serverKey, group_id);
         groupCall.enqueue(new Callback<group>() {
@@ -296,6 +319,7 @@ public class retrofitCalls {
         });
     }
     
+    /*get joined groups*/
     public void getJoined (RecyclerView joinedGroupsList) {
         groupListCall = queries.getJoinedGroups(accessToken, serverKey, joined_groups, userId);
         groupListCall.enqueue(new Callback<groupList>() {
@@ -346,6 +370,166 @@ public class retrofitCalls {
         
             @Override
             public void onFailure (@NotNull Call<groupList> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+                /*TODO failed to get recommends*/
+            }
+        });
+    }
+    
+    /*get friends followers*/
+    public void getFollowers (RecyclerView friendsFollowersList) {
+        friendsListCall = queries.getFriendsFollowers(accessToken, serverKey, friends_followers,
+                userId, "6");
+        friendsListCall.enqueue(new Callback<friends>() {
+            @Override
+            public void onResponse (@NotNull Call<friends> call, @NotNull Response<friends> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        /*initializing list*/
+                        followersList = new ArrayList<>();
+                        followersList = response.body().getFriendsList().getFollowers();
+            
+                        /*initializing adapter*/
+                        friendsFollowersAdapter listAdapter =
+                                new friendsFollowersAdapter(context,
+                                        followersList,
+                                        new friendsFollowersAdapter.onFriendClickListener() {
+                                            @Override
+                                            public void  onFriendClick (followers followers) {
+                                                Toast.makeText(context, followers.getName(),
+                                                        Toast.LENGTH_SHORT).show();
+                                                /*TODO show user profile onclick*/
+                                            }
+                                });
+
+                        /*Setting Layout*/
+                        friendsFollowersList.setLayoutManager(new GridLayoutManager(context, 3));
+                        friendsFollowersList.setItemAnimator(new DefaultItemAnimator());
+            
+                        /*Setting Adapter*/
+                        friendsFollowersList.setAdapter(listAdapter);
+                    }
+                    else {
+                        /*TODO Error from API itself*/
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    Log.i(TAG, "onResponse: " + "is null");
+                    /*TODO response is null*/
+                }
+            }
+    
+            @Override
+            public void onFailure (@NotNull Call<friends> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+                /*TODO failed to get recommends*/
+            }
+        });
+    }
+    
+    /*get friends followers*/
+    public void getFollowing (RecyclerView friendsFollowingList) {
+        friendsListCall = queries.getFriendsFollowing(accessToken, serverKey, friends_following,
+                userId, "6");
+        friendsListCall.enqueue(new Callback<friends>() {
+            @Override
+            public void onResponse (@NotNull Call<friends> call, @NotNull Response<friends> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        /*initializing list*/
+                        followingList = new ArrayList<>();
+                        followingList = response.body().getFriendsList().getFollowing();
+                    
+                        /*initializing adapter*/
+                        friendsFollowingAdapter listAdapter =
+                                new friendsFollowingAdapter(context,
+                                        followingList,
+                                        new friendsFollowingAdapter.onFriendClickListener() {
+                                            @Override
+                                            public void onFriendClick (following following) {
+                                                Toast.makeText(context, following.getName(),
+                                                        Toast.LENGTH_SHORT).show();
+                                                /*TODO show user profile onclick*/
+                                            }
+                                        });
+                    
+                        /*Setting Layout*/
+                        friendsFollowingList.setLayoutManager(new GridLayoutManager(context, 3));
+                        friendsFollowingList.setItemAnimator(new DefaultItemAnimator());
+                    
+                        /*Setting Adapter*/
+                        friendsFollowingList.setAdapter(listAdapter);
+                    }
+                    else {
+                        /*TODO Error from API itself*/
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    Log.i(TAG, "onResponse: " + "is null");
+                    /*TODO response is null*/
+                }
+            }
+        
+            @Override
+            public void onFailure (@NotNull Call<friends> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+                /*TODO failed to get recommends*/
+            }
+        });
+    }
+    
+    /*get suggested friends*/
+    public void getSuggestedFriends (RecyclerView suggestedFriendsList) {
+        suggestedListCall = queries.getPeopleYouMayKnow(accessToken, serverKey, suggested_friends
+                , "8");
+        suggestedListCall.enqueue(new Callback<suggestedList>() {
+            @Override
+            public void onResponse (@NotNull Call<suggestedList> call, @NotNull Response<suggestedList> response) {
+    
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        /*initializing list*/
+                        suggestedInfoList = new ArrayList<>();
+                        suggestedInfoList = response.body().getSuggestedInfo();
+            
+                        /*initializing adapter*/
+                        suggestedFriendsAdapter listAdapter = new suggestedFriendsAdapter(context, suggestedInfoList, new suggestedFriendsAdapter.onSuggestedClickListener() {
+                            @Override
+                            public void onClick (suggestedInfo suggestedInfo) {
+                                Toast.makeText(context, suggestedInfo.getName(), Toast.LENGTH_SHORT).show();
+                                /*TODO show user profile onclick*/
+                            }
+                        });
+            
+                        /*Setting Layout*/
+                        suggestedFriendsList.setLayoutManager(new LinearLayoutManager(context));
+                        suggestedFriendsList.setItemAnimator(new DefaultItemAnimator());
+            
+                        /*Setting Adapter*/
+                        suggestedFriendsList.setAdapter(listAdapter);
+                    }
+                    else {
+                        /*TODO Error from API itself*/
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    Log.i(TAG, "onResponse: " + "is null");
+                    /*TODO response is null*/
+                }
+                
+            }
+    
+            @Override
+            public void onFailure (@NotNull Call<suggestedList> call, @NotNull Throwable t) {
                 Log.i(TAG, "onFailure: " + t.getMessage());
                 /*TODO failed to get recommends*/
             }

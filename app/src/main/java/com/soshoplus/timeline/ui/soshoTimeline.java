@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fxn.BubbleTabBar;
 import com.fxn.OnBubbleClickListener;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.adapters.viewPagerAdapter;
 import com.soshoplus.timeline.databinding.ActivitySoshotimelineBinding;
 import com.soshoplus.timeline.ui.mainfragments.friendsFragment;
 import com.soshoplus.timeline.ui.mainfragments.groupsFragment;
@@ -25,7 +25,6 @@ import com.soshoplus.timeline.ui.mainfragments.moreFragment;
 import com.soshoplus.timeline.ui.mainfragments.profileFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
 import com.soshoplus.timeline.utils.retrofitCalls;
-import com.soshoplus.timeline.adapters.viewPagerAdapter;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -39,7 +38,6 @@ public class soshoTimeline extends AppCompatActivity {
     private ViewPager sosho_viewPager;
     private viewPagerAdapter viewPagerAdapter;
     private BubbleTabBar bubbleTabBar;
-    private ConstraintLayout upper_profile;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -54,7 +52,6 @@ public class soshoTimeline extends AppCompatActivity {
         username = soshoTimelineBinding.username;
         bubbleTabBar = soshoTimelineBinding.bottomNavigation;
         sosho_viewPager = soshoTimelineBinding.soshoViewPager;
-        upper_profile = soshoTimelineBinding.upperProfile;
         
         //getCurrent Profile
         getProfile();
@@ -73,9 +70,18 @@ public class soshoTimeline extends AppCompatActivity {
         sosho_viewPager.setAdapter(viewPagerAdapter);
         //initialize Bottom Navigation
         bottomNavigationListener();
+        
+        /*profile click*/
+        soshoTimelineBinding.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                sosho_viewPager.setCurrentItem(3);
+            }
+        });
     }
     
     private void bottomNavigationListener () {
+        /*setup viewpager with bubble tabbar*/
         bubbleTabBar.setupBubbleTabBar(sosho_viewPager);
         bubbleTabBar.addBubbleListener(new OnBubbleClickListener() {
             @Override

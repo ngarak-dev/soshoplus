@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,7 +128,7 @@ public class profileFragment extends Fragment {
                         profileBinding.numberOfFollowers.setText(details.getFollowersCount());
                         profileBinding.numberOfFollowing.setText(details.getFollowingCount());
                         profileBinding.noOfPosts.setText(details.getPostCount());
-                        profileBinding.aboutMe.setText(userData.getAbout());
+                        profileBinding.aboutMe.setText(Html.fromHtml(userData.getAbout()));
     
                         //profile pic
                         ShapeableImageView profilePic = profileBinding.profilePic;

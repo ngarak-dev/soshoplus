@@ -99,6 +99,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/following_title" />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/view_all_following_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:text="View all"
+            android:textAlignment="center"
+            app:chipCornerRadius="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/friends_following_list" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

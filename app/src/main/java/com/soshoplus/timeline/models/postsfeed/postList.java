@@ -10,7 +10,7 @@ import java.util.List;
 public class postList implements Serializable {
 
 	@SerializedName("data")
-	private List<post> data;
+	private List<post> postList;
 
 	@SerializedName("api_status")
 	private int apiStatus;
@@ -23,18 +23,18 @@ public class postList implements Serializable {
 	
 	}
 	
-	public postList (List<post> data, int apiStatus, apiErrors errors) {
-		this.data = data;
+	public postList (List<post> postList, int apiStatus, apiErrors errors) {
+		this.postList = postList;
 		this.apiStatus = apiStatus;
 		this.errors = errors;
 	}
 	
-	public List<post> getData () {
-		return data;
+	public List<post> getPostList () {
+		return postList;
 	}
 	
-	public void setData (List<post> data) {
-		this.data = data;
+	public void setPostList (List<post> postList) {
+		this.postList = postList;
 	}
 	
 	public int getApiStatus () {

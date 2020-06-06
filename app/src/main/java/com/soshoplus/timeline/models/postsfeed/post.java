@@ -377,7 +377,7 @@ public class post implements Serializable {
 	private String postPhoto;
 
 	@SerializedName("recipient")
-	private String recipient;
+	private Object recipient;
 
 	@SerializedName("time")
 	private String time;
@@ -392,7 +392,8 @@ public class post implements Serializable {
 	
 	}
 	
-	public post (String adMedia, String gender, String bidding, String description, String appears, String posted, String pageId, String end, String id, String headline, String views, String budget, String audience, Object sharedInfo, String postType, boolean isOwner, String spent, String start, Object userData, String url, String userId, String name, String clicks, com.soshoplus.timeline.models.postsfeed.publisherInfo publisherInfo, String location, String status, String postFeeling, String postDailymotion, String postLinkImage, String postFileName, String postSoundCloud, String pageEventId, String registered, List<Object> offer, boolean isPostSaved, String streamName, String postPlaying, String productId, List<Object> options, boolean isWondered, String cache, String postFile, boolean groupAdmin, String active, String liveEnded, List<Object> photoAlbum, String postMap, boolean isPostPinned, String postDeepsound, boolean isPostReported, Object agoraResourceId, String commentsStatus, String postFileThumb, int postIsPromoted, String postTextAPI, Object postSticker, int isPostBoosted, String postWatching, String blur, String fundId, boolean isGroupPost, String forumId, String postVimeo, String boosted, boolean groupRecipientExists, String recipientId, boolean isLiked, String agoraSid, String blogId, boolean limitedComments, String liveTime, String postWonders, String postShare, String postComments, String questionId, String postTime, String eventId, Object postUrl, String postVine, String fundRaiseId, int limitComments, String multiImage, com.soshoplus.timeline.models.postsfeed.blog blog, int votedId, int liveSubUsers, String threadId, String postLink, String postLinkContent, String postYoutube, String postShares, String postId, String parentId, String postTraveling, int page, List<Object> job, String postPlaytube, String videoViews, String orginaltext, boolean isStillLive, String multiImagePost, boolean admin, List<Object> fundData, boolean recipientExists, String postListening, String pollId, String albumName, String postLikes, String postFacebook, String postLinkTitle, String postRecord, String postFileFull, List<Object> thread, String postPrivacy, String offerId, boolean sharedFrom, List<Object> forum, String postText, List<com.soshoplus.timeline.models.postsfeed.postComments> getPostComments, String colorId, String groupId, List<Object> fund, String jobId, String postPhoto, String recipient, String time, String viaType, List<Object> pageInfo) {
+	public post (String adMedia, String gender, String bidding, String description,
+				 String appears, String posted, String pageId, String end, String id, String headline, String views, String budget, String audience, Object sharedInfo, String postType, boolean isOwner, String spent, String start, Object userData, String url, String userId, String name, String clicks, com.soshoplus.timeline.models.postsfeed.publisherInfo publisherInfo, String location, String status, String postFeeling, String postDailymotion, String postLinkImage, String postFileName, String postSoundCloud, String pageEventId, String registered, List<Object> offer, boolean isPostSaved, String streamName, String postPlaying, String productId, List<Object> options, boolean isWondered, String cache, String postFile, boolean groupAdmin, String active, String liveEnded, List<Object> photoAlbum, String postMap, boolean isPostPinned, String postDeepsound, boolean isPostReported, Object agoraResourceId, String commentsStatus, String postFileThumb, int postIsPromoted, String postTextAPI, Object postSticker, int isPostBoosted, String postWatching, String blur, String fundId, boolean isGroupPost, String forumId, String postVimeo, String boosted, boolean groupRecipientExists, String recipientId, boolean isLiked, String agoraSid, String blogId, boolean limitedComments, String liveTime, String postWonders, String postShare, String postComments, String questionId, String postTime, String eventId, Object postUrl, String postVine, String fundRaiseId, int limitComments, String multiImage, com.soshoplus.timeline.models.postsfeed.blog blog, int votedId, int liveSubUsers, String threadId, String postLink, String postLinkContent, String postYoutube, String postShares, String postId, String parentId, String postTraveling, int page, List<Object> job, String postPlaytube, String videoViews, String orginaltext, boolean isStillLive, String multiImagePost, boolean admin, List<Object> fundData, boolean recipientExists, String postListening, String pollId, String albumName, String postLikes, String postFacebook, String postLinkTitle, String postRecord, String postFileFull, List<Object> thread, String postPrivacy, String offerId, boolean sharedFrom, List<Object> forum, String postText, List<com.soshoplus.timeline.models.postsfeed.postComments> getPostComments, String colorId, String groupId, List<Object> fund, String jobId, String postPhoto, Object recipient, String time, String viaType, List<Object> pageInfo) {
 		this.adMedia = adMedia;
 		this.gender = gender;
 		this.bidding = bidding;
@@ -706,11 +707,11 @@ public class post implements Serializable {
 		this.clicks = clicks;
 	}
 	
-	public com.soshoplus.timeline.models.postsfeed.publisherInfo getPublisherInfo () {
+	public publisherInfo getPublisherInfo () {
 		return publisherInfo;
 	}
 	
-	public void setPublisherInfo (com.soshoplus.timeline.models.postsfeed.publisherInfo publisherInfo) {
+	public void setPublisherInfo (publisherInfo publisherInfo) {
 		this.publisherInfo = publisherInfo;
 	}
 	
@@ -1506,11 +1507,11 @@ public class post implements Serializable {
 		this.postPhoto = postPhoto;
 	}
 	
-	public String getRecipient () {
+	public Object getRecipient () {
 		return recipient;
 	}
 	
-	public void setRecipient (String recipient) {
+	public void setRecipient (Object recipient) {
 		this.recipient = recipient;
 	}
 	

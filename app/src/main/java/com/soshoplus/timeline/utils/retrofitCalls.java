@@ -16,10 +16,17 @@ import androidx.annotation.NonNull;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.postsfeed.post;
+import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.userprofile.details;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,10 +41,15 @@ public class retrofitCalls {
     private static String TAG = "Calls class";
     public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
     private String fetch_profile = "user_data,family,liked_pages,joined_groups";
+    private static String get_news_feed = "get_news_feed";
     
     private userData userData;
     private userInfo userInfo;
     private details details;
+    
+    /*TIMELINE*/
+    private Call<postList> postListCall;
+    private List<post> postList = null;
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -94,5 +106,37 @@ public class retrofitCalls {
             }
         });
         
+    }
+    
+    /*Get timeline Feed*/
+    public void getTimelineFeed () {
+        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "10");
+        postListCall.enqueue(new Callback<postList>() {
+            @Override
+            public void onResponse (@NotNull Call<postList> call, @NotNull Response<postList> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        
+                        postList = new ArrayList<>();
+                        postList = response.body().getPostList();
+
+                    }
+                    else {
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    /*response is null*/
+                    Log.i(TAG, "onResponse: " + "is null");
+                }
+            }
+    
+            @Override
+            public void onFailure (@NotNull Call<postList> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
+            }
+        });
     }
 }

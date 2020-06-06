@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
+import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import retrofit2.Call;
@@ -34,5 +35,8 @@ public interface queries {
                                 @Field("fetch") String fetch, @Field("user_id") String user_id);
     
     /*Timeline Posts*/
-    Call<Object> getTimelinePosts (@Query("access_token") String access_token, @Field("server_key") String server_key, @Field("fetch") String fetch, @Field("limit") String limit);
+    @FormUrlEncoded
+    @POST("posts")
+    Call<postList> getTimelinePosts (@Query("access_token") String access_token,
+                                     @Field("server_key") String server_key, @Field("type") String type, @Field("limit") String limit);
 }

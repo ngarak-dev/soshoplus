@@ -35,14 +35,22 @@ public class friendsFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         friendsBinding = FragmentFriendsBinding.inflate(inflater, container, false);
+        
+        /*get Suggested friends*/
+        getSuggestedFriends();
     
-        /*get followers*/
+        /*get Followers*/
         getFollowers();
         
         /*get Following*/
         getFollowing();
         
         return friendsBinding.getRoot();
+    }
+    
+    private void getSuggestedFriends () {
+        calls = new retrofitCalls(requireContext());
+        calls.getSuggestedFriends(friendsBinding.suggestedFriendsList);
     }
     
     private void getFollowing () {

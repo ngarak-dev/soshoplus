@@ -11,12 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
@@ -44,7 +44,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
     @NonNull
     @Override
     public suggestedFriendsAdapter.SuggestedFriendsHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
-        View view =  LayoutInflater.from(context).inflate(R.layout.suggested_group_list_row, parent, false);
+        View view =  LayoutInflater.from(context).inflate(R.layout.suggested_friends_list_row, parent, false);
         return new SuggestedFriendsHolder(view);
     }
     
@@ -62,28 +62,29 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
     public class SuggestedFriendsHolder extends RecyclerView.ViewHolder{
         
         ShapeableImageView profile_pic;
-        TextView group_title;
-        TextView group_category;
-        TextView total_members;
-        Button is_joined;
+        TextView full_name;
+        TextView about;
+        Chip follow;
         
         public SuggestedFriendsHolder (@NonNull View itemView) {
             super(itemView);
-            profile_pic = itemView.findViewById(R.id.group_profile_pic);
-            group_title = itemView.findViewById(R.id.group_title);
-            group_category = itemView.findViewById(R.id.group_category);
-            total_members = itemView.findViewById(R.id.total_members);
-            is_joined = itemView.findViewById(R.id.btn_join);
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            follow = itemView.findViewById(R.id.btn_follow);
+            about = itemView.findViewById(R.id.about_me);
         }
     
         public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener) {
+            
+            full_name.setText(suggestedInfo.getName());
+            about.setText((CharSequence) suggestedInfo.getAbout());
 
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
                     .toBuilder()
                     .setAllCorners(CornerFamily.ROUNDED, 20)
                     .build());
-            Picasso.get().load("/*TODO*/").placeholder(R.drawable.ic_image_placeholder).into(profile_pic
+            Picasso.get().load(suggestedInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).into(profile_pic
                     , new Callback() {
                 @Override
                 public void onSuccess () {

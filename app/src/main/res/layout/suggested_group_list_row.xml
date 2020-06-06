@@ -67,7 +67,7 @@
             android:textStyle="bold"
             app:chipBackgroundColor="@color/colorPrimary"
             app:chipCornerRadius="@dimen/_5sdp"
-            app:chipIcon="@drawable/ic_outline_add_circle_outline"
+            app:chipIcon="@drawable/ic_add"
             app:chipIconSize="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

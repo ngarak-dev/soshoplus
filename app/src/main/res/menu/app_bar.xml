@@ -10,13 +10,13 @@
 
     <item
         android:id="@+id/search"
-        android:icon="@drawable/ic_outline_search"
+        android:icon="@drawable/ic_search"
         app:showAsAction="always"
         android:title="Search"/>
 
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/ic_outline_settings"
+        android:icon="@drawable/ic_switch"
         app:showAsAction="always"
         android:title="Settings"/>
 

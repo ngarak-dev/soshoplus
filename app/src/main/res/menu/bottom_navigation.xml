@@ -15,7 +15,7 @@
         android:iconTint="@color/white"/>
 
     <item
-        android:icon="@drawable/ic_friends"
+        android:icon="@drawable/ic_add_user"
         android:title="Friends"
         android:id="@+id/friends"
         android:iconTint="@color/white"/>
@@ -27,7 +27,7 @@
         android:iconTint="@color/white"/>
 
     <item
-        android:icon="@drawable/ic_account"
+        android:icon="@drawable/ic_user"
         android:title="Profile"
         android:id="@+id/profile"
         android:iconTint="@color/white"/>

@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_2sdp"
         android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/time_ago"
         app:layout_constraintStart_toEndOf="@id/profile_pic"
         app:layout_constraintTop_toTopOf="@id/profile_pic" />
@@ -38,25 +39,34 @@
         app:layout_constraintStart_toEndOf="@id/profile_pic"
         app:layout_constraintTop_toBottomOf="@id/full_name" />
 
+    <TextView
+        android:id="@+id/post_contents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_pic" />
+
     <ImageView
         android:id="@+id/post_image"
         android:layout_width="0dp"
         android:layout_height="@dimen/_180sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@id/post_contents"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/likes_icon"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
         android:enabled="false"
         app:chipBackgroundColor="@null"
         app:chipIcon="@drawable/ic_liked"
         app:chipIconSize="@dimen/_10sdp"
         app:chipStrokeColor="@null"
-        android:layout_marginStart="@dimen/_10sdp"
         app:chipSurfaceColor="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_image" />
@@ -66,9 +76,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_10ssp"
-        app:layout_constraintTop_toBottomOf="@id/post_image"
         app:layout_constraintBottom_toBottomOf="@id/likes_icon"
         app:layout_constraintStart_toEndOf="@id/likes_icon"
+        app:layout_constraintTop_toBottomOf="@id/post_image"
         app:layout_constraintTop_toTopOf="@id/likes_icon" />
 
     <com.google.android.material.chip.Chip
@@ -88,11 +98,11 @@
         android:id="@+id/no_shares"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_10ssp"
         android:layout_margin="@dimen/_10sdp"
-        app:layout_constraintTop_toTopOf="@id/shares_icon"
+        android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="@id/shares_icon"
-        app:layout_constraintEnd_toStartOf="@id/comments_icon"/>
+        app:layout_constraintEnd_toStartOf="@id/comments_icon"
+        app:layout_constraintTop_toTopOf="@id/shares_icon" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/comments_icon"

@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.gson.Gson;
@@ -164,7 +166,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             full_name.setText(user_data.getName());
             location.setText(post.getLocation());
-            description.setText(post.getDescription());
+            description.setText(Html.fromHtml(post.getDescription()));
             headline.setText(post.getHeadline());
             Picasso.get().load(post.getAdMedia()).fit().centerCrop().into(media);
         }
@@ -172,20 +174,60 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     /*view holder for posts*/
     static class PostViewHolder extends RecyclerView.ViewHolder {
+        
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
+        ImageView post_image;
+        Chip likes, comment, share;
+        
         public PostViewHolder (@NonNull View itemView) {
             super(itemView);
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+            
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+            
+            contents = itemView.findViewById(R.id.post_contents);
+            post_image = itemView.findViewById(R.id.post_image);
+            
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
         }
     
         public void bindNormalPosts (post post) {
             Log.d(TAG, "bindNormalPosts: " + post.getPostType());
-            Log.d(TAG, "bindNormalPosts: " + post.getPostComments());
-            Log.d(TAG, "bindNormalPosts: " + post.getPostShares());
-            Log.d(TAG, "bindNormalPosts: " + post.getPostLikes());
-            Log.d(TAG, "bindNormalPosts: " + post.getOrginaltext());
-            Log.d(TAG, "bindNormalPosts: " + post.getPostTime());
-            Log.d(TAG, "bindNormalPosts: " + post.getPostFile());
-            Log.d(TAG, "bindNormalPosts: " + post.getPublisherInfo().getAvatar());
-            Log.d(TAG, "bindAdsPosts: " + "............../");
+    
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+            
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+            
+            /*NO POST IMAGE*/
+            if (post.getPostFile().isEmpty()) {
+                post_image.setVisibility(View.GONE);
+            }
+            else {
+                Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
+            }
+            
+            if (post.getOrginaltext() == null) {
+                contents.setVisibility(View.GONE);
+            }
+            else {
+                contents.setText(Html.fromHtml(post.getPostTextAPI()));
+            }
         }
     }
     

@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/_2sdp"
         android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/ad_location"
         app:layout_constraintStart_toEndOf="@id/ad_profile_pic"
         app:layout_constraintTop_toTopOf="@id/ad_profile_pic" />
@@ -31,6 +32,8 @@
         android:id="@+id/ad_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_cursor_blue"
+        android:drawablePadding="@dimen/_5sdp"
         android:padding="@dimen/_2sdp"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_10ssp"
@@ -39,30 +42,45 @@
         app:layout_constraintTop_toBottomOf="@id/ad_full_name" />
 
     <TextView
+        android:id="@+id/ad_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ad_full_name"
+        android:padding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/ad_description" />
+        app:layout_constraintTop_toBottomOf="@id/ad_profile_pic" />
 
     <TextView
+        android:id="@+id/ad_headline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ad_description"
-        app:layout_constraintStart_toStartOf="parent"
+        android:drawableStart="@drawable/ic_link"
+        android:drawablePadding="@dimen/_10sdp"
+        android:padding="@dimen/_10sdp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toTopOf="@id/ad_media"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/ad_link"
-        app:layout_constraintBottom_toTopOf="@id/ad_image" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_description" />
 
     <ImageView
-        android:id="@+id/ad_image"
+        android:id="@+id/ad_media"
         android:layout_width="0dp"
         android:layout_height="@dimen/_180sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ad_link"
+        app:layout_constraintTop_toBottomOf="@id/ad_headline"
         tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        android:text="AD"
+        android:textAlignment="center"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/ad_media"
+        app:layout_constraintStart_toStartOf="@+id/ad_media" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

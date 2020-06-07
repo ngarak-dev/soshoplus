@@ -14,6 +14,7 @@
         android:id="@+id/timeline_posts_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/_10sdp"
         android:nestedScrollingEnabled="false" />
 
 </androidx.core.widget.NestedScrollView>

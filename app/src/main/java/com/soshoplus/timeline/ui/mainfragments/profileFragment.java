@@ -120,7 +120,7 @@ public class profileFragment extends Fragment {
                         profilePic.setShapeAppearanceModel(profilePic
                                 .getShapeAppearanceModel()
                                 .toBuilder()
-                                .setAllCorners(CornerFamily.ROUNDED, 50)
+                                .setAllCorners(CornerFamily.ROUNDED, 20)
                                 .build());
                         Picasso.get().load(userData.getAvatar()).into(profilePic);
                         

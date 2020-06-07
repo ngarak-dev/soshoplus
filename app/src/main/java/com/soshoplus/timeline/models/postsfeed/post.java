@@ -62,7 +62,7 @@ public class post implements Serializable {
 	private String start;
 
 	@SerializedName("user_data")
-	private Object userData;
+	private Object userData;	/*This is an Array*/
 
 	@SerializedName("url")
 	private String url;

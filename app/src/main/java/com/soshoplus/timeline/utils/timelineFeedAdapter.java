@@ -11,12 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.gson.Gson;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
+import com.soshoplus.timeline.models.postsfeed.userData;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -123,17 +130,43 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     /*view holder for ads posts*/
     static class AdViewHolder extends RecyclerView.ViewHolder {
+        
+        ShapeableImageView profile_pic;
+        TextView full_name, location, description, headline;
+        ImageView media;
+        
         public AdViewHolder (@NonNull View itemView) {
             super(itemView);
+            profile_pic = itemView.findViewById(R.id.ad_profile_pic);
+            full_name = itemView.findViewById(R.id.ad_full_name);
+            location = itemView.findViewById(R.id.ad_location);
+            description = itemView.findViewById(R.id.ad_description);
+            headline = itemView.findViewById(R.id.ad_headline);
+            media = itemView.findViewById(R.id.ad_media);
         }
     
         public void bindAdsPosts (post post) {
             Log.d(TAG, "bindAdsPosts: " + post.getPostType());
-            Log.d(TAG, "bindAdsPosts: " + post.getUrl());
-            Log.d(TAG, "bindAdsPosts: " + post.getHeadline());
-            Log.d(TAG, "bindAdsPosts: " + post.getLocation());
-            Log.d(TAG, "bindAdsPosts: " + post.getAdMedia());
-            Log.d(TAG, "bindAdsPosts: " + "............../");
+            
+            /*Converting Object to json data*/
+            Gson gson = new Gson();
+            String toJson = gson.toJson(post.getUserData());
+            /*getting data from json string using pojo class*/
+            userData user_data = gson.fromJson(toJson, userData.class);
+            
+            /*setting data*/
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(user_data.getAvatar()).fit().centerCrop().into(profile_pic);
+            
+            full_name.setText(user_data.getName());
+            location.setText(post.getLocation());
+            description.setText(post.getDescription());
+            headline.setText(post.getHeadline());
+            Picasso.get().load(post.getAdMedia()).fit().centerCrop().into(media);
         }
     }
     

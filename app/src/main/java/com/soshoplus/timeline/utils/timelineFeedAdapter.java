@@ -11,23 +11,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.imageview.ShapeableImageView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 
 import java.util.List;
 
-public class timelineFeedAdapter extends RecyclerView.Adapter<timelineFeedAdapter.TimelineFeedHolder>  {
+public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
     private final List<post> postList;
     private Context context;
     private static String TAG = "timelineFeed Adapter";
+    
+    /*VIEW TYPES*/
+    private static String TYPE_POST = "post";
+    private static String TYPE_AD = "ad";
+    private static String TYPE_PROFILE_PIC = "profile_picture";
+    private static String TYPE_PROFILE_COVER_PIC = "profile_cover_picture";
+    
+    private static int NORMAL_POST = 1;
+    private static int PROFILE_PIC = 2;
+    private static int COVER_PIC = 3;
+    private static int ADS = 4;
     
     public timelineFeedAdapter (List<post> postList, Context context) {
         this.postList = postList;
@@ -36,15 +44,56 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<timelineFeedAdapte
     
     @NonNull
     @Override
-    public timelineFeedAdapter.TimelineFeedHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
-        View view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+    public RecyclerView.ViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
+        
+        /*TODO add layout for each view*/
+        
+       View view;
+       if (viewType == NORMAL_POST) {
+           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
                 false);
-        return new TimelineFeedHolder(view);
+           return new PostViewHolder(view);
+       }
+       else if (viewType == PROFILE_PIC) {
+           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+                   false);
+           return new ProfileViewHolder(view);
+       }
+       else if (viewType == COVER_PIC) {
+           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+                   false);
+           return new CoverViewHolder(view);
+       }
+       else if (viewType == ADS) {
+           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_ad, parent,
+                   false);
+           return new AdViewHolder(view);
+       }
+       else {
+           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+                   false);
+           return new PostViewHolder(view);
+       }
     }
     
     @Override
-    public void onBindViewHolder (@NonNull timelineFeedAdapter.TimelineFeedHolder holder, int position) {
-        holder.bind(postList.get(position));
+    public void onBindViewHolder (@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        /*getting item view type posts*/
+        if (getItemViewType(position) == NORMAL_POST) {
+            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position));
+        }
+        else if (getItemViewType(position) == PROFILE_PIC) {
+            ((ProfileViewHolder) viewHolder).bindProfilePosts(postList.get(position));
+        }
+        else if (getItemViewType(position) == COVER_PIC) {
+            ((CoverViewHolder) viewHolder).bindCoverPosts(postList.get(position));
+        }
+        else if (getItemViewType(position) == ADS) {
+            ((AdViewHolder) viewHolder).bindAdsPosts(postList.get(position));
+        }
+        else {
+            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position));
+        }
     }
     
     @Override
@@ -54,75 +103,94 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<timelineFeedAdapte
     
     @Override
     public int getItemViewType (int position) {
-        return super.getItemViewType(position);
+        /*POST TYPES*/
+        if (postList.get(position).getPostType().equals(TYPE_POST)) {
+            return NORMAL_POST;
+        }
+        else if (postList.get(position).getPostType().equals(TYPE_PROFILE_PIC)) {
+            return PROFILE_PIC;
+        }
+        else if (postList.get(position).getPostType().equals(TYPE_PROFILE_COVER_PIC)) {
+            return COVER_PIC;
+        }
+        else if (postList.get(position).getPostType().equals(TYPE_AD)) {
+            return ADS;
+        }
+        else {
+            return NORMAL_POST;
+        }
     }
     
-    public class TimelineFeedHolder extends RecyclerView.ViewHolder{
-    
-        ShapeableImageView profile_pic;
-        TextView full_name, time_ago, no_comments, no_shares, no_likes;
-        ImageView post_pic;
-        
-        public TimelineFeedHolder (@NonNull View itemView) {
+    /*view holder for ads posts*/
+    static class AdViewHolder extends RecyclerView.ViewHolder {
+        public AdViewHolder (@NonNull View itemView) {
             super(itemView);
-            
-            profile_pic = itemView.findViewById(R.id.profile_pic);
-            full_name = itemView.findViewById(R.id.full_name);
-            time_ago = itemView.findViewById(R.id.time_ago);
-            no_shares = itemView.findViewById(R.id.no_shares);
-            no_comments = itemView.findViewById(R.id.no_comments);
-            no_likes = itemView.findViewById(R.id.no_likes);
         }
     
-        public void bind (post post) {
-            
-            Log.d(TAG, "bind: "  + post.getPostComments());
-            
-            Log.d(TAG, "bind: " + post.getPostTime());
+        public void bindAdsPosts (post post) {
+            Log.d(TAG, "bindAdsPosts: " + post.getPostType());
+            Log.d(TAG, "bindAdsPosts: " + post.getUrl());
+            Log.d(TAG, "bindAdsPosts: " + post.getHeadline());
+            Log.d(TAG, "bindAdsPosts: " + post.getLocation());
+            Log.d(TAG, "bindAdsPosts: " + post.getAdMedia());
+            Log.d(TAG, "bindAdsPosts: " + "............../");
+        }
+    }
     
-            Log.d(TAG, "bind: " + post.getPostType());
+    /*view holder for posts*/
+    static class PostViewHolder extends RecyclerView.ViewHolder {
+        public PostViewHolder (@NonNull View itemView) {
+            super(itemView);
+        }
     
-            Log.d(TAG, "bind: " + post.getDescription());
+        public void bindNormalPosts (post post) {
+            Log.d(TAG, "bindNormalPosts: " + post.getPostType());
+            Log.d(TAG, "bindNormalPosts: " + post.getPostComments());
+            Log.d(TAG, "bindNormalPosts: " + post.getPostShares());
+            Log.d(TAG, "bindNormalPosts: " + post.getPostLikes());
+            Log.d(TAG, "bindNormalPosts: " + post.getOrginaltext());
+            Log.d(TAG, "bindNormalPosts: " + post.getPostTime());
+            Log.d(TAG, "bindNormalPosts: " + post.getPostFile());
+            Log.d(TAG, "bindNormalPosts: " + post.getPublisherInfo().getAvatar());
+            Log.d(TAG, "bindAdsPosts: " + "............../");
+        }
+    }
     
-            Log.d(TAG, "bind: " + post.getPostShares());
+    /*view holder for profile change posts*/
+    static class ProfileViewHolder extends RecyclerView.ViewHolder {
+        public ProfileViewHolder (@NonNull View itemView) {
+            super(itemView);
+        }
     
-            Log.d(TAG, "bind: " + post.getPostLikes());
+        public void bindProfilePosts (post post) {
+            Log.d(TAG, "bindProfilePosts: " + post.getPostType());
+            Log.d(TAG, "bindProfilePosts: " + post.getPostComments());
+            Log.d(TAG, "bindProfilePosts: " + post.getPostShares());
+            Log.d(TAG, "bindProfilePosts: " + post.getPostLikes());
+            Log.d(TAG, "bindProfilePosts: " + post.getOrginaltext());
+            Log.d(TAG, "bindProfilePosts: " + post.getPostTime());
+            Log.d(TAG, "bindProfilePosts: " + post.getPostFile());
+            Log.d(TAG, "bindProfilePosts: " + post.getPublisherInfo().getAvatar());
+            Log.d(TAG, "bindAdsPosts: " + "............../");
+        }
+    }
     
-            Log.d(TAG, "bind: " + "............../");
-            
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run () {
-//                    Log.d(TAG, "bind: " + post.getPublisherInfo().getUsername());
-//                }
-//            }, 5000);
-//
-//            full_name.setText(post.getPublisherInfo().getName());
-//            time_ago.setText(post.getTime());
-            
-            no_shares.setText(post.getPostShares());
-            no_comments.setText(post.getPostComments());
-            no_likes.setText(post.getPostLikes());
+    /*view holder for cover changed posts*/
+    static class CoverViewHolder extends RecyclerView.ViewHolder {
+        public CoverViewHolder (@NonNull View itemView) {
+            super(itemView);
+        }
     
-//            profile_pic.setShapeAppearanceModel(profile_pic
-//                    .getShapeAppearanceModel()
-//                    .toBuilder()
-//                    .setAllCorners(CornerFamily.ROUNDED, 20)
-//                    .build());
-//            Picasso.get().load(post.getPublisherInfo().getAvatar()).into(profile_pic
-//                    , new Callback() {
-//                        @Override
-//                        public void onSuccess () {
-//                            Log.d(TAG, "onSuccess: " + "Image loaded");
-//                        }
-//
-//                        @Override
-//                        public void onError (Exception e) {
-//                            Log.d(TAG, "onError: " + e.getMessage());
-////                            profile_pic.setImageResource(R.drawable.ic_image_placeholder);
-//                            /*TODO reload icon*/
-//                        }
-//                    });
+        public void bindCoverPosts (post post) {
+            Log.d(TAG, "bindCoverPosts: " + post.getPostType());
+            Log.d(TAG, "bindCoverPosts: " + post.getPostComments());
+            Log.d(TAG, "bindCoverPosts: " + post.getPostShares());
+            Log.d(TAG, "bindCoverPosts: " + post.getPostLikes());
+            Log.d(TAG, "bindCoverPosts: " + post.getOrginaltext());
+            Log.d(TAG, "bindCoverPosts: " + post.getPostTime());
+            Log.d(TAG, "bindCoverPosts: " + post.getPostFile());
+            Log.d(TAG, "bindCoverPosts: " + post.getPublisherInfo().getAvatar());
+            Log.d(TAG, "bindAdsPosts: " + "............../");
         }
     }
 }

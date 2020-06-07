@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -219,6 +220,14 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 post_image.setVisibility(View.GONE);
             }
             else {
+                String extension = MimeTypeMap.getFileExtensionFromUrl(post.getPostFile());
+                if (extension != null) {
+                    MimeTypeMap mime = MimeTypeMap.getSingleton();
+                    String type = mime.getMimeTypeFromExtension(extension);
+    
+                    Log.d(TAG, "bindNormalPosts: FILE TYPE" + type);
+                }
+                
                 Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
             }
             

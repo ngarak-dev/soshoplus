@@ -12,9 +12,13 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import com.google.gson.Gson;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
@@ -109,7 +113,7 @@ public class retrofitCalls {
     }
     
     /*Get timeline Feed*/
-    public void getTimelineFeed () {
+    public void getTimelineFeed (RecyclerView timelinePostsList) {
         postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "10");
         postListCall.enqueue(new Callback<postList>() {
             @Override
@@ -119,6 +123,23 @@ public class retrofitCalls {
                         
                         postList = new ArrayList<>();
                         postList = response.body().getPostList();
+    
+                        Gson gson = new Gson();
+                        String gfgf = gson.toJson(postList);
+    
+                        Log.d(TAG, "onResponse: " + gfgf);
+                        
+                        /*initializing adapter*/
+                        timelineFeedAdapter listAdapter =
+                                new timelineFeedAdapter(postList,
+                                        context);
+    
+                        /*Setting Layout*/
+                        timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
+                        timelinePostsList.setItemAnimator(new DefaultItemAnimator());
+    
+                        /*Setting Adapter*/
+                        timelinePostsList.setAdapter(listAdapter);
 
                     }
                     else {

@@ -11,7 +11,6 @@ import com.google.gson.annotations.SerializedName;
 import com.soshoplus.timeline.models.apiErrors;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class userData implements Serializable {
     
@@ -317,7 +316,7 @@ public class userData implements Serializable {
     private String name;
     @SerializedName("mutual_friends_data")
     @Expose
-    private ArrayList mutualFriendsData;
+    private Object mutualFriendsData;   /*This is an Array*/
     @SerializedName("lastseen_unix_time")
     @Expose
     private String lastseenUnixTime;
@@ -465,7 +464,14 @@ public class userData implements Serializable {
      * @param isBlocked
      * @param errors
      */
-    public userData (String userId, String username, String email, String firstName, String lastName, String avatar, String cover, String backgroundImage, String relationshipId, String address, String working, String workingLink, String about, String school, String gender, String birthday, String countryId, String website, String facebook, String google, String twitter, String linkedin, String youtube, String vk, String instagram, String language, String ipAddress, String followPrivacy, String friendPrivacy, String postPrivacy, String messagePrivacy, String confirmFollowers, String showActivitiesPrivacy, String birthPrivacy, String visitPrivacy, String verified, String lastseen, String emailNotification, String eLiked, String eWondered, String eShared, String eFollowed, String eCommented, String eVisited, String eLikedPage, String eMentioned, String eJoinedGroup, String eAccepted, String eProfileWallPost, String eSentmeMsg, String eLastNotif, String notificationSettings, String status, String active, String admin, String registered, String phoneNumber, String isPro, String proType, String timezone, String referrer, String refUserId, String balance, String paypalEmail, String notificationsSound, String orderPostsBy, String androidMDeviceId, String iosMDeviceId, String androidNDeviceId, String iosNDeviceId, String webDeviceId, String wallet, String lat, String lng, String lastLocationUpdate, String shareMyLocation, String lastDataUpdate, details details, String lastAvatarMod, String lastCoverMod, String points, String dailyPoints, String pointDayExpire, String lastFollowId, String shareMyData, Object lastLoginData, String twoFactor, String newEmail, String twoFactorVerified, String newPhone, String infoFile, String city, String state, String zip, String schoolCompleted, String weatherUnit, String paystackRef, String userPlatform, String url, String name, ArrayList mutualFriendsData, String lastseenUnixTime, String lastseenStatus, int isFollowing, int canFollow, int isFollowingMe, String genderText, String lastseenTimeText, boolean isBlocked, apiErrors errors) {
+    public userData (String userId, String username, String email, String firstName,
+                     String lastName, String avatar, String cover, String backgroundImage,
+                     String relationshipId, String address, String working, String workingLink,
+                     String about, String school, String gender, String birthday,
+                     String countryId, String website, String facebook, String google,
+                     String twitter, String linkedin, String youtube, String vk, String instagram
+            , String language, String ipAddress, String followPrivacy, String friendPrivacy,
+                     String postPrivacy, String messagePrivacy, String confirmFollowers, String showActivitiesPrivacy, String birthPrivacy, String visitPrivacy, String verified, String lastseen, String emailNotification, String eLiked, String eWondered, String eShared, String eFollowed, String eCommented, String eVisited, String eLikedPage, String eMentioned, String eJoinedGroup, String eAccepted, String eProfileWallPost, String eSentmeMsg, String eLastNotif, String notificationSettings, String status, String active, String admin, String registered, String phoneNumber, String isPro, String proType, String timezone, String referrer, String refUserId, String balance, String paypalEmail, String notificationsSound, String orderPostsBy, String androidMDeviceId, String iosMDeviceId, String androidNDeviceId, String iosNDeviceId, String webDeviceId, String wallet, String lat, String lng, String lastLocationUpdate, String shareMyLocation, String lastDataUpdate, details details, String lastAvatarMod, String lastCoverMod, String points, String dailyPoints, String pointDayExpire, String lastFollowId, String shareMyData, Object lastLoginData, String twoFactor, String newEmail, String twoFactorVerified, String newPhone, String infoFile, String city, String state, String zip, String schoolCompleted, String weatherUnit, String paystackRef, String userPlatform, String url, String name, Object  mutualFriendsData, String lastseenUnixTime, String lastseenStatus, int isFollowing, int canFollow, int isFollowingMe, String genderText, String lastseenTimeText, boolean isBlocked, apiErrors errors) {
         super();
         this.userId = userId;
         this.username = username;
@@ -1879,15 +1885,15 @@ public class userData implements Serializable {
         return this;
     }
     
-    public ArrayList getMutualFriendsData() {
+    public Object getMutualFriendsData() {
         return mutualFriendsData;
     }
     
-    public void setMutualFriendsData(ArrayList mutualFriendsData) {
+    public void setMutualFriendsData(Object mutualFriendsData) {
         this.mutualFriendsData = mutualFriendsData;
     }
     
-    public userData withMutualFriendsData(ArrayList mutualFriendsData) {
+    public userData withMutualFriendsData(Object mutualFriendsData) {
         this.mutualFriendsData = mutualFriendsData;
         return this;
     }

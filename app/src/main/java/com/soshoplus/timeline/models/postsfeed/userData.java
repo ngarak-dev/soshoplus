@@ -3,7 +3,6 @@ package com.soshoplus.timeline.models.postsfeed;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class userData implements Serializable {
 
@@ -62,7 +61,7 @@ public class userData implements Serializable {
 	private String state;
 
 	@SerializedName("mutual_friends_data")
-	private List<String> mutualFriendsData;
+	private Object mutualFriendsData; /*This is an Array*/
 
 	@SerializedName("avatar_full")
 	private String avatarFull;
@@ -323,7 +322,8 @@ public class userData implements Serializable {
 	
 	}
 	
-	public userData (String lastseen, String weatherUnit, String lastseenUnixTime, String about, String paypalEmail, String registered, String pointDayExpire, String instagram, String friendPrivacy, String infoFile, String cover, String twitter, String eShared, String balance, String twoFactorVerified, String iosNDeviceId, String notificationsSound, String state, List<String> mutualFriendsData, String avatarFull, String twoFactor, String newEmail, String shareMyData, String zip, String lng, String lastLocationUpdate, String active, String google, String eAccepted, String schoolCompleted, String eVisited, String iosMDeviceId, String userId, String webDeviceId, String countryId, String status, String gender, String city, String eLiked, String lastseenStatus, String lastDataUpdate, String relationshipId, String postPrivacy, String email, String emailNotification, String website, String address, String wallet, String visitPrivacy, String facebook, String androidMDeviceId, String lastName, String proType, String shareMyLocation, String avatar, String url, String eWondered, String orderPostsBy, String eJoinedGroup, String refUserId, String showActivitiesPrivacy, String language, String androidNDeviceId, String lastFollowId, String points, String school, com.soshoplus.timeline.models.postsfeed.details details, String dailyPoints, String lat, String userPlatform, String lastLoginData, String paystackRef, String backgroundImage, String newPhone, String vk, String lastAvatarMod, String isPro, String name, String phoneNumber, String eCommented, String birthday, String youtube, String notificationSettings, String timezone, String admin, String messagePrivacy, String birthPrivacy, String linkedin, String workingLink, String eProfileWallPost, String eSentmeMsg, String eLastNotif, String working, String firstName, String confirmFollowers, String verified, String followPrivacy, String ipAddress, String eFollowed, String referrer, String eLikedPage, String lastCoverMod, String username, String eMentioned) {
+	public userData (String lastseen, String weatherUnit, String lastseenUnixTime, String about,
+					 String paypalEmail, String registered, String pointDayExpire, String instagram, String friendPrivacy, String infoFile, String cover, String twitter, String eShared, String balance, String twoFactorVerified, String iosNDeviceId, String notificationsSound, String state, Object mutualFriendsData, String avatarFull, String twoFactor, String newEmail, String shareMyData, String zip, String lng, String lastLocationUpdate, String active, String google, String eAccepted, String schoolCompleted, String eVisited, String iosMDeviceId, String userId, String webDeviceId, String countryId, String status, String gender, String city, String eLiked, String lastseenStatus, String lastDataUpdate, String relationshipId, String postPrivacy, String email, String emailNotification, String website, String address, String wallet, String visitPrivacy, String facebook, String androidMDeviceId, String lastName, String proType, String shareMyLocation, String avatar, String url, String eWondered, String orderPostsBy, String eJoinedGroup, String refUserId, String showActivitiesPrivacy, String language, String androidNDeviceId, String lastFollowId, String points, String school, com.soshoplus.timeline.models.postsfeed.details details, String dailyPoints, String lat, String userPlatform, String lastLoginData, String paystackRef, String backgroundImage, String newPhone, String vk, String lastAvatarMod, String isPro, String name, String phoneNumber, String eCommented, String birthday, String youtube, String notificationSettings, String timezone, String admin, String messagePrivacy, String birthPrivacy, String linkedin, String workingLink, String eProfileWallPost, String eSentmeMsg, String eLastNotif, String working, String firstName, String confirmFollowers, String verified, String followPrivacy, String ipAddress, String eFollowed, String referrer, String eLikedPage, String lastCoverMod, String username, String eMentioned) {
 		this.lastseen = lastseen;
 		this.weatherUnit = weatherUnit;
 		this.lastseenUnixTime = lastseenUnixTime;
@@ -574,11 +574,11 @@ public class userData implements Serializable {
 		this.state = state;
 	}
 	
-	public List<String> getMutualFriendsData () {
+	public Object getMutualFriendsData () {
 		return mutualFriendsData;
 	}
 	
-	public void setMutualFriendsData (List<String> mutualFriendsData) {
+	public void setMutualFriendsData (Object mutualFriendsData) {
 		this.mutualFriendsData = mutualFriendsData;
 	}
 	

@@ -46,6 +46,6 @@ public class timelineFragment extends Fragment {
     /*get Timeline Feed*/
     private void getTimelineFeed () {
         calls = new retrofitCalls(requireContext());
-        calls.getTimelineFeed();
+        calls.getTimelineFeed(timelineBinding.timelinePostsList);
     }
 }

@@ -16,7 +16,7 @@ public class details implements Serializable {
 	private String followingCount;
 
 	@SerializedName("mutual_friends_count")
-	private int mutualFriendsCount;
+	private Object mutualFriendsCount;
 
 	@SerializedName("followers_count")
 	private String followersCount;
@@ -31,7 +31,9 @@ public class details implements Serializable {
 	
 	}
 	
-	public details (String likesCount, String albumCount, String followingCount, int mutualFriendsCount, String followersCount, String groupsCount, String postCount) {
+	public details (String likesCount, String albumCount, String followingCount,
+					Object mutualFriendsCount, String followersCount, String groupsCount,
+					String postCount) {
 		this.likesCount = likesCount;
 		this.albumCount = albumCount;
 		this.followingCount = followingCount;
@@ -65,11 +67,11 @@ public class details implements Serializable {
 		this.followingCount = followingCount;
 	}
 	
-	public int getMutualFriendsCount () {
+	public Object getMutualFriendsCount () {
 		return mutualFriendsCount;
 	}
 	
-	public void setMutualFriendsCount (int mutualFriendsCount) {
+	public void setMutualFriendsCount (Object mutualFriendsCount) {
 		this.mutualFriendsCount = mutualFriendsCount;
 	}
 	

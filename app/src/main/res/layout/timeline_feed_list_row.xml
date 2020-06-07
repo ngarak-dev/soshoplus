@@ -48,46 +48,74 @@
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/no_likes"
+        android:id="@+id/likes_icon"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_15sdp"
         android:enabled="false"
         app:chipBackgroundColor="@null"
-        app:chipIcon="@drawable/ic_like"
+        app:chipIcon="@drawable/ic_liked"
         app:chipIconSize="@dimen/_10sdp"
         app:chipStrokeColor="@null"
+        android:layout_marginStart="@dimen/_10sdp"
         app:chipSurfaceColor="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_15sdp"
-        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_image" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/no_comments"
+    <TextView
+        android:id="@+id/no_likes"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_15sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:enabled="false"
-        app:chipBackgroundColor="@null"
-        app:chipIcon="@drawable/ic_comment"
-        app:chipIconSize="@dimen/_10sdp"
-        app:chipStrokeColor="@null"
-        app:chipSurfaceColor="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_image" />
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintTop_toBottomOf="@id/post_image"
+        app:layout_constraintBottom_toBottomOf="@id/likes_icon"
+        app:layout_constraintStart_toEndOf="@id/likes_icon"
+        app:layout_constraintTop_toTopOf="@id/likes_icon" />
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/no_shares"
-        android:layout_width="wrap_content"
+        android:id="@+id/shares_icon"
+        android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_15sdp"
-        android:layout_margin="@dimen/_10sdp"
         android:enabled="false"
         app:chipBackgroundColor="@null"
         app:chipIcon="@drawable/ic_share"
         app:chipIconSize="@dimen/_10sdp"
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
+        app:layout_constraintEnd_toStartOf="@id/no_shares"
+        app:layout_constraintTop_toBottomOf="@id/post_image" />
+
+    <TextView
+        android:id="@+id/no_shares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_10ssp"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintTop_toTopOf="@id/shares_icon"
+        app:layout_constraintBottom_toBottomOf="@id/shares_icon"
+        app:layout_constraintEnd_toStartOf="@id/comments_icon"/>
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/comments_icon"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:enabled="false"
+        app:chipBackgroundColor="@null"
+        app:chipIcon="@drawable/ic_comment"
+        app:chipIconSize="@dimen/_10sdp"
+        app:chipStrokeColor="@null"
+        app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_comments"
         app:layout_constraintTop_toBottomOf="@id/post_image" />
+
+    <TextView
+        android:id="@+id/no_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="@id/comments_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/comments_icon" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/like_btn"

@@ -29,6 +29,7 @@ import com.soshoplus.timeline.models.postsfeed.userData;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Objects;
 
 public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
 
@@ -224,11 +225,16 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (extension != null) {
                     MimeTypeMap mime = MimeTypeMap.getSingleton();
                     String type = mime.getMimeTypeFromExtension(extension);
+                    
+                    if (Objects.equals(type, "audio/mpeg")) {
+                        /*TODO Implement Media player*/
+                    }
+                    else {
+                        Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
+                    }
     
                     Log.d(TAG, "bindNormalPosts: FILE TYPE" + type);
                 }
-                
-                Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
             }
             
             if (post.getOrginaltext() == null) {

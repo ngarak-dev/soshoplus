@@ -233,8 +233,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     /*view holder for profile change posts*/
     static class ProfileViewHolder extends RecyclerView.ViewHolder {
-    
-    
+        
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         ImageView post_image;
@@ -294,20 +293,61 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     /*view holder for cover changed posts*/
     static class CoverViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
+        ImageView post_image;
+        Chip likes, comment, share;
+        
         public CoverViewHolder (@NonNull View itemView) {
             super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            post_image = itemView.findViewById(R.id.post_image);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
         }
     
         public void bindCoverPosts (post post) {
             Log.d(TAG, "bindCoverPosts: " + post.getPostType());
-            Log.d(TAG, "bindCoverPosts: " + post.getPostComments());
-            Log.d(TAG, "bindCoverPosts: " + post.getPostShares());
-            Log.d(TAG, "bindCoverPosts: " + post.getPostLikes());
-            Log.d(TAG, "bindCoverPosts: " + post.getOrginaltext());
-            Log.d(TAG, "bindCoverPosts: " + post.getPostTime());
-            Log.d(TAG, "bindCoverPosts: " + post.getPostFile());
-            Log.d(TAG, "bindCoverPosts: " + post.getPublisherInfo().getAvatar());
-            Log.d(TAG, "bindAdsPosts: " + "............../");
+    
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+    
+            /*NO POST IMAGE*/
+            if (post.getPostFile().isEmpty()) {
+                post_image.setVisibility(View.GONE);
+            }
+            else {
+                Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
+            }
+    
+            if (post.getPostTextAPI().isEmpty()) {
+                contents.setVisibility(View.GONE);
+            }
+            else {
+                contents.setText(Html.fromHtml(post.getPostTextAPI()));
+            }
         }
     }
 }

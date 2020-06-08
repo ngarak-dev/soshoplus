@@ -33,6 +33,7 @@ import com.google.android.material.shape.CornerFamily;
 import com.google.gson.Gson;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
+import com.soshoplus.timeline.models.postsfeed.sharedInfo;
 import com.soshoplus.timeline.models.postsfeed.userData;
 import com.squareup.picasso.Picasso;
 
@@ -51,10 +52,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static String TYPE_PROFILE_PIC = "profile_picture";
     private static String TYPE_PROFILE_COVER_PIC = "profile_cover_picture";
     
+    /*BY POST TYPE*/
     private static int NORMAL_POST = 1;
     private static int PROFILE_PIC = 2;
     private static int COVER_PIC = 3;
     private static int ADS = 4;
+    private static int EMPTY_TYPE = 5;
     
     public timelineFeedAdapter (List<post> postList, Context context) {
         this.postList = postList;
@@ -65,9 +68,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
         
-        /*TODO add layout for each view*/
-        
        View view;
+       /*BY POST TYPE*/
        if (viewType == NORMAL_POST) {
            view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
                 false);
@@ -88,10 +90,16 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    false);
            return new AdViewHolder(view);
        }
+       else if (viewType == EMPTY_TYPE){
+           /*POST TYPE IS EMPTY*/
+           view =  LayoutInflater.from(context).inflate(R.layout.shared_post_list_row, parent,
+                   false);
+           return new SharedPostViewHolder(view);
+       }
        else {
            view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
                    false);
-           return new PostViewHolder(view);
+           return new SharedPostViewHolder(view);
        }
     }
     
@@ -110,6 +118,9 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (getItemViewType(position) == ADS) {
             ((AdViewHolder) viewHolder).bindAdsPosts(postList.get(position));
         }
+        else if (getItemViewType(position) == EMPTY_TYPE) {
+            ((SharedPostViewHolder) viewHolder).bindSharedPosts(postList.get(position));
+        }
         else {
             ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
         }
@@ -122,7 +133,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     @Override
     public int getItemViewType (int position) {
-        /*POST TYPES*/
+        /*BY POST TYPES*/
         if (postList.get(position).getPostType().equals(TYPE_POST)) {
             return NORMAL_POST;
         }
@@ -135,9 +146,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (postList.get(position).getPostType().equals(TYPE_AD)) {
             return ADS;
         }
-        else {
-            return NORMAL_POST;
+        else if (postList.get(position).getPostType().equals("")){
+            return EMPTY_TYPE;
         }
+        return NORMAL_POST;
     }
     
     /*view holder for ads posts*/
@@ -404,6 +416,81 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_shares.setText(post.getPostShares());
     
             Picasso.get().load(post.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(post_image);
+        }
+    }
+    
+    static class SharedPostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic, shared_profile_pic;
+        TextView full_name, shared_full_name, time_ago, shared_time_ago
+        , contents, shared_contents,  no_likes, no_comments, no_shares;
+        ImageView shared_post_image;
+        Chip likes, comment, share;
+    
+        public SharedPostViewHolder (View itemView) {
+            super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            shared_profile_pic = itemView.findViewById(R.id.shared_profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            shared_full_name = itemView.findViewById(R.id.shared_full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+            shared_time_ago = itemView.findViewById(R.id.shared_time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            shared_contents = itemView.findViewById(R.id.shared_post_contents);
+            shared_post_image = itemView.findViewById(R.id.shared_post_image);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+        }
+    
+        public void bindSharedPosts (post post) {
+            Log.d(TAG, "bindSharedPosts: " + "Shared Post");
+    
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+            
+            if (!post.getPostTextAPI().isEmpty()) {
+                contents.setText(post.getOrginaltext());
+            } else {
+                contents.setVisibility(View.GONE);
+            }
+            
+            /*shared data*/
+            /*Converting Object to json data*/
+            Gson gson = new Gson();
+            String toJson = gson.toJson(post.getSharedInfo());
+            /*getting data from json string using pojo class*/
+            sharedInfo sharedInfo = gson.fromJson(toJson, sharedInfo.class);
+            
+            shared_profile_pic.setShapeAppearanceModel(shared_profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(sharedInfo.getPublisherInfo().getAvatar()).fit().centerCrop().into(shared_profile_pic);
+    
+            shared_full_name.setText(sharedInfo.getPublisherInfo().getName());
+            shared_time_ago.setText(sharedInfo.getPostTime());
+            shared_contents.setText(Html.fromHtml(sharedInfo.getPostTextAPI()));
+    
+            Picasso.get().load(sharedInfo.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(shared_post_image);
         }
     }
 }

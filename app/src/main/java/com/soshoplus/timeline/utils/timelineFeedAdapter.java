@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -31,7 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Objects;
 
-public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
+public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<post> postList;
     private Context context;
@@ -91,7 +99,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder (@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         /*getting item view type posts*/
         if (getItemViewType(position) == NORMAL_POST) {
-            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position));
+            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
         }
         else if (getItemViewType(position) == PROFILE_PIC) {
             ((ProfileViewHolder) viewHolder).bindProfilePosts(postList.get(position));
@@ -103,7 +111,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((AdViewHolder) viewHolder).bindAdsPosts(postList.get(position));
         }
         else {
-            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position));
+            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
         }
     }
     
@@ -175,12 +183,14 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     
     /*view holder for posts*/
-    static class PostViewHolder extends RecyclerView.ViewHolder {
+    class PostViewHolder extends RecyclerView.ViewHolder {
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         ImageView post_image;
         Chip likes, comment, share;
+        PlayerView audio_player, video_player;
+        SimpleExoPlayer player;
         
         public PostViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -194,13 +204,15 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             contents = itemView.findViewById(R.id.post_contents);
             post_image = itemView.findViewById(R.id.post_image);
+            audio_player = itemView.findViewById(R.id.post_audio);
+            video_player = itemView.findViewById(R.id.post_video);
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
             share = itemView.findViewById(R.id.share_btn);
         }
     
-        public void bindNormalPosts (post post) {
+        public void bindNormalPosts (post post, Context context) {
             Log.d(TAG, "bindNormalPosts: " + post.getPostType());
     
             profile_pic.setShapeAppearanceModel(profile_pic
@@ -216,9 +228,19 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
             
+            /*TODO OTHER POSTS
+            *  MAP LOCATION
+            *  POOLS
+            *  GIF
+            *  FEELINGS
+            *  COLOR
+            *  SELL PRODUCT*/
+            
             /*NO POST IMAGE*/
             if (post.getPostFile().isEmpty()) {
                 post_image.setVisibility(View.GONE);
+                audio_player.setVisibility(View.GONE);
+                video_player.setVisibility(View.GONE);
             }
             else {
                 String extension = MimeTypeMap.getFileExtensionFromUrl(post.getPostFile());
@@ -227,10 +249,55 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     String type = mime.getMimeTypeFromExtension(extension);
                     
                     if (Objects.equals(type, "audio/mpeg")) {
-                        /*TODO Implement Media player*/
+                        post_image.setVisibility(View.GONE);
+                        video_player.setVisibility(View.GONE);
+                        /*TODO PLAY AUDIO*/
+                        audio_player.setVisibility(View.VISIBLE);
+                        player = new SimpleExoPlayer.Builder(context).build();
+                        audio_player.setPlayer(player);
+                        
+                        Uri uri = Uri.parse(post.getPostFile());
+                        // Produces DataSource instances through which media data is loaded.
+                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                                Util.getUserAgent(context, "soshoplus"));
+                        // This is the MediaSource representing the media to be played.
+                        MediaSource mediaSource =
+                                new ProgressiveMediaSource.Factory(dataSourceFactory)
+                                        .createMediaSource(uri);
+                        // Prepare the player with the source.
+                        player.prepare(mediaSource);
+                        
+                        
+                    }
+                    else if (Objects.equals(type, "image/jpeg")){
+                        audio_player.setVisibility(View.GONE);
+                        video_player.setVisibility(View.GONE);
+                        Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
+                    }
+                    else if (Objects.equals(type, "video/mp4")) {
+                        audio_player.setVisibility(View.GONE);
+                        post_image.setVisibility(View.GONE);
+                        /*TODO Play Video*/
+                        video_player.setVisibility(View.VISIBLE);
+                        player = new SimpleExoPlayer.Builder(context).build();
+                        video_player.setPlayer(player);
+    
+                        Uri uri = Uri.parse(post.getPostFile());
+                        // Produces DataSource instances through which media data is loaded.
+                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+                                Util.getUserAgent(context, "soshoplus"));
+                        // This is the MediaSource representing the media to be played.
+                        MediaSource mediaSource =
+                                new ProgressiveMediaSource.Factory(dataSourceFactory)
+                                        .createMediaSource(uri);
+                        // Prepare the player with the source.
+                        player.prepare(mediaSource);
+                        
                     }
                     else {
-                        Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
+                        audio_player.setVisibility(View.GONE);
+                        video_player.setVisibility(View.GONE);
+                        post_image.setVisibility(View.GONE);
                     }
     
                     Log.d(TAG, "bindNormalPosts: FILE TYPE" + type);

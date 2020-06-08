@@ -31,7 +31,6 @@ public class timelineFragment extends Fragment {
     private retrofitCalls calls;
     private static String TAG = "timeline Fragment ";
     
-    
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -42,7 +41,7 @@ public class timelineFragment extends Fragment {
         
        return timelineBinding.getRoot();
     }
-    
+
     /*get Timeline Feed*/
     private void getTimelineFeed () {
         calls = new retrofitCalls(requireContext());

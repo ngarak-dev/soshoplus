@@ -314,9 +314,11 @@ public class userData implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
+
     @SerializedName("mutual_friends_data")
     @Expose
     private Object mutualFriendsData;   /*This is an Array*/
+
     @SerializedName("lastseen_unix_time")
     @Expose
     private String lastseenUnixTime;

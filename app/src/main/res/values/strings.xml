@@ -8,4 +8,7 @@
     <string name="app_name">Soshoplus</string>
     <!--Fetch Type-->
     <string name="fetch_profile">user_data,family,liked_pages,joined_groups</string>
+    <!--Fetch Type-->
+
+    <string name="action_settings">Settings</string>
 </resources>

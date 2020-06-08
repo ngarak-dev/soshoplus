@@ -1,420 +1,310 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.mainfragments.profileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".ui.myProfile">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/followers_layout"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_rectangle"
-            android:orientation="vertical"
-            android:padding="@dimen/_5sdp"
-            android:weightSum="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/number_of_followers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Followers" />
-
-        </LinearLayout>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profile_pic"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/followers_layout"
-            app:layout_constraintRight_toLeftOf="@id/following_layout" />
-
-        <LinearLayout
-            android:id="@+id/following_layout"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_rectangle"
-            android:orientation="vertical"
-            android:padding="@dimen/_5sdp"
-            android:weightSum="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/number_of_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Following" />
-
-        </LinearLayout>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/user_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@null"
-            app:chipEndPadding="@dimen/_minus5sdp"
-            app:chipIconSize="@dimen/_25sdp"
-            app:chipSurfaceColor="@null"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
-            app:layout_constraintEnd_toEndOf="@+id/profile_pic"
-            app:layout_constraintStart_toStartOf="@+id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/verified_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:chipBackgroundColor="@null"
-            app:chipEndPadding="@dimen/_minus5sdp"
-            app:chipIconSize="@dimen/_25sdp"
-            app:chipSurfaceColor="@null"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
-            app:layout_constraintEnd_toEndOf="@+id/profile_pic"
-            app:layout_constraintStart_toEndOf="@+id/profile_pic" />
-
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_level" />
-
-        <TextView
-            android:id="@+id/full_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/email" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <aglibs.loading.skeleton.layout.SkeletonConstraintLayout
+            android:id="@+id/aboutLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/bgPrimary"
-            android:padding="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@id/full_name">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/white"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                app:layout_constraintEnd_toStartOf="@id/full_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/full_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_pic"
+                app:layout_constraintTop_toTopOf="@+id/profile_pic" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toTopOf="@id/verified_badge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/profile_pic"
+                app:layout_constraintTop_toBottomOf="@+id/full_name" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/user_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+                app:layout_constraintEnd_toStartOf="@id/verified_badge"
+                app:layout_constraintStart_toEndOf="@id/profile_pic"
+                app:layout_constraintStart_toStartOf="@+id/username"
+                app:layout_constraintTop_toBottomOf="@id/username" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/verified_badge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:chipBackgroundColor="@null"
+                app:chipSurfaceColor="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+                app:layout_constraintStart_toEndOf="@id/user_level"
+                app:layout_constraintTop_toBottomOf="@id/username" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:drawableStart="@drawable/ic_outline_contact_mail"
+                android:drawablePadding="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_pic" />
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_outline_contact_phone"
+                android:drawablePadding="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
 
             <TextView
                 android:id="@+id/about_me"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/phone" />
 
-            <TextView
-                android:id="@+id/birthday"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
+            <View
+                style="@style/divider"
+                app:layout_constraintBottom_toTopOf="@id/number_of_followers"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/about_me" />
 
             <TextView
-                android:id="@+id/gender"
-                android:layout_width="wrap_content"
+                android:id="@+id/no_of_posts"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/number_of_followers"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/birthday" />
+                app:layout_constraintTop_toBottomOf="@+id/about_me" />
 
             <TextView
-                android:id="@+id/phone"
-                android:layout_width="wrap_content"
+                android:id="@+id/number_of_followers"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/gender" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/number_of_following"
+                app:layout_constraintStart_toEndOf="@+id/no_of_posts"
+                app:layout_constraintTop_toBottomOf="@+id/about_me" />
 
             <TextView
-                android:id="@+id/registeredOn"
-                android:layout_width="wrap_content"
+                android:id="@+id/number_of_following"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/number_of_followers"
+                app:layout_constraintTop_toBottomOf="@+id/about_me" />
 
             <TextView
-                android:id="@+id/working"
-                android:layout_width="wrap_content"
+                android:id="@+id/posts_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
+                android:text="Post"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@id/no_of_posts"
+                app:layout_constraintEnd_toStartOf="@id/number_of_followers"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/registeredOn" />
+                app:layout_constraintTop_toBottomOf="@id/no_of_posts" />
 
             <TextView
-                android:id="@+id/website"
-                android:layout_width="wrap_content"
+                android:id="@+id/followers_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/working" />
+                android:text="Followers"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@id/number_of_followers"
+                app:layout_constraintEnd_toStartOf="@id/number_of_following"
+                app:layout_constraintStart_toEndOf="@id/no_of_posts"
+                app:layout_constraintStart_toStartOf="@id/number_of_followers"
+                app:layout_constraintTop_toBottomOf="@id/number_of_followers" />
 
             <TextView
-                android:id="@+id/city"
-                android:layout_width="wrap_content"
+                android:id="@+id/following_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
+                android:text="Following"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/number_of_followers"
+                app:layout_constraintStart_toStartOf="@id/number_of_following"
+                app:layout_constraintTop_toBottomOf="@id/number_of_following" />
+
+            <View
+                android:id="@+id/divider"
+                style="@style/divider"
+                app:layout_constraintBottom_toTopOf="@id/social_links_title"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/website" />
+                app:layout_constraintTop_toBottomOf="@id/followers_title" />
+
+            <TextView
+                android:id="@+id/social_links_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="Social Links"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/facebook_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 app:chipBackgroundColor="@null"
                 app:chipEndPadding="@dimen/_minus5sdp"
                 app:chipIconSize="@dimen/_25sdp"
                 app:chipSurfaceColor="@null"
                 app:layout_constraintEnd_toStartOf="@+id/twitter_link"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/city" />
+                app:layout_constraintTop_toBottomOf="@id/social_links_title" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/twitter_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 app:chipBackgroundColor="@null"
                 app:chipEndPadding="@dimen/_minus5sdp"
                 app:chipIconSize="@dimen/_25sdp"
                 app:chipSurfaceColor="@null"
+                app:layout_constraintEnd_toStartOf="@id/instagram_link"
                 app:layout_constraintStart_toEndOf="@id/facebook_link"
-                app:layout_constraintTop_toBottomOf="@id/city" />
+                app:layout_constraintTop_toBottomOf="@id/social_links_title" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/instagram_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 app:chipBackgroundColor="@null"
                 app:chipEndPadding="@dimen/_minus5sdp"
                 app:chipIconSize="@dimen/_25sdp"
                 app:chipSurfaceColor="@null"
+                app:layout_constraintEnd_toStartOf="@id/linkedin_link"
                 app:layout_constraintStart_toEndOf="@id/twitter_link"
-                app:layout_constraintTop_toBottomOf="@id/city" />
+                app:layout_constraintTop_toBottomOf="@id/social_links_title" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/linkedin_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 app:chipBackgroundColor="@null"
                 app:chipEndPadding="@dimen/_minus5sdp"
                 app:chipIconSize="@dimen/_25sdp"
                 app:chipSurfaceColor="@null"
+                app:layout_constraintEnd_toStartOf="@id/youtube_link"
                 app:layout_constraintStart_toEndOf="@id/instagram_link"
-                app:layout_constraintTop_toBottomOf="@id/city" />
+                app:layout_constraintTop_toBottomOf="@id/social_links_title" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/youtube_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 app:chipBackgroundColor="@null"
                 app:chipEndPadding="@dimen/_minus5sdp"
                 app:chipIconSize="@dimen/_25sdp"
                 app:chipSurfaceColor="@null"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/linkedin_link"
-                app:layout_constraintTop_toBottomOf="@id/city" />
+                app:layout_constraintTop_toBottomOf="@id/social_links_title" />
 
-            <LinearLayout
-                android:id="@+id/no_posts_layout"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_posts_rectangle"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/facebook_link">
+        </aglibs.loading.skeleton.layout.SkeletonConstraintLayout>
 
-                <TextView
-                    android:id="@+id/no_of_posts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/info_list"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
+            android:nestedScrollingEnabled="false"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@+id/counts_grid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aboutLayout" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Posts" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/no_points_layout"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_points_rectangle"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintEnd_toStartOf="@id/no_groups_layout"
-                app:layout_constraintStart_toEndOf="@id/no_posts_layout"
-                app:layout_constraintTop_toBottomOf="@id/facebook_link">
-
-                <TextView
-                    android:id="@+id/no_of_points"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Points" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/no_groups_layout"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_groups_rectangle"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/facebook_link">
-
-                <TextView
-                    android:id="@+id/no_of_groups"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Groups" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/no_album_layout"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_album_rectangle"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/no_posts_layout">
-
-                <TextView
-                    android:id="@+id/no_of_album"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Album" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/no_likes_layout"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_likes_rectangle"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                app:layout_constraintEnd_toStartOf="@id/no_groups_layout"
-                app:layout_constraintStart_toEndOf="@id/no_posts_layout"
-                app:layout_constraintTop_toBottomOf="@id/no_points_layout">
-
-                <TextView
-                    android:id="@+id/no_of_likes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Likes" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/wallet_layout"
-                android:layout_width="@dimen/_85sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_wallet_rectangle"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/no_groups_layout">
-
-                <TextView
-                    android:id="@+id/wallet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Wallet" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/counts_grid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/white"
+            android:elevation="@dimen/_5sdp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

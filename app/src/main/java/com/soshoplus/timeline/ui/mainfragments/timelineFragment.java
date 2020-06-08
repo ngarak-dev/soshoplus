@@ -26,11 +26,14 @@ public class timelineFragment extends Fragment {
     public timelineFragment () {
         // Required empty public constructor
     }
-    
+
     private FragmentTimelineBinding timelineBinding;
     private retrofitCalls calls;
     private static String TAG = "timeline Fragment ";
+  
+    /*TODO NULL exception zipo AVOID AVOID*/
     
+    /*initializing a view and inflate it */
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment

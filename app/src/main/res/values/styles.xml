@@ -39,4 +39,20 @@
         <item name="cornerRadius">@dimen/_50sdp</item>
     </style>
 
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
+    <style name="soshoDayNight_default.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="soshoDayNight_default.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="soshoDayNight_default.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

@@ -8,7 +8,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mainfragments.timelineFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.mainfragments.timelineFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeline_posts_list"

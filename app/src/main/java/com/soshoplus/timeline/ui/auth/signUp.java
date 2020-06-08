@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.ui.auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.soshoplus.timeline.databinding.ActivitySignupBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.ui.soshoTimeline;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
@@ -112,18 +114,21 @@ public class signUp extends AppCompatActivity {
                         //dismiss progress dialog
                         acProgressFlower.dismiss();
                         
-                        Log.d(TAG, "onResponse: " + response.body().getApiStatus());
-                        Log.d(TAG, "onResponse: " + response.body().getAccessToken());
-                        Log.d(TAG, "onResponse: " + response.body().getTimezone());
-                        Log.d(TAG, "onResponse: " + response.body().getUserId());
-                        
-                        String[] strings = {response.body().getTimezone(), response.body().getUserId(), response.body().getAccessToken()};
-                        
-                        //show alert
-                        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(signUp.this).setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET).setItems(strings, (dialog, which) -> {
-                            //null
-                        }).addButton("DISMISS", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (dialog, which) -> dialog.dismiss());
-                        builder.show();
+                        /*TO MAIN ACTIVITY FOR NOW*/
+                        /*TODO*/
+                        /*LATER IMPLEMENT KITU KINGINE*/
+                        //storing user session
+                        SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                                "userCred", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = pref.edit();
+    
+                        editor.putString("userId", response.body().getUserId());
+                        editor.putString("timezone", response.body().getTimezone());
+                        editor.putString("accessToken", response.body().getAccessToken());
+                        editor.apply();
+    
+                        startActivity(new Intent(signUp.this, soshoTimeline.class));
+                        finish();
                         
                     } else {
                         //dismiss dialog and log output
@@ -140,12 +145,14 @@ public class signUp extends AppCompatActivity {
                 } else {
                     //response is null
                     Log.d(TAG, "onResponse: " + "Response is Null");
+                    /*TODO Display a message response is null*/
                 }
             }
             
             @Override
             public void onFailure (@NonNull Call<accessToken> call, @NonNull Throwable t) {
                 Log.d(TAG, "onFailure: " + t.getMessage());
+                /*TODO Login failed after a call display a message*/
             }
         });
     }

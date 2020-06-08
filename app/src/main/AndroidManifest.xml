@@ -15,12 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/soshoDayNight_noActionBar">
+        <activity android:name=".ui.groups.viewGroup" />
         <activity android:name=".ui.soshoTimeline" />
         <activity android:name=".ui.auth.forgotPassword" />
         <activity android:name=".ui.auth.signUp" />
         <activity android:name=".ui.getStarted" />
         <activity android:name=".ui.auth.signIn" />
-        <activity android:name=".ui.splash">
+        <activity
+            android:name=".ui.splash"
+            android:theme="@style/soshoDayNight_noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

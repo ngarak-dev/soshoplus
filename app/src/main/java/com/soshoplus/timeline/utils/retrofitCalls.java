@@ -17,12 +17,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import com.google.gson.Gson;
+import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.postsfeed.post;
+import com.soshoplus.timeline.models.postsfeed.postList;
+
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -60,6 +66,8 @@ public class retrofitCalls {
     private String accessToken, userId, timezone;
     private static String TAG = "Calls class";
     public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
+    private String fetch_profile = "user_data,family,liked_pages,joined_groups";
+    private static String get_news_feed = "get_news_feed";
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String fetch_recommended = "groups";
     private static String joined_groups = "joined_groups";
@@ -88,6 +96,10 @@ public class retrofitCalls {
     /*TODO Check this later*/
     private static String group_id;
     private groupInfo groupInfo;
+    
+    /*TIMELINE*/
+    private Call<postList> postListCall;
+    private List<post> postList = null;
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -532,6 +544,55 @@ public class retrofitCalls {
             public void onFailure (@NotNull Call<suggestedList> call, @NotNull Throwable t) {
                 Log.i(TAG, "onFailure: " + t.getMessage());
                 /*TODO failed to get recommends*/
+            }
+        });
+    }
+    
+    /*Get timeline Feed*/
+    public void getTimelineFeed (RecyclerView timelinePostsList) {
+        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "20");
+        postListCall.enqueue(new Callback<postList>() {
+            @Override
+            public void onResponse (@NotNull Call<postList> call, @NotNull Response<postList> response) {
+                if (response.body() != null) {
+                    if (response.body().getApiStatus() == 200) {
+                        
+                        postList = new ArrayList<>();
+                        postList = response.body().getPostList();
+    
+                        Gson gson = new Gson();
+                        String gfgf = gson.toJson(postList);
+    
+                        Log.d(TAG, "onResponse: " + gfgf);
+                        
+                        /*initializing adapter*/
+                        timelineFeedAdapter listAdapter =
+                                new timelineFeedAdapter(postList,
+                                        context);
+    
+                        /*Setting Layout*/
+                        timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
+                        timelinePostsList.setItemAnimator(new DefaultItemAnimator());
+    
+                        /*Setting Adapter*/
+                        timelinePostsList.setAdapter(listAdapter);
+
+                    }
+                    else {
+                        apiErrors apiErrors = response.body().getErrors();
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                    }
+                }
+                else {
+                    /*response is null*/
+                    Log.i(TAG, "onResponse: " + "is null");
+                }
+            }
+    
+            @Override
+            public void onFailure (@NotNull Call<postList> call, @NotNull Throwable t) {
+                Log.i(TAG, "onFailure: " + t.getMessage());
             }
         });
     }

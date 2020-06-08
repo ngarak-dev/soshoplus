@@ -8,6 +8,7 @@ package com.soshoplus.timeline.models.userprofile;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.soshoplus.timeline.models.apiErrors;
 
 import java.io.Serializable;
 
@@ -313,9 +314,11 @@ public class userData implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
-//    @SerializedName("mutual_friends_data")
-//    @Expose
-//    private ArrayList mutualFriendsData;
+
+    @SerializedName("mutual_friends_data")
+    @Expose
+    private Object mutualFriendsData;   /*This is an Array*/
+
     @SerializedName("lastseen_unix_time")
     @Expose
     private String lastseenUnixTime;
@@ -340,6 +343,9 @@ public class userData implements Serializable {
     @SerializedName("is_blocked")
     @Expose
     private boolean isBlocked;
+    @SerializedName("errors")
+    @Expose
+    private apiErrors errors;
     private final static long serialVersionUID = -6169675304553903972L;
     
     /**
@@ -349,115 +355,116 @@ public class userData implements Serializable {
     }
     
     /**
-     * @param lastseen
-     * @param proType
-     * @param about
-     * @param registered
-     * @param instagram
-     * @param pointDayExpire
-     * @param cover
-     * @param lastseenUnixTime
-     * @param twitter
-     * @param followPrivacy
-     * @param lastFollowId
-     * @param balance
-     * @param eCommented
-     * @param eLikedPage
-     * @param weatherUnit
-     * @param state
-     * @param zip
-     * @param refUserId
-     * @param lng
-     * @param active
-     * @param google
-     * @param confirmFollowers
-     * @param paypalEmail
-     * @param androidNDeviceId
-     * @param eLastNotif
-     * @param lastLoginData
-     * @param status
-     * @param lastLocationUpdate
-     * @param lastName
-     * @param eFollowed
-     * @param eSentmeMsg
-     * @param gender
-     * @param city
-     * @param eProfileWallPost
-     * @param isBlocked
-     * @param paystackRef
+     * @param userId
+     * @param username
      * @param email
-     * @param emailNotification
-     * @param website
+     * @param firstName
+     * @param lastName
+     * @param avatar
+     * @param cover
+     * @param backgroundImage
+     * @param relationshipId
      * @param address
-     * @param wallet
-     * @param isFollowing
+     * @param working
+     * @param workingLink
+     * @param about
+     * @param school
+     * @param gender
+     * @param birthday
+     * @param countryId
+     * @param website
+     * @param facebook
+     * @param google
+     * @param twitter
+     * @param linkedin
+     * @param youtube
+     * @param vk
+     * @param instagram
+     * @param language
+     * @param ipAddress
+     * @param followPrivacy
+     * @param friendPrivacy
+     * @param postPrivacy
+     * @param messagePrivacy
+     * @param confirmFollowers
+     * @param showActivitiesPrivacy
+     * @param birthPrivacy
+     * @param visitPrivacy
+     * @param verified
+     * @param lastseen
+     * @param emailNotification
+     * @param eLiked
+     * @param eWondered
+     * @param eShared
+     * @param eFollowed
+     * @param eCommented
+     * @param eVisited
+     * @param eLikedPage
      * @param eMentioned
      * @param eJoinedGroup
-     * @param facebook
-     * @param avatar
-     * @param relationshipId
-     * @param userId
-     * @param url
-     * @param eShared
-     * @param androidMDeviceId
-     * @param twoFactorVerified
-     * @param workingLink
-     * @param newEmail
-     * @param iosMDeviceId
-     * @param dailyPoints
-     * @param language
-     * @param genderText
-     * @param lastAvatarMod
-     * @param notificationSettings
-     * @param points
-     * @param newPhone
-     * @param school
-     * @param details
-     * @param lat
-     * @param eWondered
-//     * @param mutualFriendsData
-     * @param ipAddress
-     * @param userPlatform
-     * @param birthPrivacy
-     * @param firstName
-     * @param phoneNumber
-     * @param vk
-     * @param schoolCompleted
-     * @param name
-     * @param birthday
-     * @param youtube
-     * @param twoFactor
      * @param eAccepted
-     * @param backgroundImage
-     * @param timezone
-     * @param iosNDeviceId
+     * @param eProfileWallPost
+     * @param eSentmeMsg
+     * @param eLastNotif
+     * @param notificationSettings
+     * @param status
+     * @param active
      * @param admin
-     * @param linkedin
-     * @param countryId
-     * @param lastseenTimeText
-     * @param isFollowingMe
-     * @param messagePrivacy
-     * @param notificationsSound
-     * @param working
-     * @param canFollow
+     * @param registered
+     * @param phoneNumber
      * @param isPro
-     * @param infoFile
-     * @param friendPrivacy
-     * @param eVisited
-     * @param orderPostsBy
-     * @param showActivitiesPrivacy
-     * @param verified
-     * @param postPrivacy
-     * @param eLiked
+     * @param proType
+     * @param timezone
      * @param referrer
+     * @param refUserId
+     * @param balance
+     * @param paypalEmail
+     * @param notificationsSound
+     * @param orderPostsBy
+     * @param androidMDeviceId
+     * @param iosMDeviceId
+     * @param androidNDeviceId
+     * @param iosNDeviceId
      * @param webDeviceId
-     * @param lastDataUpdate
-     * @param lastseenStatus
-     * @param visitPrivacy
-     * @param lastCoverMod
-     * @param username
+     * @param wallet
+     * @param lat
+     * @param lng
+     * @param lastLocationUpdate
      * @param shareMyLocation
+     * @param lastDataUpdate
+     * @param details
+     * @param lastAvatarMod
+     * @param lastCoverMod
+     * @param points
+     * @param dailyPoints
+     * @param pointDayExpire
+     * @param lastFollowId
      * @param shareMyData
+     * @param lastLoginData
+     * @param twoFactor
+     * @param newEmail
+     * @param twoFactorVerified
+     * @param newPhone
+     * @param infoFile
+     * @param city
+     * @param state
+     * @param zip
+     * @param schoolCompleted
+     * @param weatherUnit
+     * @param paystackRef
+     * @param userPlatform
+     * @param url
+     * @param name
+     * @param mutualFriendsData
+     * @param lastseenUnixTime
+     * @param lastseenStatus
+     * @param isFollowing
+     * @param canFollow
+     * @param isFollowingMe
+     * @param genderText
+     * @param lastseenTimeText
+     * @param isBlocked
+     * @param errors
      */
     public userData (String userId, String username, String email, String firstName,
                      String lastName, String avatar, String cover, String backgroundImage,
@@ -466,29 +473,7 @@ public class userData implements Serializable {
                      String countryId, String website, String facebook, String google,
                      String twitter, String linkedin, String youtube, String vk, String instagram
             , String language, String ipAddress, String followPrivacy, String friendPrivacy,
-                     String postPrivacy, String messagePrivacy, String confirmFollowers,
-                     String showActivitiesPrivacy, String birthPrivacy, String visitPrivacy,
-                     String verified, String lastseen, String emailNotification, String eLiked,
-                     String eWondered, String eShared, String eFollowed, String eCommented,
-                     String eVisited, String eLikedPage, String eMentioned, String eJoinedGroup,
-                     String eAccepted, String eProfileWallPost, String eSentmeMsg,
-                     String eLastNotif, String notificationSettings, String status, String active
-            , String admin, String registered, String phoneNumber, String isPro, String proType,
-                     String timezone, String referrer, String refUserId, String balance,
-                     String paypalEmail, String notificationsSound, String orderPostsBy,
-                     String androidMDeviceId, String iosMDeviceId, String androidNDeviceId,
-                     String iosNDeviceId, String webDeviceId, String wallet, String lat,
-                     String lng, String lastLocationUpdate, String shareMyLocation,
-                     String lastDataUpdate, details details, String lastAvatarMod,
-                     String lastCoverMod, String points, String dailyPoints,
-                     String pointDayExpire, String lastFollowId, String shareMyData,
-                     Object lastLoginData, String twoFactor, String newEmail,
-                     String twoFactorVerified,  String newPhone, String infoFile, String city,
-                     String state, String zip, String schoolCompleted, String weatherUnit,
-                     String paystackRef, String userPlatform, String url, String name,
-                     String lastseenUnixTime, String lastseenStatus,
-                     int isFollowing, int canFollow, int isFollowingMe, String genderText,
-                     String lastseenTimeText, boolean isBlocked) {
+                     String postPrivacy, String messagePrivacy, String confirmFollowers, String showActivitiesPrivacy, String birthPrivacy, String visitPrivacy, String verified, String lastseen, String emailNotification, String eLiked, String eWondered, String eShared, String eFollowed, String eCommented, String eVisited, String eLikedPage, String eMentioned, String eJoinedGroup, String eAccepted, String eProfileWallPost, String eSentmeMsg, String eLastNotif, String notificationSettings, String status, String active, String admin, String registered, String phoneNumber, String isPro, String proType, String timezone, String referrer, String refUserId, String balance, String paypalEmail, String notificationsSound, String orderPostsBy, String androidMDeviceId, String iosMDeviceId, String androidNDeviceId, String iosNDeviceId, String webDeviceId, String wallet, String lat, String lng, String lastLocationUpdate, String shareMyLocation, String lastDataUpdate, details details, String lastAvatarMod, String lastCoverMod, String points, String dailyPoints, String pointDayExpire, String lastFollowId, String shareMyData, Object lastLoginData, String twoFactor, String newEmail, String twoFactorVerified, String newPhone, String infoFile, String city, String state, String zip, String schoolCompleted, String weatherUnit, String paystackRef, String userPlatform, String url, String name, Object  mutualFriendsData, String lastseenUnixTime, String lastseenStatus, int isFollowing, int canFollow, int isFollowingMe, String genderText, String lastseenTimeText, boolean isBlocked, apiErrors errors) {
         super();
         this.userId = userId;
         this.username = username;
@@ -590,7 +575,7 @@ public class userData implements Serializable {
         this.userPlatform = userPlatform;
         this.url = url;
         this.name = name;
-//        this.mutualFriendsData = mutualFriendsData;
+        this.mutualFriendsData = mutualFriendsData;
         this.lastseenUnixTime = lastseenUnixTime;
         this.lastseenStatus = lastseenStatus;
         this.isFollowing = isFollowing;
@@ -599,6 +584,7 @@ public class userData implements Serializable {
         this.genderText = genderText;
         this.lastseenTimeText = lastseenTimeText;
         this.isBlocked = isBlocked;
+        this.errors = errors;
     }
     
     public String getUserId() {
@@ -1901,18 +1887,18 @@ public class userData implements Serializable {
         return this;
     }
     
-//    public ArrayList getMutualFriendsData() {
-//        return mutualFriendsData;
-//    }
-//
-//    public void setMutualFriendsData(ArrayList mutualFriendsData) {
-//        this.mutualFriendsData = mutualFriendsData;
-//    }
-//
-//    public userData withMutualFriendsData(ArrayList mutualFriendsData) {
-//        this.mutualFriendsData = mutualFriendsData;
-//        return this;
-//    }
+    public Object getMutualFriendsData() {
+        return mutualFriendsData;
+    }
+    
+    public void setMutualFriendsData(Object mutualFriendsData) {
+        this.mutualFriendsData = mutualFriendsData;
+    }
+    
+    public userData withMutualFriendsData(Object mutualFriendsData) {
+        this.mutualFriendsData = mutualFriendsData;
+        return this;
+    }
     
     public String getLastseenUnixTime() {
         return lastseenUnixTime;
@@ -2016,5 +2002,13 @@ public class userData implements Serializable {
     public userData withIsBlocked(boolean isBlocked) {
         this.isBlocked = isBlocked;
         return this;
+    }
+    
+    public apiErrors getErrors () {
+        return errors;
+    }
+    
+    public void setErrors (apiErrors errors) {
+        this.errors = errors;
     }
 }

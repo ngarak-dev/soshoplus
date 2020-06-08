@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.databinding.FragmentTimelineBinding;
+import com.soshoplus.timeline.utils.retrofitCalls;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,13 +26,28 @@ public class timelineFragment extends Fragment {
     public timelineFragment () {
         // Required empty public constructor
     }
-    
+
+    private FragmentTimelineBinding timelineBinding;
+    private retrofitCalls calls;
+    private static String TAG = "timeline Fragment ";
+  
     /*TODO NULL exception zipo AVOID AVOID*/
     
     /*initializing a view and inflate it */
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timeline, container, false);
+        timelineBinding = FragmentTimelineBinding.inflate(inflater, container, false);
+    
+        //getCurrent Profile
+        getTimelineFeed();
+        
+       return timelineBinding.getRoot();
+    }
+
+    /*get Timeline Feed*/
+    private void getTimelineFeed () {
+        calls = new retrofitCalls(requireContext());
+        calls.getTimelineFeed(timelineBinding.timelinePostsList);
     }
 }

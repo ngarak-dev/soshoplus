@@ -10,8 +10,8 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     defaultConfig {
@@ -65,6 +65,8 @@ dependencies {
     implementation "androidx.browser:browser:1.2.0"
     //bottom navigation
     implementation 'com.fxn769:bubbletabbar:1.0.5'
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.5'
     //skeleton loading
     implementation 'com.github.AgnaldoNP:AGSkeletonLoading:1.0'
 

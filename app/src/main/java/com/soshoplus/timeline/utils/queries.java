@@ -7,10 +7,13 @@
 package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
+import com.soshoplus.timeline.models.postsfeed.postList;
+
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
+
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import retrofit2.Call;
@@ -20,21 +23,30 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface queries {
-    /*Sign In*/
+  
+    /*SignIn*/
     @FormUrlEncoded
     @POST("auth")
     Call<accessToken> signIn (@Field("server_key") String server_key, @Field("username") String username, @Field("password") String password);
-    /*Create Account*/
+    
+    /*Creating Account*/
     @FormUrlEncoded
     @POST("create-account")
     Call<accessToken> createAccount (@Field("server_key") String server_key, @Field("email") String email, @Field("username") String username, @Field("password") String password, @Field("confirm_password") String confirm_password, @Field("phone_num") String phone_num);
+    
     /*Get User Data*/
     @FormUrlEncoded
     @POST("get-user-data")
     Call<userInfo> getUserData (@Query("access_token") String access_token,
                                 @Field("server_key") String server_key,
                                 @Field("fetch") String fetch, @Field("user_id") String user_id);
-    
+   
+    /*Timeline Posts*/
+    @FormUrlEncoded
+    @POST("posts")
+    Call<postList> getTimelinePosts (@Query("access_token") String access_token,
+                                     @Field("server_key") String server_key, @Field("type") String type, @Field("limit") String limit);
+
     /*GROUPS*/
     /*Recommended Groups*/
     @FormUrlEncoded

@@ -183,7 +183,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     
     /*view holder for posts*/
-    class PostViewHolder extends RecyclerView.ViewHolder {
+    static class PostViewHolder extends RecyclerView.ViewHolder {
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
@@ -278,20 +278,20 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         audio_player.setVisibility(View.GONE);
                         post_image.setVisibility(View.GONE);
                         /*TODO Play Video*/
-                        video_player.setVisibility(View.VISIBLE);
-                        player = new SimpleExoPlayer.Builder(context).build();
-                        video_player.setPlayer(player);
-    
-                        Uri uri = Uri.parse(post.getPostFile());
-                        // Produces DataSource instances through which media data is loaded.
-                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                                Util.getUserAgent(context, "soshoplus"));
-                        // This is the MediaSource representing the media to be played.
-                        MediaSource mediaSource =
-                                new ProgressiveMediaSource.Factory(dataSourceFactory)
-                                        .createMediaSource(uri);
-                        // Prepare the player with the source.
-                        player.prepare(mediaSource);
+//                        video_player.setVisibility(View.VISIBLE);
+//                        player = new SimpleExoPlayer.Builder(context).build();
+//                        video_player.setPlayer(player);
+//
+//                        Uri uri = Uri.parse(post.getPostFile());
+//                        // Produces DataSource instances through which media data is loaded.
+//                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
+//                                Util.getUserAgent(context, "soshoplus"));
+//                        // This is the MediaSource representing the media to be played.
+//                        MediaSource mediaSource =
+//                                new ProgressiveMediaSource.Factory(dataSourceFactory)
+//                                        .createMediaSource(uri);
+//                        // Prepare the player with the source.
+//                        player.prepare(mediaSource);
                         
                     }
                     else {
@@ -355,21 +355,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_likes.setText(post.getPostLikes());
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
-    
-            /*NO POST IMAGE*/
-            if (post.getPostFile().isEmpty()) {
-                post_image.setVisibility(View.GONE);
-            }
-            else {
-                Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
-            }
-    
-            if (post.getPostTextAPI().isEmpty()) {
-                contents.setVisibility(View.GONE);
-            }
-            else {
-                contents.setText(Html.fromHtml(post.getPostTextAPI()));
-            }
+   
+            Picasso.get().load(post.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(post_image);
         }
     }
     
@@ -416,20 +403,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
     
-            /*NO POST IMAGE*/
-            if (post.getPostFile().isEmpty()) {
-                post_image.setVisibility(View.GONE);
-            }
-            else {
-                Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
-            }
-    
-            if (post.getPostTextAPI().isEmpty()) {
-                contents.setVisibility(View.GONE);
-            }
-            else {
-                contents.setText(Html.fromHtml(post.getPostTextAPI()));
-            }
+            Picasso.get().load(post.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(post_image);
         }
     }
 }

@@ -14,6 +14,7 @@
         android:id="@+id/ad_profile_pic"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,6 +22,7 @@
         android:id="@+id/ad_full_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
         android:padding="@dimen/_2sdp"
         android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
@@ -32,6 +34,7 @@
         android:id="@+id/ad_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
         android:drawableStart="@drawable/ic_cursor_blue"
         android:drawablePadding="@dimen/_5sdp"
         android:padding="@dimen/_2sdp"
@@ -45,28 +48,37 @@
         android:id="@+id/ad_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ad_profile_pic" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/divider"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_description" />
 
     <TextView
         android:id="@+id/ad_headline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
         android:drawableStart="@drawable/ic_link"
         android:drawablePadding="@dimen/_10sdp"
-        android:padding="@dimen/_10sdp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintBottom_toTopOf="@id/ad_media"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ad_description" />
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <ImageView
         android:id="@+id/ad_media"
         android:layout_width="0dp"
         android:layout_height="@dimen/_180sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ad_headline"

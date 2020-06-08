@@ -128,7 +128,7 @@ public class profileFragment extends Fragment {
                         profileBinding.numberOfFollowers.setText(details.getFollowersCount());
                         profileBinding.numberOfFollowing.setText(details.getFollowingCount());
                         profileBinding.noOfPosts.setText(details.getPostCount());
-                        profileBinding.aboutMe.setText(Html.fromHtml(userData.getAbout()));
+//                        profileBinding.aboutMe.setText(Html.fromHtml(userData.getAbout()));
     
                         //profile pic
                         ShapeableImageView profilePic = profileBinding.profilePic;
@@ -560,7 +560,7 @@ public class profileFragment extends Fragment {
             profileBinding.aboutMe.setTextColor(getResources().getColor(R.color.indian_red));
         }
         else {
-            profileBinding.aboutMe.setText(userData.getAbout());
+            profileBinding.aboutMe.setText(Html.fromHtml(userData.getAbout()));
         }
     
         if (userData.getPhoneNumber().isEmpty()) {

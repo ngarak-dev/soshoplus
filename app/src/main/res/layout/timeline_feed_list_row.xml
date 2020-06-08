@@ -8,12 +8,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:background="@color/white"
+    android:elevation="@dimen/_10sdp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +47,7 @@
         android:id="@+id/post_contents"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp"
+        android:layout_margin="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_pic" />
@@ -51,7 +55,8 @@
     <ImageView
         android:id="@+id/post_image"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_200sdp"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"
@@ -61,8 +66,9 @@
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/post_audio"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="@dimen/_65sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
         app:default_artwork="@drawable/ic_soshoplus_txt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,9 +76,10 @@
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/post_video"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="@dimen/_250sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_audio" />
@@ -151,6 +158,9 @@
         android:id="@+id/like_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:outlineAmbientShadowColor="@null"
+        android:outlineSpotShadowColor="@null"
+        android:shadowColor="@null"
         android:text="Like"
         android:textStyle="bold"
         app:checkedIcon="@drawable/ic_liked"
@@ -158,11 +168,13 @@
         app:chipCornerRadius="0dp"
         app:chipIcon="@drawable/ic_like"
         app:chipIconSize="@dimen/_15sdp"
+        app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:iconStartPadding="@dimen/_10sdp"
         app:layout_constraintEnd_toStartOf="@id/comment_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_likes" />
+        app:layout_constraintTop_toBottomOf="@id/no_likes"
+        app:rippleColor="@color/white" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/comment_btn"

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,7 +67,6 @@ public class retrofitCalls {
     private String accessToken, userId, timezone;
     private static String TAG = "Calls class";
     public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
-    private String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String get_news_feed = "get_news_feed";
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String fetch_recommended = "groups";
@@ -550,7 +550,7 @@ public class retrofitCalls {
     
     /*Get timeline Feed*/
     public void getTimelineFeed (RecyclerView timelinePostsList) {
-        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "20");
+        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "2");
         postListCall.enqueue(new Callback<postList>() {
             @Override
             public void onResponse (@NotNull Call<postList> call, @NotNull Response<postList> response) {
@@ -559,11 +559,6 @@ public class retrofitCalls {
                         
                         postList = new ArrayList<>();
                         postList = response.body().getPostList();
-    
-                        Gson gson = new Gson();
-                        String gfgf = gson.toJson(postList);
-    
-                        Log.d(TAG, "onResponse: " + gfgf);
                         
                         /*initializing adapter*/
                         timelineFeedAdapter listAdapter =
@@ -573,6 +568,8 @@ public class retrofitCalls {
                         /*Setting Layout*/
                         timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
                         timelinePostsList.setItemAnimator(new DefaultItemAnimator());
+                        timelinePostsList.addItemDecoration(new DividerItemDecoration(context,
+                                DividerItemDecoration.VERTICAL));
     
                         /*Setting Adapter*/
                         timelinePostsList.setAdapter(listAdapter);

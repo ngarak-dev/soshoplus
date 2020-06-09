@@ -80,12 +80,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //           return new PostViewHolder(view);
 //       }
        if (viewType == PROFILE_PIC) {
-           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+           view =  LayoutInflater.from(context).inflate(R.layout.profile_cover_post_list_row, parent,
                    false);
            return new ProfileViewHolder(view);
        }
        else if (viewType == COVER_PIC) {
-           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+           view =  LayoutInflater.from(context).inflate(R.layout.profile_cover_post_list_row, parent,
                    false);
            return new CoverViewHolder(view);
        }
@@ -106,7 +106,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
            return new ColouredPostViewHolder(view);
        }
        else {
-           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+           view =  LayoutInflater.from(context).inflate(R.layout.default_post_list_row, parent,
                    false);
            return new PostViewHolder(view);
        }
@@ -347,7 +347,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class ProfileViewHolder extends RecyclerView.ViewHolder {
         
         ShapeableImageView profile_pic;
-        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
+        TextView full_name, time_ago, profile_updated,  no_likes, no_comments, no_shares;
         ImageView post_image;
         Chip likes, comment, share;
         
@@ -357,12 +357,13 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             profile_pic = itemView.findViewById(R.id.profile_pic);
             full_name = itemView.findViewById(R.id.full_name);
             time_ago = itemView.findViewById(R.id.time_ago);
+            
+            profile_updated = itemView.findViewById(R.id.update_profile_cover);
     
             no_likes = itemView.findViewById(R.id.no_likes);
             no_comments = itemView.findViewById(R.id.no_comments);
             no_shares = itemView.findViewById(R.id.no_shares);
-    
-            contents = itemView.findViewById(R.id.post_contents);
+
             post_image = itemView.findViewById(R.id.post_image);
     
             likes = itemView.findViewById(R.id.like_btn);
@@ -382,6 +383,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
             full_name.setText(post.getPublisherInfo().getName());
             time_ago.setText(post.getPostTime());
+            profile_updated.setText("updated profile photo");
             no_likes.setText(post.getPostLikes());
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
@@ -394,7 +396,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class CoverViewHolder extends RecyclerView.ViewHolder {
     
         ShapeableImageView profile_pic;
-        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
+        TextView full_name, time_ago, updated_cover,  no_likes, no_comments, no_shares;
         ImageView post_image;
         Chip likes, comment, share;
         
@@ -409,7 +411,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_comments = itemView.findViewById(R.id.no_comments);
             no_shares = itemView.findViewById(R.id.no_shares);
     
-            contents = itemView.findViewById(R.id.post_contents);
+            updated_cover = itemView.findViewById(R.id.update_profile_cover);
             post_image = itemView.findViewById(R.id.post_image);
     
             likes = itemView.findViewById(R.id.like_btn);
@@ -429,6 +431,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
             full_name.setText(post.getPublisherInfo().getName());
             time_ago.setText(post.getPostTime());
+            updated_cover.setText("updated cover photo");
             no_likes.setText(post.getPostLikes());
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());

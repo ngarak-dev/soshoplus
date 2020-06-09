@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:background="@color/white"
+    android:elevation="@dimen/_10sdp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/time_ago"
+        app:layout_constraintStart_toEndOf="@id/profile_pic"
+        app:layout_constraintTop_toTopOf="@id/profile_pic" />
+
+    <TextView
+        android:id="@+id/time_ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+        app:layout_constraintStart_toEndOf="@id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@id/full_name" />
+
+    <TextView
+        android:id="@+id/post_contents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_pic" />
+
+    <ImageView
+        android:id="@+id/post_image"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_contents"
+        tools:ignore="ContentDescription" />
+
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/post_audio"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_65sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        app:default_artwork="@drawable/ic_soshoplus_txt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_image" />
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/post_video"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_250sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_audio" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/likes_icon"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:enabled="false"
+        app:chipBackgroundColor="@null"
+        app:chipIcon="@drawable/ic_liked"
+        app:chipIconSize="@dimen/_10sdp"
+        app:chipStrokeColor="@null"
+        app:chipSurfaceColor="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_video" />
+
+    <TextView
+        android:id="@+id/no_likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="@id/likes_icon"
+        app:layout_constraintStart_toEndOf="@id/likes_icon"
+        app:layout_constraintTop_toBottomOf="@id/post_video"
+        app:layout_constraintTop_toTopOf="@id/likes_icon" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/shares_icon"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:enabled="false"
+        app:chipBackgroundColor="@null"
+        app:chipIcon="@drawable/ic_share"
+        app:chipIconSize="@dimen/_10sdp"
+        app:chipStrokeColor="@null"
+        app:chipSurfaceColor="@null"
+        app:layout_constraintEnd_toStartOf="@id/no_shares"
+        app:layout_constraintTop_toBottomOf="@id/post_video" />
+
+    <TextView
+        android:id="@+id/no_shares"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="@id/shares_icon"
+        app:layout_constraintEnd_toStartOf="@id/comments_icon"
+        app:layout_constraintTop_toTopOf="@id/shares_icon" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/comments_icon"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:enabled="false"
+        app:chipBackgroundColor="@null"
+        app:chipIcon="@drawable/ic_comment"
+        app:chipIconSize="@dimen/_10sdp"
+        app:chipStrokeColor="@null"
+        app:chipSurfaceColor="@null"
+        app:layout_constraintEnd_toStartOf="@id/no_comments"
+        app:layout_constraintTop_toBottomOf="@id/post_video" />
+
+    <TextView
+        android:id="@+id/no_comments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="@id/comments_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/comments_icon" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/like_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:outlineAmbientShadowColor="@null"
+        android:outlineSpotShadowColor="@null"
+        android:shadowColor="@null"
+        android:text="Like"
+        android:textStyle="bold"
+        app:checkedIcon="@drawable/ic_liked"
+        app:chipBackgroundColor="@null"
+        app:chipCornerRadius="0dp"
+        app:chipIcon="@drawable/ic_like"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipStrokeColor="@null"
+        app:chipSurfaceColor="@null"
+        app:iconStartPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@id/comment_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_likes"
+        app:rippleColor="@color/white" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/comment_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Comment"
+        android:textStyle="bold"
+        app:chipBackgroundColor="@null"
+        app:chipCornerRadius="0dp"
+        app:chipIcon="@drawable/ic_comment"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipSurfaceColor="@null"
+        app:iconStartPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toStartOf="@id/share_btn"
+        app:layout_constraintStart_toEndOf="@id/like_btn"
+        app:layout_constraintTop_toTopOf="@id/like_btn" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/share_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        android:textStyle="bold"
+        app:chipBackgroundColor="@null"
+        app:chipCornerRadius="0dp"
+        app:chipIcon="@drawable/ic_share"
+        app:chipIconSize="@dimen/_15sdp"
+        app:chipSurfaceColor="@null"
+        app:iconStartPadding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/comment_btn"
+        app:layout_constraintTop_toTopOf="@id/comment_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

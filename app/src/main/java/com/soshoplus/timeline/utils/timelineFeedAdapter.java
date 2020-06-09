@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,6 +60,9 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static int ADS = 4;
     private static int EMPTY_TYPE = 5;
     
+    /*COLOURED POST*/
+    private static int COLOURED_POST = 6;
+    
     public timelineFeedAdapter (List<post> postList, Context context) {
         this.postList = postList;
         this.context = context;
@@ -70,12 +74,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         
        View view;
        /*BY POST TYPE*/
-       if (viewType == NORMAL_POST) {
-           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
-                false);
-           return new PostViewHolder(view);
-       }
-       else if (viewType == PROFILE_PIC) {
+//       if (viewType == NORMAL_POST) {
+//           view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
+//                false);
+//           return new PostViewHolder(view);
+//       }
+       if (viewType == PROFILE_PIC) {
            view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
                    false);
            return new ProfileViewHolder(view);
@@ -96,20 +100,25 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    false);
            return new SharedPostViewHolder(view);
        }
+       else if (viewType == COLOURED_POST){
+           view =  LayoutInflater.from(context).inflate(R.layout.coloured_post_list_row, parent,
+                   false);
+           return new ColouredPostViewHolder(view);
+       }
        else {
            view =  LayoutInflater.from(context).inflate(R.layout.timeline_feed_list_row, parent,
                    false);
-           return new SharedPostViewHolder(view);
+           return new PostViewHolder(view);
        }
     }
     
     @Override
     public void onBindViewHolder (@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         /*getting item view type posts*/
-        if (getItemViewType(position) == NORMAL_POST) {
-            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
-        }
-        else if (getItemViewType(position) == PROFILE_PIC) {
+//        if (getItemViewType(position) == NORMAL_POST) {
+//            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
+//        }
+        if (getItemViewType(position) == PROFILE_PIC) {
             ((ProfileViewHolder) viewHolder).bindProfilePosts(postList.get(position));
         }
         else if (getItemViewType(position) == COVER_PIC) {
@@ -118,8 +127,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (getItemViewType(position) == ADS) {
             ((AdViewHolder) viewHolder).bindAdsPosts(postList.get(position));
         }
+        /*SHARED POST*/
         else if (getItemViewType(position) == EMPTY_TYPE) {
             ((SharedPostViewHolder) viewHolder).bindSharedPosts(postList.get(position));
+        }
+        else if (getItemViewType(position) == COLOURED_POST){
+            ((ColouredPostViewHolder) viewHolder).bindColouredPosts(postList.get(position));
         }
         else {
             ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
@@ -134,10 +147,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemViewType (int position) {
         /*BY POST TYPES*/
-        if (postList.get(position).getPostType().equals(TYPE_POST)) {
-            return NORMAL_POST;
-        }
-        else if (postList.get(position).getPostType().equals(TYPE_PROFILE_PIC)) {
+//        if (postList.get(position).getPostType().equals(TYPE_POST)) {
+//            return NORMAL_POST;
+//        }
+        if (postList.get(position).getPostType().equals(TYPE_PROFILE_PIC)) {
             return PROFILE_PIC;
         }
         else if (postList.get(position).getPostType().equals(TYPE_PROFILE_COVER_PIC)) {
@@ -146,8 +159,13 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (postList.get(position).getPostType().equals(TYPE_AD)) {
             return ADS;
         }
+        /*SHARED POST*/
         else if (postList.get(position).getPostType().equals("")){
             return EMPTY_TYPE;
+        }
+        /*COLOURED POST*/
+        else if (!postList.get(position).getColorId().equals("0")) {
+            return COLOURED_POST;
         }
         return NORMAL_POST;
     }
@@ -419,6 +437,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
     
+    /*view holder for shared post*/
     static class SharedPostViewHolder extends RecyclerView.ViewHolder {
     
         ShapeableImageView profile_pic, shared_profile_pic;
@@ -491,6 +510,75 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             shared_contents.setText(Html.fromHtml(sharedInfo.getPostTextAPI()));
     
             Picasso.get().load(sharedInfo.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(shared_post_image);
+        }
+    }
+    
+    /*view holder for coloured post*/
+    static class ColouredPostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, post_text,  no_likes, no_comments, no_shares;
+        Chip likes, comment, share;
+        LinearLayout colour_holder;
+        
+        public ColouredPostViewHolder (View itemView) {
+            super(itemView);
+            colour_holder = itemView.findViewById(R.id.color_holder);
+            post_text = itemView.findViewById(R.id.coloured_post_text);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+        }
+    
+        public void bindColouredPosts (post post) {
+            /*setting colour*/
+            switch (post.getColorId()) {
+                case "1":
+                    colour_holder.setBackgroundResource(R.drawable.gradient_one);
+                    break;
+                case "2":
+                    colour_holder.setBackgroundResource(R.drawable.gradient_two);
+                    break;
+                case "3":
+                    colour_holder.setBackgroundResource(R.drawable.gradient_three);
+                    break;
+                case "4":
+                    colour_holder.setBackgroundResource(R.drawable.gradient_four);
+                    break;
+                case "5":
+                    colour_holder.setBackgroundResource(R.drawable.gradient_five);
+                    break;
+                case "6":
+                    colour_holder.setBackgroundResource(R.drawable.gradient_six);
+                    break;
+                default:
+                    /*when the number exceeds*/
+                    colour_holder.setBackgroundResource(R.drawable.default_gradient);
+                    break;
+            }
+            post_text.setText(Html.fromHtml(post.getPostTextAPI()));
+    
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
         }
     }
 }

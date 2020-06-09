@@ -23,6 +23,26 @@
 
     <color name="transparent">#00F0F8FF</color>
 
+    <!--COLOURED POST-->
+    <!--six-->
+    <color name="endSix">#FB0404</color>
+    <color name="startSix">#08F7F7</color>
+    <!--five-->
+    <color name="endFive">#08F7F7</color>
+    <color name="startFive">#FB0404</color>
+    <!--four-->
+    <color name="endFour">#0503FF</color>
+    <color name="startFour">#F6AAFF</color>
+    <!--three-->
+    <color name="endThree">#7C84BA</color>
+    <color name="startThree">#04FB05</color>
+    <!--two-->
+    <color name="endTwo">#FF0600</color>
+    <color name="startTwo">#FFF900</color>
+    <!--one-->
+    <color name="endOne">#8481C2</color>
+    <color name="startOne">#FBAEFD</color>
+
     //custom colors
     <color name="white">#FFFFFF</color>
     <color name="ivory">#FFFFF0</color>

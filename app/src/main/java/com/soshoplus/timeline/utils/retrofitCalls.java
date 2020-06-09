@@ -550,7 +550,7 @@ public class retrofitCalls {
     
     /*Get timeline Feed*/
     public void getTimelineFeed (RecyclerView timelinePostsList) {
-        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "10");
+        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "12");
         postListCall.enqueue(new Callback<postList>() {
             @Override
             public void onResponse (@NotNull Call<postList> call, @NotNull Response<postList> response) {

@@ -67,6 +67,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static int AUDIO_POST = 9;
     /*BLOG POST*/
     private static int BLOG_POST = 10;
+    /*MAP POST*/
+    private static int MAP_POST = 11;
     
     public timelineFeedAdapter (List<post> postList, Context context, onClickListener clickListener) {
         this.postList = postList;
@@ -131,6 +133,11 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    false);
            return new BlogPostViewHolder(view);
        }
+       else if (viewType == MAP_POST) {
+           view =  LayoutInflater.from(context).inflate(R.layout.map_post_list_row, parent,
+                   false);
+           return new MapPostViewHolder(view);
+       }
        else {
            view =  LayoutInflater.from(context).inflate(R.layout.default_post_list_row, parent,
                    false);
@@ -176,6 +183,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         /*BLOG POST*/
         else if (getItemViewType(position) == BLOG_POST) {
             ((BlogPostViewHolder) viewHolder).bindBlogPosts(postList.get(position));
+        }
+        /*MAP POST*/
+        else if (getItemViewType(position) == MAP_POST) {
+            ((MapPostViewHolder) viewHolder).bindMapPosts(postList.get(position));
         }
         /*DEFAULT RETURN*/
         else {
@@ -232,6 +243,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         /*BLOG POST*/
         else if (!postList.get(position).getBlogId().equals("0")) {
             return BLOG_POST;
+        }
+        /*MAP POST*/
+        else if (!postList.get(position).getPostMap().isEmpty()) {
+            return MAP_POST;
         }
         return NORMAL_POST;
     }
@@ -755,7 +770,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_shares.setText(post.getPostShares());
     
             if (!post.getPostTextAPI().isEmpty()) {
-                contents.setText(post.getOrginaltext());
+                contents.setText(Html.fromHtml(post.getPostTextAPI()));
             } else {
                 contents.setVisibility(View.GONE);
             }
@@ -826,6 +841,56 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             Picasso.get().load(post.getBlog().getThumbnail()).fit().centerCrop().placeholder(R.drawable.ic_image_placeholder).into(article_thumbnail);
             
+        }
+    }
+    
+    static class MapPostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares, location;
+        Chip likes, comment, share;
+        
+        public MapPostViewHolder (View itemView) {
+            super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            location = itemView.findViewById(R.id.location_content);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+        }
+    
+        public void bindMapPosts (post post) {
+    
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+    
+            if (!post.getPostTextAPI().isEmpty()) {
+                contents.setText(Html.fromHtml(post.getPostTextAPI()));
+            } else {
+                contents.setVisibility(View.GONE);
+            }
+            
+            location.setText(post.getPostMap());
         }
     }
 }

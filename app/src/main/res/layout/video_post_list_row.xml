@@ -53,13 +53,25 @@
         app:layout_constraintTop_toBottomOf="@id/profile_pic" />
 
     <ImageView
-        android:id="@+id/post_image"
+        android:id="@+id/video_thumbnail"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_height="@dimen/_250sdp"
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_35sdp"
+        android:id="@+id/play_button"
+        android:src="@drawable/ic_play_button"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/video_thumbnail"
+        app:layout_constraintEnd_toEndOf="@+id/video_thumbnail"
+        app:layout_constraintStart_toStartOf="@+id/video_thumbnail"
+        app:layout_constraintTop_toTopOf="@id/video_thumbnail"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.chip.Chip
@@ -74,7 +86,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_image" />
+        app:layout_constraintTop_toBottomOf="@id/video_thumbnail" />
 
     <TextView
         android:id="@+id/no_likes"
@@ -83,7 +95,7 @@
         android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="@id/likes_icon"
         app:layout_constraintStart_toEndOf="@id/likes_icon"
-        app:layout_constraintTop_toBottomOf="@id/post_image"
+        app:layout_constraintTop_toBottomOf="@id/video_thumbnail"
         app:layout_constraintTop_toTopOf="@id/likes_icon" />
 
     <com.google.android.material.chip.Chip
@@ -97,7 +109,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_shares"
-        app:layout_constraintTop_toBottomOf="@id/post_image" />
+        app:layout_constraintTop_toBottomOf="@id/video_thumbnail" />
 
     <TextView
         android:id="@+id/no_shares"
@@ -120,7 +132,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_comments"
-        app:layout_constraintTop_toBottomOf="@id/post_image" />
+        app:layout_constraintTop_toBottomOf="@id/video_thumbnail" />
 
     <TextView
         android:id="@+id/no_comments"
@@ -136,6 +148,8 @@
         android:id="@+id/like_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:outlineAmbientShadowColor="@null"
+        android:outlineSpotShadowColor="@null"
         android:shadowColor="@null"
         android:text="Like"
         android:textStyle="bold"

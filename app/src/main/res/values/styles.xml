@@ -55,4 +55,14 @@
 
     <style name="soshoDayNight_default.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="sosho_FullScreen" parent="soshoDayNight_noActionBar">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

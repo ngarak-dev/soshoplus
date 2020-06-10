@@ -62,28 +62,6 @@
         app:layout_constraintTop_toBottomOf="@id/post_contents"
         tools:ignore="ContentDescription" />
 
-
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/post_audio"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_65sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:visibility="gone"
-        app:default_artwork="@drawable/ic_soshoplus_txt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_image" />
-
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/post_video"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_250sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_audio" />
-
     <com.google.android.material.chip.Chip
         android:id="@+id/likes_icon"
         android:layout_width="@dimen/_20sdp"
@@ -96,7 +74,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_video" />
+        app:layout_constraintTop_toBottomOf="@id/post_image" />
 
     <TextView
         android:id="@+id/no_likes"
@@ -105,7 +83,7 @@
         android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="@id/likes_icon"
         app:layout_constraintStart_toEndOf="@id/likes_icon"
-        app:layout_constraintTop_toBottomOf="@id/post_video"
+        app:layout_constraintTop_toBottomOf="@id/post_image"
         app:layout_constraintTop_toTopOf="@id/likes_icon" />
 
     <com.google.android.material.chip.Chip
@@ -119,7 +97,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_shares"
-        app:layout_constraintTop_toBottomOf="@id/post_video" />
+        app:layout_constraintTop_toBottomOf="@id/post_image" />
 
     <TextView
         android:id="@+id/no_shares"
@@ -142,7 +120,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_comments"
-        app:layout_constraintTop_toBottomOf="@id/post_video" />
+        app:layout_constraintTop_toBottomOf="@id/post_image" />
 
     <TextView
         android:id="@+id/no_comments"
@@ -158,8 +136,6 @@
         android:id="@+id/like_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:outlineAmbientShadowColor="@null"
-        android:outlineSpotShadowColor="@null"
         android:shadowColor="@null"
         android:text="Like"
         android:textStyle="bold"

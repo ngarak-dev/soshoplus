@@ -60,7 +60,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
         return suggestedInfoList.size();
     }
     
-    public class SuggestedFriendsHolder extends RecyclerView.ViewHolder{
+    static class SuggestedFriendsHolder extends RecyclerView.ViewHolder{
         
         ShapeableImageView profile_pic;
         TextView full_name;

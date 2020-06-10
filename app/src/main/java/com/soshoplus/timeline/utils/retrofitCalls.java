@@ -9,6 +9,7 @@ package com.soshoplus.timeline.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,18 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
-import com.google.gson.Gson;
-import com.soshoplus.timeline.models.apiErrors;
-import com.soshoplus.timeline.models.postsfeed.post;
-import com.soshoplus.timeline.models.postsfeed.postList;
-
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -45,10 +40,13 @@ import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.models.groups.groupList;
+import com.soshoplus.timeline.models.postsfeed.post;
+import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.userprofile.details;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.groups.viewGroup;
+import com.soshoplus.timeline.ui.viewVideo;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
@@ -550,7 +548,7 @@ public class retrofitCalls {
     
     /*Get timeline Feed*/
     public void getTimelineFeed (RecyclerView timelinePostsList) {
-        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "12");
+        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "9");
         postListCall.enqueue(new Callback<postList>() {
             @Override
             public void onResponse (@NotNull Call<postList> call, @NotNull Response<postList> response) {
@@ -562,13 +560,24 @@ public class retrofitCalls {
                         
                         /*initializing adapter*/
                         timelineFeedAdapter listAdapter =
-                                new timelineFeedAdapter(postList,
-                                        context);
+                                new timelineFeedAdapter(postList, context,
+                                        new timelineFeedAdapter.onClickListener() {
+                                    @Override
+                                    public void onClickPlay (String postFile) {
+                                        
+                                        Intent intent = new Intent();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("link", postFile);
+                                        intent.putExtras(bundle);
+                                        intent.setClass(context, viewVideo.class);
+                                        context.startActivity(intent);
+                                    }
+                                });
     
                         /*Setting Layout*/
-                        timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
+                        timelinePostsList.setLayoutManager(new LinearLayoutManager(retrofitCalls.this.context));
                         timelinePostsList.setItemAnimator(new DefaultItemAnimator());
-                        timelinePostsList.addItemDecoration(new DividerItemDecoration(context,
+                        timelinePostsList.addItemDecoration(new DividerItemDecoration(retrofitCalls.this.context,
                                 DividerItemDecoration.VERTICAL));
     
                         /*Setting Adapter*/

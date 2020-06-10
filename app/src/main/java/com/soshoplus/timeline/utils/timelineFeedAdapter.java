@@ -7,13 +7,15 @@
 package com.soshoplus.timeline.utils;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,13 +23,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -38,13 +33,15 @@ import com.soshoplus.timeline.models.postsfeed.sharedInfo;
 import com.soshoplus.timeline.models.postsfeed.userData;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    
     private final List<post> postList;
     private Context context;
+    private final onClickListener clickListener;
     private static String TAG = "timelineFeed Adapter";
     
     /*VIEW TYPES*/
@@ -62,10 +59,13 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     /*COLOURED POST*/
     private static int COLOURED_POST = 6;
+    /*VIDEO POST*/
+    private static int VIDEO_POST = 7;
     
-    public timelineFeedAdapter (List<post> postList, Context context) {
+    public timelineFeedAdapter (List<post> postList, Context context, onClickListener clickListener) {
         this.postList = postList;
         this.context = context;
+        this.clickListener = clickListener;
     }
     
     @NonNull
@@ -105,6 +105,11 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    false);
            return new ColouredPostViewHolder(view);
        }
+       else if (viewType == VIDEO_POST) {
+           view =  LayoutInflater.from(context).inflate(R.layout.video_post_list_row, parent,
+                   false);
+           return new VideoPostViewHolder(view);
+       }
        else {
            view =  LayoutInflater.from(context).inflate(R.layout.default_post_list_row, parent,
                    false);
@@ -131,8 +136,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (getItemViewType(position) == EMPTY_TYPE) {
             ((SharedPostViewHolder) viewHolder).bindSharedPosts(postList.get(position));
         }
+        /*COLOURED POST*/
         else if (getItemViewType(position) == COLOURED_POST){
             ((ColouredPostViewHolder) viewHolder).bindColouredPosts(postList.get(position));
+        }
+        else if (getItemViewType(position) == VIDEO_POST) {
+            ((VideoPostViewHolder) viewHolder).bindVideoPosts(postList.get(position), clickListener);
         }
         else {
             ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
@@ -150,6 +159,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //        if (postList.get(position).getPostType().equals(TYPE_POST)) {
 //            return NORMAL_POST;
 //        }
+        
+        /*checking file extension*/
+        String extension = MimeTypeMap.getFileExtensionFromUrl(postList.get(position).getPostFile());
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        String type = mime.getMimeTypeFromExtension(extension);
+    
         if (postList.get(position).getPostType().equals(TYPE_PROFILE_PIC)) {
             return PROFILE_PIC;
         }
@@ -166,6 +181,9 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         /*COLOURED POST*/
         else if (!postList.get(position).getColorId().equals("0")) {
             return COLOURED_POST;
+        }
+        else if (Objects.equals(type, "video/mp4")) {
+            return VIDEO_POST;
         }
         return NORMAL_POST;
     }
@@ -219,8 +237,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         ImageView post_image;
         Chip likes, comment, share;
-        PlayerView audio_player, video_player;
-        SimpleExoPlayer player;
         
         public PostViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -234,8 +250,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             contents = itemView.findViewById(R.id.post_contents);
             post_image = itemView.findViewById(R.id.post_image);
-            audio_player = itemView.findViewById(R.id.post_audio);
-            video_player = itemView.findViewById(R.id.post_video);
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
@@ -269,8 +283,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             /*NO POST IMAGE*/
             if (post.getPostFile().isEmpty()) {
                 post_image.setVisibility(View.GONE);
-                audio_player.setVisibility(View.GONE);
-                video_player.setVisibility(View.GONE);
             }
             else {
                 String extension = MimeTypeMap.getFileExtensionFromUrl(post.getPostFile());
@@ -280,53 +292,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     
                     if (Objects.equals(type, "audio/mpeg")) {
                         post_image.setVisibility(View.GONE);
-                        video_player.setVisibility(View.GONE);
                         /*TODO PLAY AUDIO*/
-                        audio_player.setVisibility(View.VISIBLE);
-                        player = new SimpleExoPlayer.Builder(context).build();
-                        audio_player.setPlayer(player);
-                        
-                        Uri uri = Uri.parse(post.getPostFile());
-                        // Produces DataSource instances through which media data is loaded.
-                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-                                Util.getUserAgent(context, "soshoplus"));
-                        // This is the MediaSource representing the media to be played.
-                        MediaSource mediaSource =
-                                new ProgressiveMediaSource.Factory(dataSourceFactory)
-                                        .createMediaSource(uri);
-                        // Prepare the player with the source.
-                        player.prepare(mediaSource);
-                        
-                        
                     }
                     else if (Objects.equals(type, "image/jpeg")){
-                        audio_player.setVisibility(View.GONE);
-                        video_player.setVisibility(View.GONE);
                         Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
                     }
-                    else if (Objects.equals(type, "video/mp4")) {
-                        audio_player.setVisibility(View.GONE);
-                        post_image.setVisibility(View.GONE);
-                        /*TODO Play Video*/
-//                        video_player.setVisibility(View.VISIBLE);
-//                        player = new SimpleExoPlayer.Builder(context).build();
-//                        video_player.setPlayer(player);
-//
-//                        Uri uri = Uri.parse(post.getPostFile());
-//                        // Produces DataSource instances through which media data is loaded.
-//                        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
-//                                Util.getUserAgent(context, "soshoplus"));
-//                        // This is the MediaSource representing the media to be played.
-//                        MediaSource mediaSource =
-//                                new ProgressiveMediaSource.Factory(dataSourceFactory)
-//                                        .createMediaSource(uri);
-//                        // Prepare the player with the source.
-//                        player.prepare(mediaSource);
-                        
-                    }
                     else {
-                        audio_player.setVisibility(View.GONE);
-                        video_player.setVisibility(View.GONE);
                         post_image.setVisibility(View.GONE);
                     }
     
@@ -511,8 +482,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             shared_full_name.setText(sharedInfo.getPublisherInfo().getName());
             shared_time_ago.setText(sharedInfo.getPostTime());
             shared_contents.setText(Html.fromHtml(sharedInfo.getPostTextAPI()));
-    
-            Picasso.get().load(sharedInfo.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(shared_post_image);
+            
+            if (sharedInfo.getPostFile().isEmpty()) {
+                shared_post_image.setVisibility(View.GONE);
+            } else {
+                Picasso.get().load(sharedInfo.getPostFile()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(shared_post_image);
+            }
         }
     }
     
@@ -583,5 +558,79 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
         }
+    }
+    
+    static class VideoPostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
+        ImageView image_thumbnail;
+        Chip likes, comment, share;
+        ImageButton play_button;
+        
+        public VideoPostViewHolder (View itemView) {
+            super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            image_thumbnail = itemView.findViewById(R.id.video_thumbnail);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+            
+            play_button = itemView.findViewById(R.id.play_button);
+        }
+    
+        public void bindVideoPosts (post post, onClickListener clickListener) {
+            
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+    
+            if (!post.getPostTextAPI().isEmpty()) {
+                contents.setText(post.getOrginaltext());
+            } else {
+                contents.setVisibility(View.GONE);
+            }
+    
+            /*getting thumbnail*/
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            //give YourVideoUrl below
+            retriever.setDataSource(post.getPostFile(), new HashMap<String, String>());
+            // this gets frame at 2nd second
+            Bitmap thumbnail = retriever.getFrameAtTime(2000000,
+                    MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+            //use this bitmap image
+            image_thumbnail.setImageBitmap(thumbnail);
+            
+            play_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View v) {
+                    clickListener.onClickPlay(post.getPostFile());
+                }
+            });
+        }
+    }
+    
+    public interface onClickListener {
+        /*on play click*/
+        void onClickPlay (String postFile);
     }
 }

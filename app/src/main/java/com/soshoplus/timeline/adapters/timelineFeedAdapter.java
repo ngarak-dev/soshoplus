@@ -4,11 +4,12 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.soshoplus.timeline.utils;
+package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,11 +57,16 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static int COVER_PIC = 3;
     private static int ADS = 4;
     private static int EMPTY_TYPE = 5;
-    
     /*COLOURED POST*/
     private static int COLOURED_POST = 6;
     /*VIDEO POST*/
     private static int VIDEO_POST = 7;
+    /*IMAGE POST*/
+    private static int IMAGE_POST = 8;
+    /*AUDIO POST*/
+    private static int AUDIO_POST = 9;
+    /*BLOG POST*/
+    private static int BLOG_POST = 10;
     
     public timelineFeedAdapter (List<post> postList, Context context, onClickListener clickListener) {
         this.postList = postList;
@@ -110,6 +116,21 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    false);
            return new VideoPostViewHolder(view);
        }
+       else if (viewType == IMAGE_POST) {
+           view =  LayoutInflater.from(context).inflate(R.layout.image_post_list_row, parent,
+                   false);
+           return new ImagePostViewHolder(view);
+       }
+       else if (viewType == AUDIO_POST) {
+           view =  LayoutInflater.from(context).inflate(R.layout.audio_post_list_row, parent,
+                   false);
+           return new AudioPostViewHolder(view);
+       }
+       else if (viewType == BLOG_POST) {
+           view =  LayoutInflater.from(context).inflate(R.layout.blog_post_list_row, parent,
+                   false);
+           return new BlogPostViewHolder(view);
+       }
        else {
            view =  LayoutInflater.from(context).inflate(R.layout.default_post_list_row, parent,
                    false);
@@ -140,9 +161,23 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (getItemViewType(position) == COLOURED_POST){
             ((ColouredPostViewHolder) viewHolder).bindColouredPosts(postList.get(position));
         }
+        /*VIDEO POST*/
         else if (getItemViewType(position) == VIDEO_POST) {
             ((VideoPostViewHolder) viewHolder).bindVideoPosts(postList.get(position), clickListener);
         }
+        /*SINGLE IMAGE POST*/
+        else if (getItemViewType(position) == IMAGE_POST) {
+            ((ImagePostViewHolder) viewHolder).bindImagePosts(postList.get(position));
+        }
+        /*AUDIO POST*/
+        else if (getItemViewType(position) == AUDIO_POST) {
+            ((AudioPostViewHolder) viewHolder).bindAudioPosts(postList.get(position), context, clickListener);
+        }
+        /*BLOG POST*/
+        else if (getItemViewType(position) == BLOG_POST) {
+            ((BlogPostViewHolder) viewHolder).bindBlogPosts(postList.get(position));
+        }
+        /*DEFAULT RETURN*/
         else {
             ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
         }
@@ -182,8 +217,21 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (!postList.get(position).getColorId().equals("0")) {
             return COLOURED_POST;
         }
+        /*VIDEO POST*/
         else if (Objects.equals(type, "video/mp4")) {
             return VIDEO_POST;
+        }
+        /*SINGLE IMAGE POST*/
+        else if (Objects.equals(type, "image/jpeg")) {
+            return IMAGE_POST;
+        }
+        /*AUDIO POST*/
+        else if (Objects.equals(type, "audio/mpeg")) {
+            return AUDIO_POST;
+        }
+        /*BLOG POST*/
+        else if (!postList.get(position).getBlogId().equals("0")) {
+            return BLOG_POST;
         }
         return NORMAL_POST;
     }
@@ -206,7 +254,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     
         public void bindAdsPosts (post post) {
-            Log.d(TAG, "bindAdsPosts: " + post.getPostType());
+            Log.d(TAG, "bindAdsPosts: " + "advertisement");
             
             /*Converting Object to json data*/
             Gson gson = new Gson();
@@ -277,40 +325,17 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             *  POOLS
             *  GIF
             *  FEELINGS
-            *  COLOR
             *  SELL PRODUCT*/
             
-            /*NO POST IMAGE*/
             if (post.getPostFile().isEmpty()) {
                 post_image.setVisibility(View.GONE);
+            } else {
+                Picasso.get().load(post.getPostFile()).fit().centerCrop().placeholder(R.drawable.ic_image_placeholder).into(post_image);
             }
-            else {
-                String extension = MimeTypeMap.getFileExtensionFromUrl(post.getPostFile());
-                if (extension != null) {
-                    MimeTypeMap mime = MimeTypeMap.getSingleton();
-                    String type = mime.getMimeTypeFromExtension(extension);
-                    
-                    if (Objects.equals(type, "audio/mpeg")) {
-                        post_image.setVisibility(View.GONE);
-                        /*TODO PLAY AUDIO*/
-                    }
-                    else if (Objects.equals(type, "image/jpeg")){
-                        Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
-                    }
-                    else {
-                        post_image.setVisibility(View.GONE);
-                    }
-    
-                    Log.d(TAG, "bindNormalPosts: FILE TYPE" + type);
-                }
-            }
-            
             if (post.getOrginaltext() == null) {
                 contents.setVisibility(View.GONE);
             }
-            else {
-                contents.setText(Html.fromHtml(post.getPostTextAPI()));
-            }
+            contents.setText(Html.fromHtml(post.getPostTextAPI()));
         }
     }
     
@@ -343,8 +368,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     
         public void bindProfilePosts (post post) {
-            Log.d(TAG, "bindProfilePosts: " + post.getPostType());
-            
+            Log.d(TAG, "bindProfilePosts: " + "profile image post");
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
                     .toBuilder()
@@ -391,8 +415,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     
         public void bindCoverPosts (post post) {
-            Log.d(TAG, "bindCoverPosts: " + post.getPostType());
-    
+            Log.d(TAG, "bindCoverPosts: " + "cover image post");
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
                     .toBuilder()
@@ -444,7 +467,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     
         public void bindSharedPosts (post post) {
-            Log.d(TAG, "bindSharedPosts: " + "Shared Post");
+            Log.d(TAG, "bindSharedPosts: " + "single image shared post");
     
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
@@ -518,6 +541,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     
         public void bindColouredPosts (post post) {
+            Log.d(TAG, "bindColouredPosts: " + "coloured post");
             /*setting colour*/
             switch (post.getColorId()) {
                 case "1":
@@ -560,6 +584,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
     
+    /*view holder for video post*/
     static class VideoPostViewHolder extends RecyclerView.ViewHolder {
     
         ShapeableImageView profile_pic;
@@ -590,7 +615,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     
         public void bindVideoPosts (post post, onClickListener clickListener) {
-            
+            Log.d(TAG, "bindVideoPosts: " + "single video post");
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
                     .toBuilder()
@@ -623,7 +648,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             play_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View v) {
-                    clickListener.onClickPlay(post.getPostFile());
+                    clickListener.onVideoClickPlay(post.getPostFile());
                 }
             });
         }
@@ -631,6 +656,176 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     public interface onClickListener {
         /*on play click*/
-        void onClickPlay (String postFile);
+        void onVideoClickPlay (String postFile);
+        void onAudioClickPlay (String postFile, Chip play, Chip pause);
+    }
+    
+    /*view holder for single image post*/
+    static class ImagePostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
+        ImageView post_image;
+        Chip likes, comment, share;
+        
+        public ImagePostViewHolder (View itemView) {
+            super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            post_image = itemView.findViewById(R.id.post_image);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+        }
+    
+        public void bindImagePosts (post post) {
+            Log.d(TAG, "bindImagePosts: " + "single image post");
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+            
+            if (post.getPostTextAPI().isEmpty()) {
+                contents.setVisibility(View.GONE);
+            }
+            contents.setText(Html.fromHtml(post.getPostTextAPI()));
+            
+            Picasso.get().load(post.getPostFile()).fit().centerCrop().into(post_image);
+        }
+    }
+    
+    /*view holder for audio post*/
+    static class AudioPostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;;
+        Chip likes, comment, share;
+        Chip play,  stop;
+        
+        public AudioPostViewHolder (View itemView) {
+            super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            play = itemView.findViewById(R.id.play_button);
+            stop = itemView.findViewById(R.id.stop_button);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+        }
+    
+        public void bindAudioPosts (post post, Context context, onClickListener clickListener) {
+            Log.d(TAG, "bindAudioPosts: " + "audio post");
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+    
+            if (!post.getPostTextAPI().isEmpty()) {
+                contents.setText(post.getOrginaltext());
+            } else {
+                contents.setVisibility(View.GONE);
+            }
+            
+            play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    clickListener.onAudioClickPlay(post.getPostFile(), play,
+                            stop);
+                }
+            });
+        }
+    }
+    
+    /*view holder for blog & articles*/
+    static class BlogPostViewHolder extends RecyclerView.ViewHolder {
+    
+        ShapeableImageView profile_pic;
+        TextView full_name, time_ago, contents, article_title,
+                article_description, no_likes, no_comments, no_shares;
+        ImageView article_thumbnail;
+        Chip likes, comment, share;
+        
+        public BlogPostViewHolder (View itemView) {
+            super(itemView);
+    
+            profile_pic = itemView.findViewById(R.id.profile_pic);
+            full_name = itemView.findViewById(R.id.full_name);
+            time_ago = itemView.findViewById(R.id.time_ago);
+    
+            no_likes = itemView.findViewById(R.id.no_likes);
+            no_comments = itemView.findViewById(R.id.no_comments);
+            no_shares = itemView.findViewById(R.id.no_shares);
+    
+            contents = itemView.findViewById(R.id.post_contents);
+            article_thumbnail = itemView.findViewById(R.id.article_thumbnail);
+            article_title = itemView.findViewById(R.id.article_title);
+            article_description = itemView.findViewById(R.id.article_description);
+    
+            likes = itemView.findViewById(R.id.like_btn);
+            comment = itemView.findViewById(R.id.comment_btn);
+            share = itemView.findViewById(R.id.share_btn);
+        }
+    
+        public void bindBlogPosts (post post) {
+            Log.d(TAG, "bindBlogPosts: " + "articles and blogs");
+            
+            profile_pic.setShapeAppearanceModel(profile_pic
+                    .getShapeAppearanceModel()
+                    .toBuilder()
+                    .setAllCorners(CornerFamily.ROUNDED, 20)
+                    .build());
+            Picasso.get().load(post.getPublisherInfo().getAvatar()).fit().centerCrop().into(profile_pic);
+    
+            full_name.setText(post.getPublisherInfo().getName());
+            time_ago.setText(post.getPostTime());
+            no_likes.setText(post.getPostLikes());
+            no_comments.setText(post.getPostComments());
+            no_shares.setText(post.getPostShares());
+    
+            if (post.getPostTextAPI().isEmpty()) {
+                contents.setVisibility(View.GONE);
+            }
+            contents.setText(Html.fromHtml(post.getPostTextAPI()));
+            
+            article_title.setText(Html.fromHtml(post.getBlog().getTitle()));
+            article_description.setText(Html.fromHtml(post.getBlog().getDescription()));
+            
+            Picasso.get().load(post.getBlog().getThumbnail()).fit().centerCrop().placeholder(R.drawable.ic_image_placeholder).into(article_thumbnail);
+            
+        }
     }
 }

@@ -9,7 +9,10 @@ package com.soshoplus.timeline.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +34,7 @@ import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
 import com.soshoplus.timeline.adapters.joinedGroupsAdapter;
 import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
+import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.friends.followers;
 import com.soshoplus.timeline.models.friends.following;
@@ -548,7 +552,7 @@ public class retrofitCalls {
     
     /*Get timeline Feed*/
     public void getTimelineFeed (RecyclerView timelinePostsList) {
-        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "9");
+        postListCall = queries.getTimelinePosts(accessToken, serverKey, get_news_feed, "50");
         postListCall.enqueue(new Callback<postList>() {
             @Override
             public void onResponse (@NotNull Call<postList> call, @NotNull Response<postList> response) {
@@ -563,7 +567,7 @@ public class retrofitCalls {
                                 new timelineFeedAdapter(postList, context,
                                         new timelineFeedAdapter.onClickListener() {
                                     @Override
-                                    public void onClickPlay (String postFile) {
+                                    public void onVideoClickPlay (String postFile) {
                                         
                                         Intent intent = new Intent();
                                         Bundle bundle = new Bundle();
@@ -571,6 +575,45 @@ public class retrofitCalls {
                                         intent.putExtras(bundle);
                                         intent.setClass(context, viewVideo.class);
                                         context.startActivity(intent);
+                                    }
+    
+                                    @Override
+                                    public void onAudioClickPlay (String postFile, Chip play, Chip stop) {
+                                        
+                                        Handler handler = new Handler();
+                                        final Runnable r = new Runnable() {
+                                            public void run() {
+                                                playAudio();
+                                            }
+    
+                                            private void playAudio () {
+    
+                                                MediaPlayer audio_player = MediaPlayer.create(context,
+                                                        Uri.parse(postFile));
+    
+                                                if(audio_player != null) {
+                                                    audio_player.start();
+                                                    play.setEnabled(false);
+                                                    stop.setEnabled(true);
+                                                    audio_player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                                        @Override
+                                                        public void onCompletion (MediaPlayer mediaPlayer) {
+                                                            mediaPlayer.release();
+                                                            play.setEnabled(true);
+                                                            stop.setEnabled(false);
+                                                        }
+                                                    });
+                                                    
+                                                    stop.setOnClickListener(view -> {
+                                                        audio_player.release();
+                                                        play.setEnabled(true);
+                                                        stop.setEnabled(false);
+                                                    });
+                                                }
+                                            }
+                                        };
+    
+                                        handler.postDelayed(r, 500);
                                     }
                                 });
     

@@ -1,0 +1,16 @@
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<vector android:height="200dp" android:viewportHeight="128"
+    android:viewportWidth="128" android:width="200dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#f2f2f2" android:pathData="m6.5,6.5h115v115h-115z"/>
+    <path android:fillColor="#fcb44d" android:pathData="m6.5,6.5h115v17.69h-115z"/>
+    <path android:fillColor="#fcb44d" android:pathData="M47.008,77.932m-8.531,0a8.531,8.531 0,1 1,17.062 0a8.531,8.531 0,1 1,-17.062 0"/>
+    <path android:fillColor="#fcb44d" android:pathData="M80.992,77.932m-8.531,0a8.531,8.531 0,1 1,17.062 0a8.531,8.531 0,1 1,-17.062 0"/>
+    <path android:fillColor="#fcb44d" android:pathData="m87.773,79.681a1.75,1.75 0,0 1,-1.75 -1.75v-34.759l-30.484,5.51v29.25a1.75,1.75 0,0 1,-3.5 0v-30.713a1.749,1.749 0,0 1,1.439 -1.719l33.984,-6.143a1.75,1.75 0,0 1,2.062 1.722v36.852a1.75,1.75 0,0 1,-1.751 1.75z"/>
+    <path android:fillColor="#fcb44d" android:pathData="m101.654,110.027h-75.308a1.75,1.75 0,1 1,0 -3.5h75.309a1.75,1.75 0,0 1,0 3.5z"/>
+    <path android:fillColor="#d69941" android:pathData="m54.6,106.53a3.989,3.989 0,0 0,-7.18 0h-21.07a1.75,1.75 0,0 0,0 3.5h21.07a3.994,3.994 0,1 0,7.18 -3.5z"/>
+</vector>

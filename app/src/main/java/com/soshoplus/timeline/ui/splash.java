@@ -11,34 +11,34 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.databinding.ActivitySplashBinding;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class splash extends AppCompatActivity {
     
     private static final String TAG = "splash Activity ";
+    ActivitySplashBinding splashBinding;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        splashBinding = ActivitySplashBinding.inflate(getLayoutInflater());
+        View view = splashBinding.getRoot();
+        setContentView(view);
         
         new Handler().postDelayed(() -> {
             //retrieving user session
             SharedPreferences pref = getApplicationContext().getSharedPreferences("userCred", 0); // 0 - for private mode
             
-            /*TODO Tumia local DB for storing this*/
-            /*TODO Baadae kuwa na activity ya kucheki hizi mambo splash ibaki clean*/
             if (pref.contains("userId")) {
-                String userId = pref.getString("userId", "0");
-                String timezone = pref.getString("timezone", "0");
-                String accessToken = pref.getString("accessToken", "0");
-    
-                /*TO MAIN ACTIVITY FOR NOW*/
-                /*TODO*/
-                /*LATER IMPLEMENT KITU KINGINE*/
                 startActivity(new Intent(splash.this, soshoTimeline.class));
                 finish();
                 
@@ -48,6 +48,6 @@ public class splash extends AppCompatActivity {
                 startActivity(new Intent(splash.this, getStarted.class));
                 finish();
             }
-        }, 2500);
+        }, 2000);
     }
 }

@@ -44,11 +44,11 @@
         app:layout_constraintTop_toBottomOf="@id/full_name" />
 
     <TextView
-        android:id="@+id/posted_audio"
+        android:id="@+id/posted_a_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
-        android:text="posted audio"
+        android:text="posted photos"
         android:textColor="@color/dim_gray"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintStart_toEndOf="@id/full_name"
@@ -63,44 +63,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/profile_pic" />
 
-    <ImageView
-        android:id="@+id/album_art"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:src="@drawable/ic_music_player"
+    <com.yds.library.MultiImageView
+        android:id="@+id/post_multi_image"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/play_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:chipBackgroundColor="@null"
-        app:chipCornerRadius="0dp"
-        app:chipEndPadding="@dimen/_minus5sdp"
-        app:chipIcon="@drawable/ic_play_button_filled"
-        app:chipIconSize="@dimen/_35sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/album_art"
-        app:layout_constraintEnd_toStartOf="@+id/stop_button"
-        app:layout_constraintStart_toStartOf="@+id/album_art"
-        app:layout_constraintTop_toBottomOf="@id/album_art" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/stop_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        app:chipBackgroundColor="@null"
-        app:chipCornerRadius="0dp"
-        app:chipEndPadding="@dimen/_minus5sdp"
-        app:chipIcon="@drawable/ic_stop_button_filled"
-        app:chipIconSize="@dimen/_35sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/album_art"
-        app:layout_constraintEnd_toEndOf="@+id/album_art"
-        app:layout_constraintStart_toEndOf="@+id/play_button"
-        app:layout_constraintTop_toBottomOf="@id/album_art" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_multi_image"
+        app:layout_constraintEnd_toEndOf="@+id/post_multi_image"
+        app:layout_constraintStart_toStartOf="@+id/post_multi_image"
+        app:layout_constraintTop_toTopOf="@id/post_multi_image" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/likes_icon"
@@ -114,7 +96,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/play_button" />
+        app:layout_constraintTop_toBottomOf="@id/post_multi_image" />
 
     <TextView
         android:id="@+id/no_likes"
@@ -123,7 +105,7 @@
         android:textSize="@dimen/_10ssp"
         app:layout_constraintBottom_toBottomOf="@id/likes_icon"
         app:layout_constraintStart_toEndOf="@id/likes_icon"
-        app:layout_constraintTop_toBottomOf="@id/play_button"
+        app:layout_constraintTop_toBottomOf="@id/post_multi_image"
         app:layout_constraintTop_toTopOf="@id/likes_icon" />
 
     <com.google.android.material.chip.Chip
@@ -137,7 +119,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_shares"
-        app:layout_constraintTop_toBottomOf="@id/play_button" />
+        app:layout_constraintTop_toBottomOf="@id/post_multi_image" />
 
     <TextView
         android:id="@+id/no_shares"
@@ -160,7 +142,7 @@
         app:chipStrokeColor="@null"
         app:chipSurfaceColor="@null"
         app:layout_constraintEnd_toStartOf="@id/no_comments"
-        app:layout_constraintTop_toBottomOf="@id/play_button" />
+        app:layout_constraintTop_toBottomOf="@id/post_multi_image" />
 
     <TextView
         android:id="@+id/no_comments"

@@ -8,7 +8,6 @@ package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.friends.suggested.suggestedInfo;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -52,7 +50,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
     @Override
     public void onBindViewHolder (@NonNull suggestedFriendsAdapter.SuggestedFriendsHolder holder, int position) {
         /*bind items and set onclick listener*/
-        holder.bind(suggestedInfoList.get(position), suggestedClickListener);
+        holder.bind(suggestedInfoList.get(position), suggestedClickListener, context);
     }
     
     @Override
@@ -75,7 +73,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
             about = itemView.findViewById(R.id.about_me);
         }
     
-        public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener) {
+        public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener, Context context) {
             
             full_name.setText(suggestedInfo.getName());
             about.setText(Html.fromHtml(String.valueOf(suggestedInfo.getAbout())));
@@ -85,21 +83,8 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
                     .toBuilder()
                     .setAllCorners(CornerFamily.ROUNDED, 20)
                     .build());
-            Picasso.get().load(suggestedInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).into(profile_pic
-                    , new Callback() {
-                @Override
-                public void onSuccess () {
-                    Log.d(TAG, "onSuccess: " + "Image loaded");
-                }
-    
-                @Override
-                public void onError (Exception e) {
-                    Log.d(TAG, "onError: " + e.getMessage());
-                    profile_pic.setImageResource(R.drawable.ic_image_placeholder);
-                    /*TODO reload icon*/
-                }
-            });
-            
+            Glide.with(context).load(suggestedInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
+
             /*on click*/
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

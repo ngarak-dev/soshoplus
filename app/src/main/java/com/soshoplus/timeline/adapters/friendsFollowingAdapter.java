@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.friends.following;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,7 +48,7 @@ public class friendsFollowingAdapter extends RecyclerView.Adapter<friendsFollowi
     public void onBindViewHolder (@NonNull friendsFollowingAdapter.FriendsHolder holder, int position) {
        /*following*/
         /*bind items and set onclick listener*/
-        holder.bind(followingList.get(position), friendClickListener);
+        holder.bind(followingList.get(position), friendClickListener, context);
     }
     
     @Override
@@ -58,7 +56,7 @@ public class friendsFollowingAdapter extends RecyclerView.Adapter<friendsFollowi
         return followingList.size();
     }
     
-    public class FriendsHolder extends RecyclerView.ViewHolder{
+    static class FriendsHolder extends RecyclerView.ViewHolder{
         
         ImageView profile_pic;
         TextView full_name;
@@ -69,20 +67,10 @@ public class friendsFollowingAdapter extends RecyclerView.Adapter<friendsFollowi
             full_name = itemView.findViewById(R.id.full_name);
         }
     
-        public void bind (following following, onFriendClickListener friendClickListener) {
+        public void bind (following following, onFriendClickListener friendClickListener, Context context) {
             full_name.setText(following.getName());
-            Picasso.get().load(following.getAvatar()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(profile_pic, new Callback() {
-                @Override
-                public void onSuccess () {
-                    Log.d(TAG, "onSuccess: " + "Image loaded");
-                }
-        
-                @Override
-                public void onError (Exception e) {
-                    Log.d(TAG, "onError: " + e.getMessage());
-                    profile_pic.setImageResource(R.drawable.ic_image_placeholder);
-                }
-            });
+    
+            Glide.with(context).load(following.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
             
             /*on friend Click*/
             itemView.setOnClickListener(new View.OnClickListener() {

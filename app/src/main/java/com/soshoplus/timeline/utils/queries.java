@@ -16,7 +16,10 @@ import com.soshoplus.timeline.models.groups.groupList;
 
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
+import retrofit2.adapter.rxjava3.Result;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -27,41 +30,46 @@ public interface queries {
     /*SignIn*/
     @FormUrlEncoded
     @POST("auth")
-    Call<accessToken> signIn (@Field("server_key") String server_key, @Field("username") String username, @Field("password") String password);
-    
+    Observable<accessToken> signIn (@Field("server_key") String server_key, @Field(
+            "username") String username, @Field("password") String password);
+
     /*Creating Account*/
     @FormUrlEncoded
     @POST("create-account")
-    Call<accessToken> createAccount (@Field("server_key") String server_key, @Field("email") String email, @Field("username") String username, @Field("password") String password, @Field("confirm_password") String confirm_password, @Field("phone_num") String phone_num);
-    
+    Observable<accessToken> createAccount (@Field("server_key") String server_key,
+                                  @Field("email") String email, @Field("username") String username, @Field("password") String password, @Field("confirm_password") String confirm_password, @Field("phone_num") String phone_num);
+
     /*Get User Data*/
     @FormUrlEncoded
     @POST("get-user-data")
-    Call<userInfo> getUserData (@Query("access_token") String access_token,
-                                @Field("server_key") String server_key,
-                                @Field("fetch") String fetch, @Field("user_id") String user_id);
-   
+    Observable<userInfo> getUserData (@Query("access_token") String access_token,
+                                      @Field("server_key") String server_key,
+                                      @Field("fetch") String fetch, @Field("user_id") String user_id);
+
     /*Timeline Posts*/
     @FormUrlEncoded
     @POST("posts")
-    Call<postList> getTimelinePosts (@Query("access_token") String access_token,
-                                     @Field("server_key") String server_key, @Field("type") String type, @Field("limit") String limit);
+    Observable<postList> getTimelinePosts (@Query("access_token") String access_token,
+                                         @Field("server_key") String server_key,
+                                           @Field("type") String type,
+                                           @Field("limit") String limit,
+                                           @Field("after_post_id") String after_post_id);
 
     /*GROUPS*/
     /*Recommended Groups*/
     @FormUrlEncoded
     @POST("fetch-recommended")
-    Call<groupList> getRecommended(@Query("access_token") String access_token,
+    Observable<groupList> getRecommended(@Query("access_token") String access_token,
                                    @Field("server_key") String server_key,
                                    @Field("type") String type, @Field("limit") String limit);
-    
+
     /*Joined Groups*/
     @FormUrlEncoded
     @POST("get-my-groups")
-    Call<groupList> getJoinedGroups(@Query("access_token") String access_token,
+    Observable<groupList> getJoinedGroups(@Query("access_token") String access_token,
                                 @Field("server_key") String server_key,
                                 @Field("type") String fetch, @Field("user_id") String user_id);
-    
+
     /*My Groups*/
     /*TODO Implement this on new Version*/
 //    @FormUrlEncoded
@@ -69,35 +77,36 @@ public interface queries {
 //    Call<Object> getMyGroups(@Query("access_token") String access_token,
 //                             @Field("server_key") String server_key,
 //                             @Field("type") String fetch);
+    
     /*Group Info*/
     @FormUrlEncoded
     @POST("get-group-data")
-    Call<group> getGroupInfo(@Query("access_token") String access_token,
+    Observable<group> getGroupInfo(@Query("access_token") String access_token,
                              @Field("server_key") String server_key,
                              @Field("group_id") String group_id);
-    
+
     /*Get Followers (Friends)*/
     @FormUrlEncoded
     @POST("get-friends")
-    Call<friends> getFriendsFollowers(@Query("access_token") String access_token,
+    Observable<friends> getFriendsFollowers(@Query("access_token") String access_token,
                                       @Field("server_key") String server_key,
                                       @Field("type") String fetch,
                                       @Field("user_id") String user_id,
                                       @Field("limit") String limit);
-    
+
     /*Get Followers (Friends)*/
     @FormUrlEncoded
     @POST("get-friends")
-    Call<friends> getFriendsFollowing(@Query("access_token") String access_token,
+    Observable<friends> getFriendsFollowing(@Query("access_token") String access_token,
                                       @Field("server_key") String server_key,
                                       @Field("type") String fetch,
                                       @Field("user_id") String user_id,
                                       @Field("limit") String limit);
-    
+
     /*Get Recommended users*/
     @FormUrlEncoded
     @POST("fetch-recommended")
-    Call<suggestedList> getPeopleYouMayKnow (@Query("access_token") String access_token,
+    Observable<suggestedList> getPeopleYouMayKnow (@Query("access_token") String access_token,
                                              @Field("server_key") String server_key,
                                              @Field("type") String fetch,
                                              @Field("limit") String limit);

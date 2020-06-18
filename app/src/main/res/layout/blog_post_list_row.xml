@@ -109,12 +109,22 @@
         <ImageView
             android:id="@+id/article_thumbnail"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_250sdp"
+            android:layout_height="@dimen/_200sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/article_description"
             tools:ignore="ContentDescription" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/article_thumbnail"
+            app:layout_constraintEnd_toEndOf="@+id/article_thumbnail"
+            app:layout_constraintStart_toStartOf="@+id/article_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/article_thumbnail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

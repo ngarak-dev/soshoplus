@@ -52,7 +52,7 @@ public class infoListAdapter extends RecyclerView.Adapter<infoListAdapter.InfoHo
         return infoList.size();
     }
     
-    public class InfoHolder extends RecyclerView.ViewHolder{
+    static class InfoHolder extends RecyclerView.ViewHolder{
         
         ImageView icon;
         TextView title;

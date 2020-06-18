@@ -6,7 +6,7 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
-import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -25,10 +25,11 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import com.google.gson.Gson;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.soshoplus.timeline.R;
@@ -44,15 +45,19 @@ import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitCalls;
 import com.soshoplus.timeline.utils.retrofitInstance;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,184 +67,157 @@ public class profileFragment extends Fragment {
     public profileFragment () {
         // Required empty public constructor
     }
-    
+
     private static String TAG = "profileFragment ";
     private static String verified_tooltip, level_tooltip;
     private FragmentProfileBinding profileBinding;
     private queries profileQueries;
-    private Call<userInfo> userInfoCall;
-    private details details;
-    private userData userData = null;
+    private Observable<userInfo> userInfoCall;
     private apiErrors apiErrors;
     //
     String userId, timezone, accessToken;
-    
+
     private ArrayList<infoList> infoList;
     private ArrayList<countsGrid> countsList;
-    
+
+    String bla;
+    ProgressDialog progressDialog;
     /*initializing a view and inflate it */
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         profileBinding = FragmentProfileBinding.inflate(inflater, container, false);
-    
+//
         SharedPreferences pref = requireContext().getSharedPreferences("userCred", 0); // 0 - for private mode
-    
+
         if (pref.contains("userId")) {
             userId = pref.getString("userId", "0");
             timezone = pref.getString("timezone", "0");
             accessToken = pref.getString("accessToken", "0");
         }
-    
+
         //Initializing Retrofit Instance for profile
-        profileQueries = retrofitInstance.getRetrofitInst().create(queries.class);
+        profileQueries = retrofitInstance.getInstRxJava().create(queries.class);
         userInfoCall = profileQueries.getUserData(accessToken, retrofitCalls.serverKey,
                 getResources().getString(R.string.fetch_profile),
                 userId);
-        
+
         //call profile method
-        loadProfile();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run () {
+                loadProfile();
+            }
+        });
+        executorService.shutdown();
+        
         return profileBinding.getRoot();
     }
     
-    /*TODO Null Exception inatokea hapa rekebisha*/
     private void loadProfile () {
-        userInfoCall.enqueue(new Callback<userInfo>() {
+
+        userInfoCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<userInfo>() {
             @Override
-            public void onResponse (@NotNull Call<userInfo> call, @NotNull Response<userInfo> response) {
-                if (response.body() != null) {
-                    if (response.body().getApiStatus() == 200) {
-                        if(userData == null) {
-                            userData = new userData();
-                            userData = response.body().getUserData();
-                        }
-                        
-                        if (details == null) {
-                            details = new details();
-                            details = response.body().getUserData().getDetails();
-                        }
-                        
-                        /*upper section*/
-                        profileBinding.fullName.setText(userData.getName());
-                        profileBinding.email.setText(userData.getEmail());
-                        profileBinding.username.setText("@ " + userData.getUsername());
-                        
-                        /*upper counts*/
-                        profileBinding.numberOfFollowers.setText(details.getFollowersCount());
-                        profileBinding.numberOfFollowing.setText(details.getFollowingCount());
-                        profileBinding.noOfPosts.setText(details.getPostCount());
-//                        profileBinding.aboutMe.setText(Html.fromHtml(userData.getAbout()));
+            public void onSubscribe (@NonNull Disposable d) {
+                Log.d(TAG, "onSubscribe: ");
+            }
+
+            @Override
+            public void onNext (@NonNull userInfo userInfo) {
+                if (userInfo.getApiStatus() == 200) {
     
-                        //profile pic
-                        ShapeableImageView profilePic = profileBinding.profilePic;
-                        profilePic.setShapeAppearanceModel(profilePic
-                                .getShapeAppearanceModel()
-                                .toBuilder()
-                                .setAllCorners(CornerFamily.ROUNDED, 20)
-                                .build());
-                        Picasso.get().load(userData.getAvatar()).into(profilePic);
-                        
-                        //get verified and user level badge
-                        badges(userData);
-                        //updating social icons links
-                        socialLinks(userData);
-                        //getting about user
-                        aboutUser(userData);
-                        /*get counts*/
-                        counts(userData, details);
+                    /*upper section*/
+                    profileBinding.fullName.setText(userInfo.getUserData().getName());
+                    profileBinding.email.setText(userInfo.getUserData().getEmail());
+                    profileBinding.username.setText("@ " + userInfo.getUserData().getUsername());
     
-                        /*stop loading skeleton loading*/
-                        if (profileBinding.aboutLayout.isLoading()) {
-                            profileBinding.aboutLayout.stopLoading();
-                        }
-                    }
-                    
-                    else {
-                        apiErrors = response.body().getErrors();
-                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
-                        
-                        /*TODO*/
-                        /*Get error code from server and display a message*/
-                    }
+                    /*upper counts*/
+                    profileBinding.numberOfFollowers.setText(userInfo.getUserData().getDetails().getFollowersCount());
+                    profileBinding.numberOfFollowing.setText(userInfo.getUserData().getDetails().getFollowingCount());
+                    profileBinding.noOfPosts.setText(userInfo.getUserData().getDetails().getPostCount());
+    
+                    //profile pic
+                    ShapeableImageView profilePic = profileBinding.profilePic;
+                    profilePic.setShapeAppearanceModel(profilePic
+                            .getShapeAppearanceModel()
+                            .toBuilder()
+                            .setAllCorners(CornerFamily.ROUNDED, 20)
+                            .build());
+
+                    Glide.with(requireContext()).load(userInfo.getUserData().getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profileBinding.profilePic);
+
+                    //get verified and user level badge
+                    badges(userInfo.getUserData());
+                    //updating social icons links
+                    socialLinks(userInfo.getUserData());
+                    //getting about user
+                    aboutUser(userInfo.getUserData());
+                    /*get counts*/
+                    counts(userInfo.getUserData(), userInfo.getUserData().getDetails());
                 }
-                
                 else {
-                    //response is null
-                    Log.d(TAG, "onResponse: " + "Response is Null");
-    
-                    //show alert
-                    CFAlertDialog.Builder builder =
-                            new CFAlertDialog.Builder(requireContext())
-                                    .setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT)
-                                    .setTitle("Oops !")
-                                    .setMessage("Please try again")
-                                    .addButton("RETRY", -1, -1, CFAlertDialog.CFAlertActionStyle.POSITIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick (DialogInterface dialog, int which) {
-                                            loadProfile();
-                                        }
-                                    })
-                                    .addButton("DISMISS", -1, -1,
-                                            CFAlertDialog.CFAlertActionStyle.NEGATIVE,
-                                            CFAlertDialog.CFAlertActionAlignment.JUSTIFIED,
-                                            (dialog, which) -> dialog.dismiss());
-                    builder.show();
+                    apiErrors = userInfo.getErrors();
+                    Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                    Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
                 }
             }
-    
+
             @Override
-            public void onFailure (@NotNull Call<userInfo> call, @NotNull Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-                Log.d(TAG, "onFailure: " + t.getLocalizedMessage());
-                Log.d(TAG, "onFailure: " + t.getCause());
-                
-                /*TODO Display Error Message*/
+            public void onError (@NonNull Throwable e) {
+                Log.d(TAG, "onError: " + e.getMessage());
+            }
+
+            @Override
+            public void onComplete () {
+                Log.d(TAG, "onComplete: ");
             }
         });
     }
-    
+
     private void socialLinks (userData userData) {
         //updating social icons
         if (userData.getFacebook().isEmpty()) {
             profileBinding.facebookLink.setChipIconResource(R.drawable.ic_no_facebook);
-        
+
         } else {
             profileBinding.facebookLink.setChipIconResource(R.drawable.ic_facebook);
         }
-    
+
         if (userData.getTwitter().isEmpty()) {
             profileBinding.twitterLink.setChipIconResource(R.drawable.ic_no_twitter);
-        
+
         } else {
             profileBinding.twitterLink.setChipIconResource(R.drawable.ic_twitter);
         }
-    
+
         if (userData.getInstagram().isEmpty()) {
             profileBinding.instagramLink.setChipIconResource(R.drawable.ic_no_instagram);
-        
+
         } else {
             profileBinding.instagramLink.setChipIconResource(R.drawable.ic_instagram);
         }
-    
+
         if (userData.getLinkedin().isEmpty()) {
             profileBinding.linkedinLink.setChipIconResource(R.drawable.ic_no_linkedin);
-        
+
         } else {
             profileBinding.linkedinLink.setChipIconResource(R.drawable.ic_linkedin);
         }
-    
+
         if (userData.getYoutube().isEmpty()) {
             profileBinding.youtubeLink.setChipIconResource(R.drawable.ic_no_youtube);
-        
+
         } else {
             profileBinding.youtubeLink.setChipIconResource(R.drawable.ic_youtube);
         }
-        
+
         //toolTips
         socialToolTips(userData);
     }
-    
+
     private void socialToolTips (userData userData) {
         //facebook tooltip
         profileBinding.facebookLink.setOnClickListener(v -> {
@@ -260,7 +238,7 @@ public class profileFragment extends Fragment {
                         .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                         .setLifecycleOwner(() -> null)
                         .build();
-            
+
                 //custom popup resources ids
                 TextView link =
                         balloon.getContentView().findViewById(R.id.link);
@@ -269,7 +247,7 @@ public class profileFragment extends Fragment {
                 link.setText(userData.getFacebook());
                 link.setCompoundDrawablePadding(5);
                 link.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_facebook, 0,0,0);
-            
+
                 share.setOnClickListener(v_ -> {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
@@ -277,24 +255,24 @@ public class profileFragment extends Fragment {
                     startActivity(Intent.createChooser(intent, "Share with"));
                 });
                 open.setOnClickListener(v_ -> {
-                
+
                     Uri webpage = Uri.parse(userData.getFacebook());
                     if (!userData.getFacebook().startsWith("http://") && !userData.getFacebook().startsWith(
                             "https" +
                             "://")) {
                         webpage = Uri.parse("http://" + userData.getFacebook());
                     }
-                
+
                     CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
                     CustomTabsIntent customTabsIntent =
                             intentBuilder.setShowTitle(true).addDefaultShareMenuItem().build();
                     customTabsIntent.launchUrl(requireContext(), webpage);
                 });
-            
+
                 balloon.show(profileBinding.facebookLink);
             }
         });
-    
+
         //twitter tooltip
         profileBinding.twitterLink.setOnClickListener(v -> {
             if (userData.getTwitter().isEmpty()) {
@@ -314,7 +292,7 @@ public class profileFragment extends Fragment {
                         .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
                         .setLifecycleOwner(() -> null)
                         .build();
-            
+
                 //custom popup resources ids
                 TextView link =
                         balloon.getContentView().findViewById(R.id.link);
@@ -323,7 +301,7 @@ public class profileFragment extends Fragment {
                 link.setText(userData.getTwitter());
                 link.setCompoundDrawablePadding(5);
                 link.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_twitter, 0,0,0);
-            
+
                 share.setOnClickListener(v_ -> {
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/plain");
@@ -331,24 +309,24 @@ public class profileFragment extends Fragment {
                     startActivity(Intent.createChooser(intent, "Share with"));
                 });
                 open.setOnClickListener(v_ -> {
-                
+
                     Uri webpage = Uri.parse(userData.getTwitter());
                     if (!userData.getTwitter().startsWith("http://") && !userData.getTwitter().startsWith(
                             "https" +
                             "://")) {
                         webpage = Uri.parse("http://" + userData.getTwitter());
                     }
-                
+
                     CustomTabsIntent.Builder intentBuilder = new CustomTabsIntent.Builder();
                     CustomTabsIntent customTabsIntent =
                             intentBuilder.setShowTitle(true).addDefaultShareMenuItem().build();
                     customTabsIntent.launchUrl(requireContext(), webpage);
                 });
-            
+
                 balloon.show(profileBinding.twitterLink);
             }
         });
-    
+
         //instagram tooltip
         profileBinding.instagramLink.setOnClickListener(v -> {
             if (userData.getInstagram().isEmpty()) {
@@ -511,7 +489,7 @@ public class profileFragment extends Fragment {
             }
         });
     }
-    
+
     private void badges (userData userData) {
         //user level
         switch (userData.getProType()) {
@@ -536,7 +514,7 @@ public class profileFragment extends Fragment {
                 profileBinding.userLevel.setChipBackgroundColorResource(R.color.colorAccent);
                 break;
         }
-    
+
         //verification status
         if (userData.getVerified().equals("1")) {
             profileBinding.verifiedBadge.setText("VERIFIED");
@@ -546,13 +524,13 @@ public class profileFragment extends Fragment {
             profileBinding.verifiedBadge.setText("NOT VERIFIED");
         }
     }
-    
+
     private void aboutUser (userData userData) {
-        
+
         if (userData == null) {
             userData = new userData();
         }
-    
+
         /**/
         //about data
         if(userData.getAbout() == null) {
@@ -562,64 +540,64 @@ public class profileFragment extends Fragment {
         else {
             profileBinding.aboutMe.setText(Html.fromHtml(userData.getAbout()));
         }
-    
+
         if (userData.getPhoneNumber().isEmpty()) {
             profileBinding.phone.setText("Empty");
             profileBinding.phone.setTextColor(getResources().getColor(R.color.indian_red));
         }else {
             profileBinding.phone.setText(userData.getPhoneNumber());
         }
-    
+
         /*Initializing List*/
         infoList = new ArrayList<>();
-        
+
         if (userData.getBirthday().isEmpty()) {
             Log.d(TAG, "Birthday: Empty");
         }else {
             infoList.add(new infoList(R.drawable.ic_birthday, "Birthday", userData.getBirthday()));
         }
-        
+
         if (userData.getGenderText().isEmpty()) {
             Log.d(TAG, "Gender: Empty");
         } else {
            infoList.add(new infoList(R.drawable.ic_gender, "Gender", userData.getGenderText()));
         }
-    
+
         if (userData.getWorking().isEmpty()) {
             Log.d(TAG, "Working: Empty");
         }else {
             infoList.add(new infoList(R.drawable.ic_working, "Working at", userData.getWorking()));
         }
-    
+
         if (userData.getWebsite().isEmpty()) {
             Log.d(TAG, "Website: Empty");
         }else {
             infoList.add(new infoList(R.drawable.ic_website, "Website", userData.getWebsite()));
         }
-        
+
         if (userData.getCity().isEmpty()) {
             Log.d(TAG, "City: Empty");
         } else {
            infoList.add(new infoList(R.drawable.ic_city, "City", userData.getCity()));
         }
-        
+
         if(userData.getSchool().isEmpty()) {
             Log.d(TAG, "School: Empty");
         }
         else {
             infoList.add(new infoList(R.drawable.ic_school, "School", userData.getSchool()));
         }
-        
+
         if (userData.getLanguage().isEmpty()) {
             Log.d(TAG, "Language: Empty");
         }
         else {
            infoList.add(new infoList(R.drawable.ic_languages, "Languages", userData.getLanguage()));
         }
-        
+
         addInfoList();
     }
-    
+
     private void addInfoList () {
         /*Initializing Adapter*/
         infoListAdapter infoListAdapter = new infoListAdapter(requireContext(), infoList);
@@ -631,7 +609,7 @@ public class profileFragment extends Fragment {
         /*Setting Adapter*/
         profileBinding.infoList.setAdapter(infoListAdapter);
     }
-    
+
     private void counts (userData userData, details details) {
         /*initializing list*/
         countsList = new ArrayList<>();
@@ -641,7 +619,7 @@ public class profileFragment extends Fragment {
         countsList.add(new countsGrid(R.drawable.ic_points, userData.getPoints(), "Points"));
         countsList.add(new countsGrid(R.drawable.ic_group, details.getGroupsCount(), "Groups"));
         countsList.add(new countsGrid(R.drawable.ic_likes, details.getLikesCount(), "Likes"));
-    
+
         /*Initializing Adapter*/
         countsGridAdapter countsGridAdapter = new countsGridAdapter(requireContext(), countsList);
         /*Setting Layout*/
@@ -650,7 +628,7 @@ public class profileFragment extends Fragment {
         /*Setting Adapter*/
         profileBinding.countsGrid.setAdapter(countsGridAdapter);
     }
-    
+
     @Override
     public void onDestroy () {
         super.onDestroy();

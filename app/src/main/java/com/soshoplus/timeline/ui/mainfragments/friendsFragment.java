@@ -16,6 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.soshoplus.timeline.databinding.FragmentFriendsBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -32,34 +37,46 @@ public class friendsFragment extends Fragment {
     
     /*initializing a view and inflate it */
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         friendsBinding = FragmentFriendsBinding.inflate(inflater, container, false);
         
         /*get Suggested friends*/
         getSuggestedFriends();
-    
-        /*get Followers*/
-        getFollowers();
         
-        /*get Following*/
-        getFollowing();
+        /*get Friends*/
+        getFriends();
         
         return friendsBinding.getRoot();
     }
     
     private void getSuggestedFriends () {
-        calls = new retrofitCalls(requireContext());
-        calls.getSuggestedFriends(friendsBinding.suggestedFriendsList);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run () {
+                calls = new retrofitCalls(requireContext());
+                calls.getSuggestedFriends(friendsBinding.suggestedFriendsList
+                        , executorService);
+            }
+        });
     }
     
-    private void getFollowing () {
-        calls = new retrofitCalls(requireContext());
-        calls.getFollowing(friendsBinding.friendsFollowingList);
-    }
+    private void getFriends () {
     
-    private void getFollowers () {
-        calls = new retrofitCalls(requireContext());
-        calls.getFollowers(friendsBinding.friendsFollowersList);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run () {
+                /*following*/
+                calls = new retrofitCalls(requireContext());
+                calls.getFollowing(friendsBinding.friendsFollowingList);
+                /*followers*/
+                calls = new retrofitCalls(requireContext());
+                calls.getFollowers(friendsBinding.friendsFollowersList);
+            }
+        });
+        
+        executorService.shutdown();
     }
 }

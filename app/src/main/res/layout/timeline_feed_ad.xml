@@ -77,12 +77,23 @@
     <ImageView
         android:id="@+id/ad_media"
         android:layout_width="0dp"
-        android:layout_height="@dimen/_180sdp"
+        android:layout_height="@dimen/_200sdp"
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ad_headline"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="ContentDescription" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/ad_media"
+        app:layout_constraintEnd_toEndOf="@+id/ad_media"
+        app:layout_constraintStart_toStartOf="@+id/ad_media"
+        app:layout_constraintTop_toTopOf="@id/ad_media"/>
 
     <TextView
         android:layout_width="@dimen/_50sdp"

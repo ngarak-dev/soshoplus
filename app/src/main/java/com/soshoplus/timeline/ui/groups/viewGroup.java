@@ -33,19 +33,19 @@ public class viewGroup extends AppCompatActivity {
         setContentView(view);
         
         /*declaration*/
-        profile_pic = viewGroupBinding.groupProfilePic;
-        cover_pic = viewGroupBinding.groupCover;
-        members = viewGroupBinding.noMembers;
-        privacy = viewGroupBinding.groupPrivacy;
-        category = viewGroupBinding.groupCategory;
-        
-        /*get group Info*/
-        getGroupInfo();
+//        profile_pic = viewGroupBinding.groupProfilePic;
+//        cover_pic = viewGroupBinding.groupCover;
+//        members = viewGroupBinding.noMembers;
+//        privacy = viewGroupBinding.groupPrivacy;
+//        category = viewGroupBinding.groupCategory;
+//
+//        /*get group Info*/
+//        getGroupInfo();
     }
     
-    /*get group info*/
-    private void getGroupInfo () {
-        calls = new retrofitCalls(this);
-        calls.getGroupInfo(profile_pic, cover_pic, members, privacy, category);
-    }
+//    /*get group info*/
+//    private void getGroupInfo () {
+//        calls = new retrofitCalls(this);
+//        calls.getGroupInfo(profile_pic, cover_pic, members, privacy, category);
+//    }
 }

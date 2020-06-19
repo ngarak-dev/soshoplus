@@ -7,8 +7,6 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -37,13 +36,11 @@ import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.sharedInfo;
 import com.soshoplus.timeline.models.postsfeed.userData;
-import com.soshoplus.timeline.utils.glide.GlideApp;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.yds.library.IMultiImageLoader;
 import com.yds.library.MultiImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -193,7 +190,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         /*COLOURED POST*/
         else if (getItemViewType(position) == COLOURED_POST){
-            ((ColouredPostViewHolder) viewHolder).bindColouredPosts(postList.get(position), context);
+            ((ColouredPostViewHolder) viewHolder).bindColouredPosts(postList.get(position), context, clickListener);
         }
         /*VIDEO POST*/
         else if (getItemViewType(position) == VIDEO_POST) {
@@ -202,7 +199,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         /*SINGLE IMAGE POST*/
         else if (getItemViewType(position) == IMAGE_POST) {
-            ((ImagePostViewHolder) viewHolder).bindImagePosts(postList.get(position), context);
+            ((ImagePostViewHolder) viewHolder).bindImagePosts(postList.get(position), clickListener, context);
         }
         /*AUDIO POST*/
         else if (getItemViewType(position) == AUDIO_POST) {
@@ -210,15 +207,15 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         /*BLOG POST*/
         else if (getItemViewType(position) == BLOG_POST) {
-            ((BlogPostViewHolder) viewHolder).bindBlogPosts(postList.get(position), context);
+            ((BlogPostViewHolder) viewHolder).bindBlogPosts(postList.get(position), context, clickListener);
         }
         /*MAP POST*/
         else if (getItemViewType(position) == MAP_POST) {
-            ((MapPostViewHolder) viewHolder).bindMapPosts(postList.get(position), context);
+            ((MapPostViewHolder) viewHolder).bindMapPosts(postList.get(position), context, clickListener);
         }
         /*MULTI IMAGE POST*/
         else if (getItemViewType(position) == MULTI_IMAGE_POST) {
-            ((MultiImagePostViewHolder) viewHolder).bindMultiImagePosts(postList.get(position), context);
+            ((MultiImagePostViewHolder) viewHolder).bindMultiImagePosts(postList.get(position), context, clickListener);
         }
         /*DEFAULT RETURN*/
         else {
@@ -352,7 +349,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         ImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public PostViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -408,11 +405,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 contents.setVisibility(View.GONE);
             }
             contents.setText(Html.fromHtml(post.getPostTextAPI()));
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -423,7 +445,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, profile_updated,  no_likes, no_comments, no_shares;
         ImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public ProfileViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -465,11 +487,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 //            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
 //                    options);
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -480,7 +527,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, updated_cover,  no_likes, no_comments, no_shares;
         ImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public CoverViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -521,11 +568,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //
 //            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
 //                    options);
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -537,7 +609,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 , contents, shared_contents,  no_likes, no_comments, no_shares;
         ImageView shared_post_image;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public SharedPostViewHolder (View itemView) {
             super(itemView);
@@ -610,11 +682,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                new glideImageLoader(shared_post_image, progressBar).load(sharedInfo.getPostFile(),
 //                        options);
 //            }
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -623,7 +720,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, post_text,  no_likes, no_comments, no_shares;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         LinearLayout colour_holder;
         
         public ColouredPostViewHolder (View itemView) {
@@ -644,7 +741,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindColouredPosts (post post, Context context) {
+        public void bindColouredPosts (post post, Context context, onClickListener clickListener) {
             Log.d(TAG, "bindColouredPosts: " + "coloured post");
             Log.d(TAG, "bindColouredPosts: " + post.getPostId());
             /*setting colour*/
@@ -686,11 +783,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_likes.setText(post.getPostLikes());
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -700,7 +822,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         ImageView image_thumbnail;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         ImageButton play_button;
         
         public VideoPostViewHolder (View itemView) {
@@ -762,11 +884,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     clickListener.onVideoClickPlay(post.getPostFile());
                 }
             });
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -777,7 +924,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         ImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public ImagePostViewHolder (View itemView) {
             super(itemView);
@@ -799,7 +946,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindImagePosts (post post, Context context) {
+        public void bindImagePosts (post post, onClickListener clickListener, Context context) {
             Log.d(TAG, "bindImagePosts: " + "single image post");
             Log.d(TAG, "bindImagePosts: " + post.getPostId());
             profile_pic.setShapeAppearanceModel(profile_pic
@@ -822,11 +969,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //
 //            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
 //                    options);
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -835,7 +1007,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         Chip play,  stop;
         
         public AudioPostViewHolder (View itemView) {
@@ -887,11 +1059,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             stop);
                 }
             });
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -903,7 +1100,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 article_description, no_likes, no_comments, no_shares;
         ImageView article_thumbnail;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public BlogPostViewHolder (View itemView) {
             super(itemView);
@@ -926,7 +1123,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindBlogPosts (post post, Context context) {
+        public void bindBlogPosts (post post, Context context, onClickListener clickListener) {
             Log.d(TAG, "bindBlogPosts: " + "articles and blogs");
             Log.d(TAG, "bindBlogPosts: " + post.getPostId());
             
@@ -953,11 +1150,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 //            new glideImageLoader(article_thumbnail, progressBar).load(post.getBlog().getThumbnail(),
 //                    options);
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -965,7 +1187,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares, location;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public MapPostViewHolder (View itemView) {
             super(itemView);
@@ -986,7 +1208,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindMapPosts (post post, Context context) {
+        public void bindMapPosts (post post, Context context, onClickListener clickListener) {
             Log.d(TAG, "bindMapPosts: " + "location post");
             Log.d(TAG, "bindMapPosts: " + post.getPostId());
             profile_pic.setShapeAppearanceModel(profile_pic
@@ -1009,11 +1231,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             
             location.setText(post.getPostMap());
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -1023,7 +1270,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
         MultiImageView post_multi_image;
         ProgressBar progressBar;
-        Chip likes, comment, share;
+        MaterialButton likes, comment, share;
         
         public MultiImagePostViewHolder (View itemView) {
             super(itemView);
@@ -1045,7 +1292,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindMultiImagePosts (post post, Context context) {
+        public void bindMultiImagePosts (post post, Context context, onClickListener clickListener) {
             
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
@@ -1089,11 +1336,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     }
                 });
             }
-            
+    
+            /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setIconResource(R.drawable.ic_liked);
                 likes.setText("Liked");
+                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             }
+    
+            likes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    /*direct setting on click then send a request*/
+                    if (!post.isLiked()) {
+                        likes.setIconResource(R.drawable.ic_liked);
+                        likes.setIconTintResource(R.color.colorPrimary);
+                        likes.setText("Liked");
+                        likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                    }
+                    else {
+                        likes.setIconResource(R.drawable.ic_like);
+                        likes.setIconTintResource(R.color.black);
+                        likes.setText("Like");
+                        likes.setTextColor(context.getResources().getColor(R.color.black));
+                    }
+                    /*clickListener & request for like or dislike*/
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
+                }
+            });
         }
     }
     
@@ -1107,5 +1379,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         /*on play click*/
         void onVideoClickPlay (String postFile);
         void onAudioClickPlay (String postFile, Chip play, Chip pause);
+        void onLikePost (String postId, MaterialButton likes, TextView no_likes);
     }
 }

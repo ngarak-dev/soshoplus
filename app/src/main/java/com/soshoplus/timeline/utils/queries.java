@@ -14,6 +14,7 @@ import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
 
+import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -110,4 +111,12 @@ public interface queries {
                                              @Field("server_key") String server_key,
                                              @Field("type") String fetch,
                                              @Field("limit") String limit);
+    
+    /*Like a post*/
+    @FormUrlEncoded
+    @POST("post-actions")
+    Observable<like_dislike> like_dislikePost (@Query("access_token") String access_token,
+                                                  @Field("server_key") String server_key,
+                                                  @Field("post_id") String post_id,
+                                                  @Field("action") String action);
 }

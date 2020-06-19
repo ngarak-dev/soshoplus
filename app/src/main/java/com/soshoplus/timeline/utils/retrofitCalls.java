@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -41,6 +43,7 @@ import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
+import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.groups.viewGroup;
 
@@ -96,6 +99,10 @@ public class retrofitCalls {
     private LinearLayoutManager linearLayoutManager;
     private String afterPostId = "0";
     private timelineFeedAdapter feedAdapter;
+    
+    /*POST LIKE_DISLIKE*/
+    private Observable<like_dislike> like_dislikeObservable;
+    
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -234,7 +241,7 @@ public class retrofitCalls {
 //        groupCall = queries.getGroupInfo(accessToken, serverKey, group_id);
 //        groupCall.enqueue(new Callback<group>() {
 //            @Override
-//            public void onResponse (@NotNull Call<group> call, @NotNull Response<group> response) {
+//            public void onResponse (@NotNull Call<group> call, @NotNull like_dislike<group> response) {
 //                if (response.body() != null) {
 //                    if (response.body().getApiStatus() == 200) {
 //
@@ -611,6 +618,12 @@ public class retrofitCalls {
                                             public void onAudioClickPlay (String postFile, Chip play, Chip pause) {
         
                                             }
+    
+                                            @Override
+                                            public void onLikePost (String postId, MaterialButton likes, TextView no_likes) {
+                                                likePost(postId, likes,
+                                                        no_likes);
+                                            }
                                         });
                                 
                                 /*setting adapter*/
@@ -659,7 +672,6 @@ public class retrofitCalls {
                                 addData(test);
                             }
                             else {
-    
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
     
@@ -711,6 +723,58 @@ public class retrofitCalls {
                                                 CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
                                                         dialog, which) -> dialog.dismiss());
                         builder.show();
+                    }
+    
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
+    }
+    
+    private void likePost (String postId, MaterialButton likes, TextView no_likes) {
+        like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
+                serverKey, postId, "like");
+        like_dislikeObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<like_dislike>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+    
+                    @Override
+                    public void onNext (@NonNull like_dislike like_dislike) {
+                        if (like_dislike.getApiStatus() == 200) {
+                            Log.d(TAG, "onNext: liked/disliked");
+                            no_likes.setText(like_dislike.getLikesData().getCount());
+                            
+                            if (like_dislike.getAction().equals("liked")) {
+                                likes.setIconResource(R.drawable.ic_liked);
+                                likes.setIconTintResource(R.color.colorPrimary);
+                                likes.setText("Liked");
+                                likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            }
+                            else {
+                                likes.setIconResource(R.drawable.ic_like);
+                                likes.setIconTintResource(R.color.black);
+                                likes.setText("Like");
+                                likes.setTextColor(context.getResources().getColor(R.color.black));
+                            }
+                        }
+                        else {
+                            apiErrors apiErrors = like_dislike.getErrors();
+                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                        }
+                    }
+    
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        
+                        /*TODO repeate if failed*/
+                        likePost(postId, likes, no_likes);
                     }
     
                     @Override

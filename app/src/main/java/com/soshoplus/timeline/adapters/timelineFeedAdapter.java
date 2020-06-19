@@ -7,6 +7,9 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,13 +27,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.gson.Gson;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.core.BottomPopupView;
+import com.lxj.xpopup.core.ImageViewerPopupView;
+import com.lxj.xpopup.enums.PopupType;
+import com.lxj.xpopup.impl.ConfirmPopupView;
+import com.lxj.xpopup.impl.LoadingPopupView;
+import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
+import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
@@ -40,10 +54,16 @@ import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.yds.library.IMultiImageLoader;
 import com.yds.library.MultiImageView;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     
@@ -61,7 +81,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static String TYPE_PROFILE_COVER_PIC = "profile_cover_picture";
     
     /*BY POST TYPE*/
-    private static int NORMAL_POST = 1;
+    private static int DEFAULT_POST = 1;
     private static int PROFILE_PIC = 2;
     private static int COVER_PIC = 3;
     private static int ADS = 4;
@@ -89,6 +109,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     
     /*GLIDE OPTIONS*/
     RequestOptions options = new RequestOptions()
+            .format(DecodeFormat.PREFER_RGB_565)
+            .centerCrop()
             .placeholder(R.drawable.ic_image_placeholder)
             .error(R.drawable.ic_image_placeholder)
             .priority(Priority.HIGH);
@@ -163,7 +185,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else {
             view =  LayoutInflater.from(context).inflate(R.layout.default_post_list_row, parent,
                     false);
-            return new PostViewHolder(view);
+            return new DefaultViewHolder(view);
         }
     }
     
@@ -199,7 +221,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         /*SINGLE IMAGE POST*/
         else if (getItemViewType(position) == IMAGE_POST) {
-            ((ImagePostViewHolder) viewHolder).bindImagePosts(postList.get(position), clickListener, context);
+            ((ImagePostViewHolder) viewHolder).bindImagePosts(postList.get(position), clickListener, context, position);
         }
         /*AUDIO POST*/
         else if (getItemViewType(position) == AUDIO_POST) {
@@ -215,11 +237,11 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         /*MULTI IMAGE POST*/
         else if (getItemViewType(position) == MULTI_IMAGE_POST) {
-            ((MultiImagePostViewHolder) viewHolder).bindMultiImagePosts(postList.get(position), context, clickListener);
+            ((MultiImagePostViewHolder) viewHolder).bindMultiImagePosts(postList.get(position), context, clickListener, position);
         }
         /*DEFAULT RETURN*/
         else {
-            ((PostViewHolder) viewHolder).bindNormalPosts(postList.get(position), context);
+            ((DefaultViewHolder) viewHolder).bindDefaultPosts(postList.get(position), context);
         }
     }
     
@@ -275,6 +297,9 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (Objects.equals(type, "image/jpeg")) {
             return IMAGE_POST;
         }
+        else if (Objects.equals(type, "image/png")) {
+            return IMAGE_POST;
+        }
         /*AUDIO POST*/
         else if (Objects.equals(type, "audio/mpeg")) {
             return AUDIO_POST;
@@ -291,7 +316,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         else if (postList.get(position).getMultiImage().equals("1")) {
             return MULTI_IMAGE_POST;
         }
-        return NORMAL_POST;
+        return DEFAULT_POST;
     }
     
     /*view holder for ads posts*/
@@ -337,13 +362,21 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             description.setText(Html.fromHtml(post.getDescription()));
             headline.setText(post.getHeadline());
 
-//            new glideImageLoader(media, progressBar).load(post.getAdMedia(),
-//                    options);
+            new glideImageLoader(media, progressBar).load(post.getAdMedia(),
+                    options);
+            
+            media.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(media,
+                            post.getAdMedia(), new fullImageLoader()).show();
+                }
+            });
         }
     }
     
     /*view holder for posts*/
-    class PostViewHolder extends RecyclerView.ViewHolder {
+    class DefaultViewHolder extends RecyclerView.ViewHolder {
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
@@ -351,7 +384,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ProgressBar progressBar;
         MaterialButton likes, comment, share;
         
-        public PostViewHolder (@NonNull View itemView) {
+        public DefaultViewHolder (@NonNull View itemView) {
             super(itemView);
             profile_pic = itemView.findViewById(R.id.profile_pic);
             full_name = itemView.findViewById(R.id.full_name);
@@ -370,7 +403,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindNormalPosts (post post, Context context) {
+        public void bindDefaultPosts (post post, Context context) {
             Log.d(TAG, "bindNormalPosts: " + post.getPostType());
             Log.d(TAG, "bindNormalPosts: " + post.getPostId());
             
@@ -395,6 +428,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             if (post.getPostFile().isEmpty()) {
                 post_image.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             } else {
                 
                 new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
@@ -404,6 +438,14 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (post.getOrginaltext() == null) {
                 contents.setVisibility(View.GONE);
             }
+            
+            post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(post_image,
+                            post.getPostFile(), new fullImageLoader()).show();
+                }
+            });
             contents.setText(Html.fromHtml(post.getPostTextAPI()));
     
             /*getting if post is liked*/
@@ -485,8 +527,16 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
 
-//            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
-//                    options);
+            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
+                    options);
+            
+            post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(post_image,
+                            post.getPostFile(), new fullImageLoader()).show();
+                }
+            });
     
             /*getting if post is liked*/
             if (post.isLiked()) {
@@ -565,9 +615,17 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             no_likes.setText(post.getPostLikes());
             no_comments.setText(post.getPostComments());
             no_shares.setText(post.getPostShares());
-//
-//            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
-//                    options);
+
+            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
+                    options);
+            
+            post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(post_image,
+                            post.getPostFile(), new fullImageLoader()).show();
+                }
+            });
     
             /*getting if post is liked*/
             if (post.isLiked()) {
@@ -676,12 +734,21 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             shared_time_ago.setText(sharedInfo.getPostTime());
             shared_contents.setText(Html.fromHtml(sharedInfo.getPostTextAPI()));
 
-//            if (sharedInfo.getPostFile().isEmpty()) {
-//                shared_post_image.setVisibility(View.GONE);
-//            } else {
-//                new glideImageLoader(shared_post_image, progressBar).load(sharedInfo.getPostFile(),
-//                        options);
-//            }
+            if (sharedInfo.getPostFile().isEmpty()) {
+                shared_post_image.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            } else {
+                new glideImageLoader(shared_post_image, progressBar).load(sharedInfo.getPostFile(),
+                        options);
+            }
+            
+            shared_post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(shared_post_image,
+                            post.getPostFile(), new fullImageLoader()).show();
+                }
+            });
     
             /*getting if post is liked*/
             if (post.isLiked()) {
@@ -868,15 +935,15 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 contents.setVisibility(View.GONE);
             }
 
-//            /*getting thumbnail*/
-//            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-//            //give YourVideoUrl below
-//            retriever.setDataSource(post.getPostFile(), new HashMap<String, String>());
-//            // this gets frame at 2nd second
-//            Bitmap thumbnail = retriever.getFrameAtTime(2000000,
-//                    MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-//            //use this bitmap image
-//            image_thumbnail.setImageBitmap(thumbnail);
+            /*getting thumbnail*/
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            //give YourVideoUrl below
+            retriever.setDataSource(post.getPostFile(), new HashMap<String, String>());
+            // this gets frame at 2nd second
+            Bitmap thumbnail = retriever.getFrameAtTime(2000000,
+                    MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+            //use this bitmap image
+            image_thumbnail.setImageBitmap(thumbnail);
             
             play_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -918,7 +985,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     
     /*view holder for single image post*/
-    static class ImagePostViewHolder extends RecyclerView.ViewHolder {
+    class ImagePostViewHolder extends RecyclerView.ViewHolder {
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, no_shares;
@@ -946,7 +1013,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindImagePosts (post post, onClickListener clickListener, Context context) {
+        public void bindImagePosts (post post, onClickListener clickListener, Context context, int position) {
             Log.d(TAG, "bindImagePosts: " + "single image post");
             Log.d(TAG, "bindImagePosts: " + post.getPostId());
             profile_pic.setShapeAppearanceModel(profile_pic
@@ -966,9 +1033,22 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 contents.setVisibility(View.GONE);
             }
             contents.setText(Html.fromHtml(post.getPostTextAPI()));
-//
-//            new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
-//                    options);
+    
+            if (post.getPostFile().isEmpty()) {
+                post_image.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            } else {
+                new glideImageLoader(post_image, progressBar).load(post.getPostFile(),
+                        options);
+            }
+            
+            post_image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(post_image,
+                            post.getPostFile(), new fullImageLoader()).show();
+                }
+            });
     
             /*getting if post is liked*/
             if (post.isLiked()) {
@@ -1093,7 +1173,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
     
     /*view holder for blog & articles*/
-    static class BlogPostViewHolder extends RecyclerView.ViewHolder {
+    class BlogPostViewHolder extends RecyclerView.ViewHolder {
         
         ShapeableImageView profile_pic;
         TextView full_name, time_ago, contents, article_title,
@@ -1148,8 +1228,16 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             article_title.setText(Html.fromHtml(post.getBlog().getTitle()));
             article_description.setText(Html.fromHtml(post.getBlog().getDescription()));
 
-//            new glideImageLoader(article_thumbnail, progressBar).load(post.getBlog().getThumbnail(),
-//                    options);
+            new glideImageLoader(article_thumbnail, progressBar).load(post.getBlog().getThumbnail(),
+                    options);
+    
+            article_thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    new XPopup.Builder(context).asImageViewer(article_thumbnail,
+                            post.getBlog().getThumbnail(), new fullImageLoader()).show();
+                }
+            });
     
             /*getting if post is liked*/
             if (post.isLiked()) {
@@ -1292,7 +1380,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindMultiImagePosts (post post, Context context, onClickListener clickListener) {
+        public void bindMultiImagePosts (post post, Context context, onClickListener clickListener, int position) {
             
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()
@@ -1331,12 +1419,25 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     @Override
                     public void load (Context context, Object url, ImageView imageView) {
                         Glide.with(context).load(url).into(imageView);
-                        
                         progressBar.setVisibility(View.GONE);
                     }
                 });
             }
-    
+            
+            post_multi_image.setOnItemImageClickListener(new MultiImageView.OnItemImageClickListener() {
+                @Override
+                public void onItemImageClick (Context context, ImageView imageView, int index, List list) {
+                    new XPopup.Builder(context).asImageViewer(imageView, index,
+                            list, new OnSrcViewUpdateListener() {
+                        @Override
+                        public void onSrcViewUpdate(@NotNull ImageViewerPopupView popupView, int position) {
+//                            popupView.updateSrcView((ImageView) recyclerView.getChildAt(position));
+                        }
+                    }, new fullImageLoader())
+                            .show();
+                }
+            });
+            
             /*getting if post is liked*/
             if (post.isLiked()) {
                 likes.setIconResource(R.drawable.ic_liked);
@@ -1380,5 +1481,23 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void onVideoClickPlay (String postFile);
         void onAudioClickPlay (String postFile, Chip play, Chip pause);
         void onLikePost (String postId, MaterialButton likes, TextView no_likes);
+    }
+    
+    /*full screen image view*/
+    static class fullImageLoader implements XPopupImageLoader {
+        @Override
+        public void loadImage (int position, @NonNull Object uri, @NonNull ImageView imageView) {
+            Glide.with(imageView).load(uri).into(imageView);
+        }
+    
+        @Override
+        public File getImageFile (@NonNull Context context, @NonNull Object uri) {
+            try {
+                return Glide.with(context).downloadOnly().load(uri).submit().get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

@@ -20,11 +20,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.crowdfire.cfalertdialog.CFAlertDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupType;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -45,6 +47,7 @@ import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.userprofile.userInfo;
+import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.ui.groups.viewGroup;
 
 import java.util.ArrayList;
@@ -635,24 +638,12 @@ public class retrofitCalls {
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
     
                                 /*displaying a dialog*/
-                                CFAlertDialog.Builder builder =
-                                        new CFAlertDialog.Builder(context)
-                                                .setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET)
-                                                .setCancelable(false)
-                                                .setTitle("Oops !")
-                                                .setMessage(errors.getErrorText())
-                                                .addButton("TRY AGAIN", -1 ,-1,
-                                                        CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                        CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                                (dialogInterface, i) -> {
-                                                                    dialogInterface.dismiss();
-                                                                    loadPosts(timelinePostsList, afterPostId);
-                                                                }))
-                                                .addButton("DISMISS", -1, -1,
-                                                        CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                        CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                                dialog, which) -> dialog.dismiss());
-                                builder.show();
+                                new XPopup.Builder(context).popupType(PopupType.Bottom).asConfirm("Oops !", errors.getErrorText() + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
+                                    @Override
+                                    public void onConfirm () {
+                                        loadPosts(timelinePostsList, afterPostId);
+                                    }
+                                }, null, false).show();
                             }
                         }
                         else {
@@ -676,24 +667,12 @@ public class retrofitCalls {
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
     
                                 /*displaying a dialog*/
-                                CFAlertDialog.Builder builder =
-                                        new CFAlertDialog.Builder(context)
-                                                .setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET)
-                                                .setCancelable(false)
-                                                .setTitle("Oops !")
-                                                .setMessage(errors.getErrorText())
-                                                .addButton("TRY AGAIN", -1 ,-1,
-                                                        CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                        CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                                (dialogInterface, i) -> {
-                                                                    dialogInterface.dismiss();
-                                                                    loadPosts(timelinePostsList, afterPostId);
-                                                                }))
-                                                .addButton("DISMISS", -1, -1,
-                                                        CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                        CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                                dialog, which) -> dialog.dismiss());
-                                builder.show();
+                                new XPopup.Builder(context).popupType(PopupType.Bottom).asConfirm("Oops !", errors.getErrorText() + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
+                                    @Override
+                                    public void onConfirm () {
+                                        loadPosts(timelinePostsList, afterPostId);
+                                    }
+                                }, null, false).show();
                             }
                         }
                     }
@@ -703,26 +682,14 @@ public class retrofitCalls {
                         Log.d(TAG, "onError: " + e.getMessage());
     
                         /*displaying a dialog*/
-                        CFAlertDialog.Builder builder =
-                                new CFAlertDialog.Builder(context)
-                                        .setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET)
-                                        .setCancelable(false)
-                                        .setTitle("Oops !")
-                                        .setMessage("Something went " +
-                                                "wrong\nPlease check your " +
-                                                "internet connection")
-                                        .addButton("TRY AGAIN", -1 ,-1,
-                                                CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                        (dialogInterface, i) -> {
-                                                            dialogInterface.dismiss();
-                                                            loadPosts(timelinePostsList, afterPostId);
-                                                        }))
-                                        .addButton("DISMISS", -1, -1,
-                                                CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                        dialog, which) -> dialog.dismiss());
-                        builder.show();
+                        new XPopup.Builder(context).popupType(PopupType.Bottom).asConfirm("Oops !", "Something went " +
+                                "wrong\nPlease check your " +
+                                "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
+                            @Override
+                            public void onConfirm () {
+                                loadPosts(timelinePostsList, afterPostId);
+                            }
+                        }, null, false).show();
                     }
     
                     @Override

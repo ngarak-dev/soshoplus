@@ -40,10 +40,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    //Alert Dialog
-    implementation 'com.crowdfire.cfalertdialog:cfalertdialog:1.1.0'
-    //AC Progress
-    implementation 'cc.cloudist.acplibrary:library:1.2.1'
+    //XPopUp
+    implementation 'com.lxj:xpopup:2.0.4-temp'
     //Retrofit Client
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //RxJava Adapter

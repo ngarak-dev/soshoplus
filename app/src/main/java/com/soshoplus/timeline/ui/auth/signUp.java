@@ -8,16 +8,18 @@ package com.soshoplus.timeline.ui.auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.enums.PopupType;
+import com.lxj.xpopup.impl.LoadingPopupView;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.soshoplus.timeline.databinding.ActivitySignupBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
@@ -29,16 +31,11 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class signUp extends AppCompatActivity {
     
@@ -46,9 +43,9 @@ public class signUp extends AppCompatActivity {
     private static String TAG = "signUp Activity ";
     boolean validate = true;
     private ActivitySignupBinding signUpBinding;
-    private ACProgressFlower acProgressFlower;
     private Observable<accessToken> tokenObservable;
     private queries createAccountQuery;
+    private BasePopupView popupView;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -56,10 +53,14 @@ public class signUp extends AppCompatActivity {
         signUpBinding = ActivitySignupBinding.inflate(getLayoutInflater());
         View view = signUpBinding.getRoot();
         setContentView(view);
+    
+        /*initializing loading dialog*/
+        popupView = new XPopup.Builder(signUp.this)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .autoDismiss(false)
+                .asLoading("Please wait");
         
-        acProgressFlower = new ACProgressFlower.Builder(signUp.this).direction(ACProgressConstant.DIRECT_CLOCKWISE).themeColor(Color.WHITE).text("Please Wait").textSize(16).petalCount(15).speed(18).petalThickness(2).build();
-        acProgressFlower.setCanceledOnTouchOutside(false);
-
         signUpBinding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
@@ -68,7 +69,7 @@ public class signUp extends AppCompatActivity {
                     return;
                 }
                 //start progress dialog and attempt signing Up
-                acProgressFlower.show();
+                popupView.show();
     
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
                 executorService.execute(new Runnable() {
@@ -77,6 +78,8 @@ public class signUp extends AppCompatActivity {
                         callSignUp();
                     }
                 });
+                executorService.shutdown();
+    
             }
 
             private boolean validate () {
@@ -134,7 +137,7 @@ public class signUp extends AppCompatActivity {
                         if (accessToken.getApiStatus() == 200) {
         
                             //dismiss progress dialog
-                            acProgressFlower.dismiss();
+                            popupView.dismiss();
         
                             //storing user session
                             SharedPreferences pref = getApplicationContext().getSharedPreferences(
@@ -154,25 +157,16 @@ public class signUp extends AppCompatActivity {
                         }
                         else {
                             //dismiss dialog and log output
-                            acProgressFlower.dismiss();
+                            popupView.dismiss();
                             apiErrors apiErrors = accessToken.getErrors();
         
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
         
                             /*displaying a dialog*/
-                            CFAlertDialog.Builder builder =
-                                    new CFAlertDialog.Builder(signUp.this)
-                                            .setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET)
-                                            .setCancelable(false)
-                                            .setTitle("Oops !")
-                                            .setMessage(apiErrors.getErrorText())
-                                            .addButton("DISMISS", -1, -1,
-                                                    CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                    CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                            dialog, which) -> dialog.dismiss());
-                            builder.show();
-        
+                            new XPopup.Builder(signUp.this).popupType(PopupType.Bottom).asConfirm(
+                                    "Oops " + "!", apiErrors.getErrorText(),
+                                    "DISMISS", null, null, null, false).show();
                         }
                     }
     
@@ -182,29 +176,15 @@ public class signUp extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
     
                         //dismiss progress dialog
-                        acProgressFlower.dismiss();
+                        popupView.dismiss();
     
                         /*displaying a dialog*/
-                        CFAlertDialog.Builder builder =
-                                new CFAlertDialog.Builder(signUp.this)
-                                        .setDialogStyle(CFAlertDialog.CFAlertStyle.BOTTOM_SHEET)
-                                        .setCancelable(false)
-                                        .setTitle("Oops !")
-                                        .setMessage("Something went " +
-                                                "wrong\nPlease check your " +
-                                                "internet connection")
-                                        .addButton("TRY AGAIN", -1 ,-1,
-                                                CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                        (dialogInterface, i) -> {
-                                                            dialogInterface.dismiss();
-                                                            callSignUp();
-                                                        }))
-                                        .addButton("DISMISS", -1, -1,
-                                                CFAlertDialog.CFAlertActionStyle.DEFAULT,
-                                                CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (
-                                                        dialog, which) -> dialog.dismiss());
-                        builder.show();
+                        new XPopup.Builder(signUp.this).popupType(PopupType.Bottom).asConfirm("Oops " + "!", "Something went " + "wrong\nPlease check your " + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
+                            @Override
+                            public void onConfirm () {
+                                callSignUp();
+                            }
+                        }, null, false).show();
                     }
     
                     @Override

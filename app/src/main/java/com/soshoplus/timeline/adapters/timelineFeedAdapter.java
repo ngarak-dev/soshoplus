@@ -1414,6 +1414,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 imageList.add(multi_photos.getImage());
                 post_multi_image.setImagesData(imageList);
                 post_multi_image.setGap(5);
+                post_multi_image.setShowText(true);
+                post_multi_image.setMaxSize(2);
                 
                 post_multi_image.setMultiImageLoader(new IMultiImageLoader() {
                     @Override

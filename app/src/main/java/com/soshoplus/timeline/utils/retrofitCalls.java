@@ -49,6 +49,7 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.ui.groups.viewGroup;
+import com.soshoplus.timeline.utils.xpopup.sharePopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class retrofitCalls {
     private static String friends_following = "following";
     private static String suggested_friends = "users";
 
-//    /*CALLS*/
+    /*CALLS*/
     private Observable<userInfo> userInfoObservable;
     private Observable<group> groupObservable;
     private Observable<groupList> groupListObservable;
@@ -106,6 +107,8 @@ public class retrofitCalls {
     /*POST LIKE_DISLIKE*/
     private Observable<like_dislike> like_dislikeObservable;
     
+    /*SHARE POST ON OTHER APPS*/
+    private static String postUrl, postAuthor;
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -627,6 +630,15 @@ public class retrofitCalls {
                                                 likePost(postId, likes,
                                                         no_likes);
                                             }
+    
+                                            @Override
+                                            public void onShareClicked (String postId, String url, String name) {
+                                                /*setting extra bundle string*/
+                                                postUrl = url;
+                                                postAuthor =
+                                                        name;
+                                                new XPopup.Builder(context).asCustom(new sharePopup(context)).show();
+                                            }
                                         });
                                 
                                 /*setting adapter*/
@@ -761,5 +773,14 @@ public class retrofitCalls {
     private List<post> getAll (postList postList) {
         timelinePosts=  postList.getPostList();
         return timelinePosts != null ? postList.getPostList(): null;
+    }
+    
+    public void shareOnOtherApps () {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, postAuthor);
+        intent.putExtra(Intent.EXTRA_TEXT, postUrl);
+        context.startActivity(Intent.createChooser(intent, "choose " +
+                "one"));
     }
 }

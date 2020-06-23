@@ -1079,6 +1079,14 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
+            
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick (View view) {
+                    clickListener.onShareClicked(post.getPostId(),
+                            post.getUrl(), post.getPublisherInfo().getName());
+                }
+            });
         }
     }
     
@@ -1482,7 +1490,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         /*on play click*/
         void onVideoClickPlay (String postFile);
         void onAudioClickPlay (String postFile, Chip play, Chip pause);
+        /*on like click*/
         void onLikePost (String postId, MaterialButton likes, TextView no_likes);
+        /*on share click*/
+        void onShareClicked (String postId, String url, String name);
     }
     
     /*full screen image view*/

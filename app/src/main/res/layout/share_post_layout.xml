@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bgPrimary"
+    android:padding="@dimen/_10sdp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:text="Share"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/share_on_social_media"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_share_on_social_media"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_1"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:text="Other Social Media"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/share_on_social_media" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/share_contents"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/rectangle"
+        android:gravity="start"
+        android:hint="What's going on? #Hashtag.. @Mention.. Link.."
+        android:maxLines="8"
+        android:minLines="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_1" />
+
+    <ImageButton
+        android:id="@+id/share_on_timeline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_share_on_timeline"
+        app:layout_constraintEnd_toStartOf="@id/share_on_group"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/share_contents"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_2"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Timeline"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/share_on_timeline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/share_on_timeline" />
+
+    <ImageButton
+        android:id="@+id/share_on_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_share_on_group"
+        app:layout_constraintEnd_toStartOf="@+id/share_on_page"
+        app:layout_constraintStart_toEndOf="@+id/share_on_timeline"
+        app:layout_constraintTop_toBottomOf="@+id/share_contents"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_3"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Group"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/share_on_group"
+        app:layout_constraintStart_toEndOf="@+id/share_on_timeline"
+        app:layout_constraintTop_toBottomOf="@id/share_on_group" />
+
+    <ImageButton
+        android:id="@+id/share_on_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="@dimen/_10sdp"
+        android:src="@drawable/ic_share_on_page"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/share_on_group"
+        app:layout_constraintTop_toBottomOf="@+id/share_contents"
+        tools:ignore="ContentDescription" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_4"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Page"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/share_on_page"
+        app:layout_constraintStart_toEndOf="@+id/share_on_group"
+        app:layout_constraintTop_toBottomOf="@id/share_on_page" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

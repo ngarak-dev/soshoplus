@@ -65,13 +65,14 @@
 
     <ImageView
         android:id="@+id/post_image"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toTopOf="@id/likes_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"
-        app:layout_constraintBottom_toTopOf="@id/likes_icon"
         tools:ignore="ContentDescription" />
 
     <ProgressBar

@@ -9,11 +9,13 @@ package com.soshoplus.timeline.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,8 @@ import com.google.android.material.shape.CornerFamily;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupType;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.onurkagan.ksnack_lib.MinimalKSnack.MinimalKSnack;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -46,8 +50,8 @@ import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
+import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
-import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.ui.groups.viewGroup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 
@@ -78,6 +82,7 @@ public class retrofitCalls {
     private static String friends_followers = "followers";
     private static String friends_following = "following";
     private static String suggested_friends = "users";
+    private static String share_post_on_timeline = "share_post_on_timeline";
 
     /*CALLS*/
     private Observable<userInfo> userInfoObservable;
@@ -108,7 +113,12 @@ public class retrofitCalls {
     private Observable<like_dislike> like_dislikeObservable;
     
     /*SHARE POST ON OTHER APPS*/
-    private static String postUrl, postAuthor;
+    private static String postId, postUrl, postAuthor;
+    
+    /*SHARE ON TIMELINE*/
+    private Observable<shareResponse> shareResponseObservable;
+    private KSnack snack;
+    private MinimalKSnack minimalKSnack;
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -632,8 +642,9 @@ public class retrofitCalls {
                                             }
     
                                             @Override
-                                            public void onShareClicked (String postId, String url, String name) {
+                                            public void onShareClicked (String post_Id, String url, String name) {
                                                 /*setting extra bundle string*/
+                                                postId = post_Id;
                                                 postUrl = url;
                                                 postAuthor =
                                                         name;
@@ -649,13 +660,19 @@ public class retrofitCalls {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
     
-                                /*displaying a dialog*/
-                                new XPopup.Builder(context).popupType(PopupType.Bottom).asConfirm("Oops !", errors.getErrorText() + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
-                                    @Override
-                                    public void onConfirm () {
-                                        loadPosts(timelinePostsList, afterPostId);
-                                    }
-                                }, null, false).show();
+                                /*displaying a snackbar*/
+                                snack = new KSnack((FragmentActivity) context);
+                                snack.setMessage("Oops !\nSomething went " +
+                                        "wrong\nPlease check your internet " +
+                                        "connection");
+                                snack.setAction("DISMISS", view -> {
+                                    snack.dismiss();
+                                });
+                                snack.setAction("TRY AGAIN", view -> {
+                                    snack.dismiss();
+                                    loadPosts(timelinePostsList, afterPostId);
+                                });
+                                snack.show();
                             }
                         }
                         else {
@@ -678,13 +695,20 @@ public class retrofitCalls {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
     
-                                /*displaying a dialog*/
-                                new XPopup.Builder(context).popupType(PopupType.Bottom).asConfirm("Oops !", errors.getErrorText() + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
-                                    @Override
-                                    public void onConfirm () {
-                                        loadPosts(timelinePostsList, afterPostId);
-                                    }
-                                }, null, false).show();
+                                /*displaying a snackbar*/
+    
+                                snack = new KSnack((FragmentActivity) context);
+                                snack.setMessage("Oops !\nSomething went " +
+                                        "wrong\nPlease check your internet " +
+                                        "connection");
+                                snack.setAction("DISMISS", view -> {
+                                    snack.dismiss();
+                                });
+                                snack.setAction("TRY AGAIN", view -> {
+                                    snack.dismiss();
+                                    loadPosts(timelinePostsList, afterPostId);
+                                });
+                                snack.show();
                             }
                         }
                     }
@@ -693,15 +717,19 @@ public class retrofitCalls {
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
     
-                        /*displaying a dialog*/
-                        new XPopup.Builder(context).popupType(PopupType.Bottom).asConfirm("Oops !", "Something went " +
-                                "wrong\nPlease check your " +
-                                "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
-                            @Override
-                            public void onConfirm () {
-                                loadPosts(timelinePostsList, afterPostId);
-                            }
-                        }, null, false).show();
+                        /*displaying a snackbar*/
+                        snack = new KSnack((FragmentActivity) context);
+                        snack.setMessage("Oops !\nSomething went " +
+                                "wrong\nPlease check your internet " +
+                                "connection");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.setAction("TRY AGAIN", view -> {
+                            snack.dismiss();
+                            loadPosts(timelinePostsList, afterPostId);
+                        });
+                        snack.show();
                     }
     
                     @Override
@@ -775,6 +803,7 @@ public class retrofitCalls {
         return timelinePosts != null ? postList.getPostList(): null;
     }
     
+    /*share post on other apps*/
     public void shareOnOtherApps () {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
@@ -782,5 +811,72 @@ public class retrofitCalls {
         intent.putExtra(Intent.EXTRA_TEXT, postUrl);
         context.startActivity(Intent.createChooser(intent, "choose " +
                 "one"));
+    }
+    
+    /*share post direct on timeline*/
+    public void shareOnTimeline () {
+        
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run () {
+                snack = new KSnack((FragmentActivity) context);
+                snack.setMessage("Sharing to your timeline ...");
+                snack.show();
+            }
+        });
+        
+        shareResponseObservable =
+                rxJavaQueries.sharePostInTimeline(accessToken, serverKey, share_post_on_timeline,
+                        postId, userId, "");
+        shareResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<shareResponse>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+    
+                    @Override
+                    public void onNext (@NonNull shareResponse shareResponse) {
+                        if (shareResponse.getApiStatus() == 200) {
+                            Log.d(TAG, "onNext: SHARED");
+                            
+                            snack.setBackColor(R.color.green);
+                            snack.setMessage("Post shared");
+                            snack.setDuration(3500);
+                        }
+                        else {
+                            apiErrors apiErrors = shareResponse.getErrors();
+                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                            
+                            snack.setMessage("Error occurred while sharing");
+                            snack.setBackColor(R.color.indian_red);
+                            snack.setDuration(5000);
+                            snack.setAction("Try again", view -> {
+                                snack.dismiss();
+                                shareOnTimeline();
+                            });
+                        }
+                    }
+    
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+
+                        snack.setMessage("Error occurred while sharing");
+                        snack.setBackColor(R.color.indian_red);
+                        snack.setDuration(5000);
+                        snack.setAction("Try again", view -> {
+                            snack.dismiss();
+                            shareOnTimeline();
+                        });
+                    }
+    
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

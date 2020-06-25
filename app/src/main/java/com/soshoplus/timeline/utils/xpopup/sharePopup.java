@@ -8,10 +8,13 @@ package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.utils.retrofitCalls;
@@ -21,7 +24,8 @@ import java.util.concurrent.Executors;
 
 public class sharePopup extends BottomPopupView {
     
-    Context m_context;
+    private Context m_context;
+    retrofitCalls calls;
     public sharePopup (@NonNull Context context) {
         super(context);
         m_context = context;
@@ -43,8 +47,8 @@ public class sharePopup extends BottomPopupView {
                 service.execute(new Runnable() {
                     @Override
                     public void run () {
-                        retrofitCalls retrofitCalls = new retrofitCalls(m_context);
-                        retrofitCalls.shareOnOtherApps();
+                        calls = new retrofitCalls(m_context);
+                        calls.shareOnOtherApps();
                     }
                 });
                 service.shutdown();
@@ -54,7 +58,15 @@ public class sharePopup extends BottomPopupView {
         findViewById(R.id.share_on_timeline).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick (View view) {
-            
+                /*dismiss dialog while performing sharing*/
+                dismissWith(() -> {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(() -> {
+                        calls = new retrofitCalls(m_context);
+                        calls.shareOnTimeline();
+                    });
+                    service.shutdown();
+                });
             }
         });
         

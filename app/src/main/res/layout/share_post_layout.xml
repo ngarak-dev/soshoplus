@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/rectangle"
+        android:enabled="false"
         android:gravity="start"
         android:hint="What's going on? #Hashtag.. @Mention.. Link.."
         android:maxLines="8"

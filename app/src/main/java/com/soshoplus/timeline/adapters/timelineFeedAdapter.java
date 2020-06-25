@@ -8,8 +8,8 @@ package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.media.MediaMetadataRetriever;
-import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,21 +30,16 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.core.ImageViewerPopupView;
-import com.lxj.xpopup.enums.PopupType;
-import com.lxj.xpopup.impl.ConfirmPopupView;
-import com.lxj.xpopup.impl.LoadingPopupView;
 import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
+import com.lxj.xpopup.photoview.PhotoView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
@@ -110,7 +105,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     /*GLIDE OPTIONS*/
     RequestOptions options = new RequestOptions()
             .format(DecodeFormat.PREFER_RGB_565)
-            .centerCrop()
             .placeholder(R.drawable.ic_image_placeholder)
             .error(R.drawable.ic_image_placeholder)
             .priority(Priority.HIGH);
@@ -667,7 +661,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 , contents, shared_contents,  no_likes, no_comments, no_shares;
         ImageView shared_post_image;
         ProgressBar progressBar;
-        MaterialButton likes, comment, share;
+        MaterialButton likes, comment;
         
         public SharedPostViewHolder (View itemView) {
             super(itemView);
@@ -690,7 +684,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
-            share = itemView.findViewById(R.id.share_btn);
         }
         
         public void bindSharedPosts (post post, Context context) {
@@ -728,7 +721,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .toBuilder()
                     .setAllCorners(CornerFamily.ROUNDED, 20)
                     .build());
-            Glide.with(context).load(sharedInfo.getPublisherInfo().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(profile_pic);
+            Glide.with(context).load(sharedInfo.getPublisherInfo().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(shared_profile_pic);
             
             shared_full_name.setText(sharedInfo.getPublisherInfo().getName());
             shared_time_ago.setText(sharedInfo.getPostTime());
@@ -738,7 +731,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 shared_post_image.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
             } else {
-                new glideImageLoader(shared_post_image, progressBar).load(sharedInfo.getPostFile(),
+                new glideImageLoader(shared_post_image, progressBar).load(post.getPostFile(),
                         options);
             }
             
@@ -1083,8 +1076,15 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    clickListener.onShareClicked(post.getPostId(),
-                            post.getUrl(), post.getPublisherInfo().getName());
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onShareClicked(post.getPostId(),
+                                    post.getUrl(), post.getPublisherInfo().getName());
+                        }
+                    });
+                    service.shutdown();
                 }
             });
         }
@@ -1238,7 +1238,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             new glideImageLoader(article_thumbnail, progressBar).load(post.getBlog().getThumbnail(),
                     options);
-    
+            
             article_thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {

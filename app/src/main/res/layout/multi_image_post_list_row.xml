@@ -66,8 +66,10 @@
     <com.yds.library.MultiImageView
         android:id="@+id/post_multi_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"

@@ -54,20 +54,22 @@
 
     <ImageView
         android:id="@+id/video_thumbnail"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"
         tools:ignore="ContentDescription" />
 
     <ImageButton
+        android:id="@+id/play_button"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_35sdp"
-        android:id="@+id/play_button"
-        android:src="@drawable/ic_play_button"
         android:background="@color/transparent"
+        android:src="@drawable/ic_play_button"
         app:layout_constraintBottom_toBottomOf="@+id/video_thumbnail"
         app:layout_constraintEnd_toEndOf="@+id/video_thumbnail"
         app:layout_constraintStart_toStartOf="@+id/video_thumbnail"

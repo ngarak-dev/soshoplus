@@ -122,10 +122,6 @@ public class signIn extends AppCompatActivity {
                     public void onNext (@io.reactivex.rxjava3.annotations.NonNull accessToken accessToken) {
                         if (accessToken.getApiStatus() == 200) {
     
-                            //dismiss progress dialog
-                            popupView.dismiss();
-                            popupView.delayDismiss(300);
-    
                             //storing user session
                             SharedPreferences pref = getApplicationContext().getSharedPreferences(
                                     "userCred", 0); // 0 - for private mode
@@ -138,8 +134,14 @@ public class signIn extends AppCompatActivity {
                                     accessToken.getAccessToken());
                             editor.apply();
                             
-                            startActivity(new Intent(signIn.this, soshoTimeline.class));
-                            finish();
+                            //dismiss progress dialog
+                            popupView.dismissWith(new Runnable() {
+                                @Override
+                                public void run () {
+                                    startActivity(new Intent(signIn.this, soshoTimeline.class));
+                                    finish();
+                                }
+                            });
                         }
                         else {
                             //dismiss dialog and log output

@@ -48,9 +48,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
+        android:text="shared a post"
         android:textColor="@color/dim_gray"
         android:textSize="@dimen/_12ssp"
-        android:text="shared a post"
         app:layout_constraintStart_toEndOf="@id/full_name"
         app:layout_constraintTop_toTopOf="@id/full_name" />
 
@@ -68,9 +68,9 @@
         android:id="@+id/shared_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
         android:background="@drawable/rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,9 +117,11 @@
 
         <ImageView
             android:id="@+id/shared_post_image"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_300sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_10sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/shared_post_contents"
@@ -133,7 +135,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/shared_post_image"
             app:layout_constraintEnd_toEndOf="@+id/shared_post_image"
             app:layout_constraintStart_toStartOf="@+id/shared_post_image"
-            app:layout_constraintTop_toTopOf="@id/shared_post_image"/>
+            app:layout_constraintTop_toTopOf="@id/shared_post_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,56 +209,40 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/comments_icon" />
 
-    <com.google.android.material.chip.Chip
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/like_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:shadowColor="@null"
         android:text="Like"
-        android:textStyle="bold"
-        app:checkedIcon="@drawable/ic_liked"
-        app:chipBackgroundColor="@null"
-        app:chipCornerRadius="0dp"
-        app:chipIcon="@drawable/ic_like"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipStrokeColor="@null"
-        app:chipSurfaceColor="@null"
-        app:iconStartPadding="@dimen/_10sdp"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_like"
+        app:iconGravity="textStart"
+        app:iconSize="@dimen/_15sdp"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toStartOf="@id/comment_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/no_likes"
-        app:rippleColor="@color/white" />
+        app:rippleColor="@color/gray" />
 
-    <com.google.android.material.chip.Chip
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/comment_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Comment"
-        android:textStyle="bold"
-        app:chipBackgroundColor="@null"
-        app:chipCornerRadius="0dp"
-        app:chipIcon="@drawable/ic_comment"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipSurfaceColor="@null"
-        app:iconStartPadding="@dimen/_10sdp"
-        app:layout_constraintEnd_toStartOf="@id/share_btn"
-        app:layout_constraintStart_toEndOf="@id/like_btn"
-        app:layout_constraintTop_toTopOf="@id/like_btn" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/share_btn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Share"
-        android:textStyle="bold"
-        app:chipBackgroundColor="@null"
-        app:chipCornerRadius="0dp"
-        app:chipIcon="@drawable/ic_share"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipSurfaceColor="@null"
-        app:iconStartPadding="@dimen/_10sdp"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/white"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_comment"
+        app:iconGravity="textStart"
+        app:iconSize="@dimen/_15sdp"
+        app:iconTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/comment_btn"
-        app:layout_constraintTop_toTopOf="@id/comment_btn" />
+        app:layout_constraintStart_toEndOf="@id/like_btn"
+        app:layout_constraintTop_toTopOf="@id/like_btn"
+        app:rippleColor="@color/gray" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

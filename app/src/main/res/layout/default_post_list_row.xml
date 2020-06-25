@@ -54,9 +54,11 @@
 
     <ImageView
         android:id="@+id/post_image"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_300sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_contents"
@@ -70,7 +72,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/post_image"
         app:layout_constraintEnd_toEndOf="@+id/post_image"
         app:layout_constraintStart_toStartOf="@+id/post_image"
-        app:layout_constraintTop_toTopOf="@id/post_image"/>
+        app:layout_constraintTop_toTopOf="@id/post_image" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/likes_icon"

@@ -8,15 +8,17 @@ package com.soshoplus.timeline.ui.auth;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.crowdfire.cfalertdialog.CFAlertDialog;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.enums.PopupAnimation;
+import com.lxj.xpopup.enums.PopupType;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.soshoplus.timeline.databinding.ActivitySigninBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
@@ -25,12 +27,14 @@ import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class signIn extends AppCompatActivity {
     
@@ -38,9 +42,9 @@ public class signIn extends AppCompatActivity {
     private static String TAG = "SignIn Activity ";
     boolean validate = true;
     private ActivitySigninBinding signInBinding;
-    private Call<accessToken> accessTokenCall;
+    private Observable<accessToken> tokenObservable;
     private queries signInQuery;
-    private ACProgressFlower acProgressFlower;
+    private BasePopupView popupView;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -49,10 +53,13 @@ public class signIn extends AppCompatActivity {
         View view = signInBinding.getRoot();
         setContentView(view);
         
-        /*initializing progress dialog*/
-        acProgressFlower = new ACProgressFlower.Builder(signIn.this).direction(ACProgressConstant.DIRECT_CLOCKWISE).themeColor(Color.WHITE).text("Please Wait").textSize(16).petalCount(15).speed(18).petalThickness(2).build();
-        acProgressFlower.setCanceledOnTouchOutside(false);
-        
+        /*initializing loading dialog*/
+        popupView = new XPopup.Builder(signIn.this)
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .autoDismiss(false)
+                .asLoading("Please wait");
+
         signInBinding.btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v) {
@@ -61,17 +68,25 @@ public class signIn extends AppCompatActivity {
                     return;
                 }
                 //start progress dialog and attempt login
-                acProgressFlower.show();
-                callSignIn();
+                popupView.show();
+    
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.execute(new Runnable() {
+                    @Override
+                    public void run () {
+                        callSignIn();
+                    }
+                });
+                executorService.shutdown();
             }
-            
+
             //client validate input
             private boolean validate () {
                 if (Objects.requireNonNull(signInBinding.username.getText()).toString().isEmpty()) {
                     signInBinding.usernameInLayout.setError("Username is empty");
                     validate = false;
                 }
-                
+
                 if (Objects.requireNonNull(signInBinding.password.getText()).toString().isEmpty()) {
                     signInBinding.passwordInLayout.setError("Password is empty");
                     validate = false;
@@ -79,72 +94,91 @@ public class signIn extends AppCompatActivity {
                 return validate;
             }
         });
-        
+
         signInBinding.btnToSignUp.setOnClickListener(v -> startActivity(new Intent(signIn.this, signUp.class)));
-        
+
         signInBinding.btnForgotPassword.setOnClickListener(v -> startActivity(new Intent(signIn.this, forgotPassword.class)));
     }
     
     private void callSignIn () {
-        
+
         String username = Objects.requireNonNull(signInBinding.username.getText()).toString();
         String password = Objects.requireNonNull(signInBinding.password.getText()).toString();
-        
+
         //Initializing Retrofit Instance for Login
-        signInQuery = retrofitInstance.getRetrofitInst().create(queries.class);
-        
-        accessTokenCall = signInQuery.signIn(server_key, username, password);
-        
-        accessTokenCall.enqueue(new Callback<com.soshoplus.timeline.models.accessToken>() {
-            @Override
-            public void onResponse (@NonNull Call<accessToken> call, @NonNull Response<accessToken> response) {
-                if (response.body() != null) {
-                    
-                    if (response.body().getApiStatus() == 200) {
-                        //dismiss progress dialog
-                        acProgressFlower.dismiss();
-                        
-                        //storing user session
-                        /*TODO Baadae tengeneza local DB for this*/
-                        SharedPreferences pref = getApplicationContext().getSharedPreferences(
-                                "userCred", 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = pref.edit();
-                        
-                        editor.putString("userId", response.body().getUserId());
-                        editor.putString("timezone", response.body().getTimezone());
-                        editor.putString("accessToken", response.body().getAccessToken());
-                        editor.apply();
+        signInQuery = retrofitInstance.getInstRxJava().create(queries.class);
     
-                        /*TO MAIN ACTIVITY FOR NOW*/
-                        /*TODO*/
-                        /*LATER IMPLEMENT KITU KINGINE*/
-                        startActivity(new Intent(signIn.this, soshoTimeline.class));
-                        finish();
-                        
-                    } else {
-                        //dismiss dialog and log output
-                        acProgressFlower.dismiss();
-                        apiErrors apiErrors = response.body().getErrors();
-                        
-                        Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                        Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
-                        
-                        //show alert
-                        CFAlertDialog.Builder builder = new CFAlertDialog.Builder(signIn.this).setDialogStyle(CFAlertDialog.CFAlertStyle.ALERT).setTitle("Oops !").setMessage(apiErrors.getErrorText()).addButton("DISMISS", -1, -1, CFAlertDialog.CFAlertActionStyle.NEGATIVE, CFAlertDialog.CFAlertActionAlignment.JUSTIFIED, (dialog, which) -> dialog.dismiss());
-                        builder.show();
+        tokenObservable = signInQuery.signIn(server_key, username, password);
+        
+        tokenObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<accessToken>() {
+                    @Override
+                    public void onSubscribe (@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
                     }
-                } else {
-                    //response is null
-                    Log.d(TAG, "onResponse: " + "Response is Null");
-                    /*TODO Display a message response is null*/
-                }
-            }
-            
-            @Override
-            public void onFailure (@NonNull Call<accessToken> call, @NonNull Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-                /*TODO Login failed after a call display a message*/
-            }
-        });
+    
+                    @Override
+                    public void onNext (@io.reactivex.rxjava3.annotations.NonNull accessToken accessToken) {
+                        if (accessToken.getApiStatus() == 200) {
+    
+                            //storing user session
+                            SharedPreferences pref = getApplicationContext().getSharedPreferences(
+                                    "userCred", 0); // 0 - for private mode
+                            SharedPreferences.Editor editor = pref.edit();
+    
+                            editor.putString("userId", accessToken.getUserId());
+                            editor.putString("timezone",
+                                    accessToken.getTimezone());
+                            editor.putString("accessToken",
+                                    accessToken.getAccessToken());
+                            editor.apply();
+                            
+                            //dismiss progress dialog
+                            popupView.dismissWith(new Runnable() {
+                                @Override
+                                public void run () {
+                                    startActivity(new Intent(signIn.this, soshoTimeline.class));
+                                    finish();
+                                }
+                            });
+                        }
+                        else {
+                            //dismiss dialog and log output
+                            popupView.dismiss();
+                            popupView.delayDismiss(300);
+                            apiErrors apiErrors = accessToken.getErrors();
+    
+                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+    
+                            /*displaying a dialog*/
+                            new XPopup.Builder(signIn.this).popupType(PopupType.Bottom).asConfirm(
+                                    "Oops " + "!", apiErrors.getErrorText(),
+                                    "DISMISS", null, null, null, false).show();
+                        }
+                    }
+    
+                    @Override
+                    public void onError (@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+    
+                        //dismiss progress dialog
+                        popupView.dismiss();
+                        
+                        /*displaying a dialog*/
+                        new XPopup.Builder(signIn.this).popupType(PopupType.Bottom).asConfirm("Oops !", "Something went " + "wrong\nPlease check your " + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
+                            @Override
+                            public void onConfirm () {
+                                callSignIn();
+                            }
+                        }, null, false).show();
+                    }
+    
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

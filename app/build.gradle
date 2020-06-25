@@ -7,8 +7,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion '30.0.0'
 
     buildFeatures {
         viewBinding = true
@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "com.soshoplus.timeline"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,14 +40,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    //Alert Dialog
-    implementation 'com.crowdfire.cfalertdialog:cfalertdialog:1.1.0'
-    //AC Progress
-    implementation 'cc.cloudist.acplibrary:library:1.2.1'
+    //XPopUp
+    implementation 'com.lxj:xpopup:2.0.5'
     //Retrofit Client
-    implementation 'com.squareup.retrofit2:retrofit:2.8.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    //RxJava Adapter
+    implementation "com.squareup.retrofit2:adapter-rxjava3:2.9.0"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     //Gson Retrofit
-    implementation 'com.squareup.retrofit2:converter-gson:2.8.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //Google Material Design
     implementation 'com.google.android.material:material:1.3.0-alpha01'
     //Constraint Layout
@@ -56,19 +57,21 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     //fragment
-    implementation "androidx.fragment:fragment:1.2.4"
+    implementation "androidx.fragment:fragment:1.2.5"
     //image library
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
+    //multi image
+    implementation 'com.github.ydslib:MultiImageView:1.0.4'
     //tooltip library
     implementation "com.github.skydoves:balloon:1.1.7"
     //inapp browser
     implementation "androidx.browser:browser:1.2.0"
     //bottom navigation
     implementation 'com.fxn769:bubbletabbar:1.0.5'
-    //ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.11.5'
-    //skeleton loading
-    implementation 'com.github.AgnaldoNP:AGSkeletonLoading:1.0'
+    //snackbar library
+    implementation 'com.github.onurkagan:KSnack:1.1.2'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'

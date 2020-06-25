@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/create_group_chip"
@@ -35,65 +36,43 @@
             app:layout_constraintStart_toEndOf="@id/create_group_chip"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/suggested_groupsLayout"
+        <TextView
+            android:id="@+id/suggested_groups_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:elevation="@dimen/_5sdp"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@id/joined_groupsLayout"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Recommended"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_group_chip">
+            app:layout_constraintTop_toBottomOf="@id/create_group_chip"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/suggested_groups_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Recommended"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/suggested_groups_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/joined_groupsLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suggested_groups_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/white"
-            android:elevation="@dimen/_5sdp"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/suggested_groupsLayout">
+            app:layout_constraintTop_toBottomOf="@id/suggested_groups_title"/>
 
-            <TextView
-                android:id="@+id/joined_groups_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Joined"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/joined_groups_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Joined"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/suggested_groups_list"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/joined_groups_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="@dimen/_10sdp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/joined_groups_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_10sdp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/joined_groups_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

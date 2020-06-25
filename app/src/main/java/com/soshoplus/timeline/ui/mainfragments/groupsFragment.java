@@ -18,6 +18,9 @@ import com.soshoplus.timeline.utils.retrofitCalls;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -30,32 +33,33 @@ public class groupsFragment extends Fragment {
     private FragmentGroupsBinding groupsBinding;
     private retrofitCalls calls;
     
-    /*TODO NULL exception zipo AVOID AVOID*/
-    
     /*initializing a view and inflate it */
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         groupsBinding = FragmentGroupsBinding.inflate(inflater, container, false);
         
-        /*get recommended groups*/
-        getRecommends();
-        
-        /*get joined groups*/
-        getJoined();
+        /*get groups*/
+        getGroups();
         
         return groupsBinding.getRoot();
     }
     
-    /*retrieve recommended groups*/
-    private void getRecommends () {
-        calls = new retrofitCalls(requireContext());
-        calls.getRecommends(groupsBinding.suggestedGroupsList);
-    }
+    private void getGroups () {
+        
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run () {
+                /*recommended*/
+                calls = new retrofitCalls(requireContext());
+                calls.getRecommends(groupsBinding.suggestedGroupsList);
+                /*joined*/
+                calls = new retrofitCalls(requireContext());
+                calls.getJoined(groupsBinding.joinedGroupsList);
+            }
+        });
     
-    /*retrieve joined groups*/
-    private void getJoined () {
-        calls = new retrofitCalls(requireContext());
-        calls.getJoined(groupsBinding.joinedGroupsList);
+        executorService.shutdown();
     }
 }

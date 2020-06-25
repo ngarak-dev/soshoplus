@@ -17,12 +17,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
     @Override
     public void onBindViewHolder (@NonNull suggestedGroupsAdapter.GroupsHolder holder, int position) {
         /*bind items and set onclick listener*/
-        holder.bind(groupInfoList.get(position), groupClickListener);
+        holder.bind(groupInfoList.get(position), groupClickListener, context);
     }
     
     @Override
@@ -75,26 +75,9 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
             is_joined = itemView.findViewById(R.id.btn_join);
         }
     
-        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener) {
-
-            profile_pic.setShapeAppearanceModel(profile_pic
-                    .getShapeAppearanceModel()
-                    .toBuilder()
-                    .setAllCorners(CornerFamily.ROUNDED, 20)
-                    .build());
-            Picasso.get().load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).into(profile_pic, new Callback() {
-                @Override
-                public void onSuccess () {
-                    Log.d(TAG, "onSuccess: " + "Image loaded");
-                }
+        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context) {
     
-                @Override
-                public void onError (Exception e) {
-                    Log.d(TAG, "onError: " + e.getMessage());
-                    profile_pic.setImageResource(R.drawable.ic_image_placeholder);
-                    /*TODO reload icon*/
-                }
-            });
+            Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
     
             group_title.setText(groupInfo.getGroupTitle());
             group_category.setText(groupInfo.getCategory());

@@ -50,11 +50,11 @@ public class suggestedList implements Serializable {
         this.errors = errors;
     }
     
-    public List<com.soshoplus.timeline.models.friends.suggested.suggestedInfo> getSuggestedInfo () {
+    public List<suggestedInfo> getSuggestedInfo () {
         return suggestedInfo;
     }
     
-    public void setSuggestedInfo (List<com.soshoplus.timeline.models.friends.suggested.suggestedInfo> suggestedInfo) {
+    public void setSuggestedInfo (List<suggestedInfo> suggestedInfo) {
         this.suggestedInfo = suggestedInfo;
     }
     
@@ -72,9 +72,5 @@ public class suggestedList implements Serializable {
     
     public void setErrors (apiErrors errors) {
         this.errors = errors;
-    }
-    
-    public static long getSerialVersionUID () {
-        return serialVersionUID;
     }
 }

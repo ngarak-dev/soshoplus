@@ -26,6 +26,10 @@ import com.soshoplus.timeline.ui.mainfragments.profileFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
 import com.soshoplus.timeline.utils.retrofitCalls;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class soshoTimeline extends AppCompatActivity {
@@ -66,6 +70,9 @@ public class soshoTimeline extends AppCompatActivity {
         viewPagerAdapter.addFragment(new profileFragment());
         viewPagerAdapter.addFragment(new moreFragment());
         
+        int limit = ( viewPagerAdapter.getCount() > 1 ? viewPagerAdapter.getCount() -1:1);
+        /*retaining fragments*/
+        sosho_viewPager.setOffscreenPageLimit(limit);
         //setView Pager Adapter
         sosho_viewPager.setAdapter(viewPagerAdapter);
         //initialize Bottom Navigation
@@ -110,10 +117,16 @@ public class soshoTimeline extends AppCompatActivity {
             }
         });
     }
-    
+
     private void getProfile () {
-        calls = new retrofitCalls(this);
-        calls.getProfile(profile_pic, full_name, username);
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(new Runnable() {
+            @Override
+            public void run () {
+                calls = new retrofitCalls(soshoTimeline.this);
+                calls.getProfile(profile_pic, full_name, username);
+            }
+        });
     }
     
     //overriding back button

@@ -17,15 +17,11 @@ import com.soshoplus.timeline.databinding.ActivityForgotPasswordBinding;
 
 import java.util.Objects;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
-
 public class forgotPassword extends AppCompatActivity {
     
     private static String TAG = "signUp Activity ";
     private boolean validate = true;
     private ActivityForgotPasswordBinding forgotPasswordBinding;
-    private ACProgressFlower acProgressFlower;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -35,8 +31,7 @@ public class forgotPassword extends AppCompatActivity {
         setContentView(view);
         
         /*initialize progress dialog*/
-        acProgressFlower = new ACProgressFlower.Builder(forgotPassword.this).direction(ACProgressConstant.DIRECT_CLOCKWISE).themeColor(Color.WHITE).text("Please Wait").textSize(16).petalCount(15).speed(18).petalThickness(2).build();
-        acProgressFlower.setCanceledOnTouchOutside(false);
+        /*TODO*/
         
         forgotPasswordBinding.btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,8 +40,8 @@ public class forgotPassword extends AppCompatActivity {
                 if (!validate()) {
                     return;
                 }
-                //start progress dialog and attempt login
-                acProgressFlower.show();
+                //start progress dialog and attempt reset
+                /*TODO*/
                 callResetInfo();
             }
             

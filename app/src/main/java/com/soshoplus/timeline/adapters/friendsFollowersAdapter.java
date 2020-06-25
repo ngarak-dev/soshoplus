@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.friends.followers;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -53,7 +51,7 @@ public class friendsFollowersAdapter extends RecyclerView.Adapter<friendsFollowe
 
        /*followers*/
         /*bind items and set onclick listener*/
-        holder.bind(followersList.get(position), friendClickListener);
+        holder.bind(followersList.get(position), friendClickListener, context);
     }
     
     @Override
@@ -61,7 +59,7 @@ public class friendsFollowersAdapter extends RecyclerView.Adapter<friendsFollowe
         return followersList.size();
     }
     
-    public class FriendsHolder extends RecyclerView.ViewHolder{
+    static class FriendsHolder extends RecyclerView.ViewHolder{
         
         ImageView profile_pic;
         TextView full_name;
@@ -72,20 +70,10 @@ public class friendsFollowersAdapter extends RecyclerView.Adapter<friendsFollowe
             full_name = itemView.findViewById(R.id.full_name);
         }
     
-        public void bind (followers followers, onFriendClickListener friendClickListener) {
+        public void bind (followers followers, onFriendClickListener friendClickListener, Context context) {
             full_name.setText(followers.getName());
-            Picasso.get().load(followers.getAvatar()).placeholder(R.drawable.ic_image_placeholder).fit().centerCrop().into(profile_pic, new Callback() {
-                @Override
-                public void onSuccess () {
-                    Log.d(TAG, "onSuccess: " + "Image loaded");
-                }
-        
-                @Override
-                public void onError (Exception e) {
-                    Log.d(TAG, "onError: " + e.getMessage());
-                    profile_pic.setImageResource(R.drawable.ic_image_placeholder);
-                }
-            });
+    
+            Glide.with(context).load(followers.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
             
             /*on friend Click*/
             itemView.setOnClickListener(new View.OnClickListener() {

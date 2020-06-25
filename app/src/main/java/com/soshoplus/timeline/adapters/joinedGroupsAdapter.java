@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapte
     @Override
     public void onBindViewHolder (@NonNull joinedGroupsAdapter.GroupsHolder holder, int position) {
         /*bind items and set onclick listener*/
-        holder.bind(groupInfoList.get(position), groupClickListener);
+        holder.bind(groupInfoList.get(position), groupClickListener, context);
     }
     
     @Override
@@ -56,7 +54,7 @@ public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapte
         return groupInfoList.size();
     }
     
-    public class GroupsHolder extends RecyclerView.ViewHolder{
+    static class GroupsHolder extends RecyclerView.ViewHolder{
         
         ImageView profile_pic;
         TextView group_title;
@@ -69,22 +67,10 @@ public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapte
             total_members = itemView.findViewById(R.id.total_members);
         }
     
-        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener) {
+        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context) {
+    
+            Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
             
-            Picasso.get().load(groupInfo.getAvatar()).fit().centerCrop().placeholder(R.drawable.ic_image_placeholder).into(profile_pic, new Callback() {
-                @Override
-                public void onSuccess () {
-                    Log.d(TAG, "onSuccess: " + "Image loaded");
-                }
-    
-                @Override
-                public void onError (Exception e) {
-                    Log.d(TAG, "onError: " + e.getMessage());
-                    profile_pic.setImageResource(R.drawable.ic_image_placeholder);
-                    /*TODO reload icon*/
-                }
-            });
-    
             group_title.setText(groupInfo.getGroupTitle());
             total_members.setText(groupInfo.getMembers() + " Members");
             

@@ -76,7 +76,16 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
         public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener, Context context) {
             
             full_name.setText(suggestedInfo.getName());
-            about.setText(Html.fromHtml(String.valueOf(suggestedInfo.getAbout())));
+            
+            if (String.valueOf(suggestedInfo.getAbout()).isEmpty()) {
+                about.setText("Hey there I am using soshoplus");
+            } else if (String.valueOf(suggestedInfo.getAbout()).equals("null")) {
+                about.setText("Hey there I am using soshoplus");
+            } else if (String.valueOf(suggestedInfo.getAbout()).equals("")) {
+                about.setText("Hey there I am using soshoplus");
+            } else {
+                about.setText(Html.fromHtml(String.valueOf(suggestedInfo.getAbout())));
+            }
 
             profile_pic.setShapeAppearanceModel(profile_pic
                     .getShapeAppearanceModel()

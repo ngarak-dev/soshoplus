@@ -11,7 +11,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,15 +26,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.enums.PopupType;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
-import com.onurkagan.ksnack_lib.MinimalKSnack.MinimalKSnack;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -53,6 +58,8 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.groups.viewGroup;
+import com.soshoplus.timeline.utils.glide.glideImageLoader;
+import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 
 import java.util.ArrayList;
@@ -118,7 +125,20 @@ public class retrofitCalls {
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
     private KSnack snack;
-    private MinimalKSnack minimalKSnack;
+    
+    /*PREVIEW PROFILE*/
+    private static String profile_image, username, about_me, verified_status,
+            pro_type,
+    cover_image, post_Count, followers_Count, following_Count,
+    /**/
+    gender, birthday, working, school, city, address;
+    
+    /*GLIDE OPTIONS*/
+    RequestOptions options = new RequestOptions()
+            .format(DecodeFormat.PREFER_RGB_565)
+            .placeholder(R.drawable.ic_image_placeholder)
+            .error(R.drawable.ic_image_placeholder)
+            .priority(Priority.LOW);
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -595,7 +615,7 @@ public class retrofitCalls {
     
     private void loadPosts (RecyclerView timelinePostsList, String afterPostId) {
         postListObserve = rxJavaQueries.getTimelinePosts(accessToken,
-                serverKey, get_news_feed, "10", afterPostId);
+                serverKey, get_news_feed, "3", afterPostId);
         
         postListObserve.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -649,6 +669,33 @@ public class retrofitCalls {
                                                 postAuthor =
                                                         name;
                                                 new XPopup.Builder(context).asCustom(new sharePopup(context)).show();
+                                            }
+    
+                                            @Override
+                                            public void onProfilePicClicked (String avatar, String name, String verified, String about, String proType,
+                                                                             String cover, String postCount, String followersCount, String followingCount,
+                                                                             String _gender, String _birthday, String _working, String _school, String _city, String _address) {
+    
+                                                profile_image = avatar;
+                                                username = name;
+                                                verified_status = verified;
+                                                about_me = about;
+                                                pro_type = proType;
+                                                cover_image = cover;
+                                                post_Count = postCount;
+                                                followers_Count =
+                                                        followersCount;
+                                                following_Count =
+                                                        followingCount;
+                                                /*.......*/
+                                                gender = _gender;
+                                                birthday = _birthday;
+                                                working = _working;
+                                                school = _school;
+                                                city = _city;
+                                                address = _address;
+    
+                                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context)).show();
                                             }
                                         });
                                 
@@ -878,5 +925,76 @@ public class retrofitCalls {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+    }
+    
+    public void previewProfile (ImageView cover_photo, ProgressBar progressBar_cover,
+                                ShapeableImageView profile_pic, TextView name,
+                                ImageView verified_badge,
+                                ImageView level_badge, TextView no_posts, TextView no_followers, TextView no_following,
+                                Chip follow, Chip message, Chip more,
+                                TextView about, TextView _gender,
+                                TextView _birthday, TextView _working,
+                                TextView _school, TextView _living,
+                                TextView _located) {
+    
+        name.setText(username);
+        no_posts.setText(post_Count);
+        no_followers.setText(followers_Count);
+        no_following.setText(following_Count);
+    
+        if (about_me != null) {
+            about.setText(Html.fromHtml(about_me));
+        }
+    
+        if (!verified_status.equals("1")) {
+            verified_badge.setVisibility(View.GONE);
+        }
+        
+        switch (pro_type) {
+            case "1":
+                level_badge.setImageResource(R.drawable.ic_star_badge);
+                level_badge.setVisibility(View.VISIBLE);
+                break;
+            case "2":
+                level_badge.setImageResource(R.drawable.ic_hot_badge);
+                level_badge.setVisibility(View.VISIBLE);
+                break;
+            case "3":
+                level_badge.setImageResource(R.drawable.ic_ultima_badge);
+                level_badge.setVisibility(View.VISIBLE);
+                break;
+            case "4":
+                level_badge.setImageResource(R.drawable.ic_pro_badge);
+                level_badge.setVisibility(View.VISIBLE);
+                break;
+            case "0":
+            default:
+                level_badge.setVisibility(View.GONE);
+        }
+        
+        _gender.setText(gender);
+        _birthday.setText(birthday);
+        _working.append(working);
+        _school.append(school);
+        _living.append(address);
+        _located.append(city);
+        
+        /*level badge*/
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run () {
+                new glideImageLoader(cover_photo, progressBar_cover).load(cover_image,
+                        options);
+            
+                profile_pic.setShapeAppearanceModel(profile_pic
+                        .getShapeAppearanceModel()
+                        .toBuilder()
+                        .setAllCorners(CornerFamily.ROUNDED, 20)
+                        .build());
+                
+                Glide.with(context).load(profile_image).diskCacheStrategy(DiskCacheStrategy.ALL).into(profile_pic);
+            
+            }
+        }, 500);
     }
 }

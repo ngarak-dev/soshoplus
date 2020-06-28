@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -72,6 +73,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import retrofit2.Call;
 
 
@@ -928,10 +932,10 @@ public class retrofitCalls {
     }
     
     public void previewProfile (ImageView cover_photo, ProgressBar progressBar_cover,
-                                ShapeableImageView profile_pic, TextView name,
+                                ImageView profile_pic, TextView name,
                                 ImageView verified_badge,
                                 ImageView level_badge, TextView no_posts, TextView no_followers, TextView no_following,
-                                Chip follow, Chip message, Chip more,
+                                MaterialButton follow,
                                 TextView about, TextView _gender,
                                 TextView _birthday, TextView _working,
                                 TextView _school, TextView _living,
@@ -985,14 +989,10 @@ public class retrofitCalls {
             public void run () {
                 new glideImageLoader(cover_photo, progressBar_cover).load(cover_image,
                         options);
-            
-                profile_pic.setShapeAppearanceModel(profile_pic
-                        .getShapeAppearanceModel()
-                        .toBuilder()
-                        .setAllCorners(CornerFamily.ROUNDED, 20)
-                        .build());
                 
-                Glide.with(context).load(profile_image).diskCacheStrategy(DiskCacheStrategy.ALL).into(profile_pic);
+                Glide.with(context).load(profile_image)
+                        .transform(new CropCircleWithBorderTransformation())
+                        .into(profile_pic);
             
             }
         }, 500);

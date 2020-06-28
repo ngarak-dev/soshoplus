@@ -7,25 +7,17 @@
 package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.lxj.xpopup.core.BottomPopupView;
-import com.lxj.xpopup.widget.VerticalRecyclerView;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.databinding.PreviewProfileLayoutBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class previewProfilePopup extends BottomPopupView {
     
@@ -48,7 +40,7 @@ public class previewProfilePopup extends BottomPopupView {
         
         ProgressBar progressBar_cover = findViewById(R.id.progressBar_cover);
         ImageView cover_photo = findViewById(R.id.cover_photo);
-        ShapeableImageView profile_pic = findViewById(R.id.profile_pic);
+        ImageView profile_pic = findViewById(R.id.profile_pic);
         TextView username = findViewById(R.id.username);
         ImageView verified_badge = findViewById(R.id.verified_badge);
         ImageView level_badge = findViewById(R.id.level_badge);
@@ -57,9 +49,7 @@ public class previewProfilePopup extends BottomPopupView {
         TextView no_followers = findViewById(R.id.number_of_followers);
         TextView no_following = findViewById(R.id.number_of_following);
         
-        Chip follow = findViewById(R.id.follow_btn);
-        Chip message = findViewById(R.id.message_btn);
-        Chip more = findViewById(R.id.more_btn);
+        MaterialButton follow = findViewById(R.id.follow_btn);
         
         TextView about_me = findViewById(R.id.about_me);
         TextView gender = findViewById(R.id.gender);
@@ -68,14 +58,9 @@ public class previewProfilePopup extends BottomPopupView {
         TextView school = findViewById(R.id.school);
         TextView living = findViewById(R.id.living);
         TextView located = findViewById(R.id.located);
-    
+        
         calls = new retrofitCalls(m_context);
-        calls.previewProfile(cover_photo,
-                progressBar_cover,
-                profile_pic, username,
-                verified_badge, level_badge, no_posts, no_followers,
-                no_following, follow, message, more, about_me, gender,
-                birthday, working, school, living, located);
+        calls.previewProfile(cover_photo, progressBar_cover, profile_pic, username, verified_badge, level_badge, no_posts, no_followers, no_following, follow, about_me, gender, birthday, working, school, living, located);
     }
     
     @Override

@@ -60,6 +60,9 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+
 public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     
     private final List<post> postList;
@@ -563,30 +566,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
+
             });
         }
     }
@@ -679,30 +688,35 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
         }
     }
@@ -828,57 +842,67 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
     
             shared_profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(sharedInfo.getPublisherInfo().getAvatar(),
-                                sharedInfo.getPublisherInfo().getName(),
-                                sharedInfo.getPublisherInfo().getVerified(),
-                                sharedInfo.getPublisherInfo().getAbout(),
-                                sharedInfo.getPublisherInfo().getProType(),
-                                sharedInfo.getPublisherInfo().getCover(),
-                                sharedInfo.getPublisherInfo().getDetails().getPostCount(),
-                                sharedInfo.getPublisherInfo().getDetails().getFollowersCount(),
-                                sharedInfo.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                sharedInfo.getPublisherInfo().getGender(),
-                                sharedInfo.getPublisherInfo().getBirthday(),
-                                sharedInfo.getPublisherInfo().getWorking(),
-                                sharedInfo.getPublisherInfo().getSchool(),
-                                sharedInfo.getPublisherInfo().getCity(),
-                                sharedInfo.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (sharedInfo.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(sharedInfo.getPublisherInfo().getAvatar(),
+                                    sharedInfo.getPublisherInfo().getName(),
+                                    sharedInfo.getPublisherInfo().getVerified(),
+                                    sharedInfo.getPublisherInfo().getAbout(),
+                                    sharedInfo.getPublisherInfo().getProType(),
+                                    sharedInfo.getPublisherInfo().getCover(),
+                                    sharedInfo.getPublisherInfo().getDetails().getPostCount(),
+                                    sharedInfo.getPublisherInfo().getDetails().getFollowersCount(),
+                                    sharedInfo.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    sharedInfo.getPublisherInfo().getGender(),
+                                    sharedInfo.getPublisherInfo().getBirthday(),
+                                    sharedInfo.getPublisherInfo().getWorking(),
+                                    sharedInfo.getPublisherInfo().getSchool(),
+                                    sharedInfo.getPublisherInfo().getCity(),
+                                    sharedInfo.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
         }
     }
@@ -983,30 +1007,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
+                
             });
         }
     }
@@ -1111,30 +1141,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
         }
     }
@@ -1248,30 +1284,35 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
             
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+               else {
+                   /*TODO This is a page*/
+                }
             });
         }
     }
@@ -1365,30 +1406,36 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
+           
             });
         }
     }
@@ -1491,30 +1538,35 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
         }
     }
@@ -1599,30 +1651,35 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
         }
     }
@@ -1746,30 +1803,35 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
     
             profile_pic.setOnClickListener(view -> {
-                ExecutorService service = Executors.newSingleThreadExecutor();
-                service.execute(new Runnable() {
-                    @Override
-                    public void run () {
-                        clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
-                                post.getPublisherInfo().getName(),
-                                post.getPublisherInfo().getVerified(),
-                                post.getPublisherInfo().getAbout(),
-                                post.getPublisherInfo().getProType(),
-                                post.getPublisherInfo().getCover(),
-                                post.getPublisherInfo().getDetails().getPostCount(),
-                                post.getPublisherInfo().getDetails().getFollowersCount(),
-                                post.getPublisherInfo().getDetails().getFollowingCount(),
-                                /*.....*/
-                                post.getPublisherInfo().getGender(),
-                                post.getPublisherInfo().getBirthday(),
-                                post.getPublisherInfo().getWorking(),
-                                post.getPublisherInfo().getSchool(),
-                                post.getPublisherInfo().getCity(),
-                                post.getPublisherInfo().getAddress()
-                        );
-                    }
-                });
-                service.shutdown();
+                if (post.getPageId().equals("0")) {
+                    ExecutorService service = Executors.newSingleThreadExecutor();
+                    service.execute(new Runnable() {
+                        @Override
+                        public void run () {
+                            clickListener.onProfilePicClicked(post.getPublisherInfo().getAvatar(),
+                                    post.getPublisherInfo().getName(),
+                                    post.getPublisherInfo().getVerified(),
+                                    post.getPublisherInfo().getAbout(),
+                                    post.getPublisherInfo().getProType(),
+                                    post.getPublisherInfo().getCover(),
+                                    post.getPublisherInfo().getDetails().getPostCount(),
+                                    post.getPublisherInfo().getDetails().getFollowersCount(),
+                                    post.getPublisherInfo().getDetails().getFollowingCount(),
+                                    /*.....*/
+                                    post.getPublisherInfo().getGender(),
+                                    post.getPublisherInfo().getBirthday(),
+                                    post.getPublisherInfo().getWorking(),
+                                    post.getPublisherInfo().getSchool(),
+                                    post.getPublisherInfo().getCity(),
+                                    post.getPublisherInfo().getAddress()
+                            );
+                        }
+                    });
+                    service.shutdown();
+                }
+                else {
+                    /*TODO This is a page*/
+                }
             });
         }
     }

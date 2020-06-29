@@ -147,12 +147,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/like_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
         android:text="Like"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        app:backgroundTint="@color/white"
         app:cornerRadius="0dp"
         app:icon="@drawable/ic_like"
         app:iconGravity="textStart"
@@ -161,16 +162,16 @@
         app:layout_constraintEnd_toStartOf="@id/comment_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/no_likes"
-        app:rippleColor="@color/gray" />
+        app:rippleColor="@color/white_smoke" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/comment_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Comment"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        app:backgroundTint="@color/white"
         app:cornerRadius="0dp"
         app:icon="@drawable/ic_comment"
         app:iconGravity="textStart"
@@ -179,16 +180,16 @@
         app:layout_constraintEnd_toStartOf="@id/share_btn"
         app:layout_constraintStart_toEndOf="@id/like_btn"
         app:layout_constraintTop_toTopOf="@id/like_btn"
-        app:rippleColor="@color/gray" />
+        app:rippleColor="@color/white_smoke" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/share_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Share"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        app:backgroundTint="@color/white"
         app:cornerRadius="0dp"
         app:icon="@drawable/ic_share"
         app:iconGravity="textStart"
@@ -197,6 +198,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/comment_btn"
         app:layout_constraintTop_toTopOf="@id/comment_btn"
-        app:rippleColor="@color/gray" />
+        app:rippleColor="@color/white_smoke" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

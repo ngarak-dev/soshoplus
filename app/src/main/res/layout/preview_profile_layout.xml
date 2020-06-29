@@ -62,6 +62,17 @@
         app:layout_constraintBottom_toBottomOf="@id/profile_pic"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progressBar_follow"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/follow_btn"
+        app:layout_constraintEnd_toEndOf="@id/follow_btn"
+        app:layout_constraintStart_toStartOf="@id/follow_btn"
+        app:layout_constraintTop_toTopOf="@id/follow_btn" />
+
     <TextView
         android:id="@+id/username"
         style="@style/TextAppearance.AppCompat.Medium"

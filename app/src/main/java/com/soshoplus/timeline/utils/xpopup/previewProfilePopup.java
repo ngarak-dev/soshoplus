@@ -63,12 +63,13 @@ public class previewProfilePopup extends BottomPopupView {
         
         LinearLayout layout = findViewById(R.id.linear);
         ProgressBar progressBar = findViewById(R.id.progressBar);
+        ProgressBar progressBar_follow = findViewById(R.id.progressBar_follow);
         
         calls = new retrofitCalls(m_context);
         calls.previewProfile(cover_photo, progressBar_cover, profile_pic,
                 username, verified_badge, level_badge, no_posts, no_followers
                 , no_following, follow, about_me, gender, birthday, working,
-                school, living, located, layout, progressBar);
+                school, living, located, layout, progressBar, progressBar_follow);
     }
     
     @Override

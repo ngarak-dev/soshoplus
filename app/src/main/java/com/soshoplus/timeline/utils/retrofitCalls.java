@@ -47,6 +47,7 @@ import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.friends.followers;
 import com.soshoplus.timeline.models.friends.following;
 import com.soshoplus.timeline.models.friends.friends;
@@ -74,11 +75,13 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.observers.DefaultObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import retrofit2.Call;
+import retrofit2.adapter.rxjava3.Result;
 
 
 public class retrofitCalls {
@@ -133,7 +136,8 @@ public class retrofitCalls {
     private KSnack snack;
     
     /*PREVIEW PROFILE*/
-    private static String previewUserId;
+    private static String previewUserId, followPrivacy;
+    private Observable<follow_unfollow> followUnfollowObservable;
     
     /*GLIDE OPTIONS*/
     RequestOptions options = new RequestOptions()
@@ -918,7 +922,8 @@ public class retrofitCalls {
                                 TextView _birthday, TextView _working,
                                 TextView _school, TextView _living,
                                 TextView _located, LinearLayout layout,
-                                ProgressBar progressBar) {
+                                ProgressBar progressBar,
+                                ProgressBar progressBar_follow) {
     
         userInfoObservable = rxJavaQueries.getUserData(accessToken, serverKey,
                 fetch_profile, previewUserId);
@@ -935,6 +940,13 @@ public class retrofitCalls {
                     public void onNext (@NonNull userInfo userInfo) {
                         
                         if(userInfo.getApiStatus() == 200) {
+    
+                            /*follow privacy
+                            0 - moja kwa moja
+                            1 - conform first*/
+    
+                            followPrivacy =
+                                    userInfo.getUserData().getConfirmFollowers();
  
                             name.setText(userInfo.getUserData().getName());
                             no_posts.setText(userInfo.getUserData().getDetails().getPostCount());
@@ -1008,11 +1020,6 @@ public class retrofitCalls {
                                 follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                             }
     
-                            Log.d(TAG, "onNext: " + userInfo.getUserData().getIsFollowing());
-                            Log.d(TAG, "onNext: " + userInfo.getUserData().getCanFollow());
-                            Log.d(TAG,
-                                    "onNext: " + userInfo.getUserData().getIsFollowingMe());
-    
                             /*level badge*/
                             new Handler().postDelayed(() -> {
                                 new glideImageLoader(cover_photo,
@@ -1029,7 +1036,6 @@ public class retrofitCalls {
                         else {
                             profile_pic.setImageResource(R.drawable.ic_image_placeholder);
                             apiErrors apiErrors =userInfo.getErrors();
-                            Log.d(TAG, "main activity profile: " + apiErrors.getErrorId());
                             Log.d(TAG, "main activity profile: " + apiErrors.getErrorText());
     
                             snack = new KSnack((FragmentActivity) context);
@@ -1060,5 +1066,77 @@ public class retrofitCalls {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+        
+        follow.setOnClickListener(view -> {
+            /*set text null
+            * show progress*/
+            follow.setText(null);
+            progressBar_follow.setVisibility(View.VISIBLE);
+            
+            followUnfollowObservable = rxJavaQueries.followUser(accessToken,
+                    serverKey, previewUserId);
+            
+            followUnfollowObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DefaultObserver<follow_unfollow>() {
+                        @Override
+                        public void onNext (@NonNull follow_unfollow follow_unfollow) {
+                            if (follow_unfollow.getApiStatus() == 200) {
+    
+                                Log.d(TAG, "onNext: " + follow_unfollow.getFollowStatus());
+                                
+                               if (follow_unfollow.getFollowStatus().equals(
+                                       "unfollowed")) {
+                                   
+                                   progressBar_follow.setVisibility(View.GONE);
+                                   follow.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                   follow.setBackgroundColor(context.getResources().getColor(R.color.transparent));
+                                   follow.setText("Follow");
+                               }
+                               else {
+                                   if (followPrivacy.equals("1")) {
+                                       progressBar_follow.setVisibility(View.GONE);
+                                       follow.setTextColor(context.getResources().getColor(R.color.white));
+                                       follow.setBackgroundColor(context.getResources().getColor(R.color.steel_blue));
+                                       follow.setText("Requested");
+                                   }
+                                   else {
+                                       progressBar_follow.setVisibility(View.GONE);
+                                       follow.setTextColor(context.getResources().getColor(R.color.white));
+                                       follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                                       follow.setText("Following");
+                                   }
+                               }
+                            }
+                            else {
+                                snack = new KSnack((FragmentActivity) context);
+                                snack.setMessage("Oops !\nSomething went " +
+                                        "wrong");
+                                snack.setAction("DISMISS", view -> {
+                                    snack.dismiss();
+                                });
+                                snack.show();
+                            }
+                        }
+    
+                        @Override
+                        public void onError (@NonNull Throwable e) {
+                            Log.d(TAG, "onError: " + e.getMessage());
+    
+                            snack = new KSnack((FragmentActivity) context);
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                            snack.show();
+                        }
+    
+                        @Override
+                        public void onComplete () {
+                            Log.d(TAG, "onComplete: ");
+                        }
+                    });
+        });
     }
 }

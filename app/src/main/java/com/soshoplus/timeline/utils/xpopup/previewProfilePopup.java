@@ -8,10 +8,12 @@ package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.ContentLoadingProgressBar;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -59,8 +61,14 @@ public class previewProfilePopup extends BottomPopupView {
         TextView living = findViewById(R.id.living);
         TextView located = findViewById(R.id.located);
         
+        LinearLayout layout = findViewById(R.id.linear);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        
         calls = new retrofitCalls(m_context);
-        calls.previewProfile(cover_photo, progressBar_cover, profile_pic, username, verified_badge, level_badge, no_posts, no_followers, no_following, follow, about_me, gender, birthday, working, school, living, located);
+        calls.previewProfile(cover_photo, progressBar_cover, profile_pic,
+                username, verified_badge, level_badge, no_posts, no_followers
+                , no_following, follow, about_me, gender, birthday, working,
+                school, living, located, layout, progressBar);
     }
     
     @Override

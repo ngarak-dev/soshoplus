@@ -34,7 +34,7 @@ public class details implements Serializable {
     private String likesCount;
     @SerializedName("mutual_friends_count")
     @Expose
-    private int mutualFriendsCount;
+    private Object mutualFriendsCount;  /*it an int*/
     @SerializedName("errors")
     @Expose
     private apiErrors errors;
@@ -147,11 +147,11 @@ public class details implements Serializable {
         return this;
     }
     
-    public int getMutualFriendsCount() {
+    public Object getMutualFriendsCount() {
         return mutualFriendsCount;
     }
     
-    public void setMutualFriendsCount(int mutualFriendsCount) {
+    public void setMutualFriendsCount(Object mutualFriendsCount) {
         this.mutualFriendsCount = mutualFriendsCount;
     }
     

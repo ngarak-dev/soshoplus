@@ -15,10 +15,12 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -131,11 +133,7 @@ public class retrofitCalls {
     private KSnack snack;
     
     /*PREVIEW PROFILE*/
-    private static String profile_image, username, about_me, verified_status,
-            pro_type,
-    cover_image, post_Count, followers_Count, following_Count,
-    /**/
-    gender, birthday, working, school, city, address;
+    private static String previewUserId;
     
     /*GLIDE OPTIONS*/
     RequestOptions options = new RequestOptions()
@@ -619,7 +617,7 @@ public class retrofitCalls {
     
     private void loadPosts (RecyclerView timelinePostsList, String afterPostId) {
         postListObserve = rxJavaQueries.getTimelinePosts(accessToken,
-                serverKey, get_news_feed, "3", afterPostId);
+                serverKey, get_news_feed, "10", afterPostId);
         
         postListObserve.observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -676,29 +674,8 @@ public class retrofitCalls {
                                             }
     
                                             @Override
-                                            public void onProfilePicClicked (String avatar, String name, String verified, String about, String proType,
-                                                                             String cover, String postCount, String followersCount, String followingCount,
-                                                                             String _gender, String _birthday, String _working, String _school, String _city, String _address) {
-    
-                                                profile_image = avatar;
-                                                username = name;
-                                                verified_status = verified;
-                                                about_me = about;
-                                                pro_type = proType;
-                                                cover_image = cover;
-                                                post_Count = postCount;
-                                                followers_Count =
-                                                        followersCount;
-                                                following_Count =
-                                                        followingCount;
-                                                /*.......*/
-                                                gender = _gender;
-                                                birthday = _birthday;
-                                                working = _working;
-                                                school = _school;
-                                                city = _city;
-                                                address = _address;
-    
+                                            public void onProfilePicClicked (String userId) {
+                                                previewUserId = userId;
                                                 new XPopup.Builder(context).asCustom(new previewProfilePopup(context)).show();
                                             }
                                         });
@@ -931,6 +908,7 @@ public class retrofitCalls {
                 });
     }
     
+    /*preview user profile*/
     public void previewProfile (ImageView cover_photo, ProgressBar progressBar_cover,
                                 ImageView profile_pic, TextView name,
                                 ImageView verified_badge,
@@ -939,62 +917,148 @@ public class retrofitCalls {
                                 TextView about, TextView _gender,
                                 TextView _birthday, TextView _working,
                                 TextView _school, TextView _living,
-                                TextView _located) {
+                                TextView _located, LinearLayout layout,
+                                ProgressBar progressBar) {
     
-        name.setText(username);
-        no_posts.setText(post_Count);
-        no_followers.setText(followers_Count);
-        no_following.setText(following_Count);
+        userInfoObservable = rxJavaQueries.getUserData(accessToken, serverKey,
+                fetch_profile, previewUserId);
     
-        if (about_me != null) {
-            about.setText(Html.fromHtml(about_me));
-        }
-    
-        if (!verified_status.equals("1")) {
-            verified_badge.setVisibility(View.GONE);
-        }
-        
-        switch (pro_type) {
-            case "1":
-                level_badge.setImageResource(R.drawable.ic_star_badge);
-                level_badge.setVisibility(View.VISIBLE);
-                break;
-            case "2":
-                level_badge.setImageResource(R.drawable.ic_hot_badge);
-                level_badge.setVisibility(View.VISIBLE);
-                break;
-            case "3":
-                level_badge.setImageResource(R.drawable.ic_ultima_badge);
-                level_badge.setVisibility(View.VISIBLE);
-                break;
-            case "4":
-                level_badge.setImageResource(R.drawable.ic_pro_badge);
-                level_badge.setVisibility(View.VISIBLE);
-                break;
-            case "0":
-            default:
-                level_badge.setVisibility(View.GONE);
-        }
-        
-        _gender.setText(gender);
-        _birthday.setText(birthday);
-        _working.append(working);
-        _school.append(school);
-        _living.append(address);
-        _located.append(city);
-        
-        /*level badge*/
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run () {
-                new glideImageLoader(cover_photo, progressBar_cover).load(cover_image,
-                        options);
+        userInfoObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<userInfo>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
                 
-                Glide.with(context).load(profile_image)
-                        .transform(new CropCircleWithBorderTransformation())
-                        .into(profile_pic);
-            
-            }
-        }, 500);
+                    @Override
+                    public void onNext (@NonNull userInfo userInfo) {
+                        
+                        if(userInfo.getApiStatus() == 200) {
+ 
+                            name.setText(userInfo.getUserData().getName());
+                            no_posts.setText(userInfo.getUserData().getDetails().getPostCount());
+                            no_followers.setText(userInfo.getUserData().getDetails().getFollowersCount());
+                            no_following.setText(userInfo.getUserData().getDetails().getFollowingCount());
+                            
+                            progressBar.setVisibility(View.GONE);
+                            layout.setVisibility(View.VISIBLE);
+    
+                            if (userInfo.getUserData().getAbout() != null) {
+                                about.setText(Html.fromHtml(userInfo.getUserData().getAbout()));
+                            }
+                            else {
+                                about.setText("Hey there I am using soshoplus");
+                            }
+    
+                            if (!userInfo.getUserData().getVerified().equals("1")) {
+                                verified_badge.setVisibility(View.GONE);
+                            }
+    
+                            switch (userInfo.getUserData().getProType()) {
+                                case "1":
+                                    level_badge.setImageResource(R.drawable.ic_star_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "2":
+                                    level_badge.setImageResource(R.drawable.ic_hot_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "3":
+                                    level_badge.setImageResource(R.drawable.ic_ultima_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "4":
+                                    level_badge.setImageResource(R.drawable.ic_pro_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "0":
+                                default:
+                                    level_badge.setVisibility(View.GONE);
+                            }
+    
+                            _gender.setText(userInfo.getUserData().getGenderText());
+                            _birthday.setText(userInfo.getUserData().getBirthday());
+                            _working.append(userInfo.getUserData().getWorking());
+                            _school.append(userInfo.getUserData().getSchool());
+                            _living.append(userInfo.getUserData().getAddress());
+                            _located.append(userInfo.getUserData().getCity());
+                            
+                            /*Follow privacy
+                              is_following
+                            * 0 = not following
+                            * 1 = following
+                            * 2 = requested*/
+    
+                            if (userInfo.getUserData().getCanFollow() == 0 && userInfo.getUserData().getIsFollowing() == 0) {
+                                follow.setVisibility(View.GONE);
+                            } else if (userInfo.getUserData().getIsFollowing() == 0) {
+                                follow.setVisibility(View.VISIBLE);
+                                follow.setText("Follow");
+                            }
+                            
+                            else if (userInfo.getUserData().getIsFollowing() == 2) {
+                                follow.setText("Requested");
+                                follow.setTextColor(context.getResources().getColor(R.color.white));
+                                follow.setBackgroundColor(context.getResources().getColor(R.color.steel_blue));
+                            }
+                            else {  /*(is_following == 1) */
+                                follow.setText("Following");
+                                follow.setTextColor(context.getResources().getColor(R.color.white));
+                                follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                            }
+    
+                            Log.d(TAG, "onNext: " + userInfo.getUserData().getIsFollowing());
+                            Log.d(TAG, "onNext: " + userInfo.getUserData().getCanFollow());
+                            Log.d(TAG,
+                                    "onNext: " + userInfo.getUserData().getIsFollowingMe());
+    
+                            /*level badge*/
+                            new Handler().postDelayed(() -> {
+                                new glideImageLoader(cover_photo,
+                                        progressBar_cover).load(userInfo.getUserData().getCover(),
+                                        options);
+        
+                                Glide.with(context).load(userInfo.getUserData().getAvatar())
+                                        .transform(new CropCircleWithBorderTransformation())
+                                        .into(profile_pic);
+        
+                            }, 500);
+                            
+                        }
+                        else {
+                            profile_pic.setImageResource(R.drawable.ic_image_placeholder);
+                            apiErrors apiErrors =userInfo.getErrors();
+                            Log.d(TAG, "main activity profile: " + apiErrors.getErrorId());
+                            Log.d(TAG, "main activity profile: " + apiErrors.getErrorText());
+    
+                            snack = new KSnack((FragmentActivity) context);
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                            snack.show();
+                        }
+                    }
+                
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+    
+                        snack = new KSnack((FragmentActivity) context);
+                        snack.setMessage("Oops !\nSomething went " +
+                                "wrong");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.show();
+                    }
+                
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

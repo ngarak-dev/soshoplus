@@ -56,7 +56,6 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_30sdp"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:text="Follow"
         android:textAllCaps="false"
         android:textSize="@dimen/_10sdp"
         app:cornerRadius="@dimen/_5sdp"
@@ -90,7 +89,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="@dimen/_5sdp"
-        android:text="Hey there I am using soshoplus"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -167,74 +165,78 @@
         app:layout_constraintStart_toStartOf="@+id/following_icon"
         app:layout_constraintTop_toBottomOf="@+id/following_icon" />
 
-    <TextView
-        android:id="@+id/gender"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_gender"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
+        android:orientation="vertical"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_of_posts" />
+        app:layout_constraintTop_toBottomOf="@id/no_of_posts">
 
-    <TextView
-        android:id="@+id/birthday"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_calendar"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gender" />
+        <TextView
+            android:id="@+id/gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_gender"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp" />
 
-    <TextView
-        android:id="@+id/working_at"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_briefcase"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="Working at "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/birthday" />
+        <TextView
+            android:id="@+id/birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp" />
 
-    <TextView
-        android:id="@+id/school"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_book"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="Studied at "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/working_at" />
+        <TextView
+            android:id="@+id/working_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_briefcase"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="Working at " />
 
-    <TextView
-        android:id="@+id/living"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_globe"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="Living in "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/school" />
+        <TextView
+            android:id="@+id/school"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_book"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="Studied at " />
 
-    <TextView
-        android:id="@+id/located"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_globe_location"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:text="Located in "
+        <TextView
+            android:id="@+id/living"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_globe"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="Living in " />
+
+        <TextView
+            android:id="@+id/located"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_globe_location"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="Located in " />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="@+id/linear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/living" />
+        app:layout_constraintTop_toTopOf="@+id/linear" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

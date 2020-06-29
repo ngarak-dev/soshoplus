@@ -18,6 +18,7 @@
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_margin="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,6 +82,7 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_margin="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

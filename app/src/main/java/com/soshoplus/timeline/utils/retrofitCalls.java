@@ -11,10 +11,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,15 +28,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.enums.PopupType;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
-import com.onurkagan.ksnack_lib.MinimalKSnack.MinimalKSnack;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -39,6 +47,7 @@ import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.friends.followers;
 import com.soshoplus.timeline.models.friends.following;
 import com.soshoplus.timeline.models.friends.friends;
@@ -53,6 +62,8 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.groups.viewGroup;
+import com.soshoplus.timeline.utils.glide.glideImageLoader;
+import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 
 import java.util.ArrayList;
@@ -64,8 +75,13 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.observers.DefaultObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import retrofit2.Call;
+import retrofit2.adapter.rxjava3.Result;
 
 
 public class retrofitCalls {
@@ -118,7 +134,17 @@ public class retrofitCalls {
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
     private KSnack snack;
-    private MinimalKSnack minimalKSnack;
+    
+    /*PREVIEW PROFILE*/
+    private static String previewUserId, followPrivacy;
+    private Observable<follow_unfollow> followUnfollowObservable;
+    
+    /*GLIDE OPTIONS*/
+    RequestOptions options = new RequestOptions()
+            .format(DecodeFormat.PREFER_RGB_565)
+            .placeholder(R.drawable.ic_image_placeholder)
+            .error(R.drawable.ic_image_placeholder)
+            .priority(Priority.LOW);
     
     public retrofitCalls (Context context){
         this.context = context;
@@ -650,6 +676,12 @@ public class retrofitCalls {
                                                         name;
                                                 new XPopup.Builder(context).asCustom(new sharePopup(context)).show();
                                             }
+    
+                                            @Override
+                                            public void onProfilePicClicked (String userId) {
+                                                previewUserId = userId;
+                                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context)).show();
+                                            }
                                         });
                                 
                                 /*setting adapter*/
@@ -878,5 +910,233 @@ public class retrofitCalls {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+    }
+    
+    /*preview user profile*/
+    public void previewProfile (ImageView cover_photo, ProgressBar progressBar_cover,
+                                ImageView profile_pic, TextView name,
+                                ImageView verified_badge,
+                                ImageView level_badge, TextView no_posts, TextView no_followers, TextView no_following,
+                                MaterialButton follow,
+                                TextView about, TextView _gender,
+                                TextView _birthday, TextView _working,
+                                TextView _school, TextView _living,
+                                TextView _located, LinearLayout layout,
+                                ProgressBar progressBar,
+                                ProgressBar progressBar_follow) {
+    
+        userInfoObservable = rxJavaQueries.getUserData(accessToken, serverKey,
+                fetch_profile, previewUserId);
+    
+        userInfoObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<userInfo>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+                
+                    @Override
+                    public void onNext (@NonNull userInfo userInfo) {
+                        
+                        if(userInfo.getApiStatus() == 200) {
+    
+                            /*follow privacy
+                            0 - moja kwa moja
+                            1 - conform first*/
+    
+                            followPrivacy =
+                                    userInfo.getUserData().getConfirmFollowers();
+ 
+                            name.setText(userInfo.getUserData().getName());
+                            no_posts.setText(userInfo.getUserData().getDetails().getPostCount());
+                            no_followers.setText(userInfo.getUserData().getDetails().getFollowersCount());
+                            no_following.setText(userInfo.getUserData().getDetails().getFollowingCount());
+                            
+                            progressBar.setVisibility(View.GONE);
+                            layout.setVisibility(View.VISIBLE);
+    
+                            if (userInfo.getUserData().getAbout() != null) {
+                                about.setText(Html.fromHtml(userInfo.getUserData().getAbout()));
+                            }
+                            else {
+                                about.setText("Hey there I am using soshoplus");
+                            }
+    
+                            if (!userInfo.getUserData().getVerified().equals("1")) {
+                                verified_badge.setVisibility(View.GONE);
+                            }
+    
+                            switch (userInfo.getUserData().getProType()) {
+                                case "1":
+                                    level_badge.setImageResource(R.drawable.ic_star_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "2":
+                                    level_badge.setImageResource(R.drawable.ic_hot_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "3":
+                                    level_badge.setImageResource(R.drawable.ic_ultima_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "4":
+                                    level_badge.setImageResource(R.drawable.ic_pro_badge);
+                                    level_badge.setVisibility(View.VISIBLE);
+                                    break;
+                                case "0":
+                                default:
+                                    level_badge.setVisibility(View.GONE);
+                            }
+    
+                            _gender.setText(userInfo.getUserData().getGenderText());
+                            _birthday.setText(userInfo.getUserData().getBirthday());
+                            _working.append(userInfo.getUserData().getWorking());
+                            _school.append(userInfo.getUserData().getSchool());
+                            _living.append(userInfo.getUserData().getAddress());
+                            _located.append(userInfo.getUserData().getCity());
+                            
+                            /*Follow privacy
+                              is_following
+                            * 0 = not following
+                            * 1 = following
+                            * 2 = requested*/
+    
+                            if (userInfo.getUserData().getCanFollow() == 0 && userInfo.getUserData().getIsFollowing() == 0) {
+                                follow.setVisibility(View.GONE);
+                            } else if (userInfo.getUserData().getIsFollowing() == 0) {
+                                follow.setVisibility(View.VISIBLE);
+                                follow.setText("Follow");
+                            }
+                            
+                            else if (userInfo.getUserData().getIsFollowing() == 2) {
+                                follow.setText("Requested");
+                                follow.setTextColor(context.getResources().getColor(R.color.white));
+                                follow.setBackgroundColor(context.getResources().getColor(R.color.steel_blue));
+                            }
+                            else {  /*(is_following == 1) */
+                                follow.setText("Following");
+                                follow.setTextColor(context.getResources().getColor(R.color.white));
+                                follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                            }
+    
+                            /*level badge*/
+                            new Handler().postDelayed(() -> {
+                                new glideImageLoader(cover_photo,
+                                        progressBar_cover).load(userInfo.getUserData().getCover(),
+                                        options);
+        
+                                Glide.with(context).load(userInfo.getUserData().getAvatar())
+                                        .transform(new CropCircleWithBorderTransformation())
+                                        .into(profile_pic);
+        
+                            }, 500);
+                            
+                        }
+                        else {
+                            profile_pic.setImageResource(R.drawable.ic_image_placeholder);
+                            apiErrors apiErrors =userInfo.getErrors();
+                            Log.d(TAG, "main activity profile: " + apiErrors.getErrorText());
+    
+                            snack = new KSnack((FragmentActivity) context);
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                            snack.show();
+                        }
+                    }
+                
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+    
+                        snack = new KSnack((FragmentActivity) context);
+                        snack.setMessage("Oops !\nSomething went " +
+                                "wrong");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.show();
+                    }
+                
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
+        
+        follow.setOnClickListener(view -> {
+            /*set text null
+            * show progress*/
+            follow.setText(null);
+            progressBar_follow.setVisibility(View.VISIBLE);
+            
+            followUnfollowObservable = rxJavaQueries.followUser(accessToken,
+                    serverKey, previewUserId);
+            
+            followUnfollowObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DefaultObserver<follow_unfollow>() {
+                        @Override
+                        public void onNext (@NonNull follow_unfollow follow_unfollow) {
+                            if (follow_unfollow.getApiStatus() == 200) {
+    
+                                Log.d(TAG, "onNext: " + follow_unfollow.getFollowStatus());
+                                
+                               if (follow_unfollow.getFollowStatus().equals(
+                                       "unfollowed")) {
+                                   
+                                   progressBar_follow.setVisibility(View.GONE);
+                                   follow.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                   follow.setBackgroundColor(context.getResources().getColor(R.color.transparent));
+                                   follow.setText("Follow");
+                               }
+                               else {
+                                   if (followPrivacy.equals("1")) {
+                                       progressBar_follow.setVisibility(View.GONE);
+                                       follow.setTextColor(context.getResources().getColor(R.color.white));
+                                       follow.setBackgroundColor(context.getResources().getColor(R.color.steel_blue));
+                                       follow.setText("Requested");
+                                   }
+                                   else {
+                                       progressBar_follow.setVisibility(View.GONE);
+                                       follow.setTextColor(context.getResources().getColor(R.color.white));
+                                       follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                                       follow.setText("Following");
+                                   }
+                               }
+                            }
+                            else {
+                                snack = new KSnack((FragmentActivity) context);
+                                snack.setMessage("Oops !\nSomething went " +
+                                        "wrong");
+                                snack.setAction("DISMISS", view -> {
+                                    snack.dismiss();
+                                });
+                                snack.show();
+                            }
+                        }
+    
+                        @Override
+                        public void onError (@NonNull Throwable e) {
+                            Log.d(TAG, "onError: " + e.getMessage());
+    
+                            snack = new KSnack((FragmentActivity) context);
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                            snack.show();
+                        }
+    
+                        @Override
+                        public void onComplete () {
+                            Log.d(TAG, "onComplete: ");
+                        }
+                    });
+        });
     }
 }

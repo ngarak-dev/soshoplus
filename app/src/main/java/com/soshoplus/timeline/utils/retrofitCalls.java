@@ -565,10 +565,31 @@ public class retrofitCalls {
                             
                             /*initializing adapter*/
                             suggestedFriendsAdapter listAdapter = new suggestedFriendsAdapter(context, suggestedInfoList,
-                                    (suggestedInfo, follow, progressBar) -> {
-                                /*preview profile*/
-                                previewUserId = suggestedInfo.getUserId();
-                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context)).show();
+                                    new suggestedFriendsAdapter.onSuggestedClickListener() {
+                                        @Override
+                                        public void onClick (suggestedInfo suggestedInfo) {
+                                            /*preview profile*/
+                                            previewUserId = suggestedInfo.getUserId();
+                                            new XPopup.Builder(context).asCustom(new previewProfilePopup(context)).show();
+                                        }
+    
+/*                                        @Override
+                                        public void onFollowClick (suggestedInfo suggestedInfo, MaterialButton follow, ProgressBar progressBar) {
+                                           
+                                            *//*getting user id*//*
+                                            previewUserId =
+                                                    suggestedInfo.getUserId();
+                                            *//*follow user*//*
+                                            follow.setOnClickListener(view -> {
+                                                *//*follow user*//*
+                                                
+                                                followUnfollowObservable = rxJavaQueries.followUser(accessToken,
+                                                        serverKey, previewUserId);
+                                                
+                                                followUser(follow, progressBar);
+                                            });
+                                            
+                                        }*/
                             });
     
                             /*Setting Layout*/
@@ -1061,61 +1082,58 @@ public class retrofitCalls {
                 });
         
         follow.setOnClickListener(view -> {
-            /*set text null
-            * show progress*/
-            follow.setText(null);
-            progressBar_follow.setVisibility(View.VISIBLE);
-            
+            /*follow user*/
+    
             followUnfollowObservable = rxJavaQueries.followUser(accessToken,
                     serverKey, previewUserId);
             
-            followUnfollowObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DefaultObserver<follow_unfollow>() {
-                        @Override
-                        public void onNext (@NonNull follow_unfollow follow_unfollow) {
-                            if (follow_unfollow.getApiStatus() == 200) {
+            followUser(follow, progressBar_follow);
+        });
+    }
+    /*follow user*/
+    private void followUser (MaterialButton follow, ProgressBar progressBar_follow) {
     
-                                Log.d(TAG, "onNext: " + follow_unfollow.getFollowStatus());
-                                
-                               if (follow_unfollow.getFollowStatus().equals(
-                                       "unfollowed")) {
-                                   
-                                   progressBar_follow.setVisibility(View.GONE);
-                                   follow.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                   follow.setBackgroundColor(context.getResources().getColor(R.color.transparent));
-                                   follow.setText("Follow");
-                               }
-                               else {
-                                   if (followPrivacy.equals("1")) {
-                                       progressBar_follow.setVisibility(View.GONE);
-                                       follow.setTextColor(context.getResources().getColor(R.color.white));
-                                       follow.setBackgroundColor(context.getResources().getColor(R.color.steel_blue));
-                                       follow.setText("Requested");
-                                   }
-                                   else {
-                                       progressBar_follow.setVisibility(View.GONE);
-                                       follow.setTextColor(context.getResources().getColor(R.color.white));
-                                       follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-                                       follow.setText("Following");
-                                   }
-                               }
+        /*set text null
+         * show progress*/
+        follow.setText(null);
+        progressBar_follow.setVisibility(View.VISIBLE);
+    
+        followUnfollowObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultObserver<follow_unfollow>() {
+                    @Override
+                    public void onNext (@NonNull follow_unfollow follow_unfollow) {
+                        if (follow_unfollow.getApiStatus() == 200) {
+                        
+                            Log.d(TAG, "onNext: " + follow_unfollow.getFollowStatus());
+                        
+                            if (follow_unfollow.getFollowStatus().equals(
+                                    "unfollowed")) {
+                            
+                                progressBar_follow.setVisibility(View.GONE);
+                                follow.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                follow.setBackgroundColor(context.getResources().getColor(R.color.transparent));
+                                follow.setText("Follow");
                             }
                             else {
-                                snack = new KSnack((FragmentActivity) context);
-                                snack.setMessage("Oops !\nSomething went " +
-                                        "wrong");
-                                snack.setAction("DISMISS", view -> {
-                                    snack.dismiss();
-                                });
-                                snack.show();
+                                if (followPrivacy.equals("1")) {
+                                    progressBar_follow.setVisibility(View.GONE);
+                                    follow.setTextColor(context.getResources().getColor(R.color.white));
+                                    follow.setBackgroundColor(context.getResources().getColor(R.color.steel_blue));
+                                    follow.setText("Requested");
+                                }
+                                else {
+                                    progressBar_follow.setVisibility(View.GONE);
+                                    follow.setTextColor(context.getResources().getColor(R.color.white));
+                                    follow.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                                    follow.setText("Following");
+                                }
                             }
                         }
-    
-                        @Override
-                        public void onError (@NonNull Throwable e) {
-                            Log.d(TAG, "onError: " + e.getMessage());
-    
+                        else {
+                            apiErrors errors = follow_unfollow.getErrors();
+                            Log.d(TAG, "onNext: " + errors.getErrorText());
+                            
                             snack = new KSnack((FragmentActivity) context);
                             snack.setMessage("Oops !\nSomething went " +
                                     "wrong");
@@ -1124,12 +1142,25 @@ public class retrofitCalls {
                             });
                             snack.show();
                         }
-    
-                        @Override
-                        public void onComplete () {
-                            Log.d(TAG, "onComplete: ");
-                        }
-                    });
-        });
+                    }
+                
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                    
+                        snack = new KSnack((FragmentActivity) context);
+                        snack.setMessage("Oops !\nSomething went " +
+                                "wrong");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.show();
+                    }
+                
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

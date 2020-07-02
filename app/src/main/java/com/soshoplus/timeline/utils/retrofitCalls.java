@@ -248,7 +248,9 @@ public class retrofitCalls {
                                         }
                 
                                         @Override
-                                        public void onJoinClick (groupInfo groupInfo, Button is_joined, int position) {
+                                        public void onJoinClick (groupInfo groupInfo, MaterialButton is_joined, int position, ProgressBar progressBar) {
+                                            is_joined.setText(null);
+                                            progressBar.setVisibility(View.VISIBLE);
                                             
                                             joinUnjoinObservable =
                                                     rxJavaQueries.joinGroup(accessToken, serverKey, groupInfo.getGroupId());
@@ -264,6 +266,8 @@ public class retrofitCalls {
                                                         @Override
                                                         public void onNext (@NonNull join_unjoin join_unjoin) {
                                                             if (join_unjoin.getApiStatus() == 200) {
+                                                                
+                                                                progressBar.setVisibility(View.GONE);
     
                                                                if (join_unjoin.getJoinStatus().equals("left")) {
                                                                    snack = new KSnack((FragmentActivity) context);

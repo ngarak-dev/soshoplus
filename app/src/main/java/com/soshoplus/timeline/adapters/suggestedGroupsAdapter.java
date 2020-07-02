@@ -7,19 +7,19 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
 
@@ -50,7 +50,8 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
     @Override
     public void onBindViewHolder (@NonNull suggestedGroupsAdapter.GroupsHolder holder, int position) {
         /*bind items and set onclick listener*/
-        holder.bind(groupInfoList.get(position), groupClickListener, context);
+        holder.bind(groupInfoList.get(position), groupClickListener, context,
+                position);
     }
     
     @Override
@@ -58,13 +59,14 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
         return groupInfoList.size();
     }
     
-    public class GroupsHolder extends RecyclerView.ViewHolder{
+    static class GroupsHolder extends RecyclerView.ViewHolder{
         
         ShapeableImageView profile_pic;
         TextView group_title;
         TextView group_category;
         TextView total_members;
-        Button is_joined;
+        MaterialButton is_joined;
+        ProgressBar progressBar;
         
         public GroupsHolder (@NonNull View itemView) {
             super(itemView);
@@ -73,9 +75,10 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
             group_category = itemView.findViewById(R.id.group_category);
             total_members = itemView.findViewById(R.id.total_members);
             is_joined = itemView.findViewById(R.id.btn_join);
+            progressBar = itemView.findViewById(R.id.progressBar_join);
         }
     
-        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context) {
+        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context, int position) {
     
             Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
     
@@ -95,8 +98,8 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
             is_joined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View v) {
-                    groupClickListener.onJoinClick(groupInfo);
-                    /*TODO change button stated accordingly*/
+                    groupClickListener.onJoinClick(groupInfo, is_joined,
+                            position, progressBar);
                 }
             });
         }
@@ -107,6 +110,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
         /*onclick for a row*/
         void onGroupClick (groupInfo groupInfo);
         /*onclick for a button*/
-        void onJoinClick (groupInfo groupInfo);
+        void onJoinClick (groupInfo groupInfo, MaterialButton is_joined, int position,
+                          ProgressBar progressBar);
     }
 }

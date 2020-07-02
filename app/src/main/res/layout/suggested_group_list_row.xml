@@ -57,21 +57,30 @@
             app:layout_constraintTop_toBottomOf="@id/group_category" />
 
 
-        <com.google.android.material.chip.Chip
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_join"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="@dimen/_30sdp"
             android:text="Join"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:chipBackgroundColor="@color/colorPrimary"
-            app:chipCornerRadius="@dimen/_5sdp"
-            app:chipIcon="@drawable/ic_add"
-            app:chipIconSize="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="visible"
+            app:cornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_join"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/btn_join"
+            app:layout_constraintEnd_toEndOf="@id/btn_join"
+            app:layout_constraintStart_toStartOf="@id/btn_join"
+            app:layout_constraintTop_toTopOf="@id/btn_join" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

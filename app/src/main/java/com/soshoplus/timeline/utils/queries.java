@@ -8,6 +8,7 @@ package com.soshoplus.timeline.utils;
 
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.follow_unfollow;
+import com.soshoplus.timeline.models.groups.join.join_unjoin;
 import com.soshoplus.timeline.models.postsfeed.postList;
 
 import com.soshoplus.timeline.models.friends.friends;
@@ -138,4 +139,11 @@ public interface queries {
     Observable<follow_unfollow> followUser (@Query("access_token") String access_token,
                                             @Field("server_key") String server_key,
                                             @Field("user_id") String user_id);
+    
+    /*Joining a group*/
+    @FormUrlEncoded
+    @POST("join-group")
+    Observable<join_unjoin> joinGroup (@Query("access_token") String access_token,
+                                       @Field("server_key") String server_key,
+                                       @Field("group_id") String group_id);
 }

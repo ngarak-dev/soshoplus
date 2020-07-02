@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
 
@@ -58,7 +56,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
         return groupInfoList.size();
     }
     
-    public class GroupsHolder extends RecyclerView.ViewHolder{
+    static class GroupsHolder extends RecyclerView.ViewHolder{
         
         ShapeableImageView profile_pic;
         TextView group_title;
@@ -95,8 +93,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
             is_joined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View v) {
-                    groupClickListener.onJoinClick(groupInfo);
-                    /*TODO change button stated accordingly*/
+                    groupClickListener.onJoinClick(groupInfo, is_joined);
                 }
             });
         }
@@ -107,6 +104,6 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
         /*onclick for a row*/
         void onGroupClick (groupInfo groupInfo);
         /*onclick for a button*/
-        void onJoinClick (groupInfo groupInfo);
+        void onJoinClick (groupInfo groupInfo, Button is_joined);
     }
 }

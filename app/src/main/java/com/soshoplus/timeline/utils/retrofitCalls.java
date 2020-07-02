@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -53,6 +54,7 @@ import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.models.groups.groupList;
+import com.soshoplus.timeline.models.groups.join.join_unjoin;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
@@ -132,6 +134,9 @@ public class retrofitCalls {
     /*PREVIEW PROFILE*/
     private static String previewUserId, followPrivacy;
     private Observable<follow_unfollow> followUnfollowObservable;
+    
+    /*JOIN GROUP*/
+    private Observable<join_unjoin> joinUnjoinObservable;
     
     /*GLIDE OPTIONS*/
     RequestOptions options = new RequestOptions()
@@ -240,9 +245,69 @@ public class retrofitCalls {
                                         }
                 
                                         @Override
-                                        public void onJoinClick (groupInfo groupInfo) {
-                                            Log.d(TAG, "onJoinClick: " + groupInfo.getGroupId());
-                                            /*TODO implement group join or request or remove*/
+                                        public void onJoinClick (groupInfo groupInfo, Button is_joined) {
+                                            
+                                            joinUnjoinObservable =
+                                                    rxJavaQueries.joinGroup(accessToken, serverKey, groupInfo.getGroupId());
+                                            
+                                            joinUnjoinObservable.subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe(new Observer<join_unjoin>() {
+                                                        @Override
+                                                        public void onSubscribe (@NonNull Disposable d) {
+                                                            Log.d(TAG, "onSubscribe: ");
+                                                        }
+    
+                                                        @Override
+                                                        public void onNext (@NonNull join_unjoin join_unjoin) {
+                                                            if (join_unjoin.getApiStatus() == 200) {
+    
+                                                               if (join_unjoin.getJoinStatus().equals("left")) {
+                                                                   snack = new KSnack((FragmentActivity) context);
+                                                                   snack.setMessage("You have left " + groupInfo.getName());
+                                                                   snack.show();
+                                                                   snack.setDuration(3000);
+                                                                   
+                                                               } else {
+                                                                   snack = new KSnack((FragmentActivity) context);
+                                                                   snack.setMessage("You have joined " + groupInfo.getName());
+                                                                   snack.show();
+                                                                   snack.setDuration(3000);
+                                                               }
+                                                            }
+                                                            else {
+                                                                apiErrors errors = join_unjoin.getErrors();
+                                                                Log.d(TAG, "onNext: " + errors.getErrorText());
+    
+                                                                snack = new KSnack((FragmentActivity) context);
+                                                                snack.setMessage("Oops !\nSomething went " +
+                                                                        "wrong");
+                                                                snack.setAction("DISMISS", view -> {
+                                                                    snack.dismiss();
+                                                                });
+                                                                snack.show();
+                                                                snack.setDuration(3000);
+                                                            }
+                                                        }
+    
+                                                        @Override
+                                                        public void onError (@NonNull Throwable e) {
+                                                            Log.d(TAG,
+                                                                    "onError:" +
+                                                                            " " + e.getMessage());
+    
+                                                            snack = new KSnack((FragmentActivity) context);
+                                                            snack.setMessage("Oops !\nSomething went " +
+                                                                    "wrong");
+                                                            snack.show();
+                                                            snack.setDuration(3000);
+                                                        }
+    
+                                                        @Override
+                                                        public void onComplete () {
+                                                            Log.d(TAG, "onComplete: ");
+                                                        }
+                                                    });
                                         }
                                     });
     

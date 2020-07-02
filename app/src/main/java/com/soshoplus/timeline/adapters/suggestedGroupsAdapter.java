@@ -48,7 +48,8 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
     @Override
     public void onBindViewHolder (@NonNull suggestedGroupsAdapter.GroupsHolder holder, int position) {
         /*bind items and set onclick listener*/
-        holder.bind(groupInfoList.get(position), groupClickListener, context);
+        holder.bind(groupInfoList.get(position), groupClickListener, context,
+                position);
     }
     
     @Override
@@ -73,7 +74,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
             is_joined = itemView.findViewById(R.id.btn_join);
         }
     
-        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context) {
+        public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context, int position) {
     
             Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
     
@@ -93,7 +94,7 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
             is_joined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View v) {
-                    groupClickListener.onJoinClick(groupInfo, is_joined);
+                    groupClickListener.onJoinClick(groupInfo, is_joined, position);
                 }
             });
         }
@@ -104,6 +105,6 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
         /*onclick for a row*/
         void onGroupClick (groupInfo groupInfo);
         /*onclick for a button*/
-        void onJoinClick (groupInfo groupInfo, Button is_joined);
+        void onJoinClick (groupInfo groupInfo, Button is_joined, int position);
     }
 }

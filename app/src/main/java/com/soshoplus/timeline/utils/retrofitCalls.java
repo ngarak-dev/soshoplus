@@ -95,6 +95,9 @@ public class retrofitCalls {
     private static String friends_following = "following";
     private static String suggested_friends = "users";
     private static String share_post_on_timeline = "share_post_on_timeline";
+    
+    /*ADAPTERS*/
+    private suggestedGroupsAdapter suggested_groups_adapter;
 
     /*CALLS*/
     private Observable<userInfo> userInfoObservable;
@@ -228,7 +231,7 @@ public class retrofitCalls {
                             groupInfoList = groupList.getInfo();
     
                             /*initializing adapter*/
-                            suggestedGroupsAdapter listAdapter =
+                            suggested_groups_adapter =
                                     new suggestedGroupsAdapter(context,
                                             groupInfoList, new suggestedGroupsAdapter.onGroupClickListener() {
                                         @Override
@@ -245,7 +248,7 @@ public class retrofitCalls {
                                         }
                 
                                         @Override
-                                        public void onJoinClick (groupInfo groupInfo, Button is_joined) {
+                                        public void onJoinClick (groupInfo groupInfo, Button is_joined, int position) {
                                             
                                             joinUnjoinObservable =
                                                     rxJavaQueries.joinGroup(accessToken, serverKey, groupInfo.getGroupId());
@@ -269,6 +272,24 @@ public class retrofitCalls {
                                                                    snack.setDuration(3000);
                                                                    
                                                                } else {
+                                                                   /*remove
+                                                                   from list
+                                                                   and update
+                                                                    adapter*/
+                                                                   groupInfoList.remove(position);
+                                                                   suggested_groups_adapter.notifyDataSetChanged();
+                                                                   /*TODO Add
+                                                                       group
+                                                                       to
+                                                                       joined
+                                                                        groups*/
+                                                                   /*TODO if
+                                                                      empty
+                                                                      show
+                                                                      empty*/
+                                                                   
+                                                                   /*show
+                                                                   snack*/
                                                                    snack = new KSnack((FragmentActivity) context);
                                                                    snack.setMessage("You have joined " + groupInfo.getName());
                                                                    snack.show();
@@ -310,13 +331,14 @@ public class retrofitCalls {
                                                     });
                                         }
                                     });
+                            
     
                             /*Setting Layout*/
                             suggestedGroupsList.setLayoutManager(new LinearLayoutManager(context));
                             suggestedGroupsList.setItemAnimator(new DefaultItemAnimator());
     
                             /*Setting Adapter*/
-                            suggestedGroupsList.setAdapter(listAdapter);
+                            suggestedGroupsList.setAdapter(suggested_groups_adapter);
                         }
                         else {
                             apiErrors apiErrors = groupList.getErrors();
@@ -453,11 +475,11 @@ public class retrofitCalls {
                                         @Override
                                         public void onGroupClick (groupInfo groupInfo) {
                                             Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
-                    
+    
                                             /*TODO implement group view or preview*/
                                             /*setting group id*/
                                             group_id = groupInfo.getGroupId();
-                    
+    
                                             Intent intent = new Intent();
                                             intent.setClass(context, viewGroup.class);
                                             context.startActivity(intent);

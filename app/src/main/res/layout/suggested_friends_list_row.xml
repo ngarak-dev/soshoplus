@@ -34,7 +34,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/about_me"
-            app:layout_constraintEnd_toStartOf="@id/btn_follow"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_pic"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,26 +42,38 @@
             android:id="@+id/about_me"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:maxLines="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/full_name"
             app:layout_constraintStart_toStartOf="@id/full_name"
             app:layout_constraintTop_toBottomOf="@id/full_name" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/btn_follow"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_35sdp"
-            android:text="Follow"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:chipBackgroundColor="@color/colorPrimary"
-            app:chipCornerRadius="@dimen/_5sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/btn_follow"-->
+        <!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="@dimen/_30sdp"-->
+        <!--            android:layout_marginEnd="@dimen/_5sdp"-->
+        <!--            android:text="Follow"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:textAllCaps="false"-->
+        <!--            android:textSize="@dimen/_10sdp"-->
+        <!--            app:cornerRadius="@dimen/_5sdp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--        <ProgressBar-->
+        <!--            android:id="@+id/progressBar_follow"-->
+        <!--            android:layout_width="@dimen/_10sdp"-->
+        <!--            android:layout_height="@dimen/_10sdp"-->
+        <!--            android:elevation="@dimen/_10sdp"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/btn_follow"-->
+        <!--            app:layout_constraintEnd_toEndOf="@id/btn_follow"-->
+        <!--            app:layout_constraintStart_toStartOf="@id/btn_follow"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/btn_follow" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

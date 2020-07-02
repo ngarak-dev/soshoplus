@@ -13,10 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.widget.ContentLoadingProgressBar;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.utils.retrofitCalls;

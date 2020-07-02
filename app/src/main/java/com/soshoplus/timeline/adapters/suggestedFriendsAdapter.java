@@ -11,12 +11,14 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -63,14 +65,16 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
         ShapeableImageView profile_pic;
         TextView full_name;
         TextView about;
-        Chip follow;
+        MaterialButton follow;
+        ProgressBar progressBar;
         
         public SuggestedFriendsHolder (@NonNull View itemView) {
             super(itemView);
             profile_pic = itemView.findViewById(R.id.profile_pic);
             full_name = itemView.findViewById(R.id.full_name);
-            follow = itemView.findViewById(R.id.btn_follow);
+//            follow = itemView.findViewById(R.id.btn_follow);
             about = itemView.findViewById(R.id.about_me);
+            progressBar = itemView.findViewById(R.id.progressBar_follow);
         }
     
         public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener, Context context) {
@@ -95,12 +99,13 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
             Glide.with(context).load(suggestedInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
 
             /*on click*/
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick (View v) {
-                    suggestedClickListener.onClick(suggestedInfo);
-                }
-            });
+            itemView.setOnClickListener(v ->
+                    suggestedClickListener.onClick(suggestedInfo));
+            
+/*            follow.setOnClickListener(view -> {
+                    suggestedClickListener.onFollowClick(suggestedInfo,
+                            follow, progressBar);
+            });*/
         }
     }
     
@@ -108,5 +113,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
     public interface onSuggestedClickListener {
         /*onclick*/
         void onClick (suggestedInfo suggestedInfo);
+/*        *//*on follow btn click*//*
+        void onFollowClick (suggestedInfo suggestedInfo, MaterialButton follow, ProgressBar progressBar);*/
     }
 }

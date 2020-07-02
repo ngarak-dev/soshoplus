@@ -63,6 +63,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progressBar_follow"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/btn_follow"
+            app:layout_constraintEnd_toEndOf="@id/btn_follow"
+            app:layout_constraintStart_toStartOf="@id/btn_follow"
+            app:layout_constraintTop_toTopOf="@id/btn_follow" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

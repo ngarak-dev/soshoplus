@@ -20,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -30,8 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -77,11 +74,8 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DefaultObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import jp.wasabeef.glide.transformations.CropCircleWithBorderTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import retrofit2.Call;
-import retrofit2.adapter.rxjava3.Result;
 
 
 public class retrofitCalls {
@@ -570,12 +564,11 @@ public class retrofitCalls {
                                     suggestedList.getSuggestedInfo();
                             
                             /*initializing adapter*/
-                            suggestedFriendsAdapter listAdapter = new suggestedFriendsAdapter(context, suggestedInfoList, new suggestedFriendsAdapter.onSuggestedClickListener() {
-                                @Override
-                                public void onClick (suggestedInfo suggestedInfo) {
-                                    Toast.makeText(context, suggestedInfo.getName(), Toast.LENGTH_SHORT).show();
-                                    /*TODO show user profile onclick*/
-                                }
+                            suggestedFriendsAdapter listAdapter = new suggestedFriendsAdapter(context, suggestedInfoList,
+                                    (suggestedInfo, follow, progressBar) -> {
+                                /*preview profile*/
+                                previewUserId = suggestedInfo.getUserId();
+                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context)).show();
                             });
     
                             /*Setting Layout*/

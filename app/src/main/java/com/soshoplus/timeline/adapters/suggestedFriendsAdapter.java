@@ -11,6 +11,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,6 +65,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
         TextView full_name;
         TextView about;
         Chip follow;
+        ProgressBar progressBar;
         
         public SuggestedFriendsHolder (@NonNull View itemView) {
             super(itemView);
@@ -71,6 +73,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
             full_name = itemView.findViewById(R.id.full_name);
             follow = itemView.findViewById(R.id.btn_follow);
             about = itemView.findViewById(R.id.about_me);
+            progressBar = itemView.findViewById(R.id.progressBar_follow);
         }
     
         public void bind (suggestedInfo suggestedInfo, onSuggestedClickListener suggestedClickListener, Context context) {
@@ -98,7 +101,7 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View v) {
-                    suggestedClickListener.onClick(suggestedInfo);
+                    suggestedClickListener.onClick(suggestedInfo, follow, progressBar);
                 }
             });
         }
@@ -107,6 +110,6 @@ public class suggestedFriendsAdapter extends RecyclerView.Adapter<suggestedFrien
     /*interface for click listener*/
     public interface onSuggestedClickListener {
         /*onclick*/
-        void onClick (suggestedInfo suggestedInfo);
+        void onClick (suggestedInfo suggestedInfo, Chip follow, ProgressBar progressBar);
     }
 }

@@ -9,6 +9,7 @@ package com.soshoplus.timeline.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
@@ -21,16 +22,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -212,7 +220,9 @@ public class retrofitCalls {
     }
 
     /*get recommended groups*/
-    public void getRecommends (RecyclerView suggestedGroupsList) {
+    public void getRecommends (RecyclerView suggestedGroupsList,
+                               ImageView allSetUpImg, TextView allSetUpText
+            , ProgressBar progressBarSuggested) {
         groupListObservable = rxJavaQueries.getRecommended(accessToken,
                 serverKey, fetch_recommended, "5");
         groupListObservable.subscribeOn(Schedulers.io())
@@ -248,7 +258,8 @@ public class retrofitCalls {
                                         }
                 
                                         @Override
-                                        public void onJoinClick (groupInfo groupInfo, MaterialButton is_joined, int position, ProgressBar progressBar) {
+                                        public void onJoinClick (groupInfo groupInfo, MaterialButton is_joined,
+                                                                 int position, ProgressBar progressBar) {
                                             is_joined.setText(null);
                                             progressBar.setVisibility(View.VISIBLE);
                                             
@@ -282,16 +293,15 @@ public class retrofitCalls {
                                                                     adapter*/
                                                                    groupInfoList.remove(position);
                                                                    suggested_groups_adapter.notifyDataSetChanged();
+                                                                   
+                                                                   /*.....*/
+                                                                   updateUI();
+                                                                   
                                                                    /*TODO Add
                                                                        group
                                                                        to
                                                                        joined
                                                                         groups*/
-                                                                   /*TODO if
-                                                                      empty
-                                                                      show
-                                                                      empty*/
-                                                                   
                                                                    /*show
                                                                    snack*/
                                                                    snack = new KSnack((FragmentActivity) context);
@@ -343,11 +353,34 @@ public class retrofitCalls {
     
                             /*Setting Adapter*/
                             suggestedGroupsList.setAdapter(suggested_groups_adapter);
+                            
+                            /*......*/
+                            /*After fetching Data*/
+                            updateUI();
                         }
                         else {
                             apiErrors apiErrors = groupList.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                        }
+                    }
+    
+                    private void updateUI () {
+                        if (groupInfoList.size() == 0) {
+                            /*Show all set*/
+                            suggestedGroupsList.setVisibility(View.GONE);
+                            progressBarSuggested.setVisibility(View.GONE);
+    
+                            allSetUpImg.setVisibility(View.VISIBLE);
+                            allSetUpText.setVisibility(View.VISIBLE);
+        
+                        } else {
+                            /*Show recyclerview*/
+                            allSetUpImg.setVisibility(View.GONE);
+                            allSetUpText.setVisibility(View.GONE);
+                            
+                            progressBarSuggested.setVisibility(View.GONE);
+                            suggestedGroupsList.setVisibility(View.VISIBLE);
                         }
                     }
     
@@ -454,7 +487,8 @@ public class retrofitCalls {
 //    }
 //
     /*get joined groups*/
-    public void getJoined (RecyclerView joinedGroupsList) {
+    public void getJoined (RecyclerView joinedGroupsList, ProgressBar progressBarJoined,
+                           ImageView joinedGroupsShowHereImg, TextView joinedGroupsShowHereTxt) {
         groupListObservable = rxJavaQueries.getJoinedGroups(accessToken,
                 serverKey, joined_groups, userId);
         groupListObservable.subscribeOn(Schedulers.io())
@@ -475,20 +509,17 @@ public class retrofitCalls {
                             /*initializing adapter*/
                             joinedGroupsAdapter listAdapter =
                                     new joinedGroupsAdapter(context,
-                                            groupInfoList, new joinedGroupsAdapter.onGroupClickListener() {
-                                        @Override
-                                        public void onGroupClick (groupInfo groupInfo) {
-                                            Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
-    
-                                            /*TODO implement group view or preview*/
-                                            /*setting group id*/
-                                            group_id = groupInfo.getGroupId();
-    
-                                            Intent intent = new Intent();
-                                            intent.setClass(context, viewGroup.class);
-                                            context.startActivity(intent);
-                                        }
-                                    });
+                                            groupInfoList, groupInfo -> {
+                                                Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
+        
+                                                /*TODO implement group view or preview*/
+                                                /*setting group id*/
+                                                group_id = groupInfo.getGroupId();
+        
+                                                Intent intent = new Intent();
+                                                intent.setClass(context, viewGroup.class);
+                                                context.startActivity(intent);
+                                            });
     
                             /*Setting Layout*/
                             joinedGroupsList.setItemAnimator(new DefaultItemAnimator());
@@ -496,11 +527,34 @@ public class retrofitCalls {
                             /*Setting Adapter*/
                             joinedGroupsList.setAdapter(listAdapter);
                             
+                            /*......*/
+                            /*After fetching Data*/
+                            updateUI();
+                            
                         }
                         else {
                             apiErrors apiErrors = groupList.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                        }
+                    }
+    
+                    private void updateUI () {
+                        if (groupInfoList.size() == 0) {
+                            /*Show all set*/
+                            joinedGroupsList.setVisibility(View.GONE);
+                            progressBarJoined.setVisibility(View.GONE);
+            
+                            joinedGroupsShowHereImg.setVisibility(View.VISIBLE);
+                            joinedGroupsShowHereTxt.setVisibility(View.VISIBLE);
+            
+                        } else {
+                            /*Show recyclerview*/
+                            joinedGroupsShowHereImg.setVisibility(View.GONE);
+                            joinedGroupsShowHereTxt.setVisibility(View.GONE);
+            
+                            progressBarJoined.setVisibility(View.GONE);
+                            joinedGroupsList.setVisibility(View.VISIBLE);
                         }
                     }
     

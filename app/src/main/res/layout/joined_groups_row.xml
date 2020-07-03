@@ -21,10 +21,22 @@
             android:id="@+id/group_profile_pic"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/group_profile_pic"
+            app:layout_constraintEnd_toEndOf="@+id/group_profile_pic"
+            app:layout_constraintStart_toStartOf="@+id/group_profile_pic"
+            app:layout_constraintTop_toTopOf="@id/group_profile_pic" />
 
         <TextView
             android:id="@+id/group_title"

@@ -7,18 +7,24 @@
 package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.groups.groupInfo;
+import com.soshoplus.timeline.utils.glide.glideImageLoader;
 
 import java.util.List;
 
@@ -28,6 +34,13 @@ public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapte
     private final List<groupInfo> groupInfoList;
     private Context context;
     private static String TAG = "Joined Groups";
+    
+    /*GLIDE OPTIONS*/
+    RequestOptions options = new RequestOptions()
+            .format(DecodeFormat.PREFER_RGB_565)
+            .placeholder(R.drawable.ic_image_placeholder)
+            .error(R.drawable.ic_image_placeholder)
+            .priority(Priority.LOW);
     
     public joinedGroupsAdapter (Context context, List<groupInfo> list, onGroupClickListener groupClickListener) {
         this.context = context;
@@ -54,32 +67,31 @@ public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapte
         return groupInfoList.size();
     }
     
-    static class GroupsHolder extends RecyclerView.ViewHolder{
+    class GroupsHolder extends RecyclerView.ViewHolder{
         
         ImageView profile_pic;
         TextView group_title;
         TextView total_members;
+        ProgressBar progressBar;
         
         public GroupsHolder (@NonNull View itemView) {
             super(itemView);
             profile_pic = itemView.findViewById(R.id.group_profile_pic);
             group_title = itemView.findViewById(R.id.group_title);
             total_members = itemView.findViewById(R.id.total_members);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     
         public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context) {
     
-            Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
+            new glideImageLoader(profile_pic, progressBar).load(groupInfo.getAvatar(), options);
             
             group_title.setText(groupInfo.getGroupTitle());
             total_members.setText(groupInfo.getMembers() + " Members");
             
             /*on Row click*/
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick (View v) {
-                    groupClickListener.onGroupClick(groupInfo);
-                }
+            itemView.setOnClickListener(view -> {
+                groupClickListener.onGroupClick(groupInfo);
             });
         }
     }

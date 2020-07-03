@@ -6,6 +6,7 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,10 +54,15 @@ public class groupsFragment extends Fragment {
             public void run () {
                 /*recommended*/
                 calls = new retrofitCalls(requireContext());
-                calls.getRecommends(groupsBinding.suggestedGroupsList);
+                calls.getRecommends(groupsBinding.suggestedGroupsList,
+                        groupsBinding.allSetUpImg,
+                        groupsBinding.allSetUpText, groupsBinding.progressBarSuggested);
+                
                 /*joined*/
                 calls = new retrofitCalls(requireContext());
-                calls.getJoined(groupsBinding.joinedGroupsList);
+                calls.getJoined(groupsBinding.joinedGroupsList,
+                        groupsBinding.progressBarJoined,
+                        groupsBinding.joinedGroupsShowHereImg, groupsBinding.joinedGroupsShowHereTxt);
             }
         });
     

@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/soshoDayNight_noActionBar">
         <activity
+            android:name=".ui.user_profile.userProfile"
+            android:theme="@style/soshoDayNight_default" />
+        <activity
             android:name=".ui.viewVideo"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_video"

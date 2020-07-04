@@ -46,6 +46,13 @@
         <item name="android:background">?android:attr/listDivider</item>
     </style>
 
+    <style name="vertical_divider">
+        <item name="android:layout_width">@dimen/_1sdp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
     <style name="soshoDayNight_default.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

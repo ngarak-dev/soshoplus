@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.ui.auth;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -17,9 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.enums.PopupType;
-import com.lxj.xpopup.impl.LoadingPopupView;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.databinding.ActivitySignupBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
@@ -31,6 +29,8 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
+import de.adorsys.android.securestoragelibrary.SecureStorageException;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -39,13 +39,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class signUp extends AppCompatActivity {
     
-    private static String server_key = "a41ab77c99ab5c9f46b66a894d97cce9";
     private static String TAG = "signUp Activity ";
     boolean validate = true;
     private ActivitySignupBinding signUpBinding;
     private Observable<accessToken> tokenObservable;
     private queries createAccountQuery;
     private BasePopupView popupView;
+    private KSnack kSnack;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -60,6 +60,9 @@ public class signUp extends AppCompatActivity {
                 .dismissOnTouchOutside(false)
                 .autoDismiss(false)
                 .asLoading("Please wait");
+        
+        /*initializing ksnack*/
+        kSnack = new KSnack(signUp.this);
         
         signUpBinding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +124,9 @@ public class signUp extends AppCompatActivity {
         //Initializing Retrofit Instance for signUp
         createAccountQuery = retrofitInstance.getInstRxJava().create(queries.class);
         //query
-        tokenObservable = createAccountQuery.createAccount(server_key, email, username,
+        tokenObservable =
+                createAccountQuery.createAccount(BuildConfig.server_key, email
+                , username,
                 password, re_password, phone_num);
         
         tokenObservable.subscribeOn(Schedulers.io())
@@ -136,37 +141,45 @@ public class signUp extends AppCompatActivity {
                     public void onNext (@io.reactivex.rxjava3.annotations.NonNull accessToken accessToken) {
                         if (accessToken.getApiStatus() == 200) {
         
-                            //dismiss progress dialog
-                            popupView.dismiss();
-        
                             //storing user session
-                            SharedPreferences pref = getApplicationContext().getSharedPreferences(
-                                    "userCred", 0); // 0 - for private mode
-                            SharedPreferences.Editor editor = pref.edit();
+                            try {
+                                SecurePreferences.setValue(signUp.this, "userId",
+                                        accessToken.getUserId());
+                                SecurePreferences.setValue(signUp.this,
+                                        "timezone", accessToken.getTimezone());
+                                SecurePreferences.setValue(signUp.this,
+                                        "accessToken", accessToken.getAccessToken());
         
-                            editor.putString("userId", accessToken.getUserId());
-                            editor.putString("timezone",
-                                    accessToken.getTimezone());
-                            editor.putString("accessToken",
-                                    accessToken.getAccessToken());
-                            editor.apply();
+                            } catch (SecureStorageException e) {
+                                e.printStackTrace();
+                                /*TODO
+                                 *  Handle this exception*/
+                            }
         
-                            startActivity(new Intent(signUp.this,
-                                    soshoTimeline.class));
-                            finish();
+                            popupView.dismissWith(() -> {
+                                startActivity(new Intent(signUp.this,
+                                        soshoTimeline.class));
+                                finish();
+                            });
                         }
                         else {
                             //dismiss dialog and log output
-                            popupView.dismiss();
                             apiErrors apiErrors = accessToken.getErrors();
         
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+    
+                            /*displaying a snack dialog*/
+                            popupView.dismissWith(() -> {
         
-                            /*displaying a dialog*/
-                            new XPopup.Builder(signUp.this).popupType(PopupType.Bottom).asConfirm(
-                                    "Oops " + "!", apiErrors.getErrorText(),
-                                    "DISMISS", null, null, null, false).show();
+                                kSnack.setMessage("Oops !\n" + apiErrors.getErrorText());
+                                kSnack.show();
+                                kSnack.setAction("DISMISS", view -> {
+                                    kSnack.dismiss();
+                                });
+                                kSnack.setDuration(3000);
+        
+                            });
                         }
                     }
     
@@ -176,15 +189,19 @@ public class signUp extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
     
                         //dismiss progress dialog
-                        popupView.dismiss();
-    
-                        /*displaying a dialog*/
-                        new XPopup.Builder(signUp.this).popupType(PopupType.Bottom).asConfirm("Oops " + "!", "Something went " + "wrong\nPlease check your " + "internet connection", "DISMISS", "TRY AGAIN", new OnConfirmListener() {
-                            @Override
-                            public void onConfirm () {
-                                callSignUp();
-                            }
-                        }, null, false).show();
+                        /*displaying a snack dialog*/
+                        popupView.dismissWith(() -> {
+        
+                            kSnack.setMessage("Oops ! \nSomething " +
+                                    "went wrong\nPlease check your internet " +
+                                    "connection");
+                            kSnack.show();
+                            kSnack.setAction("DISMISS", view -> {
+                                kSnack.dismiss();
+                            });
+                            kSnack.setDuration(3000);
+        
+                        });
                     }
     
                     @Override

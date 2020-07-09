@@ -73,18 +73,35 @@ public class userPhotosAdapter extends RecyclerView.Adapter<userPhotosAdapter.Im
     
         public void bindImages (post post, int position, onClickListener clickListener, Context context) {
             /*load image*/
-            Glide.with(context).load(post.getPostFileFull())
-                    .apply(options).into(imageView);
+            if (post.getPostType().equals("ad")) {
+                Glide.with(context).load(post.getAdMedia())
+                        .apply(options).into(imageView);
+            }
+            else {
+                Glide.with(context).load(post.getPostFileFull())
+                        .apply(options).into(imageView);
+            }
+            
             /*click listener*/
-            imageView.setOnClickListener(view -> {
-                clickListener.viewFullImage(context, post, imageView);
-            });
+            if (post.getPostType().equals("ad")) {
+                /*show ad popup*/
+                imageView.setOnClickListener(view -> {
+                    clickListener.viewFullADImage(context, post, imageView);
+                });
+            }
+            else {
+                imageView.setOnClickListener(view -> {
+                    clickListener.viewFullImage(context, post, imageView);
+                });
+            }
         }
     }
     
     /*onClick Interface*/
     public interface onClickListener {
-        void viewFullImage (Context context, post post, ImageView imageView);
         /*on image click*/
+        void viewFullImage (Context context, post post, ImageView imageView);
+        /*on ad image click*/
+        void viewFullADImage (Context context, post post, ImageView imageView);
     }
 }

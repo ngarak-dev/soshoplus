@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -28,6 +29,9 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
@@ -40,10 +44,12 @@ import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
+import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.utils.xpopup.adFullImageViewPopup;
 import com.soshoplus.timeline.utils.xpopup.fullImageViewPopup;
 
 import java.io.File;
@@ -89,6 +95,13 @@ public class userProfile extends AppCompatActivity {
     private Observable<postList> postListObservable;
     private List<post> photosList;
     private userPhotosAdapter photosAdapter;
+    
+    /*......*/
+    private static String timeAgo, noLikes, noComments;
+    private static boolean isLiked;
+    
+    /*......*/
+    private static String adFullName, adLocation, adDescription, adHeadline;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -550,9 +563,10 @@ public class userProfile extends AppCompatActivity {
         photosAdapter = new userPhotosAdapter(photosList, userProfile.this, new userPhotosAdapter.onClickListener() {
             @Override
             public void viewFullImage (Context context, post post, ImageView imageView) {
+                /*initializing popup*/
                 fullImageViewPopup imageViewPopup =
                         new fullImageViewPopup(userProfile.this);
-
+                /*setting up*/
                 imageViewPopup.setSingleSrcView(imageView, post.getPostFileFull());
                 imageViewPopup.isShowSaveButton(false);
                 imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
@@ -568,8 +582,51 @@ public class userProfile extends AppCompatActivity {
                         return null;
                     }
                 });
-
+                /*show popup*/
                 new XPopup.Builder(userProfile.this).asCustom(imageViewPopup).show();
+                
+                /*.......*/
+                timeAgo = post.getPostTime();
+                noLikes = post.getPostLikes();
+                noComments = post.getPostComments();
+                isLiked = post.isLiked();
+            }
+    
+            @Override
+            public void viewFullADImage (Context context, post post, ImageView imageView) {
+                /*initializing popup*/
+                adFullImageViewPopup imageViewPopup =
+                        new adFullImageViewPopup(userProfile.this);
+                /*setting up*/
+                imageViewPopup.setSingleSrcView(imageView, post.getAdMedia());
+                imageViewPopup.isShowSaveButton(false);
+                imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
+                    @Override
+                    public void loadImage (int position, @androidx.annotation.NonNull Object uri,
+                                           @androidx.annotation.NonNull ImageView imageView) {
+                        Glide.with(imageView).load(uri).into(imageView);
+                    }
+        
+                    @Override
+                    public File getImageFile (@androidx.annotation.NonNull Context context,
+                                              @androidx.annotation.NonNull Object uri) {
+                        return null;
+                    }
+                });
+                /*show popup*/
+                new XPopup.Builder(userProfile.this).asCustom(imageViewPopup).show();
+    
+                /*......*/
+                /*Converting Object to json data*/
+                Gson gson = new Gson();
+                String toJson = gson.toJson(post.getUserData());
+                /*getting data from json string using pojo class*/
+                userData user_data = gson.fromJson(toJson, userData.class);
+                
+                adFullName = user_data.getName();
+                adLocation = post.getLocation();
+                adDescription = post.getDescription();
+                adHeadline = post.getHeadline();
             }
         });
         
@@ -587,5 +644,33 @@ public class userProfile extends AppCompatActivity {
     private List<post> getPhotos (postList postList) {
         photosList=  postList.getPostList();
         return photosList != null ? postList.getPostList(): null;
+    }
+    
+    /*.....*/
+    public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
+                                TextView no_comments, MaterialButton like, MaterialButton comment) {
+            
+        /*setting up*/
+        full_name.setText(fullName);
+        time_ago.setText(timeAgo);
+        no_likes.setText(noLikes + " likes");
+        no_comments.setText(noComments + " comments");
+        
+        /*setting like btn*/
+        if (isLiked) {
+            like.setIconResource(R.drawable.ic_liked);
+            like.setText("Liked");
+        }
+    }
+    
+    /*......*/
+    public static void getADInfo (TextView full_name, TextView location,
+                                  TextView description, TextView headline) {
+        
+        /*setting up*/
+        full_name.setText(adFullName);
+        location.setText(adLocation);
+        description.setText(Html.fromHtml(adDescription));
+        headline.setText(adHeadline);
     }
 }

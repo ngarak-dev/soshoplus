@@ -28,6 +28,8 @@ public class userPhotosAdapter extends RecyclerView.Adapter<userPhotosAdapter.Im
     /*.....*/
     private final List<post> postList;
     private Context context;
+    /*onclick Listener*/
+    private final onClickListener clickListener;
     
     /*....*/
     RequestOptions options = new RequestOptions()
@@ -36,9 +38,10 @@ public class userPhotosAdapter extends RecyclerView.Adapter<userPhotosAdapter.Im
             .error(R.drawable.ic_image_placeholder)
             .priority(Priority.LOW);
     
-    public userPhotosAdapter (List<post> postList, Context context) {
+    public userPhotosAdapter (List<post> postList, Context context, onClickListener clickListener) {
         this.postList = postList;
         this.context = context;
+        this.clickListener = clickListener;
     }
     
     @NonNull
@@ -47,13 +50,13 @@ public class userPhotosAdapter extends RecyclerView.Adapter<userPhotosAdapter.Im
         View view = LayoutInflater.from(context).inflate(R.layout.image_layout,
                 parent,
                 false);
-        return new ImageHolder(view);
+        return new ImageHolder(view, clickListener);
     }
     
     @Override
     public void onBindViewHolder (@NonNull ImageHolder holder, int position) {
-        Glide.with(context).load(postList.get(position).getPostFileFull())
-                .apply(options).into(holder.imageView);
+        holder.bindImages(postList.get(position), position,
+            clickListener, context);
     }
     
     @Override
@@ -61,11 +64,27 @@ public class userPhotosAdapter extends RecyclerView.Adapter<userPhotosAdapter.Im
         return postList.size();
     }
     
-    static class ImageHolder extends RecyclerView.ViewHolder {
+    class ImageHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        public ImageHolder (View itemView) {
+        public ImageHolder (View itemView, onClickListener clickListener) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image);
         }
+    
+        public void bindImages (post post, int position, onClickListener clickListener, Context context) {
+            /*load image*/
+            Glide.with(context).load(post.getPostFileFull())
+                    .apply(options).into(imageView);
+            /*click listener*/
+            imageView.setOnClickListener(view -> {
+                clickListener.viewFullImage(context, post, imageView);
+            });
+        }
+    }
+    
+    /*onClick Interface*/
+    public interface onClickListener {
+        void viewFullImage (Context context, post post, ImageView imageView);
+        /*on image click*/
     }
 }

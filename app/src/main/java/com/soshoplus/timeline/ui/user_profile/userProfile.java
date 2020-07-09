@@ -6,6 +6,7 @@
 
 package com.soshoplus.timeline.ui.user_profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -14,19 +15,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
@@ -41,7 +44,9 @@ import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.utils.xpopup.fullImageViewPopup;
 
+import java.io.File;
 import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -542,7 +547,32 @@ public class userProfile extends AppCompatActivity {
     
     private void bindUserImages (List<post> photosList) {
         /*initializing adapter*/
-        photosAdapter = new userPhotosAdapter(photosList, userProfile.this);
+        photosAdapter = new userPhotosAdapter(photosList, userProfile.this, new userPhotosAdapter.onClickListener() {
+            @Override
+            public void viewFullImage (Context context, post post, ImageView imageView) {
+                fullImageViewPopup imageViewPopup =
+                        new fullImageViewPopup(userProfile.this);
+
+                imageViewPopup.setSingleSrcView(imageView, post.getPostFileFull());
+                imageViewPopup.isShowSaveButton(false);
+                imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
+                    @Override
+                    public void loadImage (int position, @androidx.annotation.NonNull Object uri,
+                                           @androidx.annotation.NonNull ImageView imageView) {
+                        Glide.with(imageView).load(uri).into(imageView);
+                    }
+
+                    @Override
+                    public File getImageFile (@androidx.annotation.NonNull Context context,
+                                              @androidx.annotation.NonNull Object uri) {
+                        return null;
+                    }
+                });
+
+                new XPopup.Builder(userProfile.this).asCustom(imageViewPopup).show();
+            }
+        });
+        
         /*setting layout*/
         userProfileBinding.photosGrid.setLayoutManager(new StaggeredGridLayoutManager(3,
                 1));

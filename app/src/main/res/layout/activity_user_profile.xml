@@ -63,14 +63,15 @@
             android:layout_margin="@dimen/_10sdp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profile_pic" />
 
         <ImageView
             android:id="@+id/verified_badge"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:src="@drawable/ic_verified"
             android:visibility="gone"
@@ -190,7 +191,6 @@
             android:layout_margin="@dimen/_10sdp"
             android:layout_marginTop="12dp"
             android:elevation="@dimen/_10sdp"
-            android:text="Follow"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"

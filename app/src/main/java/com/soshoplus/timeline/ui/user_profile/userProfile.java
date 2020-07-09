@@ -164,7 +164,9 @@ public class userProfile extends AppCompatActivity {
         }
 
         /*country / state*/
-        if (!userInfo.getUserData().getAddress().isEmpty()) {
+        if (userInfo.getUserData().getAddress().isEmpty()) {
+            userProfileBinding.country.setVisibility(View.GONE);
+        } else {
             userProfileBinding.country.setText(userInfo.getUserData().getAddress());
         }
 
@@ -205,10 +207,30 @@ public class userProfile extends AppCompatActivity {
         /*general info*/
         userProfileBinding.gender.setText(userInfo.getUserData().getGenderText());
         userProfileBinding.birthday.setText(userInfo.getUserData().getBirthday());
-        userProfileBinding.workingAt.append(userInfo.getUserData().getWorking());
-        userProfileBinding.school.append(userInfo.getUserData().getSchool());
-        userProfileBinding.living.append(userInfo.getUserData().getAddress());
-        userProfileBinding.located.append(userInfo.getUserData().getCity());
+        
+        if (userInfo.getUserData().getWorking().isEmpty()) {
+            userProfileBinding.workingAt.setVisibility(View.GONE);
+        } else {
+            userProfileBinding.workingAt.append(userInfo.getUserData().getWorking());
+        }
+        
+        if (userInfo.getUserData().getSchool().isEmpty()) {
+            userProfileBinding.school.setVisibility(View.GONE);
+        } else {
+            userProfileBinding.school.append(userInfo.getUserData().getSchool());
+        }
+        
+        if (userInfo.getUserData().getAddress().isEmpty()) {
+            userProfileBinding.living.setVisibility(View.GONE);
+        } else {
+            userProfileBinding.living.append(userInfo.getUserData().getAddress());
+        }
+        
+        if (userInfo.getUserData().getCity().isEmpty()) {
+            userProfileBinding.located.setVisibility(View.GONE);
+        } else {
+            userProfileBinding.located.append(userInfo.getUserData().getCity());
+        }
         /*show above info*/
         userProfileBinding.moreAbout.setVisibility(View.VISIBLE);
         

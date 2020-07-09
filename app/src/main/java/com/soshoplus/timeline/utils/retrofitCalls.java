@@ -60,6 +60,7 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.groups.viewGroup;
+import com.soshoplus.timeline.ui.user_profile.userProfile;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
@@ -637,14 +638,16 @@ public class retrofitCalls {
                             /*initializing adapter*/
                             friendsFollowingAdapter listAdapter =
                                     new friendsFollowingAdapter(context,
-                                            followingList,
-                                            new friendsFollowingAdapter.onFriendClickListener() {
-                                                @Override
-                                                public void onFriendClick (following following) {
-                                                    Toast.makeText(context, following.getName(),
-                                                            Toast.LENGTH_SHORT).show();
-                                                    /*TODO show user profile onclick*/
-                                                }
+                                            followingList, following -> {
+                                                /*start new user
+                                                profile Activity*/
+                                                Intent intent =
+                                                        new Intent(context,
+                                                                userProfile.class);
+                                                intent.putExtra("user_id",
+                                                        following.getUserId());
+                                                
+                                                context.startActivity(intent);
                                             });
     
                             /*Setting Layout*/

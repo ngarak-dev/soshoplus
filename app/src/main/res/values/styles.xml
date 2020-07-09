@@ -25,6 +25,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:actionButtonStyle">@style/actionButtonStyle</item>
+    </style>
+
+    <style name="actionButtonStyle" parent="sosho_default">
+        <item name="android:minWidth">@dimen/_50sdp</item>
+        <item name="android:padding">0dip</item>
     </style>
 
     <style name="soshoDayNight_noActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">

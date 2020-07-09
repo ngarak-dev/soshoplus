@@ -9,8 +9,13 @@ package com.soshoplus.timeline.ui.user_profile;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -281,5 +286,38 @@ public class userProfile extends AppCompatActivity {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+    }
+    
+    /*option menu*/
+    @Override
+    public boolean onCreateOptionsMenu (Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.user_profile, menu);
+        
+        return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected (@androidx.annotation.NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+                
+            case R.id.poke_user:
+                Toast.makeText(this, "Poke user", Toast.LENGTH_SHORT).show();
+                return true;
+                
+            case R.id.add_to_family:
+                Toast.makeText(this, "Add to Family", Toast.LENGTH_SHORT).show();
+                return true;
+                
+            case R.id.block_user:
+                Toast.makeText(this, "Block user", Toast.LENGTH_SHORT).show();
+                return true;
+                
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

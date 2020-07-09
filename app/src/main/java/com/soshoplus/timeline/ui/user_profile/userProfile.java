@@ -10,17 +10,22 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.databinding.ActivityUserProfileBinding;
+import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
@@ -32,6 +37,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.observers.DefaultObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class userProfile extends AppCompatActivity {
@@ -39,7 +45,7 @@ public class userProfile extends AppCompatActivity {
     private ActivityUserProfileBinding userProfileBinding;
     private queries rxJavaQueries;
     private String accessToken, userId, timezone;
-    private static String user_id;
+    private static String user_id, followPrivacy;
     private Observable<userInfo> userInfoObservable;
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private final static String TAG = "user Profile Calls";
@@ -52,6 +58,9 @@ public class userProfile extends AppCompatActivity {
     
     /*......*/
     private KSnack snack;
+    
+    /*......*/
+    private Observable<follow_unfollow> followUnFollowObservable;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -163,6 +172,9 @@ public class userProfile extends AppCompatActivity {
         * 0 = not following
         * 1 = following
         * 2 = requested*/
+    
+        followPrivacy =
+                userInfo.getUserData().getConfirmFollowers();
 
         if (userInfo.getUserData().getCanFollow() == 0 && userInfo.getUserData().getIsFollowing() == 0) {
             userProfileBinding.followBtn.setVisibility(View.GONE);
@@ -194,5 +206,80 @@ public class userProfile extends AppCompatActivity {
         userProfileBinding.located.append(userInfo.getUserData().getCity());
         /*show above info*/
         userProfileBinding.moreAbout.setVisibility(View.VISIBLE);
+        
+        /*follow btn*/
+        userProfileBinding.followBtn.setOnClickListener(view -> {
+            /*follow user*/
+            followUser(userProfileBinding.followBtn,
+                    userProfileBinding.progressBarFollow);
+        });
+    }
+    
+    /*follow user*/
+    private void followUser (MaterialButton follow,
+                             ProgressBar progressBar_follow) {
+    
+        followUnFollowObservable = rxJavaQueries.followUser(accessToken,
+                BuildConfig.server_key, user_id);
+    
+        follow.setText(null);
+        progressBar_follow.setVisibility(View.VISIBLE);
+    
+        followUnFollowObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultObserver<follow_unfollow>() {
+                    @Override
+                    public void onNext (@NonNull follow_unfollow follow_unfollow) {
+                        if (follow_unfollow.getApiStatus() == 200) {
+                        
+                            Log.d(TAG, "onNext: " + follow_unfollow.getFollowStatus());
+                        
+                            if (follow_unfollow.getFollowStatus().equals(
+                                    "unfollowed")) {
+                            
+                                progressBar_follow.setVisibility(View.GONE);
+                                follow.setText("Follow");
+                            }
+                            else {
+                                if (followPrivacy.equals("1")) {
+                                    progressBar_follow.setVisibility(View.GONE);
+                                    follow.setText("Requested");
+                                }
+                                else {
+                                    progressBar_follow.setVisibility(View.GONE);
+                                    follow.setText("Following");
+                                }
+                            }
+                        }
+                        else {
+                            apiErrors errors = follow_unfollow.getErrors();
+                            Log.d(TAG, "onNext: " + errors.getErrorText());
+                            
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                            snack.show();
+                        }
+                    }
+                
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        
+                        snack.setMessage("Oops !\nSomething went " +
+                                "wrong");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.show();
+                    }
+                
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

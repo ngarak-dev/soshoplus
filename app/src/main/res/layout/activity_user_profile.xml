@@ -199,13 +199,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_divider" />
 
+        <ProgressBar
+            android:id="@+id/progressBar_follow"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
+            android:indeterminateTint="@color/white_smoke"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/follow_btn"
+            app:layout_constraintEnd_toEndOf="@+id/follow_btn"
+            app:layout_constraintStart_toStartOf="@+id/follow_btn"
+            app:layout_constraintTop_toTopOf="@id/follow_btn" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/message_btn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
-            android:elevation="@dimen/_10sdp"
+            android:elevation="@dimen/_5sdp"
             android:text="Message"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

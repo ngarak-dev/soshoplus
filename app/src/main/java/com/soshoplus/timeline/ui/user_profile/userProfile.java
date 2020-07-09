@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.ui.user_profile;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +19,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
@@ -26,14 +30,19 @@ import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.adapters.userPhotosAdapter;
 import com.soshoplus.timeline.databinding.ActivityUserProfileBinding;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
+import com.soshoplus.timeline.models.postsfeed.post;
+import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+
+import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -71,6 +80,11 @@ public class userProfile extends AppCompatActivity {
     private static String block_action;
     private Observable<block_unblock> blockUnblockObservable;
     
+    /*.....*/
+    private Observable<postList> postListObservable;
+    private List<post> photosList;
+    private userPhotosAdapter photosAdapter;
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +116,9 @@ public class userProfile extends AppCompatActivity {
 
         /*getting user profile data */
         getUserProfile();
+        
+        /*getting user photos*/
+        getUserPhotos();
     }
     
     private void getUserProfile () {
@@ -449,5 +466,96 @@ public class userProfile extends AppCompatActivity {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+    }
+    
+    private void getUserPhotos () {
+        postListObservable = rxJavaQueries.getUserImages(accessToken,
+                BuildConfig.server_key, user_id, "photos");
+        
+        postListObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<postList>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+    
+                    @Override
+                    public void onNext (@NonNull postList postList) {
+                        if (postList.getApiStatus() == 200) {
+    
+                            Log.d(TAG,
+                                    "Images list size: " + postList.getPostList().size());
+                            
+                            if (postList.getPostList().size() == 0) {
+                                /*user has no images*/
+                                userProfileBinding.noPhotosImg.setVisibility(View.VISIBLE);
+                                userProfileBinding.noPhotosText.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                photosList = getPhotos(postList);
+    
+                                /*wait one sec then bind*/
+                                new Handler().postDelayed(() -> {
+                                    bindUserImages(photosList);
+                                }, 1000);
+                            }
+                        }
+                        else {
+    
+                            apiErrors errors = postList.getErrors();
+                            Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
+
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong\nPlease check your internet " +
+                                    "connection");
+                            snack.setAction("TRY AGAIN", view -> {
+                                snack.dismiss();
+                                /*call photos api again*/
+                                getUserPhotos();
+                            });
+                            snack.setDuration(3500);
+                            snack.show();
+                            
+                        }
+                    }
+    
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        
+                        snack.setMessage("Failed to load Images !\nCheck back" +
+                                " later");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.setDuration(3500);
+                        snack.show();
+                    }
+    
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
+    }
+    
+    private void bindUserImages (List<post> photosList) {
+        /*initializing adapter*/
+        photosAdapter = new userPhotosAdapter(photosList, userProfile.this);
+        /*setting layout*/
+        userProfileBinding.photosGrid.setLayoutManager(new StaggeredGridLayoutManager(3,
+                1));
+        /*set adapter*/
+        userProfileBinding.photosGrid.setAdapter(photosAdapter);
+        
+        userProfileBinding.progressBarPhotos.setVisibility(View.GONE);
+        userProfileBinding.photosGrid.setVisibility(View.VISIBLE);
+    }
+    
+    /*getting photos*/
+    private List<post> getPhotos (postList postList) {
+        photosList=  postList.getPostList();
+        return photosList != null ? postList.getPostList(): null;
     }
 }

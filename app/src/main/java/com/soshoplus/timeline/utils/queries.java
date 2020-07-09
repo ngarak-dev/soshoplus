@@ -155,4 +155,14 @@ public interface queries {
                                          @Field("server_key") String server_key,
                                          @Field("user_id") String user_id,
                                          @Field("block_action") String block_action);
+    
+    /*post filter
+    * fetching posts with images only
+    * then get only images*/
+    @FormUrlEncoded
+    @POST("get-user-albums")
+    Observable<postList> getUserImages (@Query("access_token") String access_token,
+                                         @Field("server_key") String server_key,
+                                         @Field("user_id") String user_id,
+                                         @Field("type") String type);
 }

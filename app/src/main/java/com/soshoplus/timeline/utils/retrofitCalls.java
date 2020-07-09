@@ -579,14 +579,16 @@ public class retrofitCalls {
                             /*initializing adapter*/
                             friendsFollowersAdapter listAdapter =
                                     new friendsFollowersAdapter(context,
-                                            followersList,
-                                            new friendsFollowersAdapter.onFriendClickListener() {
-                                                @Override
-                                                public void  onFriendClick (followers followers) {
-                                                    Toast.makeText(context, followers.getName(),
-                                                            Toast.LENGTH_SHORT).show();
-                                                    /*TODO show user profile onclick*/
-                                                }
+                                            followersList, followers -> {
+                                        /*start new user
+                                            profile Activity*/
+                                                Intent intent =
+                                                        new Intent(context,
+                                                                userProfile.class);
+                                                intent.putExtra("user_id",
+                                                        followers.getUserId());
+
+                                                context.startActivity(intent);
                                             });
     
                             /*Setting Layout*/

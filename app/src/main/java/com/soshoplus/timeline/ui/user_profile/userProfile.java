@@ -9,7 +9,6 @@ package com.soshoplus.timeline.ui.user_profile;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
@@ -30,6 +28,7 @@ import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.databinding.ActivityUserProfileBinding;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
@@ -49,8 +48,8 @@ public class userProfile extends AppCompatActivity {
     
     private ActivityUserProfileBinding userProfileBinding;
     private queries rxJavaQueries;
-    private String accessToken, userId, timezone;
-    private static String user_id, followPrivacy;
+    private static String accessToken, userId, timezone;
+    private static String user_id, followPrivacy, fullName;
     private Observable<userInfo> userInfoObservable;
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private final static String TAG = "user Profile Calls";
@@ -66,6 +65,11 @@ public class userProfile extends AppCompatActivity {
     
     /*......*/
     private Observable<follow_unfollow> followUnFollowObservable;
+    
+    /*.....*/
+    private boolean blocked_user;
+    private static String block_action;
+    private Observable<block_unblock> blockUnblockObservable;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -120,8 +124,22 @@ public class userProfile extends AppCompatActivity {
                 
                     @Override
                     public void onNext (@NonNull userInfo userInfo) {
-                        /*binding user data*/
-                        bindUserInfo(userInfo);
+                        if (userInfo.getApiStatus() == 200) {
+                            /*binding user data*/
+                            bindUserInfo(userInfo);
+                        }
+                        else {
+                            apiErrors apiErrors =userInfo.getErrors();
+                            Log.d(TAG, "onNext: " + apiErrors.getErrorText());
+    
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                            snack.setDuration(3500);
+                            snack.show();
+                        }
                     }
                 
                     @Override
@@ -240,6 +258,18 @@ public class userProfile extends AppCompatActivity {
             followUser(userProfileBinding.followBtn,
                     userProfileBinding.progressBarFollow);
         });
+        
+        /*get blocking info*/
+        blocked_user = userInfo.getUserData().isIsBlocked();
+        
+        /*set block action*/
+        if (!blocked_user) {
+            block_action = "block";
+        } else {
+            block_action = "un-block";
+        }
+        
+        fullName = userInfo.getUserData().getName();
     }
     
     /*follow user*/
@@ -315,6 +345,16 @@ public class userProfile extends AppCompatActivity {
     public boolean onCreateOptionsMenu (Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.user_profile, menu);
+    
+        Log.d(TAG, "onCreateOptionsMenu: " + blocked_user);
+        
+        if (blocked_user) {
+            menu.findItem(R.id.block_user).setChecked(true);
+            menu.findItem(R.id.block_user).setIcon(R.drawable.ic_blocked_user);
+        } else {
+            menu.findItem(R.id.block_user).setChecked(true);
+            menu.findItem(R.id.block_user).setIcon(R.drawable.ic_remove_user);
+        }
         
         return true;
     }
@@ -335,11 +375,79 @@ public class userProfile extends AppCompatActivity {
                 return true;
                 
             case R.id.block_user:
-                Toast.makeText(this, "Block user", Toast.LENGTH_SHORT).show();
+                blockUser(item);
                 return true;
                 
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private void blockUser (MenuItem item) {
+        blockUnblockObservable = rxJavaQueries.blockUser(accessToken,
+                BuildConfig.server_key, user_id, block_action);
+        
+        blockUnblockObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<block_unblock>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+    
+                    @Override
+                    public void onNext (@NonNull block_unblock block_unblock) {
+                        if (block_unblock.getApiStatus() == 200) {
+    
+                            Log.d(TAG, "onNext: " + block_unblock.getBlockStatus());
+                            
+                            if (block_unblock.getBlockStatus().equals(
+                                    "blocked")) {
+                                item.setIcon(R.drawable.ic_blocked_user);
+                                
+                                block_action = "un-block";
+                                snack.setMessage(fullName + " blocked");
+                            }
+                            else {
+                                item.setIcon(R.drawable.ic_remove_user);
+                                
+                                block_action = "block";
+                                snack.setMessage(fullName + " un blocked");
+                            }
+    
+                        }
+                        else {
+                            apiErrors apiErrors =block_unblock.getErrors();
+                            Log.d(TAG, "onNext: " + apiErrors.getErrorText());
+    
+                            snack.setMessage("Oops !\nSomething went " +
+                                    "wrong");
+                            snack.setAction("DISMISS", view -> {
+                                snack.dismiss();
+                            });
+                        }
+                        
+                        snack.setDuration(3500);
+                        snack.show();
+                    }
+    
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+    
+                        snack.setMessage("Oops !\nSomething went " +
+                                "wrong");
+                        snack.setAction("DISMISS", view -> {
+                            snack.dismiss();
+                        });
+                        snack.setDuration(3500);
+                        snack.show();
+                    }
+    
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

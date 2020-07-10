@@ -11,19 +11,19 @@
     <item
         android:id="@+id/poke_user"
         android:icon="@drawable/ic_poke_user"
-        app:showAsAction="always"
+        app:showAsAction="never"
         android:title="Poke"/>
 
     <item
         android:id="@+id/block_user"
         android:icon="@drawable/ic_remove_user"
-        app:showAsAction="always"
+        app:showAsAction="never"
         android:title="Block"/>
 
     <item
         android:id="@+id/add_to_family"
         android:icon="@drawable/ic_add_user"
-        app:showAsAction="always"
+        app:showAsAction="never"
         android:title="Add to Family"/>
 
 </menu>

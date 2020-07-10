@@ -386,9 +386,11 @@ public class userProfile extends AppCompatActivity {
         if (blocked_user) {
             menu.findItem(R.id.block_user).setChecked(true);
             menu.findItem(R.id.block_user).setIcon(R.drawable.ic_blocked_user);
+            menu.findItem(R.id.block_user).setTitle("Unblock");
         } else {
             menu.findItem(R.id.block_user).setChecked(true);
             menu.findItem(R.id.block_user).setIcon(R.drawable.ic_remove_user);
+            menu.findItem(R.id.block_user).setTitle("Block");
         }
         
         return true;
@@ -439,12 +441,14 @@ public class userProfile extends AppCompatActivity {
                             if (block_unblock.getBlockStatus().equals(
                                     "blocked")) {
                                 item.setIcon(R.drawable.ic_blocked_user);
+                                item.setTitle("Unblock");
                                 
                                 block_action = "un-block";
                                 snack.setMessage(fullName + " blocked");
                             }
                             else {
                                 item.setIcon(R.drawable.ic_remove_user);
+                                item.setTitle("Block");
                                 
                                 block_action = "block";
                                 snack.setMessage(fullName + " un blocked");

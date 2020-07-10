@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.soshoplus.timeline.calls.suggestedFriendsCalls;
 import com.soshoplus.timeline.databinding.FragmentFriendsBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
 
@@ -32,6 +33,7 @@ public class friendsFragment extends Fragment {
     
     private FragmentFriendsBinding friendsBinding;
     private retrofitCalls calls;
+    private suggestedFriendsCalls suggestedFriendsCalls;
     
     /*initializing a view and inflate it */
     @Override
@@ -49,8 +51,8 @@ public class friendsFragment extends Fragment {
     }
     
     private void getSuggestedFriends () {
-        calls = new retrofitCalls(requireContext());
-        calls.getSuggestedFriends(friendsBinding.suggestedFriendsList,
+        suggestedFriendsCalls = new suggestedFriendsCalls(requireContext());
+        suggestedFriendsCalls.getSuggestedFriends(friendsBinding.suggestedFriendsList,
                 friendsBinding.suggestedTitle,
                 friendsBinding.progressBarSuggested, friendsBinding.refreshSuggested);
     }

@@ -8,7 +8,6 @@ package com.soshoplus.timeline.ui.mainfragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -29,7 +28,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
-import com.google.gson.Gson;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
 import com.soshoplus.timeline.R;
@@ -52,6 +50,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -88,13 +87,10 @@ public class profileFragment extends Fragment {
         // Inflate the layout for this fragment
         profileBinding = FragmentProfileBinding.inflate(inflater, container, false);
 //
-        SharedPreferences pref = requireContext().getSharedPreferences("userCred", 0); // 0 - for private mode
-
-        if (pref.contains("userId")) {
-            userId = pref.getString("userId", "0");
-            timezone = pref.getString("timezone", "0");
-            accessToken = pref.getString("accessToken", "0");
-        }
+        userId = SecurePreferences.getStringValue(requireContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(requireContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(requireContext(), "accessToken"
+                , "0");
 
         //Initializing Retrofit Instance for profile
         profileQueries = retrofitInstance.getInstRxJava().create(queries.class);

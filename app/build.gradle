@@ -6,6 +6,11 @@
 
 apply plugin: 'com.android.application'
 
+
+def server_key_PropertiesFile = rootProject.file("server_key.properties");
+def server_keyProperties = new Properties()
+server_keyProperties.load(new FileInputStream(server_key_PropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.0'
@@ -21,6 +26,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "server_key", server_keyProperties['server_key'])
     }
 
     buildTypes {
@@ -75,6 +82,8 @@ dependencies {
     implementation 'com.fxn769:bubbletabbar:1.0.5'
     //snackbar library
     implementation 'com.github.onurkagan:KSnack:1.1.2'
+    //secure shared pref
+    implementation 'de.adorsys.android:securestoragelibrary:1.2.4'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'

@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,12 +14,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.databinding.ActivitySplashBinding;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 
 public class splash extends AppCompatActivity {
     
@@ -35,19 +31,18 @@ public class splash extends AppCompatActivity {
         setContentView(view);
         
         new Handler().postDelayed(() -> {
-            //retrieving user session
-            SharedPreferences pref = getApplicationContext().getSharedPreferences("userCred", 0); // 0 - for private mode
             
-            if (pref.contains("userId")) {
+            //retrieving user session
+            if (SecurePreferences.contains(splash.this, "userId")) {
                 startActivity(new Intent(splash.this, soshoTimeline.class));
-                finish();
-                
+    
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted
                 startActivity(new Intent(splash.this, getStarted.class));
-                finish();
             }
+            finish();
+            
         }, 2000);
     }
 }

@@ -34,8 +34,7 @@ public class retrofitInstance {
         if (retrofit_ == null) {
             retrofit_ =
                     new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                            .addCallAdapterFactory(RxJava3CallAdapterFactory
-                                    .createWithScheduler(Schedulers.trampoline()))
+                            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                             .baseUrl(SOSHOPLUS_BASE_URL).build();
         }
         

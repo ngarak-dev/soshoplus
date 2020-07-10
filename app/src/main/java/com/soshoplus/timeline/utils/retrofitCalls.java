@@ -8,43 +8,34 @@ package com.soshoplus.timeline.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.lxj.xpopup.XPopup;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
@@ -69,6 +60,7 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.ui.groups.viewGroup;
+import com.soshoplus.timeline.ui.user_profile.userProfile;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
@@ -77,6 +69,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -94,7 +87,7 @@ public class retrofitCalls {
     private queries rxJavaQueries;
     private String accessToken, userId, timezone;
     private static String TAG = "Calls class";
-    public static String serverKey = "a41ab77c99ab5c9f46b66a894d97cce9";
+    public static String serverKey = BuildConfig.server_key;
     private static String get_news_feed = "get_news_feed";
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private static String fetch_recommended = "groups";
@@ -159,16 +152,10 @@ public class retrofitCalls {
     public retrofitCalls (Context context){
         this.context = context;
         
-        SharedPreferences pref = context.getSharedPreferences("userCred", 0); // 0 - for
-        // private
-        // mode
-        if (pref.contains("userId")) {
-            userId = pref.getString("userId", "0");
-            timezone = pref.getString("timezone", "UTC");
-            accessToken = pref.getString("accessToken", "0");
-        } else {
-            Log.i(TAG, "retrofitCalls: " + "Pref is Empty");
-        }
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken"
+                , "0");
     
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
@@ -592,14 +579,16 @@ public class retrofitCalls {
                             /*initializing adapter*/
                             friendsFollowersAdapter listAdapter =
                                     new friendsFollowersAdapter(context,
-                                            followersList,
-                                            new friendsFollowersAdapter.onFriendClickListener() {
-                                                @Override
-                                                public void  onFriendClick (followers followers) {
-                                                    Toast.makeText(context, followers.getName(),
-                                                            Toast.LENGTH_SHORT).show();
-                                                    /*TODO show user profile onclick*/
-                                                }
+                                            followersList, followers -> {
+                                        /*start new user
+                                            profile Activity*/
+                                                Intent intent =
+                                                        new Intent(context,
+                                                                userProfile.class);
+                                                intent.putExtra("user_id",
+                                                        followers.getUserId());
+
+                                                context.startActivity(intent);
                                             });
     
                             /*Setting Layout*/
@@ -651,14 +640,16 @@ public class retrofitCalls {
                             /*initializing adapter*/
                             friendsFollowingAdapter listAdapter =
                                     new friendsFollowingAdapter(context,
-                                            followingList,
-                                            new friendsFollowingAdapter.onFriendClickListener() {
-                                                @Override
-                                                public void onFriendClick (following following) {
-                                                    Toast.makeText(context, following.getName(),
-                                                            Toast.LENGTH_SHORT).show();
-                                                    /*TODO show user profile onclick*/
-                                                }
+                                            followingList, following -> {
+                                                /*start new user
+                                                profile Activity*/
+                                                Intent intent =
+                                                        new Intent(context,
+                                                                userProfile.class);
+                                                intent.putExtra("user_id",
+                                                        following.getUserId());
+                                                
+                                                context.startActivity(intent);
                                             });
     
                             /*Setting Layout*/

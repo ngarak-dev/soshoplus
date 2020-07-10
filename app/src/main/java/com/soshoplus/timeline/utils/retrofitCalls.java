@@ -556,7 +556,13 @@ public class retrofitCalls {
     }
 
     /*get friends followers*/
-    public void getFollowers (RecyclerView friendsFollowersList) {
+    
+    public void getFollowers (RecyclerView friendsFollowersList, TextView followersTitle,
+                              ProgressBar progressBarFollowers, ImageButton refreshFollowers) {
+    
+        /*show progressbar*/
+        progressBarFollowers.setVisibility(View.VISIBLE);
+    
         friendsObservable = rxJavaQueries.getFriendsFollowers(accessToken,
                 serverKey, friends_followers, userId, "8");
         friendsObservable.subscribeOn(Schedulers.io())
@@ -566,53 +572,82 @@ public class retrofitCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-    
+                
                     @Override
                     public void onNext (@NonNull friends friends) {
                         if (friends.getApiStatus() == 200) {
-    
+                        
                             /*initializing list*/
                             followersList = friends.getFriendsList().getFollowers();
-    
+                        
                             /*initializing adapter*/
                             friendsFollowersAdapter listAdapter =
                                     new friendsFollowersAdapter(context,
                                             followersList, followers -> {
                                         /*start new user
                                             profile Activity*/
-                                                Intent intent =
-                                                        new Intent(context,
-                                                                userProfile.class);
-                                                intent.putExtra("user_id",
-                                                        followers.getUserId());
-
-                                                context.startActivity(intent);
-                                            });
-    
+                                        Intent intent =
+                                                new Intent(context,
+                                                        userProfile.class);
+                                        intent.putExtra("user_id",
+                                                followers.getUserId());
+                                    
+                                        context.startActivity(intent);
+                                    });
+                        
                             /*Setting Layout*/
                             friendsFollowersList.setLayoutManager(new GridLayoutManager(context, 3));
                             friendsFollowersList.setItemAnimator(new DefaultItemAnimator());
-    
+                        
                             /*Setting Adapter*/
                             friendsFollowersList.setAdapter(listAdapter);
+    
+                            /*show recycler view, refresh btn, hide progress*/
+                            followersTitle.setText("Followers");
+                            friendsFollowersList.setVisibility(View.VISIBLE);
+                            progressBarFollowers.setVisibility(View.GONE);
+                            refreshFollowers.setVisibility(View.VISIBLE);
                         }
                         else {
                             apiErrors apiErrors = friends.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
+                            /*.......*/
+                            progressBarFollowers.setVisibility(View.GONE);
+                            refreshFollowers.setVisibility(View.VISIBLE);
+                            /*........*/
+                            followersTitle.setText("Error getting users");
                         }
                     }
-    
+                
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    }
+                        /*show refresh btn*/
+                        progressBarFollowers.setVisibility(View.GONE);
+                        refreshFollowers.setVisibility(View.VISIBLE);
     
+                        /*.....*/
+                        followersTitle.setText("Error getting users");
+                    }
+                
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+    
+        /*refresh btn*/
+        refreshFollowers.setOnClickListener(view -> {
+            getFollowers(friendsFollowersList, followersTitle,
+                    progressBarFollowers, refreshFollowers);
+        
+            /*visibility*/
+            friendsFollowersList.setVisibility(View.GONE);
+            refreshFollowers.setVisibility(View.GONE);
+            progressBarFollowers.setVisibility(View.VISIBLE);
+        
+        });
     }
 
     /*get friends followers*/

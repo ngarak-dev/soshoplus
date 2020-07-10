@@ -64,6 +64,8 @@ public class friendsFragment extends Fragment {
         
         /*followers*/
         calls = new retrofitCalls(requireContext());
-        calls.getFollowers(friendsBinding.friendsFollowersList);
+        calls.getFollowers(friendsBinding.friendsFollowersList,
+                friendsBinding.followersTitle,
+                friendsBinding.progressBarFollowers, friendsBinding.refreshFollowers);
     }
 }

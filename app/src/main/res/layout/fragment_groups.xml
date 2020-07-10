@@ -11,7 +11,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.mainfragments.groupsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp">
@@ -20,11 +20,10 @@
             android:id="@+id/create_group_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
             android:text="Create"
             app:chipIcon="@drawable/ic_add"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/my_group_chip"
@@ -33,27 +32,27 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:text="My Groups"
             app:chipIcon="@drawable/ic_groups"
-            app:layout_constraintStart_toEndOf="@id/create_group_chip"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/create_group_chip"/>
 
         <TextView
             android:id="@+id/suggested_groups_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recommended"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_group_chip" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/create_group_chip"/>
 
         <ProgressBar
             android:id="@+id/progressBar_suggested"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/suggested_groups_title" />
+            android:layout_toEndOf="@id/suggested_groups_title"
+            android:layout_alignTop="@id/suggested_groups_title"
+            android:layout_alignBottom="@id/suggested_groups_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/suggested_groups_list"
@@ -61,24 +60,23 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/all_set_up_text" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/all_set_up_text"/>
 
         <ImageView
             android:id="@+id/all_set_up_img"
-            android:layout_width="@dimen/_35sdp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:elevation="@dimen/_10sdp"
             android:src="@drawable/ic_all_set"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/suggested_groups_title"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/suggested_groups_title"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/all_set_up_text"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="All set up"
             android:textAlignment="center"
@@ -86,28 +84,27 @@
             android:textColor="@color/dim_gray"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/all_set_up_img" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/all_set_up_img"/>
 
         <TextView
             android:id="@+id/joined_groups_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Joined"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/suggested_groups_list" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/suggested_groups_list"/>
 
         <ProgressBar
             android:id="@+id/progressBar_joined"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:elevation="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/joined_groups_title" />
+            android:layout_toEndOf="@id/joined_groups_title"
+            android:layout_alignTop="@id/joined_groups_title"
+            android:layout_alignBottom="@id/joined_groups_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/joined_groups_list"
@@ -117,24 +114,23 @@
             android:orientation="horizontal"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/joined_groups_title" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/joined_groups_title"/>
 
         <ImageView
             android:id="@+id/joined_groups_show_here_img"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:elevation="@dimen/_10sdp"
             android:src="@drawable/ic_group"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/joined_groups_list"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/joined_groups_list"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/joined_groups_show_here_txt"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Groups you have joined will show up here"
             android:textAlignment="center"
@@ -142,10 +138,9 @@
             android:textColor="@color/dim_gray"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/joined_groups_show_here_img" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/joined_groups_show_here_img"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

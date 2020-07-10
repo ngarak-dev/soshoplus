@@ -94,7 +94,7 @@
             android:layout_below="@id/followers_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
             android:visibility="gone" />
 
         <com.google.android.material.chip.Chip
@@ -145,7 +145,7 @@
             android:layout_below="@id/following_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
             android:visibility="gone" />
 
         <com.google.android.material.chip.Chip

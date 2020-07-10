@@ -7,13 +7,13 @@
 apply plugin: 'com.android.application'
 
 
-def server_key_PropertiesFile = rootProject.file("server_key.properties");
+def server_key_PropertiesFile = rootProject.file("server_key.properties")
 def server_keyProperties = new Properties()
 server_keyProperties.load(new FileInputStream(server_key_PropertiesFile))
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.0'
+    buildToolsVersion '30.0.1'
 
     buildFeatures {
         viewBinding = true
@@ -48,7 +48,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     //XPopUp
-    implementation 'com.lxj:xpopup:2.0.5'
+    implementation 'com.lxj:xpopup:2.0.7'
     //Retrofit Client
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //RxJava Adapter
@@ -70,8 +70,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
-    //glide transformation
-    implementation 'jp.wasabeef:glide-transformations:4.1.0'
     //multi image
     implementation 'com.github.ydslib:MultiImageView:1.0.4'
     //tooltip library

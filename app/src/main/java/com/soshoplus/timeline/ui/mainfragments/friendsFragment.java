@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.soshoplus.timeline.calls.followersUsersCalls;
+import com.soshoplus.timeline.calls.followingUsersCalls;
 import com.soshoplus.timeline.calls.suggestedFriendsCalls;
 import com.soshoplus.timeline.databinding.FragmentFriendsBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
@@ -32,8 +34,9 @@ public class friendsFragment extends Fragment {
     }
     
     private FragmentFriendsBinding friendsBinding;
-    private retrofitCalls calls;
     private suggestedFriendsCalls suggestedFriendsCalls;
+    private followingUsersCalls followingUsersCalls;
+    private followersUsersCalls followersUsersCalls;
     
     /*initializing a view and inflate it */
     @Override
@@ -59,14 +62,14 @@ public class friendsFragment extends Fragment {
     
     private void getFriends () {
         /*following*/
-        calls = new retrofitCalls(requireContext());
-        calls.getFollowing(friendsBinding.friendsFollowingList,
+        followingUsersCalls = new followingUsersCalls(requireContext());
+        followingUsersCalls.getFollowing(friendsBinding.friendsFollowingList,
                 friendsBinding.followingTitle,
                 friendsBinding.progressBarFollowing, friendsBinding.refreshFollowing);
         
         /*followers*/
-        calls = new retrofitCalls(requireContext());
-        calls.getFollowers(friendsBinding.friendsFollowersList,
+        followersUsersCalls = new followersUsersCalls(requireContext());
+        followersUsersCalls.getFollowers(friendsBinding.friendsFollowersList,
                 friendsBinding.followersTitle,
                 friendsBinding.progressBarFollowers, friendsBinding.refreshFollowers);
     }

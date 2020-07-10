@@ -74,7 +74,6 @@ public class retrofitCalls {
     private static String fetch_recommended = "groups";
     private static String joined_groups = "joined_groups";
     private static String friends_followers = "followers";
-    private static String friends_following = "following";
   
     
     /*ADAPTERS*/
@@ -84,13 +83,9 @@ public class retrofitCalls {
     private Observable<userInfo> userInfoObservable;
     private Observable<group> groupObservable;
     private Observable<groupList> groupListObservable;
-    private Observable<friends> friendsObservable;
 
     /*GROUPS*/
     private List<groupInfo> groupInfoList = null;
-    /*FRIENDS*/
-    private List<followers> followersList = null;
-    private List<following> followingList = null;
 
     /*TODO Check this later*/
     private static String group_id;
@@ -515,197 +510,5 @@ public class retrofitCalls {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
-    }
-
-    /*get friends followers*/
-    
-    public void getFollowers (RecyclerView friendsFollowersList, TextView followersTitle,
-                              ProgressBar progressBarFollowers, ImageButton refreshFollowers) {
-    
-        /*show progressbar*/
-        progressBarFollowers.setVisibility(View.VISIBLE);
-    
-        friendsObservable = rxJavaQueries.getFriendsFollowers(accessToken,
-                serverKey, friends_followers, userId, "8");
-        friendsObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<friends>() {
-                    @Override
-                    public void onSubscribe (@NonNull Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
-                    }
-                
-                    @Override
-                    public void onNext (@NonNull friends friends) {
-                        if (friends.getApiStatus() == 200) {
-                        
-                            /*initializing list*/
-                            followersList = friends.getFriendsList().getFollowers();
-                        
-                            /*initializing adapter*/
-                            friendsFollowersAdapter listAdapter =
-                                    new friendsFollowersAdapter(context,
-                                            followersList, followers -> {
-                                        /*start new user
-                                            profile Activity*/
-                                        Intent intent =
-                                                new Intent(context,
-                                                        userProfile.class);
-                                        intent.putExtra("user_id",
-                                                followers.getUserId());
-                                    
-                                        context.startActivity(intent);
-                                    });
-                        
-                            /*Setting Layout*/
-                            friendsFollowersList.setLayoutManager(new GridLayoutManager(context, 3));
-                            friendsFollowersList.setItemAnimator(new DefaultItemAnimator());
-                        
-                            /*Setting Adapter*/
-                            friendsFollowersList.setAdapter(listAdapter);
-    
-                            /*show recycler view, refresh btn, hide progress*/
-                            followersTitle.setText("Followers");
-                            friendsFollowersList.setVisibility(View.VISIBLE);
-                            progressBarFollowers.setVisibility(View.GONE);
-                            refreshFollowers.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            apiErrors apiErrors = friends.getErrors();
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
-                            /*.......*/
-                            progressBarFollowers.setVisibility(View.GONE);
-                            refreshFollowers.setVisibility(View.VISIBLE);
-                            /*........*/
-                            followersTitle.setText("Error getting users");
-                        }
-                    }
-                
-                    @Override
-                    public void onError (@NonNull Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
-                        /*show refresh btn*/
-                        progressBarFollowers.setVisibility(View.GONE);
-                        refreshFollowers.setVisibility(View.VISIBLE);
-    
-                        /*.....*/
-                        followersTitle.setText("Error getting users");
-                    }
-                
-                    @Override
-                    public void onComplete () {
-                        Log.d(TAG, "onComplete: ");
-                    }
-                });
-    
-        /*refresh btn*/
-        refreshFollowers.setOnClickListener(view -> {
-            getFollowers(friendsFollowersList, followersTitle,
-                    progressBarFollowers, refreshFollowers);
-        
-            /*visibility*/
-            friendsFollowersList.setVisibility(View.GONE);
-            refreshFollowers.setVisibility(View.GONE);
-            progressBarFollowers.setVisibility(View.VISIBLE);
-        
-        });
-    }
-
-    /*get friends followers*/
-    
-    public void getFollowing (RecyclerView friendsFollowingList, TextView followingTitle,
-                              ProgressBar progressBarFollowing, ImageButton refreshFollowing) {
-    
-        /*show progressbar*/
-        progressBarFollowing.setVisibility(View.VISIBLE);
-    
-        friendsObservable = rxJavaQueries.getFriendsFollowing(accessToken,
-                serverKey, friends_following, userId, "8");
-        friendsObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<friends>() {
-                    @Override
-                    public void onSubscribe (@NonNull Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
-                    }
-                
-                    @Override
-                    public void onNext (@NonNull friends friends) {
-                        if (friends.getApiStatus() == 200) {
-                        
-                            /*initializing list*/
-                            followingList =
-                                    friends.getFriendsList().getFollowing();
-                        
-                            /*initializing adapter*/
-                            friendsFollowingAdapter listAdapter =
-                                    new friendsFollowingAdapter(context,
-                                            followingList, following -> {
-                                                /*start new user
-                                                profile Activity*/
-                                        Intent intent =
-                                                new Intent(context,
-                                                        userProfile.class);
-                                        intent.putExtra("user_id",
-                                                following.getUserId());
-                                    
-                                        context.startActivity(intent);
-                                    });
-                        
-                            /*Setting Layout*/
-                            friendsFollowingList.setLayoutManager(new GridLayoutManager(context, 3));
-                            friendsFollowingList.setItemAnimator(new DefaultItemAnimator());
-                        
-                            /*Setting Adapter*/
-                            friendsFollowingList.setAdapter(listAdapter);
-    
-                            /*show recycler view, refresh btn, hide progress*/
-                            followingTitle.setText("Following");
-                            friendsFollowingList.setVisibility(View.VISIBLE);
-                            progressBarFollowing.setVisibility(View.GONE);
-                            refreshFollowing.setVisibility(View.VISIBLE);
-                            
-                        }
-                        else {
-                            apiErrors apiErrors = friends.getErrors();
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
-                            /*.......*/
-                            progressBarFollowing.setVisibility(View.GONE);
-                            refreshFollowing.setVisibility(View.VISIBLE);
-                            /*........*/
-                            followingTitle.setText("Error getting users");
-                        }
-                    }
-                
-                    @Override
-                    public void onError (@NonNull Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
-                        /*show refresh btn*/
-                        progressBarFollowing.setVisibility(View.GONE);
-                        refreshFollowing.setVisibility(View.VISIBLE);
-    
-                        /*.....*/
-                        followingTitle.setText("Error getting users");
-                    }
-                
-                    @Override
-                    public void onComplete () {
-                        Log.d(TAG, "onComplete: ");
-                    }
-                });
-    
-        /*refresh btn*/
-        refreshFollowing.setOnClickListener(view -> {
-            getFollowing(friendsFollowingList, followingTitle,
-                    progressBarFollowing, refreshFollowing);
-        
-            /*visibility*/
-            friendsFollowingList.setVisibility(View.GONE);
-            refreshFollowing.setVisibility(View.GONE);
-            progressBarFollowing.setVisibility(View.VISIBLE);
-        
-        });
     }
 }

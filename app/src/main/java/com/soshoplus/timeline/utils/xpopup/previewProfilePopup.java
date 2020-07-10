@@ -8,7 +8,6 @@ package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,16 +16,18 @@ import androidx.annotation.NonNull;
 import com.google.android.material.button.MaterialButton;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.utils.retrofitCalls;
+import com.soshoplus.timeline.calls.previewProfileCalls;
 
 public class previewProfilePopup extends BottomPopupView {
     
     private Context m_context;
-    retrofitCalls calls;
+    private previewProfileCalls calls;
+    private static String user_id;
     
-    public previewProfilePopup (@NonNull Context context) {
+    public previewProfilePopup (@NonNull Context context, String userId) {
         super(context);
         m_context = context;
+        user_id = userId;
     }
     
     @Override
@@ -53,10 +54,10 @@ public class previewProfilePopup extends BottomPopupView {
         TextView about_me = findViewById(R.id.about_me);
         ProgressBar progressBar_follow = findViewById(R.id.progressBar_follow);
         
-        calls = new retrofitCalls(m_context);
+        calls = new previewProfileCalls(m_context);
         calls.previewProfile(cover_photo, progressBar_cover, profile_pic,
                 username, verified_badge, level_badge, no_followers
-                , no_following, follow, about_me, progressBar_follow);
+                , no_following, follow, about_me, progressBar_follow, user_id);
     }
     
     @Override

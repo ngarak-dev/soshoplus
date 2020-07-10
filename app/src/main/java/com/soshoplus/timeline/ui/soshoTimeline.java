@@ -18,17 +18,13 @@ import com.fxn.OnBubbleClickListener;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.viewPagerAdapter;
+import com.soshoplus.timeline.calls.simpleProfileCalls;
 import com.soshoplus.timeline.databinding.ActivitySoshotimelineBinding;
 import com.soshoplus.timeline.ui.mainfragments.friendsFragment;
 import com.soshoplus.timeline.ui.mainfragments.groupsFragment;
 import com.soshoplus.timeline.ui.mainfragments.moreFragment;
 import com.soshoplus.timeline.ui.mainfragments.profileFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
-import com.soshoplus.timeline.utils.retrofitCalls;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
@@ -38,7 +34,7 @@ public class soshoTimeline extends AppCompatActivity {
     private static String TAG = "soshoTimeline Activity";
     private ShapeableImageView profile_pic;
     private TextView full_name, username;
-    private retrofitCalls calls;
+    private simpleProfileCalls calls;
     private ViewPager sosho_viewPager;
     private viewPagerAdapter viewPagerAdapter;
     private BubbleTabBar bubbleTabBar;
@@ -119,14 +115,8 @@ public class soshoTimeline extends AppCompatActivity {
     }
 
     private void getProfile () {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run () {
-                calls = new retrofitCalls(soshoTimeline.this);
-                calls.getProfile(profile_pic, full_name, username);
-            }
-        });
+        calls = new simpleProfileCalls(soshoTimeline.this);
+        calls.getProfile(profile_pic, full_name, username);
     }
     
     //overriding back button

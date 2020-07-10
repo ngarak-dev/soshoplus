@@ -17,12 +17,8 @@ import com.soshoplus.timeline.calls.followersUsersCalls;
 import com.soshoplus.timeline.calls.followingUsersCalls;
 import com.soshoplus.timeline.calls.suggestedFriendsCalls;
 import com.soshoplus.timeline.databinding.FragmentFriendsBinding;
-import com.soshoplus.timeline.utils.retrofitCalls;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.

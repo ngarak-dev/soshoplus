@@ -30,6 +30,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.skydoves.balloon.Balloon;
 import com.skydoves.balloon.BalloonAnimation;
+import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.countsGridAdapter;
 import com.soshoplus.timeline.adapters.infoListAdapter;
@@ -41,7 +42,6 @@ import com.soshoplus.timeline.models.userprofile.infoList;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;
-import com.soshoplus.timeline.utils.retrofitCalls;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
 import org.jetbrains.annotations.NotNull;
@@ -94,7 +94,7 @@ public class profileFragment extends Fragment {
 
         //Initializing Retrofit Instance for profile
         profileQueries = retrofitInstance.getInstRxJava().create(queries.class);
-        userInfoCall = profileQueries.getUserData(accessToken, retrofitCalls.serverKey,
+        userInfoCall = profileQueries.getUserData(accessToken, BuildConfig.server_key,
                 getResources().getString(R.string.fetch_profile),
                 userId);
 

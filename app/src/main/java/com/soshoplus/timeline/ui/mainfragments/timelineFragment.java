@@ -15,12 +15,8 @@ import androidx.fragment.app.Fragment;
 
 import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.FragmentTimelineBinding;
-import com.soshoplus.timeline.utils.retrofitCalls;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.

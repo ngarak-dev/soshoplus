@@ -9,11 +9,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/_10sdp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="@dimen/_5sdp">
+    android:layout_marginBottom="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_10sdp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,60 +20,28 @@
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/full_name"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_margin="@dimen/_5sdp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/about_me"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/profile_pic"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/profile_pic"/>
 
         <TextView
             android:id="@+id/about_me"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/full_name"
-            app:layout_constraintStart_toStartOf="@id/full_name"
-            app:layout_constraintTop_toBottomOf="@id/full_name" />
+            android:maxLines="3"
+            android:layout_below="@id/full_name"
+            android:layout_alignStart="@id/full_name"/>
 
-        <!--        <com.google.android.material.button.MaterialButton-->
-        <!--            android:id="@+id/btn_follow"-->
-        <!--            style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="@dimen/_30sdp"-->
-        <!--            android:layout_marginEnd="@dimen/_5sdp"-->
-        <!--            android:text="Follow"-->
-        <!--            android:visibility="gone"-->
-        <!--            android:textAllCaps="false"-->
-        <!--            android:textSize="@dimen/_10sdp"-->
-        <!--            app:cornerRadius="@dimen/_5sdp"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--        <ProgressBar-->
-        <!--            android:id="@+id/progressBar_follow"-->
-        <!--            android:layout_width="@dimen/_10sdp"-->
-        <!--            android:layout_height="@dimen/_10sdp"-->
-        <!--            android:elevation="@dimen/_10sdp"-->
-        <!--            android:visibility="gone"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@id/btn_follow"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/btn_follow"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/btn_follow"-->
-        <!--            app:layout_constraintTop_toTopOf="@id/btn_follow" />-->
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

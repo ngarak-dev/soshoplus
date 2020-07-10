@@ -33,9 +33,9 @@
             android:id="@+id/full_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:layout_alignBottom="@id/profile_pic"
             android:layout_marginBottom="@dimen/_5sdp"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

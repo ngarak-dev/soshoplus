@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.FragmentTimelineBinding;
 import com.soshoplus.timeline.utils.retrofitCalls;
 
@@ -31,10 +32,7 @@ public class timelineFragment extends Fragment {
     }
     
     private FragmentTimelineBinding timelineBinding;
-    private retrofitCalls calls;
-    
-    
-    /*TODO NULL exception zipo AVOID AVOID*/
+    private timelineCalls calls;
     
     /*initializing a view and inflate it */
     @Override
@@ -42,21 +40,14 @@ public class timelineFragment extends Fragment {
         // Inflate the layout for this fragment
         timelineBinding = FragmentTimelineBinding.inflate(inflater, container, false);
         
+        /*timeline feed*/
         getTimelineFeed();
         
         return timelineBinding.getRoot();
     }
     
     private void getTimelineFeed () {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run () {
-                calls = new retrofitCalls(requireContext());
-                calls.getTimelineFeed(timelineBinding.timelinePostsList);
-            }
-        });
-        
-        executorService.shutdown();
+        calls = new timelineCalls(requireContext());
+        calls.getTimelineFeed(timelineBinding.timelinePostsList);
     }
 }

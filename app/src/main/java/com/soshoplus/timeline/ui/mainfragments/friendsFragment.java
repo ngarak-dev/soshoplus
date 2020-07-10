@@ -56,20 +56,14 @@ public class friendsFragment extends Fragment {
     }
     
     private void getFriends () {
-    
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run () {
-                /*following*/
-                calls = new retrofitCalls(requireContext());
-                calls.getFollowing(friendsBinding.friendsFollowingList);
-                /*followers*/
-                calls = new retrofitCalls(requireContext());
-                calls.getFollowers(friendsBinding.friendsFollowersList);
-            }
-        });
+        /*following*/
+        calls = new retrofitCalls(requireContext());
+        calls.getFollowing(friendsBinding.friendsFollowingList,
+                friendsBinding.followingTitle,
+                friendsBinding.progressBarFollowing, friendsBinding.refreshFollowing);
         
-        executorService.shutdown();
+        /*followers*/
+        calls = new retrofitCalls(requireContext());
+        calls.getFollowers(friendsBinding.friendsFollowersList);
     }
 }

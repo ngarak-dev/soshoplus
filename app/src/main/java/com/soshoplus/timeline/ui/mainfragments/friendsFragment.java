@@ -33,8 +33,6 @@ public class friendsFragment extends Fragment {
     private FragmentFriendsBinding friendsBinding;
     private retrofitCalls calls;
     
-    /*TODO NULL exception zipo AVOID AVOID*/
-    
     /*initializing a view and inflate it */
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,15 +49,10 @@ public class friendsFragment extends Fragment {
     }
     
     private void getSuggestedFriends () {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run () {
-                calls = new retrofitCalls(requireContext());
-                calls.getSuggestedFriends(friendsBinding.suggestedFriendsList
-                        , executorService);
-            }
-        });
+        calls = new retrofitCalls(requireContext());
+        calls.getSuggestedFriends(friendsBinding.suggestedFriendsList,
+                friendsBinding.suggestedTitle,
+                friendsBinding.progressBarSuggested, friendsBinding.refreshSuggested);
     }
     
     private void getFriends () {

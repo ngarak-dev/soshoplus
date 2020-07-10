@@ -43,6 +43,7 @@
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_refresh"
+            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -52,7 +53,8 @@
             android:layout_below="@id/suggested_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/followers_title"
@@ -82,6 +84,7 @@
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_refresh"
+            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -91,13 +94,15 @@
             android:layout_below="@id/followers_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/view_all_followers_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_below="@id/friends_followers_list"
+            android:enabled="false"
             android:text="View all"
             android:textAlignment="center"
             app:chipCornerRadius="0dp" />
@@ -130,6 +135,7 @@
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_baseline_refresh"
+            android:visibility="gone"
             tools:ignore="ContentDescription" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -139,13 +145,15 @@
             android:layout_below="@id/following_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_10sdp" />
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/view_all_following_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_35sdp"
             android:layout_below="@id/friends_following_list"
+            android:enabled="false"
             android:text="View all"
             android:textAlignment="center"
             app:chipCornerRadius="0dp" />

@@ -32,23 +32,18 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
             android:id="@+id/upper_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:padding="@dimen/_10sdp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_pic"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/full_name"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"/>
 
             <TextView
                 android:id="@+id/full_name"
@@ -58,9 +53,8 @@
                 android:padding="@dimen/_2sdp"
                 android:textSize="@dimen/_12ssp"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@id/username"
-                app:layout_constraintStart_toEndOf="@id/profile_pic"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_toEndOf="@id/profile_pic"
+                android:layout_alignParentTop="true"/>
 
             <TextView
                 android:id="@+id/username"
@@ -70,25 +64,22 @@
                 android:padding="@dimen/_2sdp"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/_10ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/profile_pic"
-                app:layout_constraintTop_toBottomOf="@id/full_name" />
+                android:layout_toEndOf="@id/profile_pic"
+                android:layout_below="@id/full_name"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/whats_new"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:text="What's happening ?"
                 android:textAlignment="textStart"
                 app:chipBackgroundColor="@null"
                 app:chipStrokeColor="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/full_name"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_toEndOf="@id/full_name"
+                android:layout_alignParentTop="true"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

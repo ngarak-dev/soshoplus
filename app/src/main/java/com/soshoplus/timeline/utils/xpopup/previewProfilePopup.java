@@ -44,30 +44,19 @@ public class previewProfilePopup extends BottomPopupView {
         TextView username = findViewById(R.id.username);
         ImageView verified_badge = findViewById(R.id.verified_badge);
         ImageView level_badge = findViewById(R.id.level_badge);
-        
-        TextView no_posts = findViewById(R.id.no_of_posts);
+
         TextView no_followers = findViewById(R.id.number_of_followers);
         TextView no_following = findViewById(R.id.number_of_following);
         
         MaterialButton follow = findViewById(R.id.follow_btn);
         
         TextView about_me = findViewById(R.id.about_me);
-        TextView gender = findViewById(R.id.gender);
-        TextView birthday = findViewById(R.id.birthday);
-        TextView working = findViewById(R.id.working_at);
-        TextView school = findViewById(R.id.school);
-        TextView living = findViewById(R.id.living);
-        TextView located = findViewById(R.id.located);
-        
-        LinearLayout layout = findViewById(R.id.linear);
-        ProgressBar progressBar = findViewById(R.id.progressBar);
         ProgressBar progressBar_follow = findViewById(R.id.progressBar_follow);
         
         calls = new retrofitCalls(m_context);
         calls.previewProfile(cover_photo, progressBar_cover, profile_pic,
-                username, verified_badge, level_badge, no_posts, no_followers
-                , no_following, follow, about_me, gender, birthday, working,
-                school, living, located, layout, progressBar, progressBar_follow);
+                username, verified_badge, level_badge, no_followers
+                , no_following, follow, about_me, progressBar_follow);
     }
     
     @Override

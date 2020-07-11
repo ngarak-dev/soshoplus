@@ -4,19 +4,25 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/timelineSmartRefresh"
     tools:context=".ui.mainfragments.timelineFragment">
+
+    <com.scwang.smart.refresh.header.ClassicsHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeline_posts_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_height="match_parent" />
 
-</androidx.core.widget.NestedScrollView>
+    <com.scwang.smart.refresh.footer.ClassicsFooter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>
 

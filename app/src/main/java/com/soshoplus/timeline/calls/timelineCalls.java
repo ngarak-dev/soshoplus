@@ -31,6 +31,7 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.utils.timelineScrollListener;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 
@@ -75,6 +76,9 @@ public class timelineCalls {
     
     /*.......*/
     private KSnack snack;
+    /*........*/
+    private static int totalItems, lastItemPosition;
+    private static String lastItemID;
     
     /*constructor*/
     public timelineCalls (Context context) {
@@ -101,6 +105,20 @@ public class timelineCalls {
         Log.d(TAG, "LOADING : " + afterPostId);
         loadPosts(timelinePostsList, afterPostId);
         
+        /*on scroll listener*/
+        timelinePostsList.addOnScrollListener(new timelineScrollListener(linearLayoutManager) {
+            @Override
+            protected void onLoadMorePosts (int currentId, int totalItemCount, RecyclerView recyclerView) {
+                Log.d(TAG,
+                        "onLoadMorePosts: ID ONE : " + timelinePosts.get(currentId).getPostId());
+                Log.d(TAG,
+                        "onLoadMorePosts: ID TWO : " + timelinePosts.get(currentId - 1).getPostId());
+                
+                totalItems = totalItemCount;
+                lastItemPosition = currentId;
+                lastItemID = timelinePosts.get(currentId -1).getPostId();
+            }
+        });
     }
     
     private void loadPosts (RecyclerView timelinePostsList, String afterPostId) {

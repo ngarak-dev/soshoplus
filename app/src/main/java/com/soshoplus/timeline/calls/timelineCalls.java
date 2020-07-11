@@ -134,9 +134,8 @@ public class timelineCalls {
                             
                                 /*initialize adapter*/
                                 feedAdapter =
-                                        new timelineFeedAdapter(timelinePosts
-                                                ,
-                                                context, new timelineFeedAdapter.onClickListener() {
+                                        new timelineFeedAdapter(timelinePosts, context,
+                                                new timelineFeedAdapter.onClickListener() {
                                             @Override
                                             public void onVideoClickPlay (String postFile) {
                                             

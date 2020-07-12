@@ -261,7 +261,15 @@ public class timelineCalls {
                                                         timelineImageViewPopup imageViewPopup =
                                                                 new timelineImageViewPopup(context);
                                                         /*setting up*/
-                                                        imageViewPopup.setSingleSrcView(post_image, post.getPostFileFull());
+                                                        if (!post.getBlogId().equals("0")) {
+                                                            /*for blog
+                                                            thumbnails*/
+                                                            imageViewPopup.setSingleSrcView(post_image, post.getBlog().getThumbnail());
+                                                        }
+                                                        else {
+                                                            /*normal image*/
+                                                            imageViewPopup.setSingleSrcView(post_image, post.getPostFileFull());
+                                                        }
                                                         imageViewPopup.isShowSaveButton(false);
                                                         imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
                                                             @Override

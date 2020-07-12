@@ -8,8 +8,6 @@ package com.soshoplus.timeline.calls;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -21,6 +19,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.lxj.xpopup.XPopup;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
@@ -31,11 +32,9 @@ import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
-import com.soshoplus.timeline.utils.timelineScrollListener;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -45,7 +44,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Call;
 
 public class timelineCalls {
     
@@ -59,9 +57,9 @@ public class timelineCalls {
     /*TIMELINE FEED*/
     private final static String get_news_feed = "get_news_feed";
     private Observable<postList> postListObserve;
-    private List<post> timelinePosts = null;
+    private List<post> timelinePosts;
     private LinearLayoutManager linearLayoutManager;
-    private String afterPostId = "0";
+    private static String afterPostId = "0";
     private timelineFeedAdapter feedAdapter;
     
     /*POST LIKE_DISLIKE*/
@@ -96,27 +94,24 @@ public class timelineCalls {
         snack = new KSnack((FragmentActivity) context);
     }
     
-    public void getTimelineFeed (RecyclerView timelinePostsList) {
+    public void getTimelineFeed (RecyclerView timelinePostsList, SmartRefreshLayout timelineSmartRefresh) {
     
         linearLayoutManager = new LinearLayoutManager(context);
         timelinePostsList.setLayoutManager(linearLayoutManager);
+        timelinePostsList.setHasFixedSize(true);
     
         /*load posts*/
         Log.d(TAG, "LOADING : " + afterPostId);
         loadPosts(timelinePostsList, afterPostId);
-        
-        /*on scroll listener*/
-        timelinePostsList.addOnScrollListener(new timelineScrollListener(linearLayoutManager) {
+
+        /*onLoad more listener*/
+        timelineSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            protected void onLoadMorePosts (int currentId, int totalItemCount, RecyclerView recyclerView) {
-                Log.d(TAG,
-                        "onLoadMorePosts: ID ONE : " + timelinePosts.get(currentId).getPostId());
-                Log.d(TAG,
-                        "onLoadMorePosts: ID TWO : " + timelinePosts.get(currentId - 1).getPostId());
-                
-                totalItems = totalItemCount;
-                lastItemPosition = currentId;
-                lastItemID = timelinePosts.get(currentId -1).getPostId();
+            public void onLoadMore (@androidx.annotation.NonNull RefreshLayout refreshLayout) {
+                /*load more posts*/
+                loadPosts(timelinePostsList, lastItemID);
+                /*finish load more*/
+                refreshLayout.finishLoadMore();
             }
         });
     }
@@ -138,62 +133,65 @@ public class timelineCalls {
                     @Override
                     public void onNext (@NonNull postList postList) {
                         if (afterPostId.equals("0")) {
-                        
+        
                             if(postList.getApiStatus() == 200) {
                                 Log.d(TAG, "onNext: LOAD FIRST DATA");
-                            
+            
                                 timelinePosts = getAll(postList);
-                            
+            
                                 if (timelinePosts != null) {
                                     for (post firstPosts : timelinePosts) {
                                         Log.d(TAG, "onNext: FIRST POSTS ID : " + firstPosts.getPostId());
                                     }
+    
+                                    /*last item ID*/
+                                    lastItemID = timelinePosts.get(7).getPostId();
+                                    Log.d(TAG, "onNext: " + lastItemID);
                                 }
-                            
+                                
                                 /*initialize adapter*/
                                 feedAdapter =
-                                        new timelineFeedAdapter(timelinePosts, context,
+                                        new timelineFeedAdapter(timelinePosts,
                                                 new timelineFeedAdapter.onClickListener() {
-                                            @Override
-                                            public void onVideoClickPlay (String postFile) {
-                                            
-                                            }
-                                        
-                                            @Override
-                                            public void onAudioClickPlay (String postFile, Chip play, Chip pause) {
-                                            
-                                            }
-                                        
-                                            @Override
-                                            public void onLikePost (String postId, MaterialButton likes, TextView no_likes) {
-                                                likePost(postId, likes,
-                                                        no_likes);
-                                            }
-                                        
-                                            @Override
-                                            public void onShareClicked (String post_Id, String url, String name) {
-                                                /*setting extra bundle string*/
-                                                postId = post_Id;
-                                                postUrl = url;
-                                                postAuthor =
-                                                        name;
-                                                new XPopup.Builder(context).asCustom(new sharePopup(context)).show();
-                                            }
-                                        
-                                            @Override
-                                            public void onProfilePicClicked (String userId) {
-                                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context, userId)).show();
-                                            }
-                                        });
-                            
+                                                    @Override
+                                                    public void onVideoClickPlay (String postFile) {
+                                    
+                                                    }
+                                
+                                                    @Override
+                                                    public void onAudioClickPlay (String postFile, Chip play, Chip pause) {
+                                    
+                                                    }
+                                
+                                                    @Override
+                                                    public void onLikePost (String postId, MaterialButton likes, TextView no_likes) {
+                                                        likePost(postId, likes,
+                                                                no_likes);
+                                                    }
+                                
+                                                    @Override
+                                                    public void onShareClicked (String post_Id, String url, String name) {
+                                                        /*setting extra bundle string*/
+                                                        postId = post_Id;
+                                                        postUrl = url;
+                                                        postAuthor =
+                                                                name;
+                                                        new XPopup.Builder(context).asCustom(new sharePopup(context)).show();
+                                                    }
+                                
+                                                    @Override
+                                                    public void onProfilePicClicked (String userId) {
+                                                        new XPopup.Builder(context).asCustom(new previewProfilePopup(context, userId)).show();
+                                                    }
+                                                });
+            
                                 /*setting adapter*/
                                 timelinePostsList.setAdapter(feedAdapter);
-                            
                             }
                             else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
-                            
+            
                                 /*displaying a snackbar*/
                                 snack.setMessage("Oops !\nSomething went " +
                                         "wrong\nPlease check your internet " +
@@ -210,24 +208,26 @@ public class timelineCalls {
                         }
                         else {
                             if (postList.getApiStatus() == 200) {
-                                Log.d(TAG, "onNext: LOAD MORE DATA");
-                                List<post> test = new ArrayList<>();
-                            
+                                /*getting new posts*/
                                 List<post> tobeAdded = getAll(postList);
-                                if (tobeAdded != null) {
-                                    for (post newPosts : tobeAdded) {
-                                        Log.d(TAG,
-                                                "onNext: NEW POSTS ID : " + newPosts.getPostId());
-                                        test.add(newPosts);
-                                    }
-                                }
-                            
-                                addData(test);
+                                Log.d(TAG, "onNext: LOAD MORE DATA");
+                                
+                                /*........*/
+                                feedAdapter.updatePostsList(tobeAdded);
+//                                timelinePostsList.getRecycledViewPool().clear();
+                                feedAdapter.notifyDataSetChanged();
+    
+                                /*last item ID*/
+                                lastItemID = timelinePosts.get(7).getPostId();
+                                Log.d(TAG, "onNext: " + lastItemID);
+                                
+                                Log.d(TAG, "onNext: " + feedAdapter.getItemCount());
+                                Log.d(TAG, "onNext: " + timelinePosts.size());
                             }
                             else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
-                            
+            
                                 /*displaying a snackbar*/
                                 snack.setMessage("Oops !\nSomething went " +
                                         "wrong\nPlease check your internet " +
@@ -320,14 +320,6 @@ public class timelineCalls {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
-    }
-    
-    /*load more data*/
-    private void addData (List<post> test) {
-        int initialSize = timelinePosts.size();
-        timelinePosts.addAll(test);
-        feedAdapter.notifyItemRangeInserted(initialSize,
-                timelinePosts.size()-1);
     }
     
     /*get all post first round*/

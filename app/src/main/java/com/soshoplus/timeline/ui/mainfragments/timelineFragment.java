@@ -44,6 +44,7 @@ public class timelineFragment extends Fragment {
     
     private void getTimelineFeed () {
         calls = new timelineCalls(requireContext());
-        calls.getTimelineFeed(timelineBinding.timelinePostsList);
+        calls.getTimelineFeed(timelineBinding.timelinePostsList,
+                timelineBinding.timelineSmartRefresh);
     }
 }

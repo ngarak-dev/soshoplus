@@ -9,8 +9,10 @@ package com.soshoplus.timeline.calls;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,9 +21,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
+import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -35,11 +40,15 @@ import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
+import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
+import com.soshoplus.timeline.utils.xpopup.timelineAdFullViewPopup;
+import com.soshoplus.timeline.utils.xpopup.timelineImageViewPopup;
 
+import java.io.File;
 import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -79,6 +88,12 @@ public class timelineCalls {
     /*........*/
     private static int totalItems, lastItemPosition;
     private static String lastItemID;
+    
+    /*........*/
+    private static String fullName, timeAgo, noLikes, noComments;
+    private static boolean isLiked;
+    /*......*/
+    private static String adFullName, adLocation, adDescription, adHeadline;
     
     /*constructor*/
     public timelineCalls (Context context) {
@@ -238,6 +253,76 @@ public class timelineCalls {
                                                     @Override
                                                     public void onProfilePicClicked (String userId) {
                                                         new XPopup.Builder(context).asCustom(new previewProfilePopup(context, userId)).show();
+                                                    }
+    
+                                                    @Override
+                                                    public void viewFullImage (Context context, post post, ImageView post_image) {
+                                                        /*initializing popup*/
+                                                        timelineImageViewPopup imageViewPopup =
+                                                                new timelineImageViewPopup(context);
+                                                        /*setting up*/
+                                                        imageViewPopup.setSingleSrcView(post_image, post.getPostFileFull());
+                                                        imageViewPopup.isShowSaveButton(false);
+                                                        imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
+                                                            @Override
+                                                            public void loadImage (int position, @androidx.annotation.NonNull Object uri,
+                                                                                   @androidx.annotation.NonNull ImageView imageView) {
+                                                                Glide.with(imageView).load(uri).into(imageView);
+                                                            }
+        
+                                                            @Override
+                                                            public File getImageFile (@androidx.annotation.NonNull Context context,
+                                                                                      @androidx.annotation.NonNull Object uri) {
+                                                                return null;
+                                                            }
+                                                        });
+                                                        /*show popup*/
+                                                        new XPopup.Builder(context).asCustom(imageViewPopup).show();
+    
+                                                        /*.......*/
+                                                        fullName =
+                                                                post.getPublisherInfo().getName();
+                                                        timeAgo = post.getPostTime();
+                                                        noLikes = post.getPostLikes();
+                                                        noComments = post.getPostComments();
+                                                        isLiked = post.isLiked();
+                                                    }
+    
+                                                    @Override
+                                                    public void viewFullADImage (Context context, post post, ImageView ad_media) {
+                                                        /*initializing popup*/
+                                                        timelineAdFullViewPopup imageViewPopup =
+                                                                new timelineAdFullViewPopup(context);
+                                                        /*setting up*/
+                                                        imageViewPopup.setSingleSrcView(ad_media, post.getAdMedia());
+                                                        imageViewPopup.isShowSaveButton(false);
+                                                        imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
+                                                            @Override
+                                                            public void loadImage (int position, @androidx.annotation.NonNull Object uri,
+                                                                                   @androidx.annotation.NonNull ImageView imageView) {
+                                                                Glide.with(imageView).load(uri).into(imageView);
+                                                            }
+        
+                                                            @Override
+                                                            public File getImageFile (@androidx.annotation.NonNull Context context,
+                                                                                      @androidx.annotation.NonNull Object uri) {
+                                                                return null;
+                                                            }
+                                                        });
+                                                        /*show popup*/
+                                                        new XPopup.Builder(context).asCustom(imageViewPopup).show();
+    
+                                                        /*......*/
+                                                        /*Converting Object to json data*/
+                                                        Gson gson = new Gson();
+                                                        String toJson = gson.toJson(post.getUserData());
+                                                        /*getting data from json string using pojo class*/
+                                                        userData user_data = gson.fromJson(toJson, userData.class);
+    
+                                                        adFullName = user_data.getName();
+                                                        adLocation = post.getLocation();
+                                                        adDescription = post.getDescription();
+                                                        adHeadline = post.getHeadline();
                                                     }
                                                 });
             
@@ -437,5 +522,31 @@ public class timelineCalls {
         intent.putExtra(Intent.EXTRA_TEXT, postUrl);
         context.startActivity(Intent.createChooser(intent, "choose " +
                 "one"));
+    }
+    
+    /*AD info*/
+    public static void getADInfo (TextView full_name, TextView location, TextView description,
+                                  TextView headline) {
+        /*setting up*/
+        full_name.setText(adFullName);
+        location.setText(adLocation);
+        description.setText(Html.fromHtml(adDescription));
+        headline.setText(adHeadline);
+    }
+    /*post image info*/
+    public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
+                                TextView no_comments, MaterialButton like, MaterialButton comment) {
+    
+        /*setting up*/
+        full_name.setText(fullName);
+        time_ago.setText(timeAgo);
+        no_likes.setText(noLikes + " likes");
+        no_comments.setText(noComments + " comments");
+    
+        /*setting like btn*/
+        if (isLiked) {
+            like.setIconResource(R.drawable.ic_liked);
+            like.setText("Liked");
+        }
     }
 }

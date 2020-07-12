@@ -8,7 +8,6 @@ package com.soshoplus.timeline.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.media.MediaMetadataRetriever;
 import android.text.Html;
 import android.util.Log;
@@ -40,7 +39,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.ImageViewerPopupView;
 import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
-import com.lxj.xpopup.photoview.PhotoView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
@@ -61,9 +59,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 
 public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     
@@ -239,7 +234,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         /*DEFAULT RETURN*/
         else {
-            ((DefaultViewHolder) viewHolder).bindDefaultPosts(postList.get(position));
+            ((DefaultViewHolder) viewHolder).bindDefaultPosts(postList.get(position), position);
         }
     }
     
@@ -366,8 +361,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             media.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(media,
-                            post.getAdMedia(), new fullImageLoader()).show();
+                    clickListener.viewFullADImage(itemView.getContext(), post,
+                            media);
                 }
             });
         }
@@ -401,7 +396,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             share = itemView.findViewById(R.id.share_btn);
         }
         
-        public void bindDefaultPosts (post post) {
+        public void bindDefaultPosts (post post, int position) {
             Log.d(TAG, "bindNormalPosts: " + post.getPostType());
             Log.d(TAG, "bindNormalPosts: " + post.getPostId());
             
@@ -410,7 +405,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .toBuilder()
                     .setAllCorners(CornerFamily.ROUNDED, 20)
                     .build());
-            Glide.with(itemView).load(post.getPublisherInfo().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(profile_pic);
+            Glide.with(itemView).load(post.getPublisherInfo().getAvatar())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).into(profile_pic);
             
             full_name.setText(post.getPublisherInfo().getName());
             time_ago.setText(post.getPostTime());
@@ -440,8 +436,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(post_image,
-                            post.getPostFile(), new fullImageLoader()).show();
+                    clickListener.viewFullImage(itemView.getContext(), post,
+                            post_image);
                 }
             });
             contents.setText(Html.fromHtml(post.getPostTextAPI()));
@@ -553,8 +549,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(post_image,
-                            post.getPostFile(), new fullImageLoader()).show();
+                    clickListener.viewFullImage(itemView.getContext(), post,
+                            post_image);
                 }
             });
     
@@ -664,8 +660,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(post_image,
-                            post.getPostFile(), new fullImageLoader()).show();
+                    clickListener.viewFullImage(itemView.getContext(), post,
+                            post_image);
                 }
             });
     
@@ -808,8 +804,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             shared_post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(shared_post_image,
-                            post.getPostFile(), new fullImageLoader()).show();
+                    clickListener.viewFullImage(itemView.getContext(), post,
+                            shared_post_image);
                 }
             });
     
@@ -1173,8 +1169,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             post_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(post_image,
-                            post.getPostFile(), new fullImageLoader()).show();
+                    clickListener.viewFullImage(itemView.getContext(), post,
+                            post_image);
                 }
             });
     
@@ -1405,8 +1401,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             article_thumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick (View view) {
-                    new XPopup.Builder(itemView.getContext()).asImageViewer(article_thumbnail,
-                            post.getBlog().getThumbnail(), new fullImageLoader()).show();
+                    clickListener.viewFullImage(itemView.getContext(), post, article_thumbnail);
                 }
             });
     
@@ -1652,6 +1647,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         }
                     }, new fullImageLoader())
                             .show();
+                    /*TODO create layout for this*/
                 }
             });
             
@@ -1725,6 +1721,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void onShareClicked (String postId, String url, String name);
         /*profile pic click*/
         void onProfilePicClicked (String userId);
+        /*view full image*/
+        void viewFullImage (Context context, post post, ImageView post_image);
+        /*view full AD*/
+        void viewFullADImage (Context context, post post, ImageView media);
     }
     
     /*full screen image view*/

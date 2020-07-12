@@ -20,13 +20,11 @@ import com.soshoplus.timeline.calls.previewProfileCalls;
 
 public class previewProfilePopup extends BottomPopupView {
     
-    private Context m_context;
     private previewProfileCalls calls;
     private static String user_id;
     
     public previewProfilePopup (@NonNull Context context, String userId) {
         super(context);
-        m_context = context;
         user_id = userId;
     }
     
@@ -54,7 +52,7 @@ public class previewProfilePopup extends BottomPopupView {
         TextView about_me = findViewById(R.id.about_me);
         ProgressBar progressBar_follow = findViewById(R.id.progressBar_follow);
         
-        calls = new previewProfileCalls(m_context);
+        calls = new previewProfileCalls(getContext());
         calls.previewProfile(cover_photo, progressBar_cover, profile_pic,
                 username, verified_badge, level_badge, no_followers
                 , no_following, follow, about_me, progressBar_follow, user_id);

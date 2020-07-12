@@ -65,9 +65,6 @@ public class timelineCalls {
     /*POST LIKE_DISLIKE*/
     private Observable<like_dislike> like_dislikeObservable;
     
-    /*SHARE POST ON OTHER APPS*/
-    private static String postId, postUrl, postAuthor;
-    
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
     private static String share_post_on_timeline = "share_post_on_timeline";
@@ -89,9 +86,6 @@ public class timelineCalls {
     
         /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
-        
-        /*initializing snack*/
-        snack = new KSnack((FragmentActivity) context);
     }
     
     public void getTimelineFeed (RecyclerView timelinePostsList, SmartRefreshLayout timelineSmartRefresh) {
@@ -146,12 +140,11 @@ public class timelineCalls {
     
                                     /*last item ID*/
                                     lastItemID = timelinePosts.get(7).getPostId();
-                                    Log.d(TAG, "onNext: " + lastItemID);
+                                    Log.d(TAG, "LAST ITEM ID : " + lastItemID);
                                 }
                                 
                                 /*initialize adapter*/
-                                feedAdapter =
-                                        new timelineFeedAdapter(timelinePosts,
+                                feedAdapter = new timelineFeedAdapter(timelinePosts,
                                                 new timelineFeedAdapter.onClickListener() {
                                                     @Override
                                                     public void onVideoClickPlay (String postFile) {
@@ -171,12 +164,8 @@ public class timelineCalls {
                                 
                                                     @Override
                                                     public void onShareClicked (String post_Id, String url, String name) {
-                                                        /*setting extra bundle string*/
-                                                        postId = post_Id;
-                                                        postUrl = url;
-                                                        postAuthor =
-                                                                name;
-                                                        new XPopup.Builder(context).asCustom(new sharePopup(context)).show();
+                                                        /*passing string*/
+                                                        new XPopup.Builder(context).asCustom(new sharePopup(context, post_Id, url, name)).show();
                                                     }
                                 
                                                     @Override
@@ -193,6 +182,7 @@ public class timelineCalls {
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
             
                                 /*displaying a snackbar*/
+                                snack = new KSnack((FragmentActivity) context);
                                 snack.setMessage("Oops !\nSomething went " +
                                         "wrong\nPlease check your internet " +
                                         "connection");
@@ -214,21 +204,20 @@ public class timelineCalls {
                                 
                                 /*........*/
                                 feedAdapter.updatePostsList(tobeAdded);
-//                                timelinePostsList.getRecycledViewPool().clear();
                                 feedAdapter.notifyDataSetChanged();
     
                                 /*last item ID*/
                                 lastItemID = timelinePosts.get(7).getPostId();
-                                Log.d(TAG, "onNext: " + lastItemID);
+                                Log.d(TAG, "LAST ITEM ID : " + lastItemID);
                                 
-                                Log.d(TAG, "onNext: " + feedAdapter.getItemCount());
-                                Log.d(TAG, "onNext: " + timelinePosts.size());
+                                Log.d(TAG, "ADAPTER ITEM COUNT : " + feedAdapter.getItemCount());
                             }
                             else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
             
                                 /*displaying a snackbar*/
+                                snack = new KSnack((FragmentActivity) context);
                                 snack.setMessage("Oops !\nSomething went " +
                                         "wrong\nPlease check your internet " +
                                         "connection");
@@ -329,8 +318,9 @@ public class timelineCalls {
     }
     
     /*share post direct to timeline*/
-    public void shareOnTimeline () {
+    public void shareOnTimeline (String postId) {
         
+        snack = new KSnack((FragmentActivity) context);
         snack.setMessage("Sharing to your timeline ...");
         snack.show();
     
@@ -365,7 +355,7 @@ public class timelineCalls {
                             snack.setDuration(5000);
                             snack.setAction("Try again", view -> {
                                 snack.dismiss();
-                                shareOnTimeline();
+                                shareOnTimeline(postId);
                             });
                         }
                     }
@@ -379,7 +369,7 @@ public class timelineCalls {
                         snack.setDuration(5000);
                         snack.setAction("Try again", view -> {
                             snack.dismiss();
-                            shareOnTimeline();
+                            shareOnTimeline(postId);
                         });
                     }
                 
@@ -391,10 +381,10 @@ public class timelineCalls {
     }
     
     /*share on other apps*/
-    public void shareOnOtherApps () {
+    public void shareOnOtherApps (String postUrl, String fullName) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, postAuthor);
+        intent.putExtra(Intent.EXTRA_SUBJECT, fullName);
         intent.putExtra(Intent.EXTRA_TEXT, postUrl);
         context.startActivity(Intent.createChooser(intent, "choose " +
                 "one"));

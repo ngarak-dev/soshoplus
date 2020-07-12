@@ -8,7 +8,11 @@ package com.soshoplus.timeline.calls;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -22,6 +26,7 @@ import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
@@ -88,7 +93,8 @@ public class timelineCalls {
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
     
-    public void getTimelineFeed (RecyclerView timelinePostsList, SmartRefreshLayout timelineSmartRefresh) {
+    public void getTimelineFeed (RecyclerView timelinePostsList, SmartRefreshLayout timelineSmartRefresh,
+                                 ProgressBar progressBarTimeline, RelativeLayout timelineErrorLayout, MaterialButton tryAgain) {
     
         linearLayoutManager = new LinearLayoutManager(context);
         timelinePostsList.setLayoutManager(linearLayoutManager);
@@ -96,21 +102,82 @@ public class timelineCalls {
     
         /*load posts*/
         Log.d(TAG, "LOADING : " + afterPostId);
-        loadPosts(timelinePostsList, afterPostId);
+        loadPosts(timelinePostsList, afterPostId, timelineErrorLayout, tryAgain);
+        
+        /*hide progress*/
+        new Handler().postDelayed(() -> {
+            progressBarTimeline.setVisibility(View.GONE);
+        }, 500);
 
         /*onLoad more listener*/
         timelineSmartRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore (@androidx.annotation.NonNull RefreshLayout refreshLayout) {
                 /*load more posts*/
-                loadPosts(timelinePostsList, lastItemID);
+                loadPosts(timelinePostsList, lastItemID, timelineErrorLayout, tryAgain);
                 /*finish load more*/
-                refreshLayout.finishLoadMore();
+                new Handler().postDelayed(refreshLayout::finishLoadMore, 500);
             }
+        });
+        /*pull to refresh*/
+        timelineSmartRefresh.setOnRefreshListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore (@androidx.annotation.NonNull RefreshLayout refreshLayout) {
+                /**/
+            }
+    
+            @Override
+            public void onRefresh (@androidx.annotation.NonNull RefreshLayout refreshLayout) {
+                /*afterpost == 0*/
+                afterPostId = "0";
+                /*.........*/
+                timelineErrorLayout.setVisibility(View.GONE);
+                timelinePostsList.setVisibility(View.GONE);
+                progressBarTimeline.setVisibility(View.VISIBLE);
+                
+                /*refresh data*/
+                loadPosts(timelinePostsList, afterPostId, timelineErrorLayout,
+                        tryAgain);
+                /*finish refresh*/
+                /*hide progress*/
+                new Handler().postDelayed(() -> {
+                    progressBarTimeline.setVisibility(View.GONE);
+                    refreshLayout.finishRefresh();
+                }, 500);
+                
+//                new Handler().postDelayed(refreshLayout::finishRefresh, 500);
+            }
+        });
+        
+        tryAgain.setOnClickListener(view -> {
+            /*afterpost  == 0*/
+            afterPostId = "0";
+            
+            /*hide error layout*
+            disable refreshing*/
+            timelineErrorLayout.setVisibility(View.GONE);
+            timelineSmartRefresh.setEnableRefresh(false);
+            timelineSmartRefresh.setEnableLoadMore(false);
+            /*.........*/
+            timelinePostsList.setVisibility(View.GONE);
+            progressBarTimeline.setVisibility(View.VISIBLE);
+    
+            /*refresh data*/
+            loadPosts(timelinePostsList, "0", timelineErrorLayout, tryAgain);
+            /*finish refresh*/
+            /*hide progress*/
+            new Handler().postDelayed(() -> {
+                progressBarTimeline.setVisibility(View.GONE);
+            }, 500);
+    
+            /*enable smart refresh*/
+            timelineSmartRefresh.setEnableRefresh(true);
+            timelineSmartRefresh.setEnableLoadMore(true);
         });
     }
     
-    private void loadPosts (RecyclerView timelinePostsList, String afterPostId) {
+    private void loadPosts (RecyclerView timelinePostsList, String afterPostId,
+                            RelativeLayout timelineErrorLayout, MaterialButton tryAgain) {
     
         postListObserve =
                 rxJavaQueries.getTimelinePosts(accessToken,
@@ -176,24 +243,16 @@ public class timelineCalls {
             
                                 /*setting adapter*/
                                 timelinePostsList.setAdapter(feedAdapter);
+                                
+                                /*.........*/
+                                timelinePostsList.setVisibility(View.VISIBLE);
                             }
                             else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
             
-                                /*displaying a snackbar*/
-                                snack = new KSnack((FragmentActivity) context);
-                                snack.setMessage("Oops !\nSomething went " +
-                                        "wrong\nPlease check your internet " +
-                                        "connection");
-                                snack.setAction("DISMISS", view -> {
-                                    snack.dismiss();
-                                });
-                                snack.setAction("TRY AGAIN", view -> {
-                                    snack.dismiss();
-                                    loadPosts(timelinePostsList, afterPostId);
-                                });
-                                snack.show();
+                                /*displaying error*/
+                                timelineErrorLayout.setVisibility(View.VISIBLE);
                             }
                         }
                         else {
@@ -226,7 +285,7 @@ public class timelineCalls {
                                 });
                                 snack.setAction("TRY AGAIN", view -> {
                                     snack.dismiss();
-                                    loadPosts(timelinePostsList, afterPostId);
+                                    loadPosts(timelinePostsList, afterPostId, timelineErrorLayout, tryAgain);
                                 });
                                 snack.show();
                             }
@@ -236,19 +295,9 @@ public class timelineCalls {
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
-                        /*displaying a snackbar*/
-                        snack.setMessage("Oops !\nSomething went " +
-                                "wrong\nPlease check your internet " +
-                                "connection");
-                        snack.setAction("DISMISS", view -> {
-                            snack.dismiss();
-                        });
-                        snack.setAction("TRY AGAIN", view -> {
-                            snack.dismiss();
-                            loadPosts(timelinePostsList, afterPostId);
-                        });
-                        snack.show();
+    
+                        /*displaying error*/
+                        timelineErrorLayout.setVisibility(View.VISIBLE);
                     }
                 
                     @Override

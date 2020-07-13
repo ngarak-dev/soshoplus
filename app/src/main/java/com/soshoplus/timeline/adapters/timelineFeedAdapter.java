@@ -703,12 +703,11 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     /*view holder for shared post*/
     class SharedPostViewHolder extends RecyclerView.ViewHolder {
         
-        ShapeableImageView profile_pic, shared_profile_pic;
+        ImageView profile_pic, shared_profile_pic, shared_post_image;
         TextView full_name, shared_full_name, time_ago, shared_time_ago
-                , contents, shared_contents,  no_likes, no_comments, no_shares;
-        ImageView shared_post_image;
+                , contents, shared_contents,  no_likes, no_comments;
         ProgressBar progressBar;
-        MaterialButton likes, comment;
+        Chip likes, comment;
         
         public SharedPostViewHolder (View itemView) {
             super(itemView);
@@ -722,7 +721,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             no_likes = itemView.findViewById(R.id.no_likes);
             no_comments = itemView.findViewById(R.id.no_comments);
-            no_shares = itemView.findViewById(R.id.no_shares);
             
             contents = itemView.findViewById(R.id.post_contents);
             shared_contents = itemView.findViewById(R.id.shared_post_contents);
@@ -736,19 +734,15 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void bindSharedPosts (post post, onClickListener clickListener) {
             Log.d(TAG, "bindSharedPosts: " + "single image shared post");
             Log.d(TAG, "bindSharedPosts: " + post.getPostId());
-            
-            profile_pic.setShapeAppearanceModel(profile_pic
-                    .getShapeAppearanceModel()
-                    .toBuilder()
-                    .setAllCorners(CornerFamily.ROUNDED, 20)
-                    .build());
-            Glide.with(itemView).load(post.getPublisherInfo().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(profile_pic);
+    
+            Glide.with(itemView).load(post.getPublisherInfo().getAvatar())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).apply(RequestOptions.circleCropTransform())
+                    .into(profile_pic);
             
             full_name.setText(post.getPublisherInfo().getName());
             time_ago.setText(post.getPostTime());
-            no_likes.setText(post.getPostLikes());
-            no_comments.setText(post.getPostComments());
-            no_shares.setText(post.getPostShares());
+            no_likes.setText(post.getPostLikes() + " likes");
+            no_comments.setText(post.getPostComments() + " comments");
             
             if (!post.getPostTextAPI().isEmpty()) {
                 contents.setText(post.getOrginaltext());
@@ -763,12 +757,9 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             /*getting data from json string using pojo class*/
             sharedInfo sharedInfo = gson.fromJson(toJson, sharedInfo.class);
             
-            shared_profile_pic.setShapeAppearanceModel(shared_profile_pic
-                    .getShapeAppearanceModel()
-                    .toBuilder()
-                    .setAllCorners(CornerFamily.ROUNDED, 20)
-                    .build());
-            Glide.with(itemView).load(sharedInfo.getPublisherInfo().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).into(shared_profile_pic);
+            Glide.with(itemView).load(post.getPublisherInfo().getAvatar())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).apply(RequestOptions.circleCropTransform())
+                    .into(shared_profile_pic);
             
             shared_full_name.setText(sharedInfo.getPublisherInfo().getName());
             shared_time_ago.setText(sharedInfo.getPostTime());
@@ -789,12 +780,11 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             shared_post_image);
                 }
             });
-    
+            
             /*getting if post is liked*/
             if (post.isLiked()) {
-                likes.setIconResource(R.drawable.ic_liked);
-                likes.setText("Liked");
-                likes.setIconTintResource(R.color.colorPrimary);
+                likes.setChipIconResource(R.drawable.ic_liked);
+                likes.setCheckedIconTintResource(R.color.colorPrimary);
                 likes.setTextColor(itemView.getContext().getResources().getColor(R.color.colorPrimary));
             }
     
@@ -803,20 +793,18 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick (View view) {
                     /*direct setting on click then send a request*/
                     if (!post.isLiked()) {
-                        likes.setIconResource(R.drawable.ic_liked);
-                        likes.setIconTintResource(R.color.colorPrimary);
-                        likes.setText("Liked");
+                        likes.setChipIconResource(R.drawable.ic_liked);
+                        likes.setCheckedIconTintResource(R.color.colorPrimary);
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.colorPrimary));
                     }
                     else {
-                        likes.setIconResource(R.drawable.ic_like);
-                        likes.setIconTintResource(R.color.black);
-                        likes.setText("Like");
+                        likes.setChipIconResource(R.drawable.ic_like);
+                        likes.setCheckedIconTintResource(R.color.black);
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-                    timelineFeedAdapter.this.clickListener.onLikePost(post.getPostId(), likes,
-                            no_likes);
+//                    clickListener.onLikePost(post.getPostId(), likes,
+//                            no_likes);
                 }
             });
     

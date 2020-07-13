@@ -25,7 +25,8 @@
             android:id="@+id/timeline_posts_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:padding="@dimen/_10sdp"
+            android:visibility="visible" />
 
         <ProgressBar
             android:id="@+id/progressBar_timeline"

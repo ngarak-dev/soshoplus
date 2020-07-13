@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_10sdp"
     app:contentPadding="@dimen/_10sdp">
 
@@ -70,8 +71,9 @@
             android:layout_height="@dimen/_10sdp"
             android:layout_alignBaseline="@id/post_image"
             android:layout_alignStart="@id/post_image"
+            android:layout_alignTop="@id/post_image"
             android:layout_alignEnd="@id/post_image"
-            android:layout_alignBottom="@id/post_image"
+            android:layout_marginTop="@dimen/_100sdp"
             android:elevation="@dimen/_10sdp" />
 
         <View

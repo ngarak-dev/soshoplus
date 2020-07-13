@@ -106,7 +106,7 @@
             android:layout_below="@id/divider"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/_10sdp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
         <TextView
@@ -117,7 +117,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_toEndOf="@id/no_likes"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
         <com.google.android.material.chip.Chip
@@ -128,7 +128,7 @@
             android:layout_toStartOf="@id/comment_btn"
             app:chipBackgroundColor="@null"
             app:chipIcon="@drawable/ic_like"
-            app:chipIconSize="@dimen/_12sdp"
+            app:chipIconSize="@dimen/_15sdp"
             app:chipStartPadding="@dimen/_15sdp" />
 
         <com.google.android.material.chip.Chip
@@ -139,7 +139,7 @@
             android:layout_alignParentEnd="true"
             app:chipBackgroundColor="@null"
             app:chipIcon="@drawable/ic_comment"
-            app:chipIconSize="@dimen/_12sdp"
+            app:chipIconSize="@dimen/_15sdp"
             app:chipStartPadding="@dimen/_15sdp" />
 
     </RelativeLayout>

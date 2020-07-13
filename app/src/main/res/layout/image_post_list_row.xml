@@ -58,6 +58,7 @@
             android:textSize="@dimen/_10ssp" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/post_option"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_35sdp"
             android:layout_alignParentEnd="true"

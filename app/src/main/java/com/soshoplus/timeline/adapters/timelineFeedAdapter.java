@@ -30,13 +30,13 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.ImageViewerPopupView;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.soshoplus.timeline.R;
@@ -57,8 +57,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     
@@ -106,6 +104,10 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             .placeholder(R.drawable.ic_image_placeholder)
             .error(R.drawable.ic_image_placeholder)
             .priority(Priority.LOW);
+    
+    String[] post_options = new String[]{"Report", "Copy Link", "Share to"
+            , "Save post"
+            , "Hide post"};
     
     @NonNull
     @Override
@@ -375,7 +377,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, contents,  no_likes, no_comments;
         ShapeableImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public DefaultViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -392,6 +394,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindDefaultPosts (post post, int position) {
@@ -455,8 +458,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
 
@@ -480,6 +483,20 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                                switch (position) {
+                                
+                                }
+                            }
+                        }).show();
+            });
         }
     }
     
@@ -491,7 +508,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 , post_contents;
         ShapeableImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public ProfileViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -510,6 +527,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindProfilePosts (post post, onClickListener clickListener) {
@@ -568,8 +586,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -594,6 +612,18 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
@@ -604,7 +634,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, updated_cover,  no_likes, no_comments;
         ShapeableImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public CoverViewHolder (@NonNull View itemView) {
             super(itemView);
@@ -622,6 +652,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindCoverPosts (post post, onClickListener clickListener) {
@@ -676,8 +707,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -702,6 +733,18 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
@@ -712,7 +755,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, shared_full_name, time_ago, shared_time_ago
                 , contents, shared_contents,  no_likes, no_comments;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public SharedPostViewHolder (View itemView) {
             super(itemView);
@@ -734,6 +777,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindSharedPosts (post post, onClickListener clickListener) {
@@ -810,8 +854,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -834,15 +878,27 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
     /*view holder for coloured post*/
-    static class ColouredPostViewHolder extends RecyclerView.ViewHolder {
+    class ColouredPostViewHolder extends RecyclerView.ViewHolder {
         
         ImageView profile_pic;
         TextView full_name, time_ago, post_text,  no_likes, no_comments;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         LinearLayout colour_holder;
         
         public ColouredPostViewHolder (View itemView) {
@@ -859,6 +915,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindColouredPosts (post post, onClickListener clickListener) {
@@ -922,8 +979,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -948,16 +1005,28 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
     /*view holder for video post*/
-    static class VideoPostViewHolder extends RecyclerView.ViewHolder {
+    class VideoPostViewHolder extends RecyclerView.ViewHolder {
         
         ImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments;
         ShapeableImageView image_thumbnail;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         ImageButton play_button;
         
         public VideoPostViewHolder (View itemView) {
@@ -975,6 +1044,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
             
             play_button = itemView.findViewById(R.id.play_button);
         }
@@ -1043,8 +1113,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -1069,6 +1139,18 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
@@ -1079,7 +1161,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView full_name, time_ago, contents,  no_likes, no_comments;
         ShapeableImageView post_image;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public ImagePostViewHolder (View itemView) {
             super(itemView);
@@ -1097,6 +1179,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindImagePosts (post post, onClickListener clickListener,
@@ -1161,8 +1244,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
             
@@ -1186,15 +1269,27 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                    /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
     /*view holder for audio post*/
-    static class AudioPostViewHolder extends RecyclerView.ViewHolder {
+    class AudioPostViewHolder extends RecyclerView.ViewHolder {
         
         ImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         Chip play,  stop;
         
         public AudioPostViewHolder (View itemView) {
@@ -1213,6 +1308,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindAudioPosts (post post, onClickListener clickListener) {
@@ -1264,8 +1360,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -1290,6 +1386,18 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
@@ -1301,7 +1409,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 article_description, no_likes, no_comments;
         ImageView article_thumbnail;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public BlogPostViewHolder (View itemView) {
             super(itemView);
@@ -1320,6 +1428,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindBlogPosts (post post, onClickListener clickListener) {
@@ -1375,8 +1484,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -1401,14 +1510,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
-    static class MapPostViewHolder extends RecyclerView.ViewHolder {
+    class MapPostViewHolder extends RecyclerView.ViewHolder {
         
         ImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments, location;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public MapPostViewHolder (View itemView) {
             super(itemView);
@@ -1425,6 +1546,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindMapPosts (post post, onClickListener clickListener) {
@@ -1470,8 +1592,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -1496,16 +1618,28 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
-    static class MultiImagePostViewHolder extends RecyclerView.ViewHolder {
+    class MultiImagePostViewHolder extends RecyclerView.ViewHolder {
         
         ImageView profile_pic;
         TextView full_name, time_ago, contents,  no_likes, no_comments;
         MultiImageView post_multi_image;
         ProgressBar progressBar;
-        Chip likes, comment;
+        Chip likes, comment, post_option;
         
         public MultiImagePostViewHolder (View itemView) {
             super(itemView);
@@ -1523,6 +1657,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             
             likes = itemView.findViewById(R.id.like_btn);
             comment = itemView.findViewById(R.id.comment_btn);
+            post_option = itemView.findViewById(R.id.post_option);
         }
         
         public void bindMultiImagePosts (post post, onClickListener clickListener, int position) {
@@ -1570,7 +1705,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             post_multi_image.setOnItemImageClickListener(new MultiImageView.OnItemImageClickListener() {
                 @Override
                 public void onItemImageClick (Context context, ImageView imageView, int index, List list) {
-                    new XPopup.Builder(context).asImageViewer(imageView, index,
+                    new XPopup.Builder(itemView.getContext()).asImageViewer(imageView,
+                            index,
                             list, new OnSrcViewUpdateListener() {
                         @Override
                         public void onSrcViewUpdate(@NotNull ImageViewerPopupView popupView, int position) {
@@ -1604,8 +1740,8 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         likes.setTextColor(itemView.getContext().getResources().getColor(R.color.black));
                     }
                     /*clickListener & request for like or dislike*/
-//                    clickListener.onLikePost(post.getPostId(), likes,
-//                            no_likes);
+                    clickListener.onLikePost(post.getPostId(), likes,
+                            no_likes);
                 }
             });
     
@@ -1630,6 +1766,18 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     /*TODO This is a page*/
                 }
             });
+    
+            /*post option*/
+            post_option.setOnClickListener(view -> {
+                new XPopup.Builder(itemView.getContext()).asCenterList("Post " +
+                                "option",
+                        post_options, new OnSelectListener() {
+                            @Override
+                            public void onSelect (int position, String text) {
+                        
+                            }
+                        }).show();
+            });
         }
     }
     
@@ -1644,7 +1792,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void onVideoClickPlay (String postFile);
         void onAudioClickPlay (String postFile, Chip play, Chip pause);
         /*on like click*/
-        void onLikePost (String postId, MaterialButton likes, TextView no_likes);
+        void onLikePost (String postId, Chip likes, TextView no_likes);
         /*on share click*/
         void onShareClicked (String postId, String url, String name);
         /*profile pic click*/

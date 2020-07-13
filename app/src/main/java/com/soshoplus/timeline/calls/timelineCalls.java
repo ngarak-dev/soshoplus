@@ -239,7 +239,7 @@ public class timelineCalls {
                                                     }
                                 
                                                     @Override
-                                                    public void onLikePost (String postId, MaterialButton likes, TextView no_likes) {
+                                                    public void onLikePost (String postId, Chip likes, TextView no_likes) {
                                                         likePost(postId, likes,
                                                                 no_likes);
                                                     }
@@ -401,7 +401,7 @@ public class timelineCalls {
     }
     
     /*liking a post*/
-    private void likePost (String postId, MaterialButton likes, TextView no_likes) {
+    private void likePost (String postId, Chip likes, TextView no_likes) {
         like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
                 BuildConfig.server_key, postId, "like");
         like_dislikeObservable.subscribeOn(Schedulers.io())
@@ -419,15 +419,13 @@ public class timelineCalls {
                             no_likes.setText(like_dislike.getLikesData().getCount());
                         
                             if (like_dislike.getAction().equals("liked")) {
-                                likes.setIconResource(R.drawable.ic_liked);
-                                likes.setIconTintResource(R.color.colorPrimary);
-                                likes.setText("Liked");
+                                likes.setChipIconResource(R.drawable.ic_liked);
+                                likes.setChipIconTintResource(R.color.colorPrimary);
                                 likes.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             }
                             else {
-                                likes.setIconResource(R.drawable.ic_like);
-                                likes.setIconTintResource(R.color.black);
-                                likes.setText("Like");
+                                likes.setChipIconResource(R.drawable.ic_like);
+                                likes.setChipIconTintResource(R.color.black);
                                 likes.setTextColor(context.getResources().getColor(R.color.black));
                             }
                         }

@@ -58,12 +58,14 @@
             android:textSize="@dimen/_10sdp" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/post_option"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_35sdp"
             android:layout_alignParentEnd="true"
             app:chipBackgroundColor="@null"
             app:chipIcon="@drawable/ic_baseline_more_horiz"
             app:chipStartPadding="@dimen/_15sdp" />
+
 
         <TextView
             android:id="@+id/post_contents"

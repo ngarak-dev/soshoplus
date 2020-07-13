@@ -6,6 +6,8 @@
 
 package com.soshoplus.timeline.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -40,6 +43,7 @@ import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.sharedInfo;
@@ -462,18 +466,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
     
             profile_pic.setOnClickListener(view -> {
                 if (post.getPageId().equals("0")) {
@@ -492,7 +484,24 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             @Override
                             public void onSelect (int position, String text) {
                                 switch (position) {
-                                
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
                                 }
                             }
                         }).show();
@@ -590,18 +599,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-    
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
             
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
@@ -620,7 +617,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -711,18 +727,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-    
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
             
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
@@ -741,7 +745,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -886,7 +909,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -984,18 +1026,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
     
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
-    
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
                 if (post.getPageId().equals("0")) {
@@ -1013,7 +1043,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1117,19 +1166,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-    
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
-    
+
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
                 if (post.getPageId().equals("0")) {
@@ -1147,7 +1184,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1248,19 +1304,7 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-            
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
-            
+
             profile_pic.setOnClickListener(view -> {
                 if (post.getPageId().equals("0")) {
                     clickListener.onProfilePicClicked(post.getUserId());
@@ -1277,7 +1321,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1364,18 +1427,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-    
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
             
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
@@ -1394,7 +1445,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1488,18 +1558,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-    
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
             
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
@@ -1518,7 +1576,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1596,18 +1673,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                             no_likes);
                 }
             });
-    
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
             
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
@@ -1626,7 +1691,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1745,18 +1829,6 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 }
             });
     
-//            share.setOnClickListener(view -> {
-//                ExecutorService service = Executors.newSingleThreadExecutor();
-//                service.execute(new Runnable() {
-//                    @Override
-//                    public void run () {
-//                        clickListener.onShareClicked(post.getPostId(),
-//                                post.getUrl(), post.getPublisherInfo().getName());
-//                    }
-//                });
-//                service.shutdown();
-//            });
-    
             /*preview profile clicked*/
             profile_pic.setOnClickListener(view -> {
                 if (post.getPageId().equals("0")) {
@@ -1774,7 +1846,26 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                         post_options, new OnSelectListener() {
                             @Override
                             public void onSelect (int position, String text) {
-                        
+                                switch (position) {
+                                    case 0:
+                                        reportPost(post.getPostId());
+                                        break;
+                                    case 1:
+                                        copyLink(post.getUrl(),
+                                                itemView.getContext());
+                                        break;
+                                    case 2:
+                                        sharePost(post);
+                                        break;
+                                    case 3:
+                                        savePost(post.getPostId());
+                                        break;
+                                    case 4:
+                                        hidePost(post.getPostId(), position);
+                                        break;
+                                    default:
+                                        Log.d(TAG, "onSelect: " + post.getPostId());
+                                }
                             }
                         }).show();
             });
@@ -1801,6 +1892,12 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void viewFullImage (Context context, post post, ImageView post_image);
         /*view full AD*/
         void viewFullADImage (Context context, post post, ImageView media);
+        /*report post*/
+        void reportPost (String postId);
+        /*save post*/
+        void savePost (String postId);
+        /*hide post*/
+        void hidePost (String postId, int position);
     }
     
     /*full screen image view*/
@@ -1829,5 +1926,40 @@ public class timelineFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //        postList.clear();
         postList.addAll(tobeAdded);
         diffResult.dispatchUpdatesTo(this);
+    }
+    
+    /*POST OPTION*/
+    /*copy post link*/
+    private void copyLink (String postLink, Context context) {
+        ClipboardManager clipboard =
+                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("post link", postLink);
+        clipboard.setPrimaryClip(clip);
+    
+        Log.d(TAG, "copyLink: " + clip.toString());
+        Log.d(TAG, "copyLink: " + postLink);
+    
+        Toast.makeText(context, "Link copied", Toast.LENGTH_SHORT).show();
+    }
+    
+    /*share post*/
+    private void sharePost (post post) {
+        clickListener.onShareClicked(post.getPostId(),
+        post.getUrl(), post.getPublisherInfo().getName());
+    }
+    
+    /*report post*/
+    private void reportPost (String postId) {
+        clickListener.reportPost(postId);
+    }
+    
+    /*save post*/
+    private void savePost (String postId) {
+        clickListener.savePost(postId);
+    }
+    
+    /*hide post*/
+    private void hidePost (String postId, int position) {
+        clickListener.hidePost(postId, position);
     }
 }

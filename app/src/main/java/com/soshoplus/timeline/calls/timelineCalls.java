@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +37,7 @@ import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.postAction;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
@@ -94,6 +96,9 @@ public class timelineCalls {
     private static boolean isLiked;
     /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
+    
+    /*......*/
+    private Observable<postAction> postActionObservable;
     
     /*constructor*/
     public timelineCalls (Context context) {
@@ -332,6 +337,21 @@ public class timelineCalls {
                                                         adDescription = post.getDescription();
                                                         adHeadline = post.getHeadline();
                                                     }
+    
+                                                    @Override
+                                                    public void reportPost (String postId) {
+                                                        reportPOST(postId);
+                                                    }
+    
+                                                    @Override
+                                                    public void savePost (String postId) {
+                                                        savePOST(postId);
+                                                    }
+    
+                                                    @Override
+                                                    public void hidePost (String postId, int position) {
+                                                        hidePOST(postId, position);
+                                                    }
                                                 });
             
                                 /*setting adapter*/
@@ -554,5 +574,97 @@ public class timelineCalls {
             like.setIconResource(R.drawable.ic_liked);
             like.setText("Liked");
         }
+    }
+    
+    /*report post*/
+    public void reportPOST (String postId) {
+        postActionObservable = rxJavaQueries.postAction(accessToken,
+                BuildConfig.server_key, postId, "report");
+        
+        postActionObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<postAction>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+    
+                    @Override
+                    public void onNext (@NonNull postAction postAction) {
+                        if (postAction.getApiStatus() == 200) {
+                            /*TODO update UI on report*/
+                            Toast.makeText(context, "Post reported",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            apiErrors errors = postAction.getErrors();
+                            Log.d(TAG, "onNext: " + errors.getErrorText());
+    
+                            Toast.makeText(context, "Failed to report post",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+    
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        Toast.makeText(context, "Failed to report post",
+                                Toast.LENGTH_LONG).show();
+                    }
+    
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
+    }
+    
+    /*save post*/
+    public void savePOST (String postId) {
+    
+        postActionObservable = rxJavaQueries.postAction(accessToken,
+                BuildConfig.server_key, postId, "save");
+    
+        postActionObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<postAction>() {
+                    @Override
+                    public void onSubscribe (@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+                
+                    @Override
+                    public void onNext (@NonNull postAction postAction) {
+                        if (postAction.getApiStatus() == 200) {
+                            /*TODO update UI on report*/
+                            Toast.makeText(context, "Post saved",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            apiErrors errors = postAction.getErrors();
+                            Log.d(TAG, "onNext: " + errors.getErrorText());
+                        
+                            Toast.makeText(context, "Failed to save post",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    }
+                
+                    @Override
+                    public void onError (@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        Toast.makeText(context, "Failed to save post",
+                                Toast.LENGTH_LONG).show();
+                    }
+                
+                    @Override
+                    public void onComplete () {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
+    }
+    
+    /*hide post*/
+    public static void hidePOST (String postId, int position) {
+    
     }
 }

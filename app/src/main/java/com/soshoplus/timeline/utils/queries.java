@@ -10,6 +10,7 @@ import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.groups.join.join_unjoin;
+import com.soshoplus.timeline.models.postAction;
 import com.soshoplus.timeline.models.postsfeed.postList;
 
 import com.soshoplus.timeline.models.friends.friends;
@@ -165,4 +166,14 @@ public interface queries {
                                          @Field("server_key") String server_key,
                                          @Field("user_id") String user_id,
                                          @Field("type") String type);
+    
+    /*POST OPTIONS*/
+    /*report post*/
+    /*save post*/
+    @FormUrlEncoded
+    @POST("post-actions")
+    Observable<postAction> postAction (@Query("access_token") String access_token,
+                                       @Field("server_key") String server_key,
+                                       @Field("post_id") String post_id,
+                                       @Field("action") String action);
 }

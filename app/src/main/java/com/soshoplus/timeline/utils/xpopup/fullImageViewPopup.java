@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.button.MaterialButton;
 import com.lxj.xpopup.core.ImageViewerPopupView;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.adapters.userPhotosAdapter;
 import com.soshoplus.timeline.ui.user_profile.userProfile;
 
 public class fullImageViewPopup extends ImageViewerPopupView {
@@ -41,7 +42,7 @@ public class fullImageViewPopup extends ImageViewerPopupView {
         MaterialButton comment = findViewById(R.id.comment_btn);
     
         /*getting post image info*/
-        userProfile.getInfo(full_name, time_ago, no_likes, no_comments,
+        userPhotosAdapter.getInfo(full_name, time_ago, no_likes, no_comments,
                 like, comment);
     }
     

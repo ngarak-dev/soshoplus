@@ -9,6 +9,7 @@ package com.soshoplus.timeline.ui.user_profile;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.HandlerCompat;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
@@ -96,13 +98,6 @@ public class userProfile extends AppCompatActivity {
     private List<post> photosList;
     private userPhotosAdapter photosAdapter;
     
-    /*......*/
-    private static String timeAgo, noLikes, noComments;
-    private static boolean isLiked;
-    
-    /*......*/
-    private static String adFullName, adLocation, adDescription, adHeadline;
-    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,10 +128,21 @@ public class userProfile extends AppCompatActivity {
         user_id  = bundle.getString("user_id");
 
         /*getting user profile data */
-        getUserProfile();
-        
-        /*getting user photos*/
-        getUserPhotos();
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run () {
+                getUserProfile();
+            }
+        }, 500);
+
+    
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run () {
+                /*getting user photos*/
+                getUserPhotos();
+            }
+        }, 500);
     }
     
     private void getUserProfile () {
@@ -147,7 +153,7 @@ public class userProfile extends AppCompatActivity {
         userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
                 fetch_profile, user_id);
-    
+        
         /*making a call to network*/
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -166,7 +172,7 @@ public class userProfile extends AppCompatActivity {
                         else {
                             apiErrors apiErrors =userInfo.getErrors();
                             Log.d(TAG, "onNext: " + apiErrors.getErrorText());
-    
+                        
                             snack.setMessage("Oops !\nSomething went " +
                                     "wrong");
                             snack.setAction("DISMISS", view -> {
@@ -180,7 +186,7 @@ public class userProfile extends AppCompatActivity {
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                        
+                    
                         snack.setMessage("Oops !\nSomething went " +
                                 "wrong");
                         snack.setAction("DISMISS", view -> {
@@ -195,6 +201,7 @@ public class userProfile extends AppCompatActivity {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+        
     }
     
     private void bindUserInfo (userInfo userInfo) {
@@ -564,75 +571,7 @@ public class userProfile extends AppCompatActivity {
     
     private void bindUserImages (List<post> photosList) {
         /*initializing adapter*/
-        photosAdapter = new userPhotosAdapter(photosList, userProfile.this, new userPhotosAdapter.onClickListener() {
-            @Override
-            public void viewFullImage (Context context, post post, ImageView imageView) {
-                /*initializing popup*/
-                fullImageViewPopup imageViewPopup =
-                        new fullImageViewPopup(userProfile.this);
-                /*setting up*/
-                imageViewPopup.setSingleSrcView(imageView, post.getPostFileFull());
-                imageViewPopup.isShowSaveButton(false);
-                imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
-                    @Override
-                    public void loadImage (int position, @androidx.annotation.NonNull Object uri,
-                                           @androidx.annotation.NonNull ImageView imageView) {
-                        Glide.with(imageView).load(uri).into(imageView);
-                    }
-
-                    @Override
-                    public File getImageFile (@androidx.annotation.NonNull Context context,
-                                              @androidx.annotation.NonNull Object uri) {
-                        return null;
-                    }
-                });
-                /*show popup*/
-                new XPopup.Builder(userProfile.this).asCustom(imageViewPopup).show();
-                
-                /*.......*/
-                timeAgo = post.getPostTime();
-                noLikes = post.getPostLikes();
-                noComments = post.getPostComments();
-                isLiked = post.isLiked();
-            }
-    
-            @Override
-            public void viewFullADImage (Context context, post post, ImageView imageView) {
-                /*initializing popup*/
-                adFullImageViewPopup imageViewPopup =
-                        new adFullImageViewPopup(userProfile.this);
-                /*setting up*/
-                imageViewPopup.setSingleSrcView(imageView, post.getAdMedia());
-                imageViewPopup.isShowSaveButton(false);
-                imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
-                    @Override
-                    public void loadImage (int position, @androidx.annotation.NonNull Object uri,
-                                           @androidx.annotation.NonNull ImageView imageView) {
-                        Glide.with(imageView).load(uri).into(imageView);
-                    }
-        
-                    @Override
-                    public File getImageFile (@androidx.annotation.NonNull Context context,
-                                              @androidx.annotation.NonNull Object uri) {
-                        return null;
-                    }
-                });
-                /*show popup*/
-                new XPopup.Builder(userProfile.this).asCustom(imageViewPopup).show();
-    
-                /*......*/
-                /*Converting Object to json data*/
-                Gson gson = new Gson();
-                String toJson = gson.toJson(post.getUserData());
-                /*getting data from json string using pojo class*/
-                userData user_data = gson.fromJson(toJson, userData.class);
-                
-                adFullName = user_data.getName();
-                adLocation = post.getLocation();
-                adDescription = post.getDescription();
-                adHeadline = post.getHeadline();
-            }
-        });
+        photosAdapter = new userPhotosAdapter(R.layout.image_layout, photosList);
         
         /*setting layout*/
         userProfileBinding.photosGrid.setLayoutManager(new StaggeredGridLayoutManager(3,
@@ -650,31 +589,31 @@ public class userProfile extends AppCompatActivity {
         return photosList != null ? postList.getPostList(): null;
     }
     
-    /*.....*/
-    public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
-                                TextView no_comments, MaterialButton like, MaterialButton comment) {
-            
-        /*setting up*/
-        full_name.setText(fullName);
-        time_ago.setText(timeAgo);
-        no_likes.setText(noLikes + " likes");
-        no_comments.setText(noComments + " comments");
-        
-        /*setting like btn*/
-        if (isLiked) {
-            like.setIconResource(R.drawable.ic_liked);
-            like.setText("Liked");
-        }
-    }
-    
-    /*......*/
-    public static void getADInfo (TextView full_name, TextView location,
-                                  TextView description, TextView headline) {
-        
-        /*setting up*/
-        full_name.setText(adFullName);
-        location.setText(adLocation);
-        description.setText(Html.fromHtml(adDescription));
-        headline.setText(adHeadline);
-    }
+//    /*.....*/
+//    public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
+//                                TextView no_comments, MaterialButton like, MaterialButton comment) {
+//
+//        /*setting up*/
+//        full_name.setText(fullName);
+//        time_ago.setText(timeAgo);
+//        no_likes.setText(noLikes + " likes");
+//        no_comments.setText(noComments + " comments");
+//
+//        /*setting like btn*/
+//        if (isLiked) {
+//            like.setIconResource(R.drawable.ic_liked);
+//            like.setText("Liked");
+//        }
+//    }
+//
+//    /*......*/
+//    public static void getADInfo (TextView full_name, TextView location,
+//                                  TextView description, TextView headline) {
+//
+//        /*setting up*/
+//        full_name.setText(adFullName);
+//        location.setText(adLocation);
+//        description.setText(Html.fromHtml(adDescription));
+//        headline.setText(adHeadline);
+//    }
 }

@@ -54,6 +54,7 @@ public class glideImageLoader {
         //Get Image
         Glide.with(mImageView.getContext())
                 .load(url)
+                .thumbnail(0.5f)
                 .transition(withCrossFade())
                 .apply(options.skipMemoryCache(true))
                 .listener(new RequestListener<Drawable>() {

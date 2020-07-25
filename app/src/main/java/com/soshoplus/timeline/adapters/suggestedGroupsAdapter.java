@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,9 @@ import com.soshoplus.timeline.models.groups.groupInfo;
 
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroupsAdapter.GroupsHolder> {
     
@@ -80,11 +84,19 @@ public class suggestedGroupsAdapter extends RecyclerView.Adapter<suggestedGroups
     
         public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context, int position) {
     
-            Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
+            Observable.fromArray(groupInfo).subscribe(new Consumer<com.soshoplus.timeline.models.groups.groupInfo>() {
+                @Override
+                public void accept (groupInfo groupInfo) throws Throwable {
     
-            group_title.setText(groupInfo.getGroupTitle());
-            group_category.setText(groupInfo.getCategory());
-            total_members.setText(groupInfo.getMembers() + " Members");
+                    Glide.with(context).load(groupInfo.getAvatar()).placeholder(R.drawable.ic_image_placeholder)
+                            .thumbnail(0.5f).into(profile_pic);
+    
+                    group_title.setText(groupInfo.getGroupTitle());
+                    group_category.setText(groupInfo.getCategory());
+                    total_members.setText(groupInfo.getMembers() + " Members");
+                    
+                }
+            }).dispose();
             
             /*on Row click*/
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -11,31 +11,26 @@
         android:icon="@drawable/ic_home"
         android:title="Home"
         android:checked="true"
-        android:id="@+id/home"
-        android:iconTint="@color/white"/>
+        android:id="@+id/fragment_timeline" />
 
     <item
         android:icon="@drawable/ic_add_user"
         android:title="Friends"
-        android:id="@+id/friends"
-        android:iconTint="@color/white"/>
+        android:id="@+id/fragment_friends" />
 
     <item
         android:icon="@drawable/ic_groups"
         android:title="Groups"
-        android:id="@+id/groups"
-        android:iconTint="@color/white"/>
+        android:id="@+id/fragment_groups" />
 
     <item
         android:icon="@drawable/ic_user"
         android:title="Profile"
-        android:id="@+id/profile"
-        android:iconTint="@color/white"/>
+        android:id="@+id/fragment_profile" />
 
     <item
         android:icon="@drawable/ic_more"
         android:title="More"
-        android:id="@+id/more"
-        android:iconTint="@color/white"/>
+        android:id="@+id/fragment_more" />
 
 </menu>

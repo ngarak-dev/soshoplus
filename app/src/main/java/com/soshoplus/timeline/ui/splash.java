@@ -6,19 +6,19 @@
 
 package com.soshoplus.timeline.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.soshoplus.timeline.databinding.ActivitySplashBinding;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 
-public class splash extends AppCompatActivity {
+public class splash extends Activity {
     
     private static final String TAG = "splash Activity ";
     ActivitySplashBinding splashBinding;
@@ -26,6 +26,11 @@ public class splash extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        /*Fresco*/
+        Fresco.initialize(splash.this);
+        
+        /*binding*/
         splashBinding = ActivitySplashBinding.inflate(getLayoutInflater());
         View view = splashBinding.getRoot();
         setContentView(view);

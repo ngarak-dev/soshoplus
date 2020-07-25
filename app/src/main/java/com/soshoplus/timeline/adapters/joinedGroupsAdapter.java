@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,9 @@ import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.utils.glide.glideImageLoader;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapter.GroupsHolder> {
     
@@ -84,10 +88,17 @@ public class joinedGroupsAdapter extends RecyclerView.Adapter<joinedGroupsAdapte
     
         public void bind (groupInfo groupInfo, onGroupClickListener groupClickListener, Context context) {
     
-            new glideImageLoader(profile_pic, progressBar).load(groupInfo.getAvatar(), options);
-            
-            group_title.setText(groupInfo.getGroupTitle());
-            total_members.setText(groupInfo.getMembers() + " Members");
+            Observable.fromArray(groupInfo).subscribe(new Consumer<com.soshoplus.timeline.models.groups.groupInfo>() {
+                @Override
+                public void accept (groupInfo groupInfo) throws Throwable {
+    
+                    new glideImageLoader(profile_pic, progressBar).load(groupInfo.getAvatar(), options);
+    
+                    group_title.setText(groupInfo.getGroupTitle());
+                    total_members.setText(groupInfo.getMembers() + " Members");
+                    
+                }
+            }).dispose();
             
             /*on Row click*/
             itemView.setOnClickListener(view -> {

@@ -4,7 +4,7 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/timelineSmartRefresh"
@@ -12,103 +12,82 @@
     android:layout_height="match_parent"
     tools:context=".ui.mainfragments.timelineFragment">
 
-    <com.scwang.smart.refresh.header.ClassicsHeader
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/timeline_posts_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srlTextFinish="refreshed" />
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_timeline"
+        android:layout_width="@dimen/_15sdp"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/_15sdp"
+        android:elevation="@dimen/_10sdp"
+        android:visibility="visible" />
 
     <RelativeLayout
+        android:id="@+id/timelineErrorLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/timeline_posts_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_10sdp"
-            android:visibility="visible" />
-
-        <ProgressBar
-            android:id="@+id/progressBar_timeline"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+        <ImageView
+            android:id="@+id/ic_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/_15sdp"
-            android:elevation="@dimen/_10sdp"
-            android:visibility="visible" />
+            android:src="@drawable/ic_error"
+            tools:ignore="ContentDescription" />
 
-        <RelativeLayout
-            android:id="@+id/timelineErrorLayout"
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ic_error"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="Something went wrong"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:layout_alignStart="@id/text"
+            android:text="Check your internet connection"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+        <TextView
+            android:id="@+id/text_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_1"
+            android:layout_alignStart="@id/text_1"
+            android:text="Try again after sometime"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
-            <ImageView
-                android:id="@+id/ic_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_error"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ic_error"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="@dimen/_10sdp"
-                android:text="Something went wrong"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/text_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text"
-                android:layout_alignStart="@id/text"
-                android:text="Check your internet connection"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-
-            <TextView
-                android:id="@+id/text_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_1"
-                android:layout_alignStart="@id/text_1"
-                android:text="Try again after sometime"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/try_again"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_below="@id/text_2"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:text="Try again"
-                android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textSize="@dimen/_10sdp"
-                android:textStyle="bold"
-                app:cornerRadius="@dimen/_15sdp"
-                app:strokeColor="@color/colorPrimary"
-                app:strokeWidth="@dimen/_2sdp" />
-
-        </RelativeLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/try_again"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_below="@id/text_2"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:text="Try again"
+            android:textAllCaps="false"
+            app:cornerRadius="@dimen/_15sdp"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="@dimen/_1sdp" />
 
     </RelativeLayout>
 
-    <com.scwang.smart.refresh.footer.ClassicsFooter
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:srlTextFinish="success"
-        app:srlTextLoading="loading" />
-
-</com.scwang.smart.refresh.layout.SmartRefreshLayout>
+</RelativeLayout>
 

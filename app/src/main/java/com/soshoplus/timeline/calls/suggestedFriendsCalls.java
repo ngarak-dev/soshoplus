@@ -7,20 +7,28 @@
 package com.soshoplus.timeline.calls;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.lxj.xpopup.XPopup;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
+import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.friends.suggested.suggestedInfo;
@@ -30,6 +38,8 @@ import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -37,6 +47,7 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.internal.schedulers.ExecutorScheduler;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class suggestedFriendsCalls {
@@ -48,8 +59,6 @@ public class suggestedFriendsCalls {
     private queries rxJavaQueries;
     private String accessToken, userId, timezone;
     
-    /*......*/
-    private List<suggestedInfo> suggestedInfoList = null;
     private static String suggested_friends = "users";
     private Observable<suggestedList> suggestedListObservable;
     
@@ -60,13 +69,15 @@ public class suggestedFriendsCalls {
         timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
         accessToken = SecurePreferences.getStringValue(context, "accessToken"
                 , "0");
-    
+        
         /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
     
-    public void getSuggestedFriends (RecyclerView suggestedFriendsList, TextView suggestedTitle,
-                                     ProgressBar progressBarSuggested, ImageButton refreshSuggested) {
+    public void getSuggestedFriends (RecyclerView suggestedFriendsList,
+                                     TextView suggestedTitle,
+                                     ProgressBar progressBarSuggested,
+                                     ImageButton refreshSuggested) {
     
         /*show progressbar*/
         progressBarSuggested.setVisibility(View.VISIBLE);
@@ -86,32 +97,32 @@ public class suggestedFriendsCalls {
                     @Override
                     public void onNext (@NonNull suggestedList suggestedList) {
                         if (suggestedList.getApiStatus() == 200) {
-                            /*initializing list*/
-                            suggestedInfoList =
-                                    suggestedList.getSuggestedInfo();
-                        
-                            /*initializing adapter*/
-                            suggestedFriendsAdapter listAdapter = new suggestedFriendsAdapter(context, suggestedInfoList,
-                                    new suggestedFriendsAdapter.onSuggestedClickListener() {
-                                        @Override
-                                        public void onClick (suggestedInfo suggestedInfo) {
-                                            /*preview profile*/
-                                            new XPopup.Builder(context).asCustom(new previewProfilePopup(context, suggestedInfo.getUserId())).show();
-                                        }
-                                    });
-                        
-                            /*Setting Layout*/
-                            suggestedFriendsList.setLayoutManager(new LinearLayoutManager(context));
-                            suggestedFriendsList.setItemAnimator(new DefaultItemAnimator());
-                        
-                            /*Setting Adapter*/
-                            suggestedFriendsList.setAdapter(listAdapter);
-                        
+                            
+                            suggestedFriendsAdapter adapter =
+                                    new suggestedFriendsAdapter(R.layout.suggested_friends_list_row, suggestedList.getSuggestedInfo());
+    
+                            adapter.setAnimationEnable(true);
+                            
+                            suggestedFriendsList.setHasFixedSize(true);
+                            
+                            suggestedFriendsList.setAdapter(adapter);
+                            
                             /*show recycler view, refresh btn, hide progress*/
                             suggestedTitle.setText("People you may know");
                             suggestedFriendsList.setVisibility(View.VISIBLE);
                             progressBarSuggested.setVisibility(View.GONE);
                             refreshSuggested.setVisibility(View.VISIBLE);
+                            
+                            adapter.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick (@androidx.annotation.NonNull BaseQuickAdapter<?, ?> adapter,
+                                                         @androidx.annotation.NonNull View view, int position) {
+                                    
+                                    /*preview profile*/
+                                    new XPopup.Builder(view.getContext()).asCustom(new previewProfilePopup(view.getContext(),
+                                            suggestedList.getSuggestedInfo().get(position).getUserId())).show();
+    
+                                }});
                         }
                         else {
                             apiErrors apiErrors = suggestedList.getErrors();
@@ -132,7 +143,7 @@ public class suggestedFriendsCalls {
                         /*show refresh btn*/
                         progressBarSuggested.setVisibility(View.GONE);
                         refreshSuggested.setVisibility(View.VISIBLE);
-                    
+
                         /*.....*/
                         suggestedTitle.setText("Error getting users");
                     }
@@ -147,12 +158,12 @@ public class suggestedFriendsCalls {
         refreshSuggested.setOnClickListener(view -> {
             getSuggestedFriends(suggestedFriendsList, suggestedTitle,
                     progressBarSuggested, refreshSuggested);
-        
+
             /*visibility*/
             suggestedFriendsList.setVisibility(View.GONE);
             refreshSuggested.setVisibility(View.GONE);
             progressBarSuggested.setVisibility(View.VISIBLE);
-        
+
         });
     }
 }

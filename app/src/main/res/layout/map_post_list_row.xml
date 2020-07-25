@@ -17,43 +17,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/profile_pic"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
             android:layout_margin="@dimen/_10sdp"
+            app:fadeDuration="300"
+            app:placeholderImage="@drawable/ic_image_placeholder"
+            app:roundAsCircle="true"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/profile_pic"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_toEndOf="@id/profile_pic"
-            android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/time_ago"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/full_name"
+            android:layout_alignBottom="@id/profile_pic"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_toEndOf="@id/profile_pic"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_10ssp" />
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/checked_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_toEndOf="@id/full_name"
+            android:layout_above="@id/time_ago"
+            android:layout_below="@id/full_name"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_toEndOf="@id/profile_pic"
             android:text="checked in"
-            android:textColor="@color/dim_gray"
-            android:textSize="@dimen/_12ssp" />
+            android:textColor="@color/dim_gray" />
 
         <TextView
             android:id="@+id/post_contents"
@@ -74,12 +75,11 @@
             android:id="@+id/location_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/navigation"
             android:layout_alignTop="@id/navigation"
-            android:layout_alignBottom="@id/navigation"/>
+            android:layout_alignBottom="@id/navigation"
+            android:layout_toEndOf="@id/navigation"
+            android:padding="@dimen/_10sdp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <View
             android:id="@+id/divider"
@@ -94,7 +94,6 @@
             android:layout_below="@id/divider"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
         <TextView
@@ -105,7 +104,6 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_toEndOf="@id/no_likes"
-            android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
 
         <com.google.android.material.chip.Chip

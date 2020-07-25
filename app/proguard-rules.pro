@@ -65,7 +65,7 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 #XPOPUP
 -dontwarn com.lxj.xpopup.widget.**

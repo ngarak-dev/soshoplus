@@ -11,4 +11,33 @@
     <!--Fetch Type-->
 
     <string name="title_activity_view_video">Fullscreen View</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for
+        incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when
+        manually requested
+    </string>
+
+    <string name="ad_type_post">ad</string>
+    <string name="profile_pic_type_post">profile_picture</string>
+    <string name="cover_pic_type_post">profile_cover_picture</string>
+    <string name="video_mp4">video/mp4</string>
+    <string name="video_quicktime">video/quicktime</string>
+    <string name="image_jpeg">image/jpeg</string>
+    <string name="image_png">image/png</string>
+    <string name="audio_mpeg">audio/mpeg</string>
+
 </resources>

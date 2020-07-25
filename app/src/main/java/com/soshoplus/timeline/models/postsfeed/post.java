@@ -6,6 +6,27 @@ import java.io.Serializable;
 import java.util.List;
 
 public class post implements Serializable {
+	
+	/*BY POST TYPE*/
+	public static int DEFAULT_POST = 1;
+	public static int PROFILE_PIC = 2;
+	public static int COVER_PIC = 3;
+	public static int ADS = 4;
+	public static int SHARED_POST = 5;
+	/*COLOURED POST*/
+	public static int COLOURED_POST = 6;
+	/*VIDEO POST*/
+	public static int VIDEO_POST = 7;
+	/*IMAGE POST*/
+	public static int IMAGE_POST = 8;
+	/*AUDIO POST*/
+	public static int AUDIO_POST = 9;
+	/*BLOG POST*/
+	public static int BLOG_POST = 10;
+	/*MAP POST*/
+	public static int MAP_POST = 11;
+	/*MULTI IMAGE POST*/
+	public static int MULTI_IMAGE_POST = 12;
 
 	@SerializedName("ad_media")
 	private String adMedia;

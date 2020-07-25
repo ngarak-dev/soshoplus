@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_timeline">
+
+    <fragment
+        android:id="@+id/fragment_timeline"
+        android:name="com.soshoplus.timeline.ui.mainfragments.timelineFragment"
+        tools:layout="@layout/fragment_timeline">
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_friends"
+        android:name="com.soshoplus.timeline.ui.mainfragments.friendsFragment"
+        tools:layout="@layout/fragment_friends" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_groups"
+        android:name="com.soshoplus.timeline.ui.mainfragments.groupsFragment"
+        tools:layout="@layout/fragment_groups" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.soshoplus.timeline.ui.mainfragments.profileFragment"
+        tools:layout="@layout/fragment_profile" >
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_more"
+        android:name="com.soshoplus.timeline.ui.mainfragments.moreFragment"
+        tools:layout="@layout/fragment_more" />
+
+</navigation>

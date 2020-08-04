@@ -7,12 +7,14 @@
 package com.soshoplus.timeline.ui.mainfragments;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.soshoplus.timeline.R;
@@ -32,9 +34,9 @@ public class groupsFragment extends Fragment {
         // Required empty public constructor
     }
     
-//    private FragmentGroupsBinding groupsBinding;
-//    private recommendedGroupsCalls recommendedGroupsCalls;
-//    private joinedGroupsCalls joinedGroupsCalls;
+    private FragmentGroupsBinding groupsBinding;
+    private recommendedGroupsCalls recommendedGroupsCalls;
+    private joinedGroupsCalls joinedGroupsCalls;
     
     /*initializing a view and inflate it */
     @Override
@@ -47,25 +49,28 @@ public class groupsFragment extends Fragment {
     public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         
-//        groupsBinding = FragmentGroupsBinding.bind(view);
-//        groupsBinding.getRoot();
+        groupsBinding = FragmentGroupsBinding.bind(view);
+        groupsBinding.getRoot();
     
         /*get groups*/
-//        getGroups();
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getJoined, 800);
+
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getRecommended, 800);
+    }
+
+    private void getRecommended () {
+        /*recommended*/
+        recommendedGroupsCalls = new recommendedGroupsCalls(requireContext());
+        recommendedGroupsCalls.getRecommends(groupsBinding.suggestedGroupsList,
+                groupsBinding.allSetUpImg,
+                groupsBinding.allSetUpText, groupsBinding.progressBarSuggested);
     }
     
-//    private void getGroups () {
-//
-//        /*recommended*/
-//        recommendedGroupsCalls = new recommendedGroupsCalls(requireContext());
-//        recommendedGroupsCalls.getRecommends(groupsBinding.suggestedGroupsList,
-//                groupsBinding.allSetUpImg,
-//                groupsBinding.allSetUpText, groupsBinding.progressBarSuggested);
-//
-//        /*joined*/
-//        joinedGroupsCalls = new joinedGroupsCalls(requireContext());
-//        joinedGroupsCalls.getJoined(groupsBinding.joinedGroupsList,
-//                groupsBinding.progressBarJoined,
-//                groupsBinding.joinedGroupsShowHereImg, groupsBinding.joinedGroupsShowHereTxt);
-//    }
+    private void getJoined () {
+        /*joined*/
+        joinedGroupsCalls = new joinedGroupsCalls(requireContext());
+        joinedGroupsCalls.getJoined(groupsBinding.joinedGroupsList,
+                groupsBinding.progressBarJoined,
+                groupsBinding.joinedGroupsShowHereImg, groupsBinding.joinedGroupsShowHereTxt);
+    }
 }

@@ -56,12 +56,8 @@ public class previewProfilePopup extends BottomPopupView {
         
         TextView about_me = findViewById(R.id.about_me);
         ProgressBar progressBar_follow = findViewById(R.id.progressBar_follow);
-    
-        HandlerThread handlerThread = new HandlerThread("previewU");
-        handlerThread.start();
-        Looper looper = handlerThread.getLooper();
         
-        HandlerCompat.createAsync(looper).postDelayed(new Runnable() {
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run () {
                 
@@ -72,7 +68,7 @@ public class previewProfilePopup extends BottomPopupView {
                         , follows_me);
                 
             }
-        }, 250);
+        }, 500);
     }
     
     @Override

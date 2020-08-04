@@ -62,7 +62,7 @@
         android:layout_height="@dimen/_30ssp"
         android:layout_marginEnd="@dimen/_5sdp"
         android:textAllCaps="false"
-        android:textSize="@dimen/_8ssp"
+        android:textSize="@dimen/_10ssp"
         android:visibility="gone"
         app:cornerRadius="@dimen/_15sdp"
         app:layout_constraintBottom_toBottomOf="@id/profile_pic"

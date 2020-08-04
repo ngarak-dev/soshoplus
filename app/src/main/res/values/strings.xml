@@ -39,5 +39,8 @@
     <string name="image_jpeg">image/jpeg</string>
     <string name="image_png">image/png</string>
     <string name="audio_mpeg">audio/mpeg</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

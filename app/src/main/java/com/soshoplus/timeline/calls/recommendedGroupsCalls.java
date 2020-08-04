@@ -15,13 +15,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
+import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.groups.groupInfo;
@@ -78,8 +78,7 @@ public class recommendedGroupsCalls {
         /*initializing snack*/
         snack = new KSnack((FragmentActivity) context);
     }
-    
-    
+
     public void getRecommends (RecyclerView suggestedGroupsList, ImageView allSetUpImg,
                                TextView allSetUpText, ProgressBar progressBarSuggested) {
     
@@ -101,111 +100,10 @@ public class recommendedGroupsCalls {
                             groupInfoList = groupList.getInfo();
                         
                             /*initializing adapter*/
-                            suggested_groups_adapter =
-                                    new suggestedGroupsAdapter(context,
-                                            groupInfoList, new suggestedGroupsAdapter.onGroupClickListener() {
-                                        @Override
-                                        public void onGroupClick (groupInfo groupInfo) {
-                                            Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
-                                            
-                                            /*TODO
-                                            *  PREVIEW GROUP POPUP*/
-                                            
-                                        }
-                                    
-                                        @Override
-                                        public void onJoinClick (groupInfo groupInfo, MaterialButton is_joined,
-                                                                 int position, ProgressBar progressBar) {
-                                            is_joined.setText(null);
-                                            progressBar.setVisibility(View.VISIBLE);
-                                        
-                                            joinUnjoinObservable =
-                                                    rxJavaQueries.joinGroup(accessToken, BuildConfig.server_key, groupInfo.getGroupId());
-                                        
-                                            joinUnjoinObservable.subscribeOn(Schedulers.io())
-                                                    .observeOn(AndroidSchedulers.mainThread())
-                                                    .subscribe(new Observer<join_unjoin>() {
-                                                        @Override
-                                                        public void onSubscribe (@NonNull Disposable d) {
-                                                            Log.d(TAG, "onSubscribe: ");
-                                                        }
-                                                    
-                                                        @Override
-                                                        public void onNext (@NonNull join_unjoin join_unjoin) {
-                                                            if (join_unjoin.getApiStatus() == 200) {
-                                                            
-                                                                progressBar.setVisibility(View.GONE);
-                                                            
-                                                                if (join_unjoin.getJoinStatus().equals("left")) {
-                                                                    snack = new KSnack((FragmentActivity) context);
-                                                                    snack.setMessage("You have left " + groupInfo.getName());
-                                                                    snack.show();
-                                                                    snack.setDuration(3000);
-                                                                
-                                                                } else {
-                                                                   /*remove
-                                                                   from list
-                                                                   and update
-                                                                    adapter*/
-                                                                    groupInfoList.remove(position);
-                                                                    suggested_groups_adapter.notifyDataSetChanged();
-                                                                
-                                                                    /*.....*/
-                                                                    updateUI();
-                                                                   
-                                                                   /*TODO Add
-                                                                       group
-                                                                       to
-                                                                       joined
-                                                                        groups*/
-                                                                   /*show
-                                                                   snack*/
-                                                                    snack = new KSnack((FragmentActivity) context);
-                                                                    snack.setMessage("You have joined " + groupInfo.getName());
-                                                                    snack.show();
-                                                                    snack.setDuration(3000);
-                                                                }
-                                                            }
-                                                            else {
-                                                                apiErrors errors = join_unjoin.getErrors();
-                                                                Log.d(TAG, "onNext: " + errors.getErrorText());
-                                                            
-                                                                snack = new KSnack((FragmentActivity) context);
-                                                                snack.setMessage("Oops !\nSomething went " +
-                                                                        "wrong");
-                                                                snack.setAction("DISMISS", view -> {
-                                                                    snack.dismiss();
-                                                                });
-                                                                snack.show();
-                                                                snack.setDuration(3000);
-                                                            }
-                                                        }
-                                                    
-                                                        @Override
-                                                        public void onError (@NonNull Throwable e) {
-                                                            Log.d(TAG,
-                                                                    "onError:" +
-                                                                            " " + e.getMessage());
-                                                        
-                                                            snack = new KSnack((FragmentActivity) context);
-                                                            snack.setMessage("Oops !\nSomething went " +
-                                                                    "wrong");
-                                                            snack.show();
-                                                            snack.setDuration(3000);
-                                                        }
-                                                    
-                                                        @Override
-                                                        public void onComplete () {
-                                                            Log.d(TAG, "onComplete: ");
-                                                        }
-                                                    });
-                                        }
-                                    });
-                        
+                            suggested_groups_adapter = new suggestedGroupsAdapter(R.layout.suggested_group_list_row, groupInfoList);
                         
                             /*Setting Layout*/
                             suggestedGroupsList.setLayoutManager(new LinearLayoutManager(context));
-                            suggestedGroupsList.setItemAnimator(new DefaultItemAnimator());
                         
                             /*Setting Adapter*/
                             suggestedGroupsList.setAdapter(suggested_groups_adapter);
@@ -213,11 +111,94 @@ public class recommendedGroupsCalls {
                             /*......*/
                             /*After fetching Data*/
                             updateUI();
+
+                            suggested_groups_adapter.setOnItemClickListener((adapter, view, position) -> {
+                                Intent intent = new Intent(context, viewGroup.class);
+                                intent.putExtra("group_id", suggested_groups_adapter.getData().get(position).getGroupId());
+                                context.startActivity(intent);
+                            });
+
+                            suggested_groups_adapter.setOnItemChildClickListener((adapter, view, position) -> {
+
+                                MaterialButton is_joined = view.findViewById(R.id.btn_join);
+
+                                if (view.getId() == R.id.btn_join) {
+
+                                    is_joined.setText(null);
+                                    adapter.getViewByPosition(position, R.id.progressBar_join)
+                                            .setVisibility(View.VISIBLE);
+
+                                    joinUnjoinObservable =
+                                            rxJavaQueries.joinGroup(accessToken, BuildConfig.server_key,
+                                                    suggested_groups_adapter.getData().get(position).getGroupId());
+
+                                    joinUnjoinObservable.subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new Observer<join_unjoin>() {
+                                                @Override
+                                                public void onSubscribe (@NonNull Disposable d) {
+                                                    Log.d(TAG, "onSubscribe: ");
+                                                }
+
+                                                @Override
+                                                public void onNext (@NonNull join_unjoin join_unjoin) {
+                                                    if (join_unjoin.getApiStatus() == 200) {
+
+                                                        adapter.getViewByPosition(position, R.id.progressBar_join)
+                                                                .setVisibility(View.GONE);
+
+                                                        if (join_unjoin.getJoinStatus().equals("left")) {
+                                                            snack = new KSnack((FragmentActivity) context);
+                                                            snack.setMessage("You have left " + suggested_groups_adapter.getData().get(position).getName());
+
+                                                            is_joined.setText("Join");
+
+                                                        } else {
+                                                            snack = new KSnack((FragmentActivity) context);
+                                                            snack.setMessage("You have joined " + suggested_groups_adapter.getData().get(position).getName());
+
+                                                            is_joined.setText("Joined");
+
+                                                            /*TODO Add to joined groups*/
+                                                        }
+                                                    }
+                                                    else {
+                                                        apiErrors errors = join_unjoin.getErrors();
+                                                        Log.d(TAG, "onNext: " + errors.getErrorText());
+
+                                                        snack = new KSnack((FragmentActivity) context);
+                                                        snack.setMessage("Oops !\nSomething went " +
+                                                                "wrong");
+                                                        snack.setAction("DISMISS", view -> {
+                                                            snack.dismiss();
+                                                        });
+                                                    }
+                                                    snack.show();
+                                                    snack.setDuration(3000);
+                                                }
+
+                                                @Override
+                                                public void onError (@NonNull Throwable e) {
+                                                    Log.d(TAG, "onError: " + e.getMessage());
+
+                                                    snack = new KSnack((FragmentActivity) context);
+                                                    snack.setMessage("Oops !\nSomething went " +
+                                                            "wrong");
+                                                    snack.show();
+                                                    snack.setDuration(3000);
+                                                }
+
+                                                @Override
+                                                public void onComplete () {
+                                                    Log.d(TAG, "onComplete: ");
+                                                }
+                                            });
+                                }
+                            });
                         }
                         else {
                             apiErrors apiErrors = groupList.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
                         }
                     }
                 

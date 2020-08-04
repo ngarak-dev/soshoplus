@@ -9,18 +9,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgPrimary"
     tools:context=".ui.mainfragments.friendsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp">
 
         <TextView
             android:id="@+id/suggested_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="People you may know"
             android:textStyle="bold" />
 
@@ -52,7 +54,6 @@
             android:layout_below="@id/suggested_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_10sdp"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -61,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/suggested_friends_list"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:text="Followers"
             android:textStyle="bold" />
 
@@ -93,16 +94,15 @@
             android:layout_below="@id/followers_title"
             android:elevation="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
-            android:padding="@dimen/_5sdp"
             android:visibility="gone" />
-
 
         <TextView
             android:id="@+id/following_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/friends_followers_list"
-            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="Following"
             android:textStyle="bold" />
 

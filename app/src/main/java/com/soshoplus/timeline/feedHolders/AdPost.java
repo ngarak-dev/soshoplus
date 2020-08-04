@@ -31,8 +31,6 @@ public class AdPost extends BaseItemProvider<post> {
     private static String TAG = "AD POST : ";
     
     SimpleDraweeView profile_pic, media;
-    TextView full_name, location, description, headline;
-    ProgressBar progressBar;
     
     @Override
     public int getItemViewType () {
@@ -46,13 +44,9 @@ public class AdPost extends BaseItemProvider<post> {
     
     @Override
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+
         profile_pic = baseViewHolder.findView(R.id.ad_profile_pic);
-        full_name = baseViewHolder.findView(R.id.ad_full_name);
-        location = baseViewHolder.findView(R.id.ad_location);
-        description = baseViewHolder.findView(R.id.ad_description);
-        headline = baseViewHolder.findView(R.id.ad_headline);
         media = baseViewHolder.findView(R.id.ad_media);
-        progressBar = baseViewHolder.findView(R.id.progressBar);
     
         /*Converting Object to json data*/
         Gson gson = new Gson();
@@ -60,16 +54,12 @@ public class AdPost extends BaseItemProvider<post> {
         /*getting data from json string using pojo class*/
         userData user_data = gson.fromJson(toJson, userData.class);
     
+        baseViewHolder.setText(R.id.ad_full_name, user_data.getName());
+        baseViewHolder.setText(R.id.ad_location, post.getLocation());
+        baseViewHolder.setText(R.id.ad_description, Html.fromHtml(post.getDescription()));
+        baseViewHolder.setText(R.id.ad_headline, post.getHeadline());
+
         profile_pic.setImageURI(user_data.getAvatar());
-    
-        full_name.setText(user_data.getName());
-        location.setText(post.getLocation());
-        description.setText(Html.fromHtml(post.getDescription()));
-        headline.setText(post.getHeadline());
-        
         media.setImageURI(post.getAdMedia());
-        
-        /*click listeners*/
-        addChildClickViewIds(R.id.ad_media);
     }
 }

@@ -10,6 +10,7 @@
     android:id="@+id/timelineSmartRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bgPrimary"
     tools:context=".ui.mainfragments.timelineFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -31,6 +32,7 @@
         android:id="@+id/timelineErrorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/timeline_posts_list"
         android:gravity="center_vertical"
         android:visibility="gone">
 

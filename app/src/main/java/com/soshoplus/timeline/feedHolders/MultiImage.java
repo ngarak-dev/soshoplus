@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.ImageViewerPopupView;
@@ -50,10 +51,8 @@ public class MultiImage extends BaseItemProvider<post> {
     private static String TAG = "MULTI IMAGE POST : ";
     
     SimpleDraweeView profile_pic;
-    TextView full_name, time_ago, contents,  no_likes, no_comments;
     MultiImageView post_multi_image;
-    ProgressBar progressBar;
-    Chip likes, comment, post_option;
+    MaterialButton like;
     
     @Override
     public int getItemViewType () {
@@ -69,93 +68,71 @@ public class MultiImage extends BaseItemProvider<post> {
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
     
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
-        full_name = baseViewHolder.findView(R.id.full_name);
-        time_ago = baseViewHolder.findView(R.id.time_ago);
-    
-        no_likes = baseViewHolder.findView(R.id.no_likes);
-        no_comments = baseViewHolder.findView(R.id.no_comments);
-    
-        contents = baseViewHolder.findView(R.id.post_contents);
         post_multi_image = baseViewHolder.findView(R.id.post_multi_image);
-        progressBar = baseViewHolder.findView(R.id.progressBar);
-    
-        likes = baseViewHolder.findView(R.id.like_btn);
-        comment = baseViewHolder.findView(R.id.comment_btn);
-        post_option = baseViewHolder.findView(R.id.post_option);
-    
-        Observable.fromArray(post).subscribe(new Consumer<post>() {
-            @Override
-            public void accept (post post) throws Throwable {
-                full_name.setText(post.getPublisherInfo().getName());
-                time_ago.setText(post.getPostTime());
-                no_likes.setText(post.getPostLikes() + " likes");
-                no_comments.setText(post.getPostComments() + " comments");
-            
-                if (post.getPostTextAPI().isEmpty()) {
-                    contents.setVisibility(View.GONE);
-                }
-                contents.setText(Html.fromHtml(post.getPostTextAPI()));
-            
-                /*getting if post is liked*/
-                if (post.isLiked()) {
-                    likes.setChipIconResource(R.drawable.ic_liked);
-                    likes.setCheckedIconTintResource(R.color.colorPrimary);
-                    likes.setTextColor(getContext().getResources().getColor(R.color.colorPrimary));
-                }
-            
-                /*bind profile pic*/
-                profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
-            
-                /*.......*/
-                List<photoMulti> photos = post.getPhotoMulti();
-                List<String> imageList = new ArrayList<>();
-                for(photoMulti multi_photos : new Iterable<photoMulti>() {
-                    @NonNull
-                    @Override
-                    public Iterator<photoMulti> iterator () {
-                        return photos.iterator();
-                    }
-                }) {
-                
-                    imageList.add(multi_photos.getImage());
-                    post_multi_image.setImagesData(imageList);
-                    post_multi_image.setGap(5);
-                    post_multi_image.setShowText(true);
-                    post_multi_image.setMaxSize(2);
-                
-                    post_multi_image.setMultiImageLoader(new IMultiImageLoader() {
-                        @Override
-                        public void load (Context context, Object url, ImageView imageView) {
-                            Glide.with(context).load(url).into(imageView);
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    });
-                }
-            
-                post_multi_image.setOnItemImageClickListener(new MultiImageView.OnItemImageClickListener() {
-                    @Override
-                    public void onItemImageClick (Context context, ImageView imageView, int index, List list) {
-                        new XPopup.Builder(getContext()).asImageViewer(imageView,
-                                index,
-                                list, new OnSrcViewUpdateListener() {
-                                    @Override
-                                    public void onSrcViewUpdate(@NotNull ImageViewerPopupView popupView, int position) {
-//                            popupView.updateSrcView((ImageView) recyclerView.getChildAt(position));
-                                    }
-                                }, new fullImageLoader())
-                                .show();
-                        /*TODO create layout for this*/
-                    }
-                });
-            }
-        }).dispose();
-    
-        /*getting if post is liked*/
-        if (post.isLiked()) {
-            likes.setChipIconResource(R.drawable.ic_liked);
-            likes.setCheckedIconTintResource(R.color.colorPrimary);
-            likes.setTextColor(getContext().getResources().getColor(R.color.colorPrimary));
+
+        like = baseViewHolder.findView(R.id.like_btn);
+
+        baseViewHolder.setText(R.id.full_name, post.getPublisherInfo().getName());
+        baseViewHolder.setText(R.id.time_ago, post.getPostTime());
+        baseViewHolder.setText(R.id.no_likes, post.getPostLikes() + " likes");
+        baseViewHolder.setText(R.id.no_comments, post.getPostComments() + " comments");
+
+        if (post.getPostTextAPI().isEmpty()) {
+            baseViewHolder.setGone(R.id.post_contents, true);
+        } else {
+            baseViewHolder.setText(R.id.post_contents, Html.fromHtml(post.getPostTextAPI()));
         }
+
+        /*bind profile pic*/
+        profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
+
+        /*if post is liked*/
+        if (post.isLiked()) {
+            like.setIconResource(R.drawable.ic_liked);
+        } else {
+            like.setIconResource(R.drawable.ic_like);
+        }
+
+        /*.......*/
+        List<photoMulti> photos = post.getPhotoMulti();
+        List<String> imageList = new ArrayList<>();
+        for(photoMulti multi_photos : new Iterable<photoMulti>() {
+            @NonNull
+            @Override
+            public Iterator<photoMulti> iterator () {
+                return photos.iterator();
+            }
+        }) {
+
+            imageList.add(multi_photos.getImage());
+            post_multi_image.setImagesData(imageList);
+            post_multi_image.setGap(5);
+            post_multi_image.setShowText(true);
+            post_multi_image.setMaxSize(2);
+
+            post_multi_image.setMultiImageLoader(new IMultiImageLoader() {
+                @Override
+                public void load (Context context, Object url, ImageView imageView) {
+                    Glide.with(context).load(url).into(imageView);
+                }
+            });
+        }
+
+        post_multi_image.setOnItemImageClickListener(new MultiImageView.OnItemImageClickListener() {
+            @Override
+            public void onItemImageClick (Context context, ImageView imageView, int index, List list) {
+                new XPopup.Builder(getContext()).asImageViewer(imageView,
+                        index,
+                        list, new OnSrcViewUpdateListener() {
+                            @Override
+                            public void onSrcViewUpdate(@NotNull ImageViewerPopupView popupView, int position) {
+//                            popupView.updateSrcView((ImageView) recyclerView.getChildAt(position));
+                            }
+                        }, new fullImageLoader())
+                        .show();
+                /*TODO create layout for this*/
+            }
+        });
     }
     
     /*full screen image view*/

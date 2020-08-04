@@ -35,9 +35,6 @@ public class timelineFragment extends Fragment {
     public timelineFragment () {
         // Required empty public constructor
     }
-//
-//    private FragmentTimelineBinding timelineBinding;
-//    private timelineCalls calls;
     
     /*initializing a view and inflate it */
     @Override
@@ -52,13 +49,9 @@ public class timelineFragment extends Fragment {
         
         timelineBinding = FragmentTimelineBinding.bind(view);
         timelineBinding.getRoot();
-    
-        HandlerThread handlerThread = new HandlerThread("timelineF");
-        handlerThread.start();
-        Looper looper = handlerThread.getLooper();
         
         /*timeline feed*/
-        HandlerCompat.createAsync(looper).postDelayed(this::getTimelineFeed,
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getTimelineFeed,
                 800);
     }
 

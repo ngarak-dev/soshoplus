@@ -8,8 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_5sdp">
+    android:layout_height="wrap_content">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ad_profile_pic"
@@ -20,7 +19,7 @@
         app:fadeDuration="300"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:placeholderImage="@drawable/ic_image_placeholder"
+        app:placeholderImage="@color/light_grey"
         app:roundedCornerRadius="@dimen/_10sdp" />
 
     <TextView
@@ -81,25 +80,14 @@
         android:id="@+id/ad_media"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         app:fadeDuration="300"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ad_headline"
-        app:placeholderImage="@drawable/ic_image_placeholder"
+        app:placeholderImage="@color/dim_gray"
         app:viewAspectRatio="1.5"
         tools:ignore="ContentDescription" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="@dimen/_10sdp"
-        android:layout_height="@dimen/_10sdp"
-        android:elevation="@dimen/_10sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/ad_media"
-        app:layout_constraintEnd_toEndOf="@+id/ad_media"
-        app:layout_constraintStart_toStartOf="@+id/ad_media"
-        app:layout_constraintTop_toTopOf="@id/ad_media" />
 
     <TextView
         android:layout_width="@dimen/_50sdp"

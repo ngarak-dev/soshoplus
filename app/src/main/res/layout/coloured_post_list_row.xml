@@ -9,11 +9,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_10sdp"
+    app:cardUseCompatPadding="true"
     app:contentPadding="@dimen/_10sdp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,10 +21,11 @@
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
-            android:layout_alignParentStart="true"
-            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:actualImageScaleType="focusCrop"
             app:fadeDuration="300"
-            app:placeholderImage="@drawable/ic_image_placeholder"
+            app:placeholderImage="@color/light_grey"
             app:roundAsCircle="true"
             tools:ignore="ContentDescription" />
 
@@ -32,45 +33,57 @@
             android:id="@+id/full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/profile_pic"
+            app:layout_constraintTop_toTopOf="@id/profile_pic"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            app:layout_constraintBottom_toTopOf="@id/new_post"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_toEndOf="@id/profile_pic"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/new_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/time_ago"
-            android:layout_below="@id/full_name"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/full_name"
+            app:layout_constraintBottom_toTopOf="@id/time_ago"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_toEndOf="@id/profile_pic"
-            android:text="new post"
+            android:text="new blog post"
             android:textColor="@color/dim_gray" />
 
         <TextView
             android:id="@+id/time_ago"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/profile_pic"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/new_post"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_toEndOf="@id/profile_pic"
             android:textColor="@color/colorPrimary" />
 
-        <com.google.android.material.chip.Chip
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/post_option"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:layout_alignParentEnd="true"
-            app:chipBackgroundColor="@null"
-            app:chipIcon="@drawable/ic_baseline_more_horiz"
-            app:chipStartPadding="@dimen/_15sdp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/light_grey"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:iconGravity="textStart"
+            android:padding="0dp"
+            app:iconTint="@color/gray"
+            app:iconPadding="0dp"
+            app:icon="@drawable/ic_baseline_more"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
         <LinearLayout
             android:id="@+id/color_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/profile_pic"
             android:layout_marginTop="@dimen/_10sdp">
 
             <TextView
@@ -87,15 +100,17 @@
         <View
             android:id="@+id/divider_"
             style="@style/divider"
-            android:layout_below="@id/color_holder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/color_holder"
             android:layout_margin="@dimen/_10sdp" />
 
         <TextView
             android:id="@+id/no_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider_"
-            android:layout_alignParentStart="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:textStyle="bold" />
@@ -104,34 +119,48 @@
             android:id="@+id/no_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider_"
+            app:layout_constraintTop_toBottomOf="@id/divider_"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_toEndOf="@id/no_likes"
+            app:layout_constraintLeft_toRightOf="@id/no_likes"
             android:textStyle="bold" />
 
-        <com.google.android.material.chip.Chip
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/like_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_below="@id/divider_"
-            android:layout_toStartOf="@id/comment_btn"
-            app:chipBackgroundColor="@null"
-            app:chipIcon="@drawable/ic_like"
-            app:chipIconSize="@dimen/_15sdp"
-            app:chipStartPadding="@dimen/_15sdp" />
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@id/divider_"
+            app:layout_constraintRight_toLeftOf="@id/comment_btn"
+            app:rippleColor="@color/light_grey"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:iconGravity="textStart"
+            app:iconSize="@dimen/_15sdp"
+            android:padding="0dp"
+            app:iconPadding="0dp"
+            app:icon="@drawable/ic_like"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp" />
 
-        <com.google.android.material.chip.Chip
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/comment_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_below="@id/divider_"
-            android:layout_alignParentEnd="true"
-            app:chipBackgroundColor="@null"
-            app:chipIcon="@drawable/ic_comment"
-            app:chipIconSize="@dimen/_15sdp"
-            app:chipStartPadding="@dimen/_15sdp" />
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintTop_toBottomOf="@id/divider_"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/light_grey"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:iconGravity="textStart"
+            app:iconSize="@dimen/_15sdp"
+            android:padding="0dp"
+            app:iconPadding="0dp"
+            app:icon="@drawable/ic_comment"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

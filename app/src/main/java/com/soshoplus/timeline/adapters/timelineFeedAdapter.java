@@ -69,7 +69,8 @@ public class timelineFeedAdapter extends BaseProviderMultiAdapter<post> implemen
         /*multi pic post*/
         addItemProvider(new MultiImage());
         
-        addChildClickViewIds(R.id.like_btn);
+        addChildClickViewIds(R.id.like_btn, R.id.post_option, R.id.profile_pic,
+                R.id.post_image, R.id.shared_post_image, R.id.article_thumbnail);
     }
     
     @Override

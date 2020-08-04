@@ -55,18 +55,14 @@ public class friendsFragment extends Fragment {
         
         friendsBinding = FragmentFriendsBinding.bind(view);
         friendsBinding.getRoot();
-    
-        HandlerThread handlerThread = new HandlerThread("friendsF");
-        handlerThread.start();
-        Looper looper = handlerThread.getLooper();
 
         /*get Suggested friends*/
-        HandlerCompat.createAsync(looper).postDelayed(this::getSuggestedFriends,
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getSuggestedFriends,
                 800);
 
         /*get Friends*/
         /*get Suggested friends*/
-        HandlerCompat.createAsync(looper).postDelayed(this::getFriends,
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getFriends,
                 800);
     }
 

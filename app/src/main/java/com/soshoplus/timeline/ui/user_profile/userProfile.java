@@ -62,12 +62,6 @@ public class userProfile extends AppCompatActivity {
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private final static String TAG = "user Profile Calls";
     
-    /*GLIDE OPTIONS*/
-    RequestOptions options = new RequestOptions()
-            .format(DecodeFormat.PREFER_RGB_565)
-            .error(R.drawable.ic_image_placeholder)
-            .priority(Priority.LOW);
-    
     /*......*/
     private KSnack snack;
     

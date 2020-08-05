@@ -115,6 +115,8 @@ public class recommendedGroupsCalls {
                             suggested_groups_adapter.setOnItemClickListener((adapter, view, position) -> {
                                 Intent intent = new Intent(context, viewGroup.class);
                                 intent.putExtra("group_id", suggested_groups_adapter.getData().get(position).getGroupId());
+                                intent.putExtra("no_members", suggested_groups_adapter.getData().get(position).getMembers());
+                                intent.putExtra("is_joined", false);
                                 context.startActivity(intent);
                             });
 

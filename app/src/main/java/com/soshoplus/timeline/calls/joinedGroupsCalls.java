@@ -97,6 +97,8 @@ public class joinedGroupsCalls {
                             groupsAdapter.setOnItemClickListener((adapter, view, position) -> {
                                 Intent intent = new Intent(context, viewGroup.class);
                                 intent.putExtra("group_id", groupsAdapter.getData().get(position).getGroupId());
+                                intent.putExtra("no_members", groupsAdapter.getData().get(position).getMembers());
+                                intent.putExtra("is_joined", true);
                                 context.startActivity(intent);
                             });
                         }

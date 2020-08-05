@@ -44,6 +44,7 @@
         android:textSize="@dimen/_10ssp"
         android:id="@+id/join_btn"
         android:layout_marginEnd="@dimen/_5sdp"
+        android:visibility="gone"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         app:cornerRadius="@dimen/_15sdp"
         app:strokeColor="@color/colorPrimary"

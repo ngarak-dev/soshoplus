@@ -9,9 +9,11 @@ package com.soshoplus.timeline.calls;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.android.material.button.MaterialButton;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.groups.group;
@@ -51,7 +53,8 @@ public class groupCalls {
     }
 
     public void getGroupInfo(SimpleDraweeView groupProfilePic, SimpleDraweeView groupCover,
-                             TextView noMembers, TextView groupPrivacy, TextView groupCategory, String group_id) {
+                             TextView noMembers, TextView groupPrivacy, TextView groupCategory, String group_id,
+                             String no_members, MaterialButton joinBtn) {
 
         groupInfoObservable = rxJavaQueries.getGroupInfo(accessToken, BuildConfig.server_key, group_id);
 
@@ -69,13 +72,17 @@ public class groupCalls {
                             groupProfilePic.setImageURI(group.getGroupInfo().getAvatar());
                             groupCover.setImageURI(group.getGroupInfo().getCover());
 
-                            noMembers.setText(group.getGroupInfo().getMembers() + " Members");
+                            noMembers.setText(no_members + " Members");
                             groupCategory.setText(group.getGroupInfo().getCategory());
 
                             if (group.getGroupInfo().getPrivacy().equals("1")) {
                                 groupPrivacy.setText("Public group");
                             } else {
                                 groupPrivacy.setText("Private group");
+                            }
+
+                            if (!group.getGroupInfo().isIsJoined()) {
+                                joinBtn.setVisibility(View.VISIBLE);
                             }
                         }
 

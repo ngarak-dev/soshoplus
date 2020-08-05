@@ -98,6 +98,8 @@ public class joinedGroupsCalls {
                                 Intent intent = new Intent(context, viewGroup.class);
                                 intent.putExtra("group_id", groupsAdapter.getData().get(position).getGroupId());
                                 intent.putExtra("no_members", groupsAdapter.getData().get(position).getMembers());
+                                intent.putExtra("group_info", groupsAdapter.getData().get(position).getAbout());
+                                intent.putExtra("group_url", groupsAdapter.getData().get(position).getUrl());
                                 intent.putExtra("is_joined", true);
                                 context.startActivity(intent);
                             });

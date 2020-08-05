@@ -19,6 +19,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.groupCalls;
 import com.soshoplus.timeline.databinding.ActivityViewGroupBinding;
@@ -27,8 +30,9 @@ public class viewGroup extends AppCompatActivity {
     
     private ActivityViewGroupBinding viewGroupBinding;
     private groupCalls calls;
-    private String group_id, no_members;
+    private static String group_id, no_members, group_info, group_url;
     private boolean isJoined;
+    private BasePopupView popupView;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -45,6 +49,8 @@ public class viewGroup extends AppCompatActivity {
         Intent intent = getIntent();
         group_id = intent.getStringExtra("group_id");
         no_members = intent.getStringExtra("no_members");
+        group_info = intent.getStringExtra("group_info");
+        group_url = intent.getStringExtra("group_url");
         isJoined = intent.getBooleanExtra("is_joined", false);
 
         /*get group Info*/
@@ -98,8 +104,29 @@ public class viewGroup extends AppCompatActivity {
                 onBackPressed();
                 return true;
 
+            case R.id.group_info:
+                showGroupInfo();
+                return true;
+
+            case R.id.share_group:
+                shareGroup();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void shareGroup() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Soshoplus Group");
+        intent.putExtra(Intent.EXTRA_TEXT, group_url);
+        startActivity(Intent.createChooser(intent, "Share with "));
+    }
+
+    private void showGroupInfo() {
+        popupView = new XPopup.Builder(this).asConfirm("About this group", group_info, null, "Dismiss", () -> {
+                popupView.delayDismiss(300);
+        }, null, true, 0).show();
     }
 }

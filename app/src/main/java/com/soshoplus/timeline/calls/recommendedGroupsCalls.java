@@ -116,6 +116,8 @@ public class recommendedGroupsCalls {
                                 Intent intent = new Intent(context, viewGroup.class);
                                 intent.putExtra("group_id", suggested_groups_adapter.getData().get(position).getGroupId());
                                 intent.putExtra("no_members", suggested_groups_adapter.getData().get(position).getMembers());
+                                intent.putExtra("group_info", suggested_groups_adapter.getData().get(position).getAbout());
+                                intent.putExtra("group_url", suggested_groups_adapter.getData().get(position).getUrl());
                                 intent.putExtra("is_joined", false);
                                 context.startActivity(intent);
                             });

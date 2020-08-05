@@ -9,22 +9,18 @@ package com.soshoplus.timeline.utils;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
-import com.soshoplus.timeline.models.groups.join.join_unjoin;
-import com.soshoplus.timeline.models.postsfeed.postList;
-
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
-
+import com.soshoplus.timeline.models.groups.join.join_unjoin;
+import com.soshoplus.timeline.models.postAction;
+import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Single;
-import retrofit2.Call;
-import retrofit2.adapter.rxjava3.Result;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -165,4 +161,14 @@ public interface queries {
                                          @Field("server_key") String server_key,
                                          @Field("user_id") String user_id,
                                          @Field("type") String type);
+    
+    /*POST OPTIONS*/
+    /*report post*/
+    /*save post*/
+    @FormUrlEncoded
+    @POST("post-actions")
+    Observable<postAction> postAction (@Query("access_token") String access_token,
+                                       @Field("server_key") String server_key,
+                                       @Field("post_id") String post_id,
+                                       @Field("action") String action);
 }

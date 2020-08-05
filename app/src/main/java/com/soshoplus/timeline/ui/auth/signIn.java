@@ -153,8 +153,7 @@ public class signIn extends AppCompatActivity {
                         else {
                             //dismiss dialog and log output
                             apiErrors apiErrors = accessToken.getErrors();
-    
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
+                            
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
     
                             /*displaying a snack dialog*/

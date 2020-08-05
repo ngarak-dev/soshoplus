@@ -16,7 +16,6 @@
         android:layout_marginStart="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_25sdp"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="@color/white_smoke"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,8 +26,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white_smoke"
-        android:textSize="@dimen/_8ssp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/full_name"
         app:layout_constraintTop_toBottomOf="@id/full_name" />
 
@@ -38,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_25sdp"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/white_smoke"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/horizontal_divider"
@@ -50,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_25sdp"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/white_smoke"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/horizontal_divider"

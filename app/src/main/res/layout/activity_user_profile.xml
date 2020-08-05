@@ -15,46 +15,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/cover_photo"
             android:layout_width="0dp"
             android:layout_height="@dimen/_100sdp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+            app:placeholderImage="@color/dim_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
-        <ProgressBar
-            android:id="@+id/progressBar_coverPhoto"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
-            android:elevation="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/cover_photo"
-            app:layout_constraintEnd_toEndOf="@+id/cover_photo"
-            app:layout_constraintStart_toStartOf="@+id/cover_photo"
-            app:layout_constraintTop_toTopOf="@id/cover_photo" />
-
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_100sdp"
+            app:roundAsCircle="true"
+            app:fadeDuration="300"
             app:layout_constraintBottom_toBottomOf="@id/cover_photo"
             app:layout_constraintEnd_toEndOf="@id/cover_photo"
             app:layout_constraintStart_toStartOf="@id/cover_photo"
             app:layout_constraintTop_toBottomOf="@id/cover_photo"
+            app:placeholderImage="@color/light_grey"
             tools:ignore="ContentDescription" />
-
-        <ProgressBar
-            android:id="@+id/progressBar_profilePic"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
-            android:elevation="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
-            app:layout_constraintEnd_toEndOf="@+id/profile_pic"
-            app:layout_constraintStart_toStartOf="@+id/profile_pic"
-            app:layout_constraintTop_toTopOf="@id/profile_pic" />
 
         <TextView
             android:id="@+id/full_name"
@@ -62,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/full_name" />
@@ -97,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/vertical_divider_1"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +88,6 @@
             android:layout_height="wrap_content"
             android:text="posts"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="@id/no_of_posts"
             app:layout_constraintStart_toStartOf="@id/no_of_posts"
             app:layout_constraintTop_toBottomOf="@id/no_of_posts" />
@@ -128,7 +106,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/vertical_divider_2"
             app:layout_constraintStart_toEndOf="@id/vertical_divider_1"
@@ -140,7 +117,6 @@
             android:layout_height="wrap_content"
             android:text="followers"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="@id/number_of_followers"
             app:layout_constraintStart_toStartOf="@id/number_of_followers"
             app:layout_constraintTop_toBottomOf="@id/number_of_followers" />
@@ -159,7 +135,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/vertical_divider_2"
@@ -171,7 +146,6 @@
             android:layout_height="wrap_content"
             android:text="following"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="@id/number_of_following"
             app:layout_constraintStart_toStartOf="@id/number_of_following"
             app:layout_constraintTop_toBottomOf="@id/number_of_following" />
@@ -187,13 +161,12 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/follow_btn"
             android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_30sdp"
             android:layout_margin="@dimen/_10sdp"
             android:layout_marginTop="12dp"
             android:elevation="@dimen/_10sdp"
             android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
+            android:textSize="@dimen/_8ssp"
             app:cornerRadius="@dimen/_15sdp"
             app:layout_constraintEnd_toStartOf="@id/message_btn"
             app:layout_constraintStart_toStartOf="parent"
@@ -215,19 +188,17 @@
             android:id="@+id/message_btn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="@dimen/_100sdp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_30sdp"
             android:layout_margin="@dimen/_10sdp"
-            android:elevation="@dimen/_5sdp"
             android:text="Message"
             android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textStyle="bold"
+            android:textSize="@dimen/_8ssp"
             app:cornerRadius="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/follow_btn"
             app:layout_constraintTop_toBottomOf="@id/horizontal_divider"
             app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/_2sdp" />
+            app:strokeWidth="@dimen/_1sdp" />
 
         <TextView
             android:id="@+id/about_title"
@@ -235,7 +206,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:text="About"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -246,7 +216,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/about_title" />
@@ -322,7 +291,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:text="Photos"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -355,7 +323,6 @@
             android:layout_height="wrap_content"
             android:text="No photos to display"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/dim_gray"
             android:textStyle="bold"
             android:visibility="gone"

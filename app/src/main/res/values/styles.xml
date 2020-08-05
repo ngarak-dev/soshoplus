@@ -10,39 +10,28 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="sosho_noActionBar" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="soshoDayNight_default" parent="Theme.MaterialComponents.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:actionButtonStyle">@style/actionButtonStyle</item>
-    </style>
-
-    <style name="actionButtonStyle" parent="sosho_default">
-        <item name="android:minWidth">@dimen/_50sdp</item>
-        <item name="android:padding">0dip</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="soshoDayNight_noActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textPrimary</item>
-    </style>
-
-    <style name="roundImage">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerRadius">@dimen/_50sdp</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="divider">
@@ -62,6 +51,7 @@
     <style name="soshoDayNight_default.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="soshoDayNight_default.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -72,10 +62,17 @@
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="OverlayButtonCircle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
 </resources>

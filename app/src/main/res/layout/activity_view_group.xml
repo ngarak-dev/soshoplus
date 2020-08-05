@@ -12,115 +12,77 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.groups.viewGroup">
 
-    <!--TODO Make Collapsible Layout-->
-
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/group_cover"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_150sdp"
+        android:layout_height="@dimen/_120sdp"
+        app:placeholderImage="@color/dim_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/group_profile_pic"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="@+id/group_cover"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_cover" />
+        app:layout_constraintTop_toBottomOf="@+id/group_cover"
+        app:actualImageScaleType="focusCrop"
+        app:fadeDuration="300"
+        app:placeholderImage="@color/light_grey"
+        app:roundAsCircle="true"
+        tools:ignore="ContentDescription" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/join_edit_btn"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:text="Join"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:chipBackgroundColor="@color/colorPrimary"
-        app:chipCornerRadius="@dimen/_5sdp"
-        app:chipIcon="@drawable/ic_add"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipIconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
-        app:layout_constraintEnd_toStartOf="@id/add_member_btn"
-        app:layout_constraintStart_toEndOf="@id/group_profile_pic" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/add_member_btn"
+    <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_40sdp"
-        android:text="Add"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:chipBackgroundColor="@color/colorPrimary"
-        app:chipCornerRadius="@dimen/_5sdp"
-        app:chipIcon="@drawable/ic_add_user"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipIconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
-        app:layout_constraintEnd_toStartOf="@id/more_btn"
-        app:layout_constraintStart_toEndOf="@id/join_edit_btn" />
-
-    <com.google.android.material.chip.Chip
-        android:id="@+id/more_btn"
-        android:layout_width="@dimen/_25sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:visibility="gone"
-        app:chipBackgroundColor="@color/colorPrimary"
-        app:chipCornerRadius="@dimen/_5sdp"
-        app:chipIcon="@drawable/ic_baseline_more"
-        app:chipIconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
+        android:layout_height="@dimen/_30sdp"
+        android:text="Join Group"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_10ssp"
+        android:id="@+id/join_btn"
+        android:layout_marginEnd="@dimen/_5sdp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:cornerRadius="@dimen/_15sdp"
+        app:strokeColor="@color/colorPrimary"
+        app:strokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/add_member_btn" />
+        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic" />
 
-    <com.google.android.material.chip.Chip
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/no_members"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_35sdp"
-        app:chipBackgroundColor="@color/bgPrimary"
-        app:chipCornerRadius="0dp"
-        app:chipIcon="@drawable/ic_groups"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipStartPadding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_profile_pic"
-        app:rippleColor="@null" />
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_groups"/>
 
-    <com.google.android.material.chip.Chip
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/group_privacy"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_35sdp"
-        app:chipBackgroundColor="@color/bgPrimary"
-        app:chipCornerRadius="0dp"
-        app:chipIcon="@drawable/ic_privacy"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipStartPadding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/no_members"
-        app:rippleColor="@null" />
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_shield"/>
 
-    <com.google.android.material.chip.Chip
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/group_category"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_35sdp"
-        app:chipBackgroundColor="@color/bgPrimary"
-        app:chipCornerRadius="0dp"
-        app:chipIcon="@drawable/ic_category"
-        app:chipIconSize="@dimen/_15sdp"
-        app:chipStartPadding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_privacy"
-        app:rippleColor="@null" />
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_conversation"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/group_post_list"
@@ -129,6 +91,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/group_category" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

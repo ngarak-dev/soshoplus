@@ -13,14 +13,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/create_group_chip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create"
+            android:layout_marginStart="@dimen/_5sdp"
             app:chipIcon="@drawable/ic_add"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"/>
@@ -40,8 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recommended"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_alignParentStart="true"
             android:layout_below="@id/create_group_chip"/>
 
@@ -78,9 +78,8 @@
             android:id="@+id/all_set_up_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="All set up"
+            android:text="All set"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/dim_gray"
             android:textStyle="bold"
             android:visibility="gone"
@@ -92,8 +91,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Joined"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textStyle="bold"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_alignParentStart="true"
             android:layout_below="@id/suggested_groups_list"/>
 
@@ -134,7 +133,6 @@
             android:layout_height="wrap_content"
             android:text="Groups you have joined will show up here"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/dim_gray"
             android:textStyle="bold"
             android:visibility="gone"

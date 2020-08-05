@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soshoplus.timeline.BuildConfig;
+import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.joinedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.groups.groupInfo;
@@ -79,35 +80,29 @@ public class joinedGroupsCalls {
                     @Override
                     public void onNext (@NonNull groupList groupList) {
                         if (groupList.getApiStatus() == 200) {
-                        
+
                             /*initializing list*/
                             groupInfoList = groupList.getInfo();
                         
                             /*initializing adapter*/
-                            joinedGroupsAdapter listAdapter =
-                                    new joinedGroupsAdapter(context,
-                                            groupInfoList, groupInfo -> {
-                                        Log.d(TAG, "onGroupClick: " + groupInfo.getGroupName());
-                                        
-                                        /*TODO
-                                        *  SHOW GROUP ACTIVITY*/
-                                    });
-                        
-                            /*Setting Layout*/
-                            joinedGroupsList.setItemAnimator(new DefaultItemAnimator());
+                            joinedGroupsAdapter groupsAdapter = new joinedGroupsAdapter(R.layout.joined_groups_row, groupInfoList);
                         
                             /*Setting Adapter*/
-                            joinedGroupsList.setAdapter(listAdapter);
+                            joinedGroupsList.setAdapter(groupsAdapter);
                         
                             /*......*/
                             /*After fetching Data*/
                             updateUI();
-                        
+
+                            groupsAdapter.setOnItemClickListener((adapter, view, position) -> {
+                                Intent intent = new Intent(context, viewGroup.class);
+                                intent.putExtra("group_id", groupsAdapter.getData().get(position).getGroupId());
+                                context.startActivity(intent);
+                            });
                         }
                         else {
                             apiErrors apiErrors = groupList.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorText());
                         }
                     }
                 

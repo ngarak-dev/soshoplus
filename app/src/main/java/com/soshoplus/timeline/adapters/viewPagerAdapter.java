@@ -8,40 +8,36 @@ package com.soshoplus.timeline.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class viewPagerAdapter extends FragmentStatePagerAdapter {
+public class viewPagerAdapter extends FragmentStateAdapter {
     
-    /*array list for fragments*/
-    private ArrayList<Fragment> arrayList = new ArrayList<>();
+    /*list of fragments*/
+    List<Fragment> fragments;
     
-    /*constructor*/
-    public viewPagerAdapter (@NonNull FragmentManager fm, int behavior) {
-        super(fm, behavior);
-    }
-    
-    @NonNull
-    @Override
-    public Fragment getItem (int position) {
-        return arrayList.get(position);
+    public viewPagerAdapter (@NonNull FragmentActivity fragmentActivity, List<Fragment> fragments) {
+        super(fragmentActivity);
+        this.fragments  = fragments;
     }
     
     /*creating a new fragment*/
     @NonNull
+    @Override
     public Fragment createFragment (int position) {
-        return arrayList.get(position);
-    }
-    
-    /*adding a fragment*/
-    public void addFragment(Fragment fragment) {
-        arrayList.add(fragment);
+        return fragments.get(position);
     }
     
     @Override
-    public int getCount () {
-        return arrayList.size();
+    public int getItemCount () {
+        return fragments == null ? 0 : fragments.size();
+    }
+
+    /*adding a fragment*/
+    public void addFragment(Fragment fragment) {
+        fragments.add(fragment);
     }
 }

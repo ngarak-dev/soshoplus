@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.soshoplus.timeline.BuildConfig;
+import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.friendsFollowingAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.friends.following;
@@ -87,26 +88,24 @@ public class followingUsersCalls {
                                     friends.getFriendsList().getFollowing();
                         
                             /*initializing adapter*/
-                            friendsFollowingAdapter listAdapter =
-                                    new friendsFollowingAdapter(context,
-                                            followingList, following -> {
-                                                /*start new user
-                                                profile Activity*/
-                                        Intent intent =
-                                                new Intent(context,
-                                                        userProfile.class);
-                                        intent.putExtra("user_id",
-                                                following.getUserId());
-                                    
-                                        context.startActivity(intent);
-                                    });
+                            friendsFollowingAdapter followingsAdapter =
+                                    new friendsFollowingAdapter(R.layout.friends_list_row, followingList);
                         
                             /*Setting Layout*/
                             friendsFollowingList.setLayoutManager(new GridLayoutManager(context, 3));
-                            friendsFollowingList.setItemAnimator(new DefaultItemAnimator());
                         
                             /*Setting Adapter*/
-                            friendsFollowingList.setAdapter(listAdapter);
+                            friendsFollowingList.setAdapter(followingsAdapter);
+                            
+                            /*on click*/
+                            followingsAdapter.setOnItemClickListener((adapter
+                                    , view, position) -> {
+                                
+                                /*start new user profile Activity*/
+                                Intent intent = new Intent(context, userProfile.class);
+                                intent.putExtra("user_id", followingList.get(position).getUserId());
+                                context.startActivity(intent);
+                            });
                         
                             /*show recycler view, refresh btn, hide progress*/
                             followingTitle.setText("Following");

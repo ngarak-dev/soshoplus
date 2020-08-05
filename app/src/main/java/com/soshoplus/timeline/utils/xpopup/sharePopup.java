@@ -16,13 +16,14 @@ import com.soshoplus.timeline.calls.timelineCalls;
 
 public class sharePopup extends BottomPopupView {
     
-    private Context m_context;
     private timelineCalls calls;
-    public sharePopup (@NonNull Context context) {
+    private static String postId, postUrl, fullName;
+    public sharePopup (@NonNull Context context, String post_Id, String url, String name) {
         super(context);
-        m_context = context;
-    
-        calls = new timelineCalls(m_context);
+        calls = new timelineCalls(context);
+        postId = post_Id;
+        postUrl = url;
+        fullName = name;
     }
     
     @Override
@@ -34,12 +35,13 @@ public class sharePopup extends BottomPopupView {
     protected void onCreate () {
         super.onCreate();
         
-        findViewById(R.id.share_on_social_media).setOnClickListener(view -> calls.shareOnOtherApps());
+        findViewById(R.id.share_on_social_media).setOnClickListener(view ->
+                calls.shareOnOtherApps(postUrl, fullName));
     
         findViewById(R.id.share_on_timeline).setOnClickListener(view -> {
             /*dismiss dialog while performing sharing*/
             dismissWith(() -> {
-                calls.shareOnTimeline();
+                calls.shareOnTimeline(postId);
             });
         });
         

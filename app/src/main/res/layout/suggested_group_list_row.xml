@@ -10,14 +10,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/_10sdp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="@dimen/_5sdp">
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.imageview.ShapeableImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/group_profile_pic"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
@@ -56,20 +55,21 @@
             app:layout_constraintStart_toStartOf="@id/group_category"
             app:layout_constraintTop_toBottomOf="@id/group_category" />
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_join"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
-            android:text="Join"
+            android:layout_height="@dimen/_30ssp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:textAllCaps="false"
-            android:textSize="@dimen/_10sdp"
-            android:visibility="visible"
-            app:cornerRadius="@dimen/_5sdp"
+            android:textSize="@dimen/_10ssp"
+            android:text="Join"
+            app:cornerRadius="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="@dimen/_1sdp" />
 
         <ProgressBar
             android:id="@+id/progressBar_join"

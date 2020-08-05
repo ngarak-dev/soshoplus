@@ -7,7 +7,7 @@
 package com.soshoplus.timeline.calls;
 
 import android.content.Context;
-import android.os.Handler;
+import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
@@ -28,7 +28,6 @@ import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.userprofile.userInfo;
-import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
@@ -77,15 +76,13 @@ public class previewProfileCalls {
     
         /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
-    
-        /*initializing snack*/
-        snack = new KSnack((FragmentActivity) context);
     }
     
-    public void previewProfile (ImageView cover_photo, ProgressBar progressBar_cover, ImageView profile_pic,
-                                TextView name, ImageView verified_badge, ImageView level_badge, TextView no_followers,
-                                TextView no_following, MaterialButton follow, TextView about, ProgressBar progressBar_follow,
-                                String user_id) {
+    public void previewProfile (SimpleDraweeView cover_photo, ProgressBar progressBar_cover,
+                                SimpleDraweeView profile_pic, TextView name, ImageView verified_badge,
+                                ImageView level_badge, TextView no_followers, TextView no_following,
+                                MaterialButton follow, TextView about, ProgressBar progressBar_follow,
+                                String user_id, TextView follows_me) {
     
         userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
@@ -167,24 +164,22 @@ public class previewProfileCalls {
                             else {  /*(is_following == 1) */
                                 follow.setText("Following");
                             }
-                        
-                            /*level badge*/
-                            new Handler().postDelayed(() -> {
-                                new glideImageLoader(cover_photo,
-                                        progressBar_cover).load(userInfo.getUserData().getCover(),
-                                        options);
                             
-                                Glide.with(context).load(userInfo.getUserData().getAvatar())
-                                        .apply(RequestOptions.circleCropTransform()).into(profile_pic);
-                            
-                            }, 500);
-                        
+                            if(userInfo.getUserData().getIsFollowingMe() == 1) {
+                                follows_me.setText("Follows you");
+                            }
+    
+                            AsyncTask.execute(() -> {
+                                /*profile*/
+                                profile_pic.setImageURI(userInfo.getUserData().getAvatar());
+                                /*cover*/
+                                cover_photo.setImageURI(userInfo.getUserData().getCover());
+                            });
                         }
                         else {
-                            profile_pic.setImageResource(R.drawable.ic_image_placeholder);
                             apiErrors apiErrors =userInfo.getErrors();
                             Log.d(TAG, "main activity profile: " + apiErrors.getErrorText());
-                        
+
                             snack = new KSnack((FragmentActivity) context);
                             snack.setMessage("Oops !\nSomething went " +
                                     "wrong");

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.soshoplus.timeline">
+
     <!-- PERMISSION -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -8,16 +9,12 @@
 
     <application
         android:allowBackup="true"
-        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/soshoDayNight_noActionBar">
-        <activity
-            android:name=".ui.user_profile.userProfile"
-            android:theme="@style/soshoDayNight_default" />
+        android:theme="@style/soshoDayNight_default">
+        <activity android:name=".ui.user_profile.userProfile" />
         <activity
             android:name=".ui.viewVideo"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -25,10 +22,15 @@
             android:theme="@style/sosho_FullScreen" />
         <activity android:name=".ui.groups.viewGroup" />
         <activity android:name=".ui.soshoTimeline" />
-        <activity android:name=".ui.auth.forgotPassword" />
-        <activity android:name=".ui.auth.signUp" />
-        <activity android:name=".ui.getStarted" />
-        <activity android:name=".ui.auth.signIn" />
+        <activity
+            android:name=".ui.auth.forgotPassword"
+            android:theme="@style/soshoDayNight_noActionBar"/>
+        <activity
+            android:name=".ui.auth.signUp"
+            android:theme="@style/soshoDayNight_noActionBar"/>
+        <activity
+            android:name=".ui.auth.signIn"
+            android:theme="@style/soshoDayNight_noActionBar"/>
         <activity
             android:name=".ui.splash"
             android:theme="@style/soshoDayNight_noActionBar">

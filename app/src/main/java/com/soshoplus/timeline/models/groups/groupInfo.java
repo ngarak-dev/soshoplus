@@ -3,7 +3,9 @@ package com.soshoplus.timeline.models.groups;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class groupInfo {
+import java.io.Serializable;
+
+public class groupInfo implements Serializable {
 
 	@SerializedName("group_title")
 	@Expose

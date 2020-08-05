@@ -185,5 +185,6 @@
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
     <color name="black_overlay">#66000000</color>
+    <color name="ic_launcher_background">#00F0F8FF</color>
 
 </resources>

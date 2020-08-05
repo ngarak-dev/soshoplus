@@ -50,13 +50,21 @@ public class viewGroup extends AppCompatActivity {
         /*get group Info*/
         HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getGroupInfo, 300);
     }
-    
+
     /*get group info*/
     private void getGroupInfo () {
         calls = new groupCalls(this);
         calls.getGroupInfo(viewGroupBinding.groupProfilePic, viewGroupBinding.groupCover,
                 viewGroupBinding.noMembers,viewGroupBinding.groupPrivacy,
                 viewGroupBinding.groupCategory, group_id, no_members, viewGroupBinding.joinBtn);
+
+        /*get group posts*/
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getGroupPosts, 500);
+    }
+
+    private void getGroupPosts() {
+        calls = new groupCalls(this);
+        calls.getGroupPosts(viewGroupBinding.groupPostList, group_id);
     }
 
     @Override

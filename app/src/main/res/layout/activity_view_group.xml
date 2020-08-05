@@ -3,94 +3,110 @@
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bgPrimary"
-    android:fitsSystemWindows="true"
     tools:context=".ui.groups.viewGroup">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/group_cover"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp"
-        app:placeholderImage="@color/dim_gray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/group_profile_pic"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_80sdp"
-        android:layout_marginStart="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/group_cover"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_cover"
-        app:actualImageScaleType="focusCrop"
-        app:fadeDuration="300"
-        app:placeholderImage="@color/light_grey"
-        app:roundAsCircle="true"
-        tools:ignore="ContentDescription" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/group_cover"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            app:placeholderImage="@color/dim_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp"
-        android:text="Join Group"
-        android:textAllCaps="false"
-        android:textSize="@dimen/_10ssp"
-        android:id="@+id/join_btn"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:visibility="gone"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:cornerRadius="@dimen/_15sdp"
-        app:strokeColor="@color/colorPrimary"
-        app:strokeWidth="@dimen/_1sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/group_profile_pic" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/group_profile_pic"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/group_cover"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/group_cover"
+            app:actualImageScaleType="focusCrop"
+            app:fadeDuration="300"
+            app:placeholderImage="@color/light_grey"
+            app:roundAsCircle="true"
+            tools:ignore="ContentDescription" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/no_members"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_profile_pic"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:drawableStart="@drawable/ic_groups"/>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:text="Join Group"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_10ssp"
+            android:id="@+id/join_btn"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:visibility="gone"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:cornerRadius="@dimen/_15sdp"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/group_profile_pic" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/group_privacy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/no_members"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:drawableStart="@drawable/ic_shield"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/no_members"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_profile_pic"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:drawableStart="@drawable/ic_groups"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/group_category"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_privacy"
-        android:drawablePadding="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
-        android:drawableStart="@drawable/ic_conversation"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_privacy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/no_members"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:drawableStart="@drawable/ic_shield"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/group_post_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/group_category" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/group_category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_privacy"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:drawableStart="@drawable/ic_conversation"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintTop_toBottomOf="@id/group_category"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="Group posts"
+            android:id="@+id/posts_title"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/group_post_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/posts_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

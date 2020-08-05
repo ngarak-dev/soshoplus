@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.button.MaterialButton;
 import com.lxj.xpopup.core.ImageViewerPopupView;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.calls.groupCalls;
 import com.soshoplus.timeline.calls.timelineCalls;
 
 public class timelineImageViewPopup extends ImageViewerPopupView {
@@ -42,6 +43,9 @@ public class timelineImageViewPopup extends ImageViewerPopupView {
     
         /*getting post image info*/
         timelineCalls.getInfo(full_name, time_ago, no_likes, no_comments,
+                like, comment);
+
+        groupCalls.getInfo(full_name, time_ago, no_likes, no_comments,
                 like, comment);
     }
     

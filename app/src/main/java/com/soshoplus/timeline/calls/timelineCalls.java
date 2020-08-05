@@ -87,7 +87,7 @@ public class timelineCalls {
     /*.......*/
     private KSnack snack;
     /*........*/
-    private static int totalItems, lastItemPosition;
+    private static int totalItems;
     private static String lastItemID;
     
     /*........*/
@@ -147,7 +147,7 @@ public class timelineCalls {
                 rxJavaQueries.getTimelinePosts(accessToken,
                 BuildConfig.server_key, get_news_feed, "10", firstData);
     
-        postListObserve.observeOn(Schedulers.io())
+        postListObserve.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postList>() {
                     @Override
@@ -173,9 +173,12 @@ public class timelineCalls {
                                     }
 
                                     /*last item ID*/
-                                    lastItemID = timelinePosts.get(7).getPostId();
-                                    firstData = lastItemID;
-                                    Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
+                                    totalItems = timelinePosts.size();
+                                    if (totalItems > 2) {
+                                        lastItemID = timelinePosts.get(totalItems - 2).getPostId();
+                                        firstData = lastItemID;
+                                        Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
+                                    }
                                 }
     
                                 /*hide progress*/
@@ -190,13 +193,16 @@ public class timelineCalls {
                                 
                                 /*.........*/
                                 timelinePostsList.setVisibility(View.VISIBLE);
-    
+
                                 /*setting loadmore module*/
-                                feedAdapter.getLoadMoreModule().setAutoLoadMore(true);
-                                feedAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-                                    /*load more posts*/
-                                    loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
-                                });
+                                if (totalItems > 2) {
+                                    /*setting loadmore module*/
+                                    feedAdapter.getLoadMoreModule().setAutoLoadMore(true);
+                                    feedAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
+                                        /*load more posts*/
+                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
+                                    });
+                                }
                                 
                                 feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                                     @Override
@@ -295,11 +301,19 @@ public class timelineCalls {
                                     else {
                                         feedAdapter.addData(tobeAdded);
                                         /*last item ID*/
-                                        lastItemID = tobeAdded.get(8).getPostId();
-                                        firstData = lastItemID;
-                                        Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
+                                        /*last item ID*/
+                                        totalItems = tobeAdded.size();
 
-                                        feedAdapter.getLoadMoreModule().loadMoreComplete();
+                                        if (totalItems > 2) {
+                                            lastItemID = tobeAdded.get(totalItems - 2).getPostId();
+                                            firstData = lastItemID;
+                                            Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
+
+                                            feedAdapter.getLoadMoreModule().loadMoreComplete();
+                                        }
+                                        else {
+                                            feedAdapter.getLoadMoreModule().loadMoreEnd();
+                                        }
 
                                         Log.d(TAG, "ADAPTER ITEM COUNT : " + feedAdapter.getItemCount());
                                     }

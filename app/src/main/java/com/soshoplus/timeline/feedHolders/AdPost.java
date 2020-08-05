@@ -7,22 +7,14 @@
 package com.soshoplus.timeline.feedHolders;
 
 import android.text.Html;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
 import com.google.gson.Gson;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.userprofile.userData;
-import com.soshoplus.timeline.utils.glide.glideImageLoader;
 
 import org.jetbrains.annotations.NotNull;
 

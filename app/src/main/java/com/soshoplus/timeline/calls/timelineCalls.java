@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -42,7 +43,6 @@ import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userData;
-import com.soshoplus.timeline.utils.glide.GlideApp;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
@@ -339,7 +339,7 @@ public class timelineCalls {
             @Override
             public void loadImage(int position, @androidx.annotation.NonNull Object uri,
                                   @androidx.annotation.NonNull ImageView imageView) {
-                GlideApp.with(imageView).load(uri).into(imageView);
+                Glide.with(imageView).load(uri).into(imageView);
             }
 
             @Override
@@ -369,7 +369,7 @@ public class timelineCalls {
             @Override
             public void loadImage(int position, @androidx.annotation.NonNull Object uri,
                                   @androidx.annotation.NonNull ImageView imageView) {
-                GlideApp.with(imageView).load(uri).into(imageView);
+                Glide.with(imageView).load(uri).into(imageView);
             }
 
             @Override

@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.soshoplus.timeline.databinding.ActivitySplashBinding;
+import com.soshoplus.timeline.ui.auth.signIn;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 
@@ -44,7 +45,7 @@ public class splash extends Activity {
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted
-                startActivity(new Intent(splash.this, getStarted.class));
+                startActivity(new Intent(splash.this, signIn.class));
             }
             finish();
             

@@ -8,8 +8,6 @@ package com.soshoplus.timeline.calls;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -17,14 +15,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
@@ -33,7 +28,6 @@ import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.userprofile.userInfo;
-import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 

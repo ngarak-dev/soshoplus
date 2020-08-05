@@ -6,7 +6,6 @@
 
 package com.soshoplus.timeline.ui.user_profile;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,9 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -26,16 +23,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
-import com.google.gson.Gson;
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
@@ -46,15 +37,10 @@ import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
-import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
-import com.soshoplus.timeline.utils.glide.glideImageLoader;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
-import com.soshoplus.timeline.utils.xpopup.adFullImageViewPopup;
-import com.soshoplus.timeline.utils.xpopup.fullImageViewPopup;
 
-import java.io.File;
 import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -207,13 +193,10 @@ public class userProfile extends AppCompatActivity {
     private void bindUserInfo (userInfo userInfo) {
         /*profile _ cover image*/
         /*profile image*/
-        new glideImageLoader(userProfileBinding.profilePic,
-                userProfileBinding.progressBarProfilePic).load(userInfo.getUserData().getAvatar(),
-                RequestOptions.circleCropTransform().apply(options));
+        userProfileBinding.profilePic.setImageURI(userInfo.getUserData().getAvatar());
 
         /*cover image*/
-        new glideImageLoader(userProfileBinding.coverPhoto, userProfileBinding.progressBarCoverPhoto)
-                .load(userInfo.getUserData().getCover(), options);
+        userProfileBinding.coverPhoto.setImageURI(userInfo.getUserData().getCover());
 
         /*name*/
         userProfileBinding.fullName.setText(userInfo.getUserData().getName());

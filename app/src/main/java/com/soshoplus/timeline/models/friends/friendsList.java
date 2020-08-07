@@ -23,24 +23,24 @@ public class friendsList implements Serializable {
 	   
     }
     
-    public friendsList (List<com.soshoplus.timeline.models.friends.followers> followers, List<com.soshoplus.timeline.models.friends.following> following) {
+    public friendsList (List<followers> followers, List<following> following) {
         this.followers = followers;
         this.following = following;
     }
     
-    public List<com.soshoplus.timeline.models.friends.followers> getFollowers () {
+    public List<followers> getFollowers () {
         return followers;
     }
     
-    public void setFollowers (List<com.soshoplus.timeline.models.friends.followers> followers) {
+    public void setFollowers (List<followers> followers) {
         this.followers = followers;
     }
     
-    public List<com.soshoplus.timeline.models.friends.following> getFollowing () {
+    public List<following> getFollowing () {
         return following;
     }
     
-    public void setFollowing (List<com.soshoplus.timeline.models.friends.following> following) {
+    public void setFollowing (List<following> following) {
         this.following = following;
     }
 }

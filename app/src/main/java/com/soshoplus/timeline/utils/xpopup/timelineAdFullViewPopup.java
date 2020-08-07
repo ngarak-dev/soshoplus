@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.lxj.xpopup.core.ImageViewerPopupView;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.calls.groupCalls;
 import com.soshoplus.timeline.calls.timelineCalls;
 
 public class timelineAdFullViewPopup extends ImageViewerPopupView {
@@ -37,6 +38,9 @@ public class timelineAdFullViewPopup extends ImageViewerPopupView {
         
         /*getting ad info*/
         timelineCalls.getADInfo(full_name, location, description,
+                headline);
+
+        groupCalls.getADInfo(full_name, location, description,
                 headline);
     }
     

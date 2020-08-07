@@ -11,6 +11,7 @@ import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.friends.suggested.suggestedList;
+import com.soshoplus.timeline.models.groups.addingUser;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.groups.join.join_unjoin;
@@ -171,4 +172,21 @@ public interface queries {
                                        @Field("server_key") String server_key,
                                        @Field("post_id") String post_id,
                                        @Field("action") String action);
+    /*Group posts*/
+    @FormUrlEncoded
+    @POST("posts")
+    Observable<postList> getGroupPosts (@Query("access_token") String access_token,
+                                           @Field("server_key") String server_key,
+                                           @Field("id") String group_id,
+                                           @Field("type") String type,
+                                           @Field("limit") String limit,
+                                           @Field("after_post_id") String after_post_id);
+
+    /*add member to group*/
+    @FormUrlEncoded
+    @POST("group_add")
+    Observable<addingUser> addMemberToGroup (@Query("access_token") String access_token,
+                                             @Field("server_key") String server_key,
+                                             @Field("group_id") String group_id,
+                                             @Field("user_id") String user_id);
 }

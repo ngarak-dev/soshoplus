@@ -17,12 +17,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class friendsFollowersAdapter extends BaseQuickAdapter<followers, BaseViewHolder> {
-    
+public class friendsToAddToGroupAdapter extends BaseQuickAdapter<followers, BaseViewHolder> {
+
     private static String TAG = "Friends";
-    
-    public friendsFollowersAdapter (int layoutResId, @Nullable List<followers> data) {
+
+    public friendsToAddToGroupAdapter(int layoutResId, @Nullable List<followers> data) {
         super(layoutResId, data);
+
+        addChildClickViewIds(R.id.add_to_group);
     }
     
     @Override
@@ -32,7 +34,7 @@ public class friendsFollowersAdapter extends BaseQuickAdapter<followers, BaseVie
             return;
         }
     
-        baseViewHolder.setText(R.id.full_name, followers.getName());
+        baseViewHolder.setText(R.id.first_name, followers.getFirstName());
     
         SimpleDraweeView profile_pic = baseViewHolder.findView(R.id.profile_pic);
         profile_pic.setImageURI(followers.getAvatar());

@@ -20,7 +20,9 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_video"
             android:theme="@style/sosho_FullScreen" />
-        <activity android:name=".ui.groups.viewGroup" />
+        <activity
+            android:name=".ui.groups.viewGroup"
+            android:theme="@style/soshoDayNight_noActionBar"/>
         <activity android:name=".ui.soshoTimeline" />
         <activity
             android:name=".ui.auth.forgotPassword"

@@ -4,10 +4,10 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bgPrimary"
     tools:context=".ui.groups.viewGroup">
 
@@ -24,6 +24,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:theme="@style/soshoDayNight_default.AppBarOverlay"
+            android:translationZ="0.1dp"
+            app:elevation="0dp"
+            app:layout_constraintTop_toTopOf="@id/group_cover"
+            android:id="@+id/appBarLayout">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/trans_toolbar"
+                android:background="@null"
+                app:popupTheme="@style/soshoDayNight_default.PopupOverlay"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/group_profile_pic"

@@ -10,12 +10,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.BuildConfig;
-import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;

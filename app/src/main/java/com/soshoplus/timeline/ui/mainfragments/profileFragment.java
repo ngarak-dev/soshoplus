@@ -6,8 +6,10 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,28 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.simpleProfileCalls;
 import com.soshoplus.timeline.databinding.FragmentProfileBinding;
+import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.models.simpleResponse;
+import com.soshoplus.timeline.ui.auth.signIn;
+import com.soshoplus.timeline.utils.queries;
+import com.soshoplus.timeline.utils.retrofitInstance;
 
 import org.jetbrains.annotations.NotNull;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
+import de.adorsys.android.securestoragelibrary.SecureStorageException;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,9 +51,13 @@ public class profileFragment extends Fragment {
 
     private static String TAG = "profileFragment ";
     private FragmentProfileBinding profileBinding;
-    private static String userId, timezone, accessToken;
+    private String userId, timezone, accessToken;
     /*..........*/
     private simpleProfileCalls calls;
+    /*.........*/
+    private queries rxJavaQueries;
+    private Observable<simpleResponse> simpleResponse;
+    private BasePopupView basePopupView;
 
     @Override
     public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,11 +76,80 @@ public class profileFragment extends Fragment {
         accessToken = SecurePreferences.getStringValue(requireContext(), "accessToken"
                 , "0");
 
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+
         new Handler().postDelayed(this::loadProfile, 500);
+
+        /*initializing loading dialog*/
+        basePopupView = new XPopup.Builder(requireContext())
+                .dismissOnBackPressed(false)
+                .dismissOnTouchOutside(false)
+                .autoDismiss(false)
+                .asLoading("Please wait");
+
+        /*logout*/
+        profileBinding.logout.setOnClickListener(_view -> {
+            new Handler().postDelayed(this::logOutUser, 300);
+        });
     }
 
     private void loadProfile() {
         calls = new simpleProfileCalls(requireContext());
         calls.getProfile(profileBinding.profilePic, profileBinding.fullName, profileBinding.userEmail);
+    }
+
+    private void logOutUser() {
+        /*show loading dialog*/
+        basePopupView.show();
+
+        simpleResponse = rxJavaQueries.logOutUser(accessToken, BuildConfig.server_key, userId);
+
+        simpleResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<simpleResponse>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+
+                    @Override
+                    public void onNext(com.soshoplus.timeline.models.@NonNull simpleResponse simpleResponse) {
+                        if (simpleResponse.getApiStatus() == 200) {
+
+                            try {
+                                SecurePreferences.clearAllValues(requireContext());
+                                Log.d(TAG, "onNext: " + "USER LOGGED OUT");
+
+                                basePopupView.delayDismissWith(300, new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(requireContext(), signIn.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                        startActivity(intent);
+                                    }
+                                });
+
+                            } catch (SecureStorageException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {
+                            apiErrors errors = simpleResponse.getErrors();
+                            Log.d(TAG, "onNext: " + errors.getErrorId());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, "onError: "  + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

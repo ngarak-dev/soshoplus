@@ -10,11 +10,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.soshoplus.timeline.BuildConfig;
-import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;
@@ -52,14 +49,13 @@ public class simpleProfileCalls {
         /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
-    
-    public void getProfile (ShapeableImageView profile_pic, TextView full_name,
-                            TextView username) {
-    
+
+    public void getProfile(SimpleDraweeView profilePic, TextView fullName, TextView userEmail) {
+
         userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
                 fetch_profile, userId);
-    
+
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<userInfo>() {
@@ -67,33 +63,25 @@ public class simpleProfileCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
                     public void onNext (@NonNull userInfo userInfo) {
                         if(userInfo.getApiStatus() == 200) {
-                            full_name.setText(userInfo.getUserData().getName());
-                            username.setText("@" + userInfo.getUserData().getUsername());
-                            //profile pic
-                            profile_pic.setShapeAppearanceModel(profile_pic
-                                    .getShapeAppearanceModel()
-                                    .toBuilder()
-                                    .setAllCorners(CornerFamily.ROUNDED, 20)
-                                    .build());
-                            Glide.with(context).load(userInfo.getUserData().getAvatar()).placeholder(R.drawable.ic_image_placeholder).thumbnail(0.5f).into(profile_pic);
+                            fullName.setText(userInfo.getUserData().getName());
+                            userEmail.setText(userInfo.getUserData().getEmail());
+                            profilePic.setImageURI(userInfo.getUserData().getAvatar());
                         }
                         else {
-                            profile_pic.setImageResource(R.drawable.ic_image_placeholder);
                             apiErrors apiErrors =userInfo.getErrors();
                             Log.d(TAG, "main activity profile: " + apiErrors.getErrorId());
-                            Log.d(TAG, "main activity profile: " + apiErrors.getErrorText());
                         }
                     }
-                
+
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                     }
-                
+
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");

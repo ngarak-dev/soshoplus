@@ -19,6 +19,7 @@ import com.soshoplus.timeline.models.postAction;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
+import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -189,4 +190,21 @@ public interface queries {
                                              @Field("server_key") String server_key,
                                              @Field("group_id") String group_id,
                                              @Field("user_id") String user_id);
+
+    /*sign out*/
+    @FormUrlEncoded
+    @POST("delete-access-token")
+    Observable<simpleResponse> logOutUser (@Query("access_token") String access_token,
+                                           @Field("server_key") String server_key,
+                                           @Field("user_id") String user_id);
+
+    /*update password*/
+    @FormUrlEncoded
+    @POST("update-user-data")
+    Observable<simpleResponse> changePassword (@Query("access_token") String access_token,
+                                           @Field("server_key") String server_key,
+                                           @Field("current_password") String current_password,
+                                           @Field("new_password") String new_password,
+                                           @Field("user_id") String user_id);
+
 }

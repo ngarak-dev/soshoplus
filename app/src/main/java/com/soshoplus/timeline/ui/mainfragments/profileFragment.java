@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.simpleProfileCalls;
@@ -29,6 +30,7 @@ import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.utils.xpopup.changePasswordPopup;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -93,6 +95,11 @@ public class profileFragment extends Fragment {
         profileBinding.logout.setOnClickListener(_view -> {
             new Handler().postDelayed(this::logOutUser, 300);
         });
+
+        /*change password*/
+        profileBinding.toChangePassword.setOnClickListener(__view -> {
+            new Handler().postDelayed(this::changePassword, 300);
+        });
     }
 
     private void loadProfile() {
@@ -100,6 +107,7 @@ public class profileFragment extends Fragment {
         calls.getProfile(profileBinding.profilePic, profileBinding.fullName, profileBinding.userEmail);
     }
 
+    /*logout user*/
     private void logOutUser() {
         /*show loading dialog*/
         basePopupView.show();
@@ -153,5 +161,10 @@ public class profileFragment extends Fragment {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
+    }
+
+    /*change password*/
+    private void changePassword() {
+        new XPopup.Builder(requireContext()).asCustom(new changePasswordPopup(requireContext())).show();
     }
 }

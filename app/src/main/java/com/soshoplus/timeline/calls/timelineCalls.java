@@ -31,6 +31,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
@@ -69,6 +70,7 @@ public class timelineCalls {
     /*......*/
     private queries rxJavaQueries;
     private String accessToken, userId, timezone;
+    private BasePopupView popupView;
     
     /*TIMELINE FEED*/
     private final static String get_news_feed = "get_news_feed";
@@ -275,9 +277,17 @@ public class timelineCalls {
                             else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
-            
-                                /*displaying error*/
-                                timelineErrorLayout.setVisibility(View.VISIBLE);
+
+                                if (errors.getErrorId().equals("2")) {
+                                    popupView = new XPopup.Builder(context).asConfirm("Oops..!", "Sorry session expired please sign in again",
+                                            null, "Dismiss", () -> {
+                                        popupView.delayDismiss(300);
+                                    }, null, true, 0).show();
+                                }
+                                else {
+                                    /*displaying error*/
+                                    timelineErrorLayout.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                         else {

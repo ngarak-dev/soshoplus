@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -128,6 +129,7 @@ public class profileFragment extends Fragment {
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                         startActivity(intent);
+                                        ((FragmentActivity) requireContext()).finish();
                                     }
                                 });
 

@@ -6,6 +6,7 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.simpleProfileCalls;
 import com.soshoplus.timeline.databinding.FragmentMoreBinding;
+import com.soshoplus.timeline.ui.groups.groups;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +47,12 @@ public class moreFragment extends Fragment {
         moreBinding.getRoot();
 
         new Handler().postDelayed(this::loadProfile, 1000);
+
+        moreBinding.groupsCard.setOnClickListener(_view -> {
+            new Handler().postDelayed(() -> {
+                startActivity(new Intent(requireContext(), groups.class));
+            }, 500);
+        } );
     }
 
     private void loadProfile() {

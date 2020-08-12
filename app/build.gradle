@@ -86,6 +86,7 @@ dependencies {
     implementation 'com.facebook.fresco:webpsupport:2.3.0'
     /*Glide*/
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //multi image
     implementation 'com.github.ydslib:MultiImageView:1.0.4'

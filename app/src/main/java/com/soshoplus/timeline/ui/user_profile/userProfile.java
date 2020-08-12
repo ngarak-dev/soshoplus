@@ -84,9 +84,9 @@ public class userProfile extends AppCompatActivity {
         setContentView(view);
         
         /*setting up actionbar*/
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(userProfileBinding.transToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         /*initializing ksnack*/
         snack = new KSnack(userProfile.this);

@@ -8,6 +8,7 @@ package com.soshoplus.timeline.ui.groups;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.os.Looper;
@@ -39,6 +40,16 @@ public class groups extends AppCompatActivity {
         groupsBinding.backArrow.setOnClickListener(view_ -> {
             onBackPressed();
         } );
+
+        /*refreshing groups*/
+        groupsBinding.groupsRefreshLayout.setOnRefreshListener(() -> {
+            /*get groups*/
+            HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getJoined, 1000);
+
+            HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getRecommended, 1000);
+
+            groupsBinding.groupsRefreshLayout.setRefreshing(false);
+        });
     }
 
     private void getRecommended () {

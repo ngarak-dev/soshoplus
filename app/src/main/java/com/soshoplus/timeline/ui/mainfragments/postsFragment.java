@@ -45,6 +45,12 @@ public class postsFragment extends Fragment {
 
         /*timeline feed*/
         new Handler().postDelayed(this::getTimelineFeed, 1000);
+
+        /*refreshing posts*/
+        postsBinding.postsRefreshLayout.setOnRefreshListener(() -> {
+            new Handler().postDelayed(this::getTimelineFeed, 1000);
+            postsBinding.postsRefreshLayout.setRefreshing(false);
+        });
     }
 
     private void getTimelineFeed () {

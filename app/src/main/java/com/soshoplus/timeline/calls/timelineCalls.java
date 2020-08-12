@@ -44,6 +44,7 @@ import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userData;
+import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
@@ -55,6 +56,7 @@ import java.io.File;
 import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
+import de.adorsys.android.securestoragelibrary.SecureStorageException;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -281,7 +283,27 @@ public class timelineCalls {
                                 if (errors.getErrorId().equals("2")) {
                                     popupView = new XPopup.Builder(context).asConfirm("Oops..!", "Sorry session expired please sign in again",
                                             null, "Dismiss", () -> {
-                                        popupView.delayDismiss(300);
+
+                                        popupView.delayDismissWith(500, new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                try {
+                                                    SecurePreferences.clearAllValues(context);
+                                                    Log.d(TAG, "onNext: " + "USER LOGGED OUT");
+
+                                                    Intent intent = new Intent(context, signIn.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                    context.startActivity(intent);
+                                                    ((FragmentActivity) context).finish();
+
+                                                } catch (SecureStorageException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+
                                     }, null, true, 0).show();
                                 }
                                 else {

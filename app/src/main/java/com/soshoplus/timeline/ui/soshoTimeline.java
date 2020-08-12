@@ -88,4 +88,9 @@ public class soshoTimeline extends AppCompatActivity {
             return true;
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.moveTaskToBack(true);
+    }
 }

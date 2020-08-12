@@ -6,16 +6,11 @@
 
 package com.soshoplus.timeline.adapters;
 
-import android.util.Log;
-import android.view.View;
 import android.webkit.MimeTypeMap;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseProviderMultiAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.module.UpFetchModule;
 import com.soshoplus.timeline.R;

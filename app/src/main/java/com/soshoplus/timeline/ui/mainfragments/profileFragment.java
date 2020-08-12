@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.simpleProfileCalls;

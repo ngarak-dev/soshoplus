@@ -11,12 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.lxj.xpopup.core.ImageViewerPopupView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.userPhotosAdapter;
-import com.soshoplus.timeline.ui.user_profile.userProfile;
 
 public class adFullImageViewPopup extends ImageViewerPopupView {
     

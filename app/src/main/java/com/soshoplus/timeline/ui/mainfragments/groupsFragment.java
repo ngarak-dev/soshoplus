@@ -21,7 +21,6 @@ import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.joinedGroupsCalls;
 import com.soshoplus.timeline.calls.recommendedGroupsCalls;
 import com.soshoplus.timeline.databinding.FragmentGroupsBinding;
-import com.soshoplus.timeline.databinding.FragmentTimelineBinding;
 
 import org.jetbrains.annotations.NotNull;
 

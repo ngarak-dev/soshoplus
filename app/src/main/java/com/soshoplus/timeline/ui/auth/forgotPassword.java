@@ -6,7 +6,6 @@
 
 package com.soshoplus.timeline.ui.auth;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;

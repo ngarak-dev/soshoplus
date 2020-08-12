@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +28,6 @@ import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.groupCalls;
 import com.soshoplus.timeline.databinding.ActivityViewGroupBinding;
 import com.soshoplus.timeline.models.apiErrors;
-import com.soshoplus.timeline.models.groups.addingUser;
 import com.soshoplus.timeline.models.groups.join.join_unjoin;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;

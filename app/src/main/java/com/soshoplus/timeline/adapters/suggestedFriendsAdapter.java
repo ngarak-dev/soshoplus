@@ -12,13 +12,9 @@ import android.widget.TextView;
 
 import androidx.core.os.HandlerCompat;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.shape.CornerFamily;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.friends.suggested.suggestedInfo;
 

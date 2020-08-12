@@ -115,8 +115,8 @@ public class timelineCalls {
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
     
-    public void getTimelineFeed (RecyclerView timelinePostsList,
-                                 ProgressBar progressBarTimeline, RelativeLayout timelineErrorLayout, MaterialButton tryAgain) {
+    public void getTimelineFeed(RecyclerView timelinePostsList,
+                                ProgressBar progressBarTimeline, RelativeLayout timelineErrorLayout, MaterialButton tryAgain) {
     
         /*load posts*/
         Log.d(TAG, "LOADING : " + firstData);
@@ -192,7 +192,7 @@ public class timelineCalls {
             
                                 /*setting adapter*/
                                 timelinePostsList.setAdapter(feedAdapter);
-                                
+
                                 /*.........*/
                                 timelinePostsList.setVisibility(View.VISIBLE);
 

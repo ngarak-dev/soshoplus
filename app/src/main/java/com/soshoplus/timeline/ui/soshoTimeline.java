@@ -7,22 +7,18 @@
 package com.soshoplus.timeline.ui;
 
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.viewPagerAdapter;
 import com.soshoplus.timeline.databinding.ActivitySoshotimelineBinding;
-import com.soshoplus.timeline.ui.mainfragments.friendsFragment;
-import com.soshoplus.timeline.ui.mainfragments.groupsFragment;
 import com.soshoplus.timeline.ui.mainfragments.moreFragment;
-import com.soshoplus.timeline.ui.mainfragments.profileFragment;
+import com.soshoplus.timeline.ui.mainfragments.notificationFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
 
 import java.util.ArrayList;
@@ -51,9 +47,7 @@ public class soshoTimeline extends AppCompatActivity {
         
         /*adding fragments*/
         fragmentList.add(new timelineFragment());
-        fragmentList.add(new friendsFragment());
-        fragmentList.add(new groupsFragment());
-        fragmentList.add(new profileFragment());
+        fragmentList.add(new notificationFragment());
         fragmentList.add(new moreFragment());
         
         /*setting view pager adapter*/
@@ -67,15 +61,17 @@ public class soshoTimeline extends AppCompatActivity {
                 Log.d(TAG, "onPageScrolled: ACTIVE POSITION : " + position);
                 soshoTimelineBinding.bottomNavigation.setItemActiveIndex(position);
             }
-    
+
             @Override
             public void onPageScrollStateChanged (int state) {
                 super.onPageScrollStateChanged(state);
             }
         });
+
         /*bottom navigation item click*/
         soshoTimelineBinding.bottomNavigation.setOnItemSelectedListener(position -> {
             Log.d(TAG, "onCreate: Bottom Navigation position: " + position);
+
             switch (position) {
                 case 0:
                     soshoTimelineBinding.soshoViewPager.setCurrentItem(0);
@@ -88,16 +84,7 @@ public class soshoTimeline extends AppCompatActivity {
                 case 2:
                     soshoTimelineBinding.soshoViewPager.setCurrentItem(2);
                     break;
-
-                case 3:
-                    soshoTimelineBinding.soshoViewPager.setCurrentItem(3);
-                    break;
-
-                case 4:
-                    soshoTimelineBinding.soshoViewPager.setCurrentItem(4);
-                    break;
             }
-
             return true;
         });
     }

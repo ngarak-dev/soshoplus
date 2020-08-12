@@ -12,8 +12,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -25,7 +23,6 @@ import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.userprofile.userData;
-import com.soshoplus.timeline.ui.user_profile.userProfile;
 import com.soshoplus.timeline.utils.xpopup.adFullImageViewPopup;
 import com.soshoplus.timeline.utils.xpopup.fullImageViewPopup;
 

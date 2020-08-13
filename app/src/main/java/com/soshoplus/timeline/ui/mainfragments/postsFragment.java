@@ -47,9 +47,13 @@ public class postsFragment extends Fragment {
         new Handler().postDelayed(this::getTimelineFeed, 1000);
 
         /*refreshing posts*/
-        postsBinding.postsRefreshLayout.setOnRefreshListener(() -> {
-            new Handler().postDelayed(this::getTimelineFeed, 1000);
-            postsBinding.postsRefreshLayout.setRefreshing(false);
+//        postsBinding.postsRefreshLayout.setOnRefreshListener(() -> {
+//            new Handler().postDelayed(this::getTimelineFeed, 1000);
+//            postsBinding.postsRefreshLayout.setRefreshing(false);
+//        });
+
+        postsBinding.postTypes.addPost.setOnClickListener(view_ -> {
+            postsBinding.postTypes.collapsingLayout.toggle();
         });
     }
 

@@ -96,7 +96,8 @@ dependencies {
     implementation 'com.github.onurkagan:KSnack:1.1.2'
     //secure shared pref
     implementation 'de.adorsys.android:securestoragelibrary:1.2.4'
-
+    //expendable
+    implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     /*........*/
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

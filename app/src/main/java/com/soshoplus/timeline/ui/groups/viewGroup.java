@@ -92,7 +92,7 @@ public class viewGroup extends AppCompatActivity {
         isJoined = intent.getBooleanExtra("is_joined", false);
 
         /*get group Info*/
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getGroupInfo, 300);
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getGroupInfo, 500);
     }
 
     /*get group info*/
@@ -141,13 +141,13 @@ public class viewGroup extends AppCompatActivity {
     }
 
     private void recommendedMenu() {
-        popupView = new XPopup.Builder(this).asBottomList(null, recOptions, recIcons, (position, text) -> {
+        popupView = new XPopup.Builder(this).asCenterList(null, recOptions, (position, text) -> {
             switch (position) {
                 case 0:
-                    popupView.dismissWith(this::showGroupInfo);
+                    popupView.delayDismissWith(1000, this::showGroupInfo);
                     break;
                 case 1:
-                    popupView.dismissWith(this::shareGroup);
+                    popupView.delayDismissWith(1000, this::shareGroup);
                     break;
             }
         });
@@ -155,19 +155,19 @@ public class viewGroup extends AppCompatActivity {
     }
 
     private void joinedMenu() {
-        popupView = new XPopup.Builder(this).asBottomList(null, joinedOptions, joinedIcons, (position, text) -> {
+        popupView = new XPopup.Builder(this).asCenterList(null, joinedOptions, (position, text) -> {
             switch (position) {
                 case 0:
-                    popupView.dismissWith(this::showGroupInfo);
+                    popupView.delayDismissWith(1000, this::showGroupInfo);
                     break;
                 case 1:
-                    popupView.dismissWith(this::shareGroup);
+                    popupView.delayDismissWith(1000, this::shareGroup);
                     break;
                 case 2:
-                    popupView.dismissWith(this::addFriendToGroup);
+                    popupView.delayDismissWith(1000, this::addFriendToGroup);
                     break;
                 case 3:
-                    popupView.dismissWith(this::leaveGroup);
+                    popupView.delayDismissWith(1000, this::leaveGroup);
                     break;
                 default:
             }
@@ -176,7 +176,7 @@ public class viewGroup extends AppCompatActivity {
     }
 
     private void leaveGroup() {
-        snack.setMessage("Leaving group");
+        snack.setMessage("Leaving group ....");
         snack.show();
 
         unJoinObservable =

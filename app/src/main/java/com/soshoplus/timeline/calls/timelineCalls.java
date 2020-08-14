@@ -247,7 +247,7 @@ public class timelineCalls {
                                                     new XPopup.Builder(context).asCustom(new previewProfilePopup(context,
                                                             feedAdapter.getData().get(position).getUserId()).show());
 
-                                                }, 500);
+                                                }, 1000);
                                                 break;
                                             case R.id.ad_media:
                                                 SimpleDraweeView ad_media = view.findViewById(R.id.ad_media);

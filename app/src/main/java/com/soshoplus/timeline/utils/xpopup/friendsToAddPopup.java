@@ -65,6 +65,7 @@ public class friendsToAddPopup extends FullScreenPopupView {
         super.onCreate();
 
         friendsRV = findViewById(R.id.friends_to_add_list);
+        MaterialButton back = findViewById(R.id.back_arrow);
 
         userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
         timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
@@ -75,7 +76,11 @@ public class friendsToAddPopup extends FullScreenPopupView {
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         /*get friendsToAdd*/
-        new Handler().postDelayed(this::geFriendsToAdd, 500);
+        new Handler().postDelayed(this::geFriendsToAdd, 1000);
+
+        back.setOnClickListener(view -> {
+            smartDismiss();
+        });
     }
 
     private void geFriendsToAdd() {

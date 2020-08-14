@@ -8,6 +8,7 @@ package com.soshoplus.timeline.calls;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Priority;
@@ -78,8 +80,8 @@ public class previewProfileCalls {
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
     
-    public void previewProfile (SimpleDraweeView cover_photo, ProgressBar progressBar_cover,
-                                SimpleDraweeView profile_pic, TextView name, ImageView verified_badge,
+    public void previewProfile (SimpleDraweeView cover_photo, SimpleDraweeView profile_pic,
+                                TextView name, ImageView verified_badge,
                                 ImageView level_badge, TextView no_followers, TextView no_following,
                                 MaterialButton follow, TextView about, ProgressBar progressBar_follow,
                                 String user_id, TextView follows_me) {
@@ -105,71 +107,74 @@ public class previewProfileCalls {
                             0 - moja kwa moja
                             1 - conform first*/
                         
-                            followPrivacy =
-                                    userInfo.getUserData().getConfirmFollowers();
-                        
-                            name.setText(userInfo.getUserData().getName());
-                            no_followers.setText(userInfo.getUserData().getDetails().getFollowersCount() + " followers");
-                            no_following.setText(userInfo.getUserData().getDetails().getFollowingCount() + " following");
-                        
-                            if (userInfo.getUserData().getAbout() != null) {
-                                about.setText(Html.fromHtml(userInfo.getUserData().getAbout()));
-                            }
-                            else {
-                                about.setText("Hey there I am using soshoplus");
-                            }
-                        
-                            if (userInfo.getUserData().getVerified().equals("1")) {
-                                verified_badge.setVisibility(View.VISIBLE);
-                            }
-                        
-                            switch (userInfo.getUserData().getProType()) {
-                                case "1":
-                                    level_badge.setImageResource(R.drawable.ic_star_badge);
-                                    level_badge.setVisibility(View.VISIBLE);
-                                    break;
-                                case "2":
-                                    level_badge.setImageResource(R.drawable.ic_hot_badge);
-                                    level_badge.setVisibility(View.VISIBLE);
-                                    break;
-                                case "3":
-                                    level_badge.setImageResource(R.drawable.ic_ultima_badge);
-                                    level_badge.setVisibility(View.VISIBLE);
-                                    break;
-                                case "4":
-                                    level_badge.setImageResource(R.drawable.ic_pro_badge);
-                                    level_badge.setVisibility(View.VISIBLE);
-                                    break;
-                                case "0":
-                                default:
-                                    level_badge.setVisibility(View.GONE);
-                            }
+                            followPrivacy = userInfo.getUserData().getConfirmFollowers();
+
+                            HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
+
+                                name.setText(userInfo.getUserData().getName());
+                                no_followers.setText(userInfo.getUserData().getDetails().getFollowersCount() + " followers");
+                                no_following.setText(userInfo.getUserData().getDetails().getFollowingCount() + " following");
+
+                                if (userInfo.getUserData().getAbout() != null) {
+                                    about.setText(Html.fromHtml(userInfo.getUserData().getAbout()));
+                                }
+                                else {
+                                    about.setText("Hey there I am using soshoplus");
+                                }
+
+                                if (userInfo.getUserData().getVerified().equals("1")) {
+                                    verified_badge.setVisibility(View.VISIBLE);
+                                }
+
+                                switch (userInfo.getUserData().getProType()) {
+                                    case "1":
+                                        level_badge.setImageResource(R.drawable.ic_star_badge);
+                                        level_badge.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "2":
+                                        level_badge.setImageResource(R.drawable.ic_hot_badge);
+                                        level_badge.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "3":
+                                        level_badge.setImageResource(R.drawable.ic_ultima_badge);
+                                        level_badge.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "4":
+                                        level_badge.setImageResource(R.drawable.ic_pro_badge);
+                                        level_badge.setVisibility(View.VISIBLE);
+                                        break;
+                                    case "0":
+                                    default:
+                                        level_badge.setVisibility(View.GONE);
+                                }
+
+                            });
                             
                             /*Follow privacy
                               is_following
                             * 0 = not following
                             * 1 = following
                             * 2 = requested*/
-                        
-                            if (userInfo.getUserData().getCanFollow() == 0 && userInfo.getUserData().getIsFollowing() == 0) {
-                                follow.setVisibility(View.GONE);
-                            } else if (userInfo.getUserData().getIsFollowing() == 0) {
-                                follow.setVisibility(View.VISIBLE);
-                                follow.setText("Follow");
-                            }
-                        
-                            else if (userInfo.getUserData().getIsFollowing() == 2) {
-                                follow.setText("Requested");
-                            }
-                            else {  /*(is_following == 1) */
-                                follow.setText("Following");
-                            }
-                            
-                            if(userInfo.getUserData().getIsFollowingMe() == 1) {
-                                follows_me.setText("Follows you");
-                            }
     
-                            AsyncTask.execute(() -> {
+                            HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
+                                if (userInfo.getUserData().getCanFollow() == 0 && userInfo.getUserData().getIsFollowing() == 0) {
+                                    follow.setVisibility(View.GONE);
+                                } else if (userInfo.getUserData().getIsFollowing() == 0) {
+                                    follow.setVisibility(View.VISIBLE);
+                                    follow.setText("Follow");
+                                }
+
+                                else if (userInfo.getUserData().getIsFollowing() == 2) {
+                                    follow.setText("Requested");
+                                }
+                                else {  /*(is_following == 1) */
+                                    follow.setText("Following");
+                                }
+
+                                if(userInfo.getUserData().getIsFollowingMe() == 1) {
+                                    follows_me.setText("Follows you");
+                                }
+
                                 /*profile*/
                                 profile_pic.setImageURI(userInfo.getUserData().getAvatar());
                                 /*cover*/
@@ -208,10 +213,12 @@ public class previewProfileCalls {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
-    
+
         follow.setOnClickListener(view -> {
             /*follow user*/
-            followUser(follow, progressBar_follow, user_id);
+            HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
+                followUser(follow, progressBar_follow, user_id);
+            });
         });
         
     }

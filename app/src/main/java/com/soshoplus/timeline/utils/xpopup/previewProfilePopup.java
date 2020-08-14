@@ -7,6 +7,7 @@
 package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
+import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,10 +19,11 @@ import androidx.core.os.HandlerCompat;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.lxj.xpopup.core.BottomPopupView;
+import com.lxj.xpopup.core.CenterPopupView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.previewProfileCalls;
 
-public class previewProfilePopup extends BottomPopupView {
+public class previewProfilePopup extends CenterPopupView {
     
     private previewProfileCalls calls;
     private static String user_id;
@@ -39,8 +41,7 @@ public class previewProfilePopup extends BottomPopupView {
     @Override
     protected void onCreate () {
         super.onCreate();
-        
-        ProgressBar progressBar_cover = findViewById(R.id.progressBar_cover);
+
         SimpleDraweeView cover_photo = findViewById(R.id.cover_photo);
         SimpleDraweeView profile_pic = findViewById(R.id.profile_pic);
         TextView username = findViewById(R.id.username);
@@ -52,22 +53,25 @@ public class previewProfilePopup extends BottomPopupView {
         
         MaterialButton follow = findViewById(R.id.follow_btn);
         TextView follows_me = findViewById(R.id.following_me);
-        
+
+        MaterialButton back = findViewById(R.id.back_arrow);
+
         TextView about_me = findViewById(R.id.about_me);
         ProgressBar progressBar_follow = findViewById(R.id.progressBar_follow);
-        
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run () {
-                
-                calls = new previewProfileCalls(getContext());
-                calls.previewProfile(cover_photo, progressBar_cover, profile_pic,
-                        username, verified_badge, level_badge, no_followers
-                        , no_following, follow, about_me, progressBar_follow, user_id
-                        , follows_me);
-                
-            }
+
+        new Handler().postDelayed(() -> {
+
+            calls = new previewProfileCalls(getContext());
+            calls.previewProfile(cover_photo, profile_pic,
+                    username, verified_badge, level_badge, no_followers
+                    , no_following, follow, about_me, progressBar_follow, user_id
+                    , follows_me);
+
         }, 500);
+
+        back.setOnClickListener(view -> {
+            smartDismiss();
+        });
     }
     
     @Override

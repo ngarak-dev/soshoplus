@@ -1,9 +1,10 @@
 package com.soshoplus.timeline.models.postsfeed.sharepost;
 
-import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import com.soshoplus.timeline.models.postsfeed.publisherInfo;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class shareData implements Serializable {
 

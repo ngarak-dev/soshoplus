@@ -6,18 +6,14 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.soshoplus.timeline.R;
@@ -57,13 +53,13 @@ public class friendsFragment extends Fragment {
         friendsBinding.getRoot();
 
         /*get Suggested friends*/
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getSuggestedFriends,
-                800);
+        new Handler().postDelayed(this::getSuggestedFriends,
+                1000);
 
         /*get Friends*/
         /*get Suggested friends*/
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getFriends,
-                800);
+        new Handler().postDelayed(this::getFriends,
+                1000);
     }
 
     private void getSuggestedFriends () {

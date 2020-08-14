@@ -14,19 +14,9 @@
         android:id="@+id/fragment_timeline" />
 
     <item
-        android:icon="@drawable/ic_add_user"
-        android:title="Friends"
-        android:id="@+id/fragment_friends" />
-
-    <item
-        android:icon="@drawable/ic_groups"
-        android:title="Groups"
-        android:id="@+id/fragment_groups" />
-
-    <item
-        android:icon="@drawable/ic_user"
-        android:title="Profile"
-        android:id="@+id/fragment_profile" />
+        android:icon="@drawable/ic_bell"
+        android:title="Notification"
+        android:id="@+id/fragment_notification" />
 
     <item
         android:icon="@drawable/ic_more"

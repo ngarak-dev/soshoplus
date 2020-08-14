@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
-import android.os.HandlerThread;
 import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.ProgressBar;

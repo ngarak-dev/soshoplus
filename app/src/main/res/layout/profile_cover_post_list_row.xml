@@ -72,7 +72,6 @@
             android:insetBottom="0dp"
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
-
         <TextView
             android:id="@+id/post_contents"
             android:layout_width="match_parent"

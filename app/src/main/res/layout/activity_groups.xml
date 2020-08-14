@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/groupsRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.groups.groups">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/back_arrow"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/_5sdp"
+                app:rippleColor="@color/light_grey"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:iconGravity="textStart"
+                android:padding="0dp"
+                app:iconTint="@color/gray"
+                app:iconPadding="0dp"
+                app:icon="@drawable/ic_arrow_back"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/create_group_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:chipIcon="@drawable/ic_add"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/back_arrow"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/my_group_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:text="My Groups"
+                app:chipIcon="@drawable/ic_groups"
+                android:layout_below="@id/back_arrow"
+                android:layout_toEndOf="@id/create_group_chip"/>
+
+            <TextView
+                android:id="@+id/suggested_groups_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Recommended"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/create_group_chip"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar_suggested"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_10sdp"
+                android:layout_toEndOf="@id/suggested_groups_title"
+                android:layout_alignTop="@id/suggested_groups_title"
+                android:layout_alignBottom="@id/suggested_groups_title"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/suggested_groups_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="gone"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/all_set_up_text"/>
+
+            <ImageView
+                android:id="@+id/all_set_up_img"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:elevation="@dimen/_10sdp"
+                android:src="@drawable/ic_all_set"
+                android:visibility="gone"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/suggested_groups_title"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/all_set_up_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="All set"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textAlignment="center"
+                android:textColor="@color/dim_gray"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/all_set_up_img"/>
+
+            <TextView
+                android:id="@+id/joined_groups_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Joined"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/suggested_groups_list"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar_joined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_10sdp"
+                android:layout_toEndOf="@id/joined_groups_title"
+                android:layout_alignTop="@id/joined_groups_title"
+                android:layout_alignBottom="@id/joined_groups_title"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/joined_groups_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:elevation="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/joined_groups_title"/>
+
+            <ImageView
+                android:id="@+id/joined_groups_show_here_img"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:elevation="@dimen/_10sdp"
+                android:src="@drawable/ic_group"
+                android:visibility="gone"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/joined_groups_list"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/joined_groups_show_here_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Groups you have joined will show up here"
+                android:textAlignment="center"
+                android:textColor="@color/dim_gray"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/joined_groups_show_here_img"/>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

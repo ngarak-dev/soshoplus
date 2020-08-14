@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 

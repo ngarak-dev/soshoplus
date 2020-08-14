@@ -23,9 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
@@ -64,15 +61,12 @@ public class userProfile extends AppCompatActivity {
     
     /*......*/
     private KSnack snack;
-    
     /*......*/
     private Observable<follow_unfollow> followUnFollowObservable;
-    
     /*.....*/
     private boolean blocked_user;
     private static String block_action;
     private Observable<block_unblock> blockUnblockObservable;
-    
     /*.....*/
     private Observable<postList> postListObservable;
     private List<post> photosList;
@@ -87,9 +81,9 @@ public class userProfile extends AppCompatActivity {
         setContentView(view);
         
         /*setting up actionbar*/
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(userProfileBinding.transToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         
         /*initializing ksnack*/
         snack = new KSnack(userProfile.this);
@@ -108,21 +102,18 @@ public class userProfile extends AppCompatActivity {
         user_id  = bundle.getString("user_id");
 
         /*getting user profile data */
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run () {
-                getUserProfile();
-            }
-        }, 500);
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getUserProfile, 500);
 
-    
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run () {
-                /*getting user photos*/
-                getUserPhotos();
-            }
-        }, 500);
+        /*getting user photos*/
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getUserPhotos, 500);
+
+        /*refreshing groups*/
+        userProfileBinding.profileRefreshLayout.setOnRefreshListener(() -> {
+            HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getUserProfile, 500);
+            HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getUserPhotos, 500);
+
+            userProfileBinding.profileRefreshLayout.setRefreshing(false);
+        });
     }
     
     private void getUserProfile () {

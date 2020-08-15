@@ -16,9 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.lxj.xpopup.XPopup;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.FragmentPostsBinding;
+import com.soshoplus.timeline.utils.xpopup.newNormalPostPopup;
 
 public class postsFragment extends Fragment {
 
@@ -46,14 +48,12 @@ public class postsFragment extends Fragment {
         /*timeline feed*/
         new Handler().postDelayed(this::getTimelineFeed, 1000);
 
-        /*refreshing posts*/
-//        postsBinding.postsRefreshLayout.setOnRefreshListener(() -> {
-//            new Handler().postDelayed(this::getTimelineFeed, 1000);
-//            postsBinding.postsRefreshLayout.setRefreshing(false);
-//        });
-
         postsBinding.postTypes.addPost.setOnClickListener(view_ -> {
             postsBinding.postTypes.collapsingLayout.toggle();
+        });
+
+        postsBinding.postTypes.newTxtPost.setOnClickListener(_view -> {
+            new XPopup.Builder(requireContext()).asCustom(new newNormalPostPopup(requireContext())).show();
         });
     }
 

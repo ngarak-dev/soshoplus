@@ -23,6 +23,7 @@ import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.adapter.rxjava3.Result;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -207,4 +208,13 @@ public interface queries {
                                            @Field("new_password") String new_password,
                                            @Field("user_id") String user_id);
 
+    /*creating a new post*/
+    @FormUrlEncoded
+    @POST("new_post")
+    Observable<simpleResponse> createPost (@Query("access_token") String access_token,
+                                   @Field("server_key") String server_key,
+                                   @Field("user_id") String user_id,
+                                   @Field("post_color") String color,
+                                   @Field("postFile") String postFile,
+                                   @Field("postMap") String postMap);
 }

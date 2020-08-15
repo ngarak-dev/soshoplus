@@ -53,7 +53,8 @@ public class postsFragment extends Fragment {
         });
 
         postsBinding.postTypes.newTxtPost.setOnClickListener(_view -> {
-            new XPopup.Builder(requireContext()).asCustom(new newNormalPostPopup(requireContext())).show();
+            new XPopup.Builder(requireContext())
+                    .asCustom(new newNormalPostPopup(requireContext(), postsBinding.postProgress)).show();
         });
     }
 

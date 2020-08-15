@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -43,6 +44,7 @@ import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
+import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.utils.queries;
@@ -103,6 +105,9 @@ public class timelineCalls {
     /*......*/
     private Observable<postAction> postActionObservable;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
+
+    /*......*/
+    private Observable<simpleResponse> createPostResponse;
     
     /*constructor*/
     public timelineCalls (Context context) {
@@ -700,5 +705,60 @@ public class timelineCalls {
     public static void hidePOST(timelineFeedAdapter feedAdapter, int position) {
         feedAdapter.getData().remove(position);
         feedAdapter.notifyItemRemoved(position);
+    }
+
+    /*create a new post*/
+    public void createNewPost(String postText, ProgressBar progressBar) {
+        createPostResponse = rxJavaQueries.createPost(accessToken,
+                BuildConfig.server_key, userId, postText,"0", "", "");
+
+        createPostResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<simpleResponse>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+
+                    @Override
+                    public void onNext(@NonNull simpleResponse simpleResponse) {
+                        if (simpleResponse.getApiStatus() == 200) {
+                            Log.d(TAG, "onNext: " + simpleResponse.getApiStatus());
+
+                            progressBar.setProgress(100);
+
+                            Toast toast = Toast.makeText(context, "Post created successful ... ", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        else {
+                            apiErrors errors  = simpleResponse.getErrors();
+                            Log.d(TAG, "ERROR: " + errors.getErrorId());
+
+                            progressBar.setProgress(0);
+                            Toast toast = Toast.makeText(context, "Failed to create post ... ", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+
+                        progressBar.setProgress(0);
+                        Toast toast = Toast.makeText(context, "Failed to create post ... ", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 }

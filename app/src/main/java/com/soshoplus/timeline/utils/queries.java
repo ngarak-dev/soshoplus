@@ -214,6 +214,7 @@ public interface queries {
     Observable<simpleResponse> createPost (@Query("access_token") String access_token,
                                    @Field("server_key") String server_key,
                                    @Field("user_id") String user_id,
+                                   @Field("postText") String postText,
                                    @Field("post_color") String color,
                                    @Field("postFile") String postFile,
                                    @Field("postMap") String postMap);

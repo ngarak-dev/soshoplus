@@ -16,6 +16,14 @@
     <include layout="@layout/post_types_layout"
         android:id="@+id/post_types"/>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/post_progress"
+        android:indeterminate="true"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeline_posts_list"
         android:layout_width="match_parent"

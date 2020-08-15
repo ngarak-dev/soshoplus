@@ -708,9 +708,9 @@ public class timelineCalls {
     }
 
     /*create a new post*/
-    public void createNewPost(String postText, ProgressBar progressBar) {
+    public void createNewPost(String postText, ProgressBar progressBar, String post_color) {
         createPostResponse = rxJavaQueries.createPost(accessToken,
-                BuildConfig.server_key, userId, postText,"0", "", "");
+                BuildConfig.server_key, userId, postText,post_color, "", "");
 
         createPostResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

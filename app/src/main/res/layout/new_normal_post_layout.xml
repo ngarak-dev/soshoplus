@@ -42,6 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/_12ssp"
             android:text="New Post"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/send_post_btn"
@@ -85,6 +86,7 @@
             app:layout_constraintTop_toBottomOf="@id/divider"
             android:layout_margin="@dimen/_10sdp"
             android:background="@drawable/rectangle"
+            android:textSize="@dimen/_12ssp"
             android:gravity="start"
             android:hint="What's going on? #Hashtag.. @Mention.. Link.."
             android:maxLines="18"
@@ -97,7 +99,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/post_txt_contents"
             android:layout_margin="@dimen/_10sdp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             android:padding="0dp"
             app:iconPadding="0dp"
@@ -131,36 +133,56 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/color_0"
+                        android:orientation="horizontal"
+                        android:layout_width="@dimen/_35sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:background="@drawable/post_gradient_zero"/>
+
+                    <LinearLayout
+                        android:id="@+id/color_1"
+                        android:orientation="horizontal"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/post_gradient_one"/>
 
                     <LinearLayout
+                        android:id="@+id/color_2"
+                        android:orientation="horizontal"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/post_gradient_two"/>
 
                     <LinearLayout
+                        android:id="@+id/color_3"
+                        android:orientation="horizontal"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/post_gradient_three"/>
 
                     <LinearLayout
+                        android:id="@+id/color_4"
+                        android:orientation="horizontal"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/post_gradient_four"/>
 
                     <LinearLayout
+                        android:id="@+id/color_5"
+                        android:orientation="horizontal"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:background="@drawable/post_gradient_five"/>
 
                     <LinearLayout
+                        android:id="@+id/color_6"
+                        android:orientation="horizontal"
                         android:layout_width="@dimen/_35sdp"
                         android:layout_height="@dimen/_35sdp"
                         android:layout_marginEnd="@dimen/_5sdp"

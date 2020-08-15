@@ -51,26 +51,26 @@ public class ColouredPost extends BaseItemProvider<post> {
         /*setting colour*/
         switch (post.getColorId()) {
             case "1":
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.gradient_one);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_gradient_one);
                 break;
             case "2":
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.gradient_two);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_gradient_two);
                 break;
             case "3":
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.gradient_three);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_gradient_three);
                 break;
             case "4":
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.gradient_four);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_gradient_four);
                 break;
             case "5":
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.gradient_five);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_gradient_five);
                 break;
             case "6":
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.gradient_six);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_gradient_six);
                 break;
             default:
                 /*when the number exceeds*/
-                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.default_gradient);
+                baseViewHolder.setBackgroundResource(R.id.color_holder, R.drawable.post_default_gradient);
                 break;
         }
 

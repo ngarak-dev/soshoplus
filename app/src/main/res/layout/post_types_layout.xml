@@ -14,8 +14,8 @@
     android:layout_marginTop="@dimen/_5sdp">
 
     <ImageView
-        android:layout_width="@dimen/_45sdp"
-        android:layout_height="@dimen/_45sdp"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_35sdp"
         android:id="@+id/add_post"
         android:src="@drawable/ic_add_post"
         app:layout_constraintStart_toStartOf="parent"

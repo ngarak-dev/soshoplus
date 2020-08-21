@@ -6,9 +6,7 @@
 
 package com.soshoplus.timeline.ui.mainfragments;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -17,26 +15,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.lxj.xpopup.XPopup;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.FragmentPostsBinding;
-import com.soshoplus.timeline.ui.imagePost;
+import com.soshoplus.timeline.ui.imageVideoPost;
 import com.soshoplus.timeline.utils.xpopup.newNormalPostPopup;
 
 public class postsFragment extends Fragment {
 
-    private static final String PHOTOS_KEY = "photos_list";
-    private static final int CHOOSER_PERMISSIONS_REQUEST_CODE = 7459;
-    private static final int CAMERA_REQUEST_CODE = 7500;
-    private static final int CAMERA_VIDEO_REQUEST_CODE = 7501;
-    private static final int GALLERY_REQUEST_CODE = 7502;
-    private static final int DOCUMENTS_REQUEST_CODE = 7503;
-    /*........*/
+    private static String TAG = "posts Fragment";
+
     private FragmentPostsBinding postsBinding;
     private timelineCalls calls;
 
@@ -78,18 +69,21 @@ public class postsFragment extends Fragment {
 
         /*post with images*/
         postsBinding.postTypes.imagePost.setOnClickListener(view_ -> {
+            new Handler().postDelayed(() -> {
+                Intent intent = new Intent(requireContext(), imageVideoPost.class);
+                intent.putExtra("type", 1);
+                startActivity(intent);
+            }, 500);
+        });
 
-            /** Inaweza kukataa kwenye simu zingine*/
-            String[] necessaryPermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            if (arePermissionsGranted(necessaryPermissions)) {
-                new Handler().postDelayed(() -> {
-                    startActivity(new Intent(requireContext(), imagePost.class));
-                }, 500);
+        /*post with video*/
+        postsBinding.postTypes.videoPost.setOnClickListener(view_ -> {
+            new Handler().postDelayed(() -> {
+                Intent intent = new Intent(requireContext(), imageVideoPost.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
 
-            } else {
-                requestPermissionsCompat(necessaryPermissions, GALLERY_REQUEST_CODE);
-            }
-
+            }, 500);
         });
     }
 
@@ -99,34 +93,4 @@ public class postsFragment extends Fragment {
             postsBinding.progressBarTimeline,
             postsBinding.timelineErrorLayout, postsBinding.tryAgain);
     }
-
-    /*permissions*/
-    private boolean arePermissionsGranted(String[] permissions) {
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED)
-                return false;
-        }
-        return true;
-    }
-
-    private void requestPermissionsCompat(String[] permissions, int requestCode) {
-        ActivityCompat.requestPermissions(requireActivity(), permissions, requestCode);
-    }
-
-    //    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//
-//        if (requestCode == CHOOSER_PERMISSIONS_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            /*TODO Fungua Chooser*/
-//        } else if (requestCode == CAMERA_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            /*TODO Fungua Kamera*/
-//        } else if (requestCode == CAMERA_VIDEO_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            /*TODO Fungua Kamera ya Video*/
-//        } else if (requestCode == GALLERY_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            /*TODO Fungua Gallery*/
-//        } else if (requestCode == DOCUMENTS_REQUEST_CODE && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            /*TODO Fungua documents chooser*/
-//        }
-//    }
 }

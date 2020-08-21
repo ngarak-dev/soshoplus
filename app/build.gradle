@@ -12,7 +12,7 @@ server_keyProperties.load(new FileInputStream(server_key_PropertiesFile))
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.1'
+    buildToolsVersion '30.0.2'
 
     buildFeatures {
         viewBinding = true
@@ -89,7 +89,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //multi image
-    implementation 'com.github.ydslib:MultiImageView:1.0.4'
+//    implementation 'com.github.ydslib:MultiImageView:1.0.4'
     //bottom navigation
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.6'
     //snackbar library
@@ -98,8 +98,9 @@ dependencies {
     implementation 'de.adorsys.android:securestoragelibrary:1.2.4'
     //expendable
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
-    /*........*/
-    implementation 'com.github.jkwiecien:EasyImage:3.0.4'
+
+    implementation 'com.ypx.yimagepicker:androidx:3.1.4'
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -17,9 +18,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.HandlerCompat;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
+import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.previewImagesAdapter;
 import com.soshoplus.timeline.calls.timelineCalls;
@@ -32,20 +35,32 @@ import com.ypx.imagepicker.bean.PickerError;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener;
 import com.ypx.imagepicker.data.OnImagePickCompleteListener2;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class imageVideoPost extends AppCompatActivity {
 
     private static String TAG = "Image Post : ";
+    private String accessToken;
     private static int type;
     private previewImagesAdapter imagesAdapter;
     private ArrayList<ImageItem> photos = new ArrayList<>();
 
     private ActivityImagePostBinding postBinding;
-    private timelineCalls calls;
     private BasePopupView popupView;
 
     @Override
@@ -55,6 +70,10 @@ public class imageVideoPost extends AppCompatActivity {
         View view = postBinding.getRoot();
         setContentView(view);
 
+
+        accessToken = SecurePreferences.getStringValue(imageVideoPost.this, "accessToken"
+                , "0");
+
         Bundle bundle = getIntent().getExtras();
         type = bundle.getInt("type");
 
@@ -63,8 +82,6 @@ public class imageVideoPost extends AppCompatActivity {
                 .dismissOnTouchOutside(false)
                 .autoDismiss(false)
                 .asLoading("Creating a post... ");
-
-        calls = new timelineCalls(imageVideoPost.this);
 
         postBinding.closeBtn.setOnClickListener(view_ -> {
             onBackPressed();
@@ -86,7 +103,6 @@ public class imageVideoPost extends AppCompatActivity {
                             }
                             onPhotosReturned(items);
                         });
-
             }
             else {
                 ImagePicker.withCrop(new RedBookPresenter())
@@ -144,57 +160,72 @@ public class imageVideoPost extends AppCompatActivity {
     }
 
     private void sendPost() {
+        postBinding.postProgress.setVisibility(View.VISIBLE);
+        popupView.show();
 
         new Handler().postDelayed(() -> {
+            AsyncTask.execute(() -> {
+                createNewMediaPost(postBinding.postTxtContents.getText().toString(), new File(photos.get(0).getCropUrl()));
+            });
 
-            new AsyncTask<String, Void, Boolean>() {
+        }, 500);
+    }
 
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-                    postBinding.postProgress.setVisibility(View.VISIBLE);
-                    popupView.show();
-                }
+    private void createNewMediaPost(String postText, File file) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("server_key", BuildConfig.server_key)
+                .addFormDataPart("postText", postText)
+                .addFormDataPart("postFile",file.getName(),
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                new File(file.getAbsolutePath())))
+                .build();
 
-                @Override
-                protected Boolean doInBackground(String... strings) {
+        Request request = new Request.Builder()
+                .url("https://soshoplus.com/api/new_post?access_token=" + accessToken)
+                .method("POST", body)
+                .build();
 
-                    try {
-                        calls.createNewMediaPost(postBinding.postTxtContents.getText().toString(), new File(photos.get(0).getPath()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.d(TAG, "EXCEPTION: " + e.getMessage());
-                    }
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+                Log.d(TAG, "onFailure: ");
 
-                    return true;
-                }
-
-                @Override
-                protected void onCancelled() {
-                    super.onCancelled();
-
-                    Toast toast = Toast.makeText(imageVideoPost.this, "Oops ! ... Canceled", Toast.LENGTH_LONG);
+                HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
+                    Toast toast = Toast.makeText(imageVideoPost.this, "Failed to create post ... ", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                     toast.show();
-                }
 
-                @Override
-                protected void onPostExecute(Boolean aBoolean) {
-                    super.onPostExecute(aBoolean);
                     postBinding.postProgress.setVisibility(View.GONE);
                     popupView.smartDismiss();
 
                     /*move task back*/
                     onBackPressed();
+                });
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) {
+                if (response.isSuccessful()) {
+                    HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
+                        Toast toast = Toast.makeText(imageVideoPost.this, "Post created successful ... ", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.show();
+
+                        postBinding.postProgress.setVisibility(View.GONE);
+                        popupView.smartDismiss();
+
+                        /*move task back*/
+                        onBackPressed();
+                    });
                 }
-            }.execute();
-
-        }, 500);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+                else {
+                    Log.d(TAG, "onResponse: " + response.code());
+                }
+            }
+        });
     }
 
     private void onPhotosReturned(ArrayList<ImageItem> items) {

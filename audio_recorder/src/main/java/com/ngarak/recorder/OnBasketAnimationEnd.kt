@@ -1,8 +1,11 @@
-include ':audio_recorder' /*******************************************************************************
+/*******************************************************************************
  * Ngara K. Android Application Developer
  * ngarakiringo@gmail.com
  * Copyright (c) 2020
  ******************************************************************************/
 
-rootProject.name='Soshoplus'
-include ':app'
+package com.ngarak.recorder
+
+interface OnBasketAnimationEnd {
+    fun onAnimationEnd()
+}

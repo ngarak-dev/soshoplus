@@ -6,14 +6,11 @@
 
 package com.soshoplus.timeline.calls;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,8 +55,6 @@ import com.soshoplus.timeline.utils.xpopup.timelineAdFullViewPopup;
 import com.soshoplus.timeline.utils.xpopup.timelineImageViewPopup;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -71,13 +65,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class timelineCalls {
     
@@ -775,36 +762,7 @@ public class timelineCalls {
     }
 
     /*post with attachment*/
-    public void createNewMediaPost(String postText, File file) throws IOException {
-
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("server_key", BuildConfig.server_key)
-                .addFormDataPart("postText", postText)
-                .addFormDataPart("postFile",file.getName(),
-                        RequestBody.create(MediaType.parse("application/octet-stream"),
-                                new File(file.getAbsolutePath())))
-                .build();
-
-        Request request = new Request.Builder()
-                .url("https://soshoplus.com/api/new_post?access_token=" + accessToken)
-                .method("POST", body)
-                .build();
-        Response response = client.newCall(request).execute();
-
-        if (response.isSuccessful()) {
-
-            HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
-
-                Toast toast = Toast.makeText(context, "Post created successful ... ", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                toast.show();
-
-            });
-        }
-        else {
-            Log.d(TAG, "createNewMediaPost: " + response.code());
-        }
-    }
+//    public void createNewMediaPost(String postText, File file) throws IOException {
+//
+//    }
 }

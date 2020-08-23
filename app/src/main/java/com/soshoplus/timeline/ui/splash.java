@@ -28,9 +28,6 @@ public class splash extends Activity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        /*Fresco*/
-        Fresco.initialize(splash.this);
-        
         /*binding*/
         splashBinding = ActivitySplashBinding.inflate(getLayoutInflater());
         View view = splashBinding.getRoot();

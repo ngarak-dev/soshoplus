@@ -21,6 +21,7 @@ import com.lxj.xpopup.XPopup;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.FragmentPostsBinding;
+import com.soshoplus.timeline.ui.audioRecorderPost;
 import com.soshoplus.timeline.ui.imageVideoPost;
 import com.soshoplus.timeline.utils.xpopup.newNormalPostPopup;
 
@@ -80,6 +81,25 @@ public class postsFragment extends Fragment {
         postsBinding.postTypes.videoPost.setOnClickListener(view_ -> {
             new Handler().postDelayed(() -> {
                 Intent intent = new Intent(requireContext(), imageVideoPost.class);
+                intent.putExtra("type", 2);
+                startActivity(intent);
+
+            }, 500);
+        });
+
+        /*posts with audio/ recorder*/
+        postsBinding.postTypes.audioPost.setOnClickListener(view_ -> {
+            new Handler().postDelayed(() -> {
+                Intent intent = new Intent(requireContext(), audioRecorderPost.class);
+                intent.putExtra("type", 1);
+                startActivity(intent);
+
+            }, 500);
+        });
+
+        postsBinding.postTypes.audioRecordPost.setOnClickListener(view_ -> {
+            new Handler().postDelayed(() -> {
+                Intent intent = new Intent(requireContext(), audioRecorderPost.class);
                 intent.putExtra("type", 2);
                 startActivity(intent);
 

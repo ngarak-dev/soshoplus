@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,9 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/soshoDayNight_default">
+        <activity
+            android:name=".ui.audioRecorderPost"
+            android:theme="@style/soshoDayNight_noActionBar" />
         <activity
             android:name=".ui.imageVideoPost"
             android:theme="@style/soshoDayNight_noActionBar" />
@@ -50,20 +55,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!--................-->
-        <activity android:name="com.teafinn.advance_gallery.ui.activity.AwCamera"
+        <!-- ................ -->
+        <activity
+            android:name="com.teafinn.advance_gallery.ui.activity.AwCamera"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/soshoDayNight_noActionBar">
-        </activity>
-
-        <activity android:name="com.teafinn.advance_gallery.ui.activity.TGallery"
+            android:theme="@style/soshoDayNight_noActionBar"></activity>
+        <activity
+            android:name="com.teafinn.advance_gallery.ui.activity.TGallery"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/soshoDayNight_noActionBar">
-        </activity>
-
+            android:theme="@style/soshoDayNight_noActionBar"></activity>
     </application>
 
 </manifest>

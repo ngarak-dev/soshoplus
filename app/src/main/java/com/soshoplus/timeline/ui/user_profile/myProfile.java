@@ -4,34 +4,30 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.soshoplus.timeline.ui.mainfragments;
+package com.soshoplus.timeline.ui.user_profile;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.soshoplus.timeline.BuildConfig;
-import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.simpleProfileCalls;
-import com.soshoplus.timeline.databinding.FragmentProfileBinding;
+import com.soshoplus.timeline.databinding.ActivityMyProfileBinding;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.changePasswordPopup;
-
-import org.jetbrains.annotations.NotNull;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import de.adorsys.android.securestoragelibrary.SecureStorageException;
@@ -42,17 +38,10 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class profileFragment extends Fragment {
-    
-    public profileFragment () {
-        // Required empty public constructor
-    }
+public class myProfile extends AppCompatActivity {
 
-    private static String TAG = "profileFragment ";
-    private FragmentProfileBinding profileBinding;
+    private ActivityMyProfileBinding binding;
+    private static String TAG = "my Profile ";
     private String userId, timezone, accessToken;
     /*..........*/
     private simpleProfileCalls calls;
@@ -62,20 +51,20 @@ public class profileFragment extends Fragment {
     private BasePopupView basePopupView;
 
     @Override
-    public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
-    
-    @Override
-    public void onViewCreated (@androidx.annotation.NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        profileBinding = FragmentProfileBinding.bind(view);
-        profileBinding.getRoot();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMyProfileBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        userId = SecurePreferences.getStringValue(requireContext(), "userId", "0");
-        timezone = SecurePreferences.getStringValue(requireContext(), "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(requireContext(), "accessToken"
+        /*setting up actionbar*/
+        setSupportActionBar(binding.transToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        userId = SecurePreferences.getStringValue(myProfile.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(myProfile.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(myProfile.this, "accessToken"
                 , "0");
 
         /*initializing query*/
@@ -84,26 +73,26 @@ public class profileFragment extends Fragment {
         new Handler().postDelayed(this::loadProfile, 500);
 
         /*initializing loading dialog*/
-        basePopupView = new XPopup.Builder(requireContext())
+        basePopupView = new XPopup.Builder(myProfile.this)
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
                 .autoDismiss(false)
                 .asLoading("Please wait");
 
         /*logout*/
-        profileBinding.logout.setOnClickListener(_view -> {
+        binding.logout.setOnClickListener(_view -> {
             new Handler().postDelayed(this::logOutUser, 300);
         });
 
         /*change password*/
-        profileBinding.toChangePassword.setOnClickListener(__view -> {
+        binding.toChangePassword.setOnClickListener(__view -> {
             new Handler().postDelayed(this::changePassword, 300);
         });
     }
 
     private void loadProfile() {
-        calls = new simpleProfileCalls(requireContext());
-        calls.getProfile(profileBinding.profilePic, profileBinding.fullName, profileBinding.userEmail);
+        calls = new simpleProfileCalls(myProfile.this);
+        calls.getProfile(binding.profilePic, binding.fullName, binding.userEmail);
     }
 
     /*logout user*/
@@ -126,17 +115,17 @@ public class profileFragment extends Fragment {
                         if (simpleResponse.getApiStatus() == 200) {
 
                             try {
-                                SecurePreferences.clearAllValues(requireContext());
+                                SecurePreferences.clearAllValues(myProfile.this);
                                 Log.d(TAG, "onNext: " + "USER LOGGED OUT");
 
                                 basePopupView.delayDismissWith(300, new Runnable() {
                                     @Override
                                     public void run() {
-                                        Intent intent = new Intent(requireContext(), signIn.class);
+                                        Intent intent = new Intent(myProfile.this, signIn.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                                         startActivity(intent);
-                                        ((FragmentActivity) requireContext()).finish();
+                                        ((FragmentActivity) myProfile.this).finish();
                                     }
                                 });
 
@@ -164,6 +153,20 @@ public class profileFragment extends Fragment {
 
     /*change password*/
     private void changePassword() {
-        new XPopup.Builder(requireContext()).asCustom(new changePasswordPopup(requireContext())).show();
+        new XPopup.Builder(myProfile.this).asCustom(new changePasswordPopup(myProfile.this)).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

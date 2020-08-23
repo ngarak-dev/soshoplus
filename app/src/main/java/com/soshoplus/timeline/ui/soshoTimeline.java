@@ -6,10 +6,15 @@
 
 package com.soshoplus.timeline.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
@@ -21,6 +26,7 @@ import com.soshoplus.timeline.databinding.ActivitySoshotimelineBinding;
 import com.soshoplus.timeline.ui.mainfragments.moreFragment;
 import com.soshoplus.timeline.ui.mainfragments.notificationFragment;
 import com.soshoplus.timeline.ui.mainfragments.timelineFragment;
+import com.soshoplus.timeline.ui.user_profile.myProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +46,11 @@ public class soshoTimeline extends AppCompatActivity {
 
         /*Fresco*/
         Fresco.initialize(soshoTimeline.this);
-        
+
         /*appBar*/
-        getSupportActionBar().setElevation(0);
+        setSupportActionBar(soshoTimelineBinding.transToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.color.colorPrimaryDark));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.ic_soshoplus_appbar);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         
         /*adding fragments*/
         fragmentList.add(new timelineFragment());
@@ -91,6 +94,22 @@ public class soshoTimeline extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.horz_more_dots, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.options) {
+            startActivity(new Intent(soshoTimeline.this, myProfile.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

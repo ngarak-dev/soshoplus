@@ -5,6 +5,7 @@
  ******************************************************************************/
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 def server_key_PropertiesFile = rootProject.file("server_key.properties")
 def server_keyProperties = new Properties()

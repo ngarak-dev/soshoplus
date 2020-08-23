@@ -72,7 +72,7 @@
             android:padding="0dp"
             app:iconTint="@color/gray"
             app:iconPadding="0dp"
-            app:icon="@drawable/ic_baseline_more"
+            app:icon="@drawable/ic_more_horiz"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"

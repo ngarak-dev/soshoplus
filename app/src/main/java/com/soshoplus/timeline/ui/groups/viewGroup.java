@@ -114,7 +114,7 @@ public class viewGroup extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.group_options, menu);
+        menuInflater.inflate(R.menu.horz_more_dots, menu);
         return true;
     }
 
@@ -126,7 +126,7 @@ public class viewGroup extends AppCompatActivity {
                 onBackPressed();
                 return true;
 
-            case R.id.group_options:
+            case R.id.options:
                 if (isJoined) {
                     new Handler().postDelayed(this::joinedMenu, 300);
                 }

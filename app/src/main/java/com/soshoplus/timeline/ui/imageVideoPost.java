@@ -90,7 +90,6 @@ public class imageVideoPost extends AppCompatActivity {
         postBinding.pickImage.setOnClickListener(view_ -> {
 
             if (type == 1) {
-
                 ImagePicker.withCrop(new RedBookPresenter())
                         .setMaxCount(1)
                         .showCamera(true)
@@ -128,13 +127,24 @@ public class imageVideoPost extends AppCompatActivity {
         });
 
         postBinding.sendPostBtn.setOnClickListener(view_ -> {
-            if (photos.size() == 0) {
-                Toast toast = Toast.makeText(imageVideoPost.this, "Select an image to post ... ", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                toast.show();
-            }
-            else {
-                sendPost();
+            if (type == 1) {
+                if (photos.size() == 0) {
+                    Toast toast = Toast.makeText(imageVideoPost.this, "Select an image to post ... ", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.show();
+                }
+                else {
+                    sendPost();
+                }
+            } else {
+                if (photos.size() == 0) {
+                    Toast toast = Toast.makeText(imageVideoPost.this, "Select a video to post ... ", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.show();
+                }
+                else {
+                    sendPost();
+                }
             }
         });
 

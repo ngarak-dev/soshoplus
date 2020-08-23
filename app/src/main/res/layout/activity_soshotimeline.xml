@@ -11,10 +11,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.soshoTimeline">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:elevation="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:theme="@style/soshoDayNight_default.AppBarOverlay"
+        android:translationZ="0.1dp"
+        app:elevation="0dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/appBarLayout">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:logo="@drawable/ic_soshoplus_appbar"
+            android:id="@+id/trans_toolbar"
+            android:background="@null"
+            app:popupTheme="@style/soshoDayNight_default.PopupOverlay"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/soshoViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/appBarLayout"
         android:layout_above="@id/bottom_navigation" />
 
     <me.ibrahimsn.lib.SmoothBottomBar

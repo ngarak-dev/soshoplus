@@ -8,7 +8,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/group_options"
+        android:id="@+id/options"
         android:title="Options"
         android:icon="@drawable/ic_more_horiz"
         app:showAsAction="always" />

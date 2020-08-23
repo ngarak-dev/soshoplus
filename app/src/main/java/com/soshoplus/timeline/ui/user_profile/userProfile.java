@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,12 +19,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.button.MaterialButton;
+import com.lxj.xpopup.XPopup;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
@@ -58,7 +59,6 @@ public class userProfile extends AppCompatActivity {
     private Observable<userInfo> userInfoObservable;
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private final static String TAG = "user Profile Calls";
-    
     /*......*/
     private KSnack snack;
     /*......*/
@@ -71,7 +71,10 @@ public class userProfile extends AppCompatActivity {
     private Observable<postList> postListObservable;
     private List<post> photosList;
     private userPhotosAdapter photosAdapter;
-    
+
+    private static String [] normal_menu = {"Poke", "Block", "Add to Family"};
+    private static String [] blocked_menu = {"Poke", "Unblock", "Add to Family"};
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -354,20 +357,7 @@ public class userProfile extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.user_profile, menu);
-    
-        Log.d(TAG, "onCreateOptionsMenu: " + blocked_user);
-        
-        if (blocked_user) {
-            menu.findItem(R.id.block_user).setChecked(true);
-            menu.findItem(R.id.block_user).setIcon(R.drawable.ic_blocked_user);
-            menu.findItem(R.id.block_user).setTitle("Unblock");
-        } else {
-            menu.findItem(R.id.block_user).setChecked(true);
-            menu.findItem(R.id.block_user).setIcon(R.drawable.ic_remove_user);
-            menu.findItem(R.id.block_user).setTitle("Block");
-        }
-        
+        menuInflater.inflate(R.menu.horz_more_dots, menu);
         return true;
     }
     
@@ -378,24 +368,53 @@ public class userProfile extends AppCompatActivity {
                 onBackPressed();
                 return true;
                 
-            case R.id.poke_user:
-                Toast.makeText(this, "Poke user", Toast.LENGTH_SHORT).show();
+            case R.id.options:
+                if (blocked_user) {
+                    new XPopup.Builder(userProfile.this).asCenterList(null, blocked_menu, (position, text) -> {
+                        switch (position) {
+                            case 0:
+                                Toast toast = Toast.makeText(userProfile.this, "Poke ... ", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
+                                break;
+                            case 1:
+                                blockUser();
+                                break;
+                            case 2:
+                                Toast _toast = Toast.makeText(userProfile.this, "Add to Family ... ", Toast.LENGTH_LONG);
+                                _toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                _toast.show();
+                                break;
+                        }
+                    }).show();
+                }
+                else {
+                    new XPopup.Builder(userProfile.this).asCenterList(null, normal_menu, (position, text) -> {
+                        switch (position) {
+                            case 0:
+                                Toast toast = Toast.makeText(userProfile.this, "Poke ... ", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
+                                break;
+                            case 1:
+                                blockUser();
+                                break;
+                            case 2:
+                                Toast _toast = Toast.makeText(userProfile.this, "Add to Family ... ", Toast.LENGTH_LONG);
+                                _toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                _toast.show();
+                                break;
+                        }
+                    }).show();
+                }
                 return true;
-                
-            case R.id.add_to_family:
-                Toast.makeText(this, "Add to Family", Toast.LENGTH_SHORT).show();
-                return true;
-                
-            case R.id.block_user:
-                blockUser(item);
-                return true;
-                
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
     
-    private void blockUser (MenuItem item) {
+    private void blockUser () {
         blockUnblockObservable = rxJavaQueries.blockUser(accessToken,
                 BuildConfig.server_key, user_id, block_action);
         
@@ -410,25 +429,26 @@ public class userProfile extends AppCompatActivity {
                     @Override
                     public void onNext (@NonNull block_unblock block_unblock) {
                         if (block_unblock.getApiStatus() == 200) {
-    
                             Log.d(TAG, "onNext: " + block_unblock.getBlockStatus());
                             
-                            if (block_unblock.getBlockStatus().equals(
-                                    "blocked")) {
-                                item.setIcon(R.drawable.ic_blocked_user);
-                                item.setTitle("Unblock");
-                                
+                            if (block_unblock.getBlockStatus().equals("blocked")) {
+                                blocked_user  = true;
                                 block_action = "un-block";
-                                snack.setMessage(fullName + " blocked");
+                                snack.setMessage("You have blocked " + fullName);
+
+                                Toast toast = Toast.makeText(userProfile.this, "You have blocked " + fullName, Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
                             }
                             else {
-                                item.setIcon(R.drawable.ic_remove_user);
-                                item.setTitle("Block");
-                                
+                                blocked_user  = false;
                                 block_action = "block";
                                 snack.setMessage(fullName + " un blocked");
+
+                                Toast toast = Toast.makeText(userProfile.this, fullName + " un blocked", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
                             }
-    
                         }
                         else {
                             apiErrors apiErrors =block_unblock.getErrors();

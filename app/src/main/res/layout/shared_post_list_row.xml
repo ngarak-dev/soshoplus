@@ -47,7 +47,7 @@
             app:layout_constraintTop_toBottomOf="@id/full_name"
             app:layout_constraintBottom_toTopOf="@id/time_ago"
             android:layout_marginStart="@dimen/_10sdp"
-            android:text="shared_a_post"
+            android:text="shared a post"
             android:textColor="@color/dim_gray" />
 
         <TextView

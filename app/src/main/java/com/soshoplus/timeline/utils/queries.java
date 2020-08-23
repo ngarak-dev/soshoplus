@@ -6,6 +6,8 @@
 
 package com.soshoplus.timeline.utils;
 
+import android.graphics.Bitmap;
+
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
@@ -22,10 +24,21 @@ import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
+import java.io.File;
+import java.util.HashMap;
+
 import io.reactivex.rxjava3.core.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.adapter.rxjava3.Result;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface queries {
@@ -207,4 +220,21 @@ public interface queries {
                                            @Field("new_password") String new_password,
                                            @Field("user_id") String user_id);
 
+    /*creating a new post*/
+    @FormUrlEncoded
+    @POST("new_post")
+    Observable<simpleResponse> createPost (@Query("access_token") String access_token,
+                                   @Field("server_key") String server_key,
+                                   @Field("user_id") String user_id,
+                                   @Field("postText") String postText,
+                                   @Field("post_color") String color,
+                                   @Field("postFile") String postFile,
+                                   @Field("postMap") String postMap);
+//
+//    @Multipart
+//    @POST("new_post")
+//    Observable<simpleResponse> createMediaPost (@Query("access_token") String access_token,
+//                                                @Part ("server_key") RequestBody server_key,
+//                                                @Part("postText") String postText,
+//                                                @Part MultipartBody.Part postFile);
 }

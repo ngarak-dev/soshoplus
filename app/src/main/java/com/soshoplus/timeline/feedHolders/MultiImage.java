@@ -17,15 +17,10 @@ import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.ImageViewerPopupView;
-import com.lxj.xpopup.interfaces.OnSrcViewUpdateListener;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
-import com.yds.library.IMultiImageLoader;
-import com.yds.library.MultiImageView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +34,7 @@ public class MultiImage extends BaseItemProvider<post> {
     private static String TAG = "MULTI IMAGE POST : ";
     
     SimpleDraweeView profile_pic;
-    MultiImageView post_multi_image;
+//    MultiImageView post_multi_image;
     MaterialButton like;
     
     @Override
@@ -56,7 +51,7 @@ public class MultiImage extends BaseItemProvider<post> {
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
     
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
-        post_multi_image = baseViewHolder.findView(R.id.post_multi_image);
+//        post_multi_image = baseViewHolder.findView(R.id.post_multi_image);
 
         like = baseViewHolder.findView(R.id.like_btn);
 
@@ -93,43 +88,43 @@ public class MultiImage extends BaseItemProvider<post> {
         }) {
 
             imageList.add(multi_photos.getImage());
-            post_multi_image.setImagesData(imageList);
-            post_multi_image.setGap(5);
-            post_multi_image.setShowText(true);
-            post_multi_image.setMaxSize(2);
-
-            post_multi_image.setMultiImageLoader(new IMultiImageLoader() {
-                @Override
-                public void load (Context context, Object url, ImageView imageView) {
-                    Glide.with(context).load(url).into(imageView);
-                }
-            });
+//            post_multi_image.setImagesData(imageList);
+//            post_multi_image.setGap(5);
+//            post_multi_image.setShowText(true);
+//            post_multi_image.setMaxSize(2);
+//
+//            post_multi_image.setMultiImageLoader(new IMultiImageLoader() {
+//                @Override
+//                public void load (Context context, Object url, ImageView imageView) {
+//                    Glide.with(context).load(url).into(imageView);
+//                }
+//            });
         }
 
-        post_multi_image.setOnItemImageClickListener(new MultiImageView.OnItemImageClickListener() {
-            @Override
-            public void onItemImageClick (Context context, ImageView imageView, int index, List list) {
-                new XPopup.Builder(getContext()).asImageViewer(imageView,
-                        index,
-                        list, new OnSrcViewUpdateListener() {
-                            @Override
-                            public void onSrcViewUpdate(@NotNull ImageViewerPopupView popupView, int position) {
-//                            popupView.updateSrcView((ImageView) recyclerView.getChildAt(position));
-                            }
-                        }, new fullImageLoader())
-                        .show();
-                /*TODO create layout for this*/
-            }
-        });
+//        post_multi_image.setOnItemImageClickListener(new MultiImageView.OnItemImageClickListener() {
+//            @Override
+//            public void onItemImageClick (Context context, ImageView imageView, int index, List list) {
+//                new XPopup.Builder(getContext()).asImageViewer(imageView,
+//                        index,
+//                        list, new OnSrcViewUpdateListener() {
+//                            @Override
+//                            public void onSrcViewUpdate(@NotNull ImageViewerPopupView popupView, int position) {
+////                            popupView.updateSrcView((ImageView) recyclerView.getChildAt(position));
+//                            }
+//                        }, new fullImageLoader())
+//                        .show();
+//                /*TODO create layout for this*/
+//            }
+//        });
     }
-    
+
     /*full screen image view*/
     static class fullImageLoader implements XPopupImageLoader {
         @Override
         public void loadImage (int position, @NonNull Object uri, @NonNull ImageView imageView) {
             Glide.with(imageView).load(uri).into(imageView);
         }
-        
+
         @Override
         public File getImageFile (@NonNull Context context, @NonNull Object uri) {
             try {

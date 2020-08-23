@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<resources>
+    <color name="colorPrimary">#0079BB</color>
+    <color name="colorPrimaryDark">#0F273C</color>
+    <color name="colorAccent">#008CC9</color>
+
+    <color name="slideToCancelTextColor">#444</color>
+    <color name="transparentBlack">#FF000000</color>
+    <color name="micRed">#e12626</color>
+</resources>

@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.lxj.xpopup.XPopup;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.FragmentPostsBinding;
@@ -111,6 +113,7 @@ public class postsFragment extends Fragment {
     calls = new timelineCalls(requireContext());
     calls.getTimelineFeed(postsBinding.timelinePostsList,
             postsBinding.progressBarTimeline,
-            postsBinding.timelineErrorLayout, postsBinding.tryAgain);
+            postsBinding.timelineErrorLayout, postsBinding.tryAgain,
+            postsBinding.refreshPostsLayout);
     }
 }

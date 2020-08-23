@@ -35,6 +35,9 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
@@ -123,12 +126,13 @@ public class timelineCalls {
     }
     
     public void getTimelineFeed(RecyclerView timelinePostsList,
-                                ProgressBar progressBarTimeline, RelativeLayout timelineErrorLayout, MaterialButton tryAgain) {
+                                ProgressBar progressBarTimeline, RelativeLayout timelineErrorLayout,
+                                MaterialButton tryAgain, SmartRefreshLayout refreshPostsLayout) {
     
         /*load posts*/
         Log.d(TAG, "LOADING : " + firstData);
         loadPosts(timelinePostsList, timelineErrorLayout,
-                tryAgain, progressBarTimeline);
+                tryAgain, progressBarTimeline, refreshPostsLayout);
         
         tryAgain.setOnClickListener(view -> {
             /*hide error layout*
@@ -138,19 +142,26 @@ public class timelineCalls {
             /*.........*/
             timelinePostsList.setVisibility(View.GONE);
             progressBarTimeline.setVisibility(View.VISIBLE);
-    
-            /*refresh data*/
-            loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
-            /*finish refresh*/
+
             /*hide progress*/
             new Handler().postDelayed(() -> {
                 progressBarTimeline.setVisibility(View.GONE);
             }, 500);
         });
+
+        refreshPostsLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@androidx.annotation.NonNull RefreshLayout refreshLayout) {
+                firstData = "0";
+                loadPosts(timelinePostsList, timelineErrorLayout,
+                        tryAgain, progressBarTimeline, refreshPostsLayout);
+            }
+        });
+
     }
     
-    private void loadPosts (RecyclerView timelinePostsList,
-                            RelativeLayout timelineErrorLayout, MaterialButton tryAgain, ProgressBar progressBarTimeline) {
+    private void loadPosts(RecyclerView timelinePostsList,
+                           RelativeLayout timelineErrorLayout, MaterialButton tryAgain, ProgressBar progressBarTimeline, SmartRefreshLayout refreshPostsLayout) {
     
         postListObserve =
                 rxJavaQueries.getTimelinePosts(accessToken,
@@ -189,6 +200,11 @@ public class timelineCalls {
                                         Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
                                     }
                                 }
+
+                                /*pullTorefesh */
+                                if (refreshPostsLayout.isRefreshing()) {
+                                    refreshPostsLayout.finishRefresh();
+                                }
     
                                 /*hide progress*/
                                 new Handler().postDelayed(() -> progressBarTimeline.setVisibility(View.GONE), 500);
@@ -209,7 +225,7 @@ public class timelineCalls {
                                     feedAdapter.getLoadMoreModule().setAutoLoadMore(true);
                                     feedAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
                                         /*load more posts*/
-                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
+                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout);
                                     });
                                 }
                                 
@@ -333,7 +349,7 @@ public class timelineCalls {
                                     if (feedAdapter == null) {
                                         /*refresh data*/
                                         firstData = "0";
-                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
+                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout);
                                     }
                                     else {
                                         feedAdapter.addData(tobeAdded);

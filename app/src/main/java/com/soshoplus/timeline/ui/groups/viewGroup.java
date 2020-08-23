@@ -108,7 +108,8 @@ public class viewGroup extends AppCompatActivity {
 
     private void getGroupPosts() {
         calls = new groupCalls(this);
-        calls.getGroupPosts(viewGroupBinding.groupPostList, group_id);
+        calls.getGroupPosts(viewGroupBinding.groupPostList, group_id,
+                viewGroupBinding.refreshPostsLayout);
     }
 
     @Override

@@ -9,7 +9,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/postsRefreshLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.mainfragments.postsFragment">
 
@@ -24,12 +23,26 @@
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:visibility="gone" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timeline_posts_list"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/post_types"
-        android:visibility="gone" />
+        android:id="@+id/refreshPostsLayout"
+        android:layout_below="@id/post_types">
+
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlEnableLastTime="false"
+            app:srlTextFinish="."
+            app:layout_srlBackgroundColor="@color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timeline_posts_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressBar_timeline"
@@ -45,7 +58,7 @@
         android:id="@+id/timelineErrorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/timeline_posts_list"
+        android:layout_below="@id/refreshPostsLayout"
         android:gravity="center_vertical"
         android:visibility="gone">
 

@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
@@ -86,7 +87,6 @@ public class groupCalls {
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
     private static String share_post_on_timeline = "share_post_on_timeline";
-
     /*........*/
     private static String fullName, timeAgo, noLikes, noComments;
     private static boolean isLiked;
@@ -95,8 +95,6 @@ public class groupCalls {
     /*......*/
     private Observable<postAction> postActionObservable;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
-
-
 
     public groupCalls(Context context) {
         this.context = context;
@@ -164,7 +162,7 @@ public class groupCalls {
                 });
     }
 
-    public void getGroupPosts(RecyclerView groupPostList, String group_id) {
+    public void getGroupPosts(RecyclerView groupPostList, String group_id, SmartRefreshLayout refreshPostsLayout) {
 
         postListObserve = rxJavaQueries.getGroupPosts(accessToken, BuildConfig.server_key,
                 group_id, get_group_posts, "5", firstData);
@@ -201,6 +199,11 @@ public class groupCalls {
                                     }
                                 }
 
+                                /*refresh layout*/
+                                if (refreshPostsLayout.isRefreshing()) {
+                                    refreshPostsLayout.finishRefresh();
+                                }
+
                                 /*initialize adapter*/
                                 feedAdapter = new timelineFeedAdapter(groupPosts);
                                 feedAdapter.setAnimationEnable(false);
@@ -215,7 +218,7 @@ public class groupCalls {
                                     feedAdapter.getLoadMoreModule().setAutoLoadMore(true);
                                     feedAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
                                         /*load more posts*/
-                                        getGroupPosts(groupPostList, group_id);
+                                        getGroupPosts(groupPostList, group_id, refreshPostsLayout);
                                     });
                                 }
 
@@ -312,7 +315,7 @@ public class groupCalls {
                                     if (feedAdapter == null) {
                                         /*refresh data*/
                                         firstData = "0";
-                                        getGroupPosts(groupPostList, group_id);
+                                        getGroupPosts(groupPostList, group_id, refreshPostsLayout);
                                     }
                                     else {
                                         feedAdapter.addData(groupPosts);

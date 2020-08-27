@@ -238,7 +238,8 @@ public class timelineCalls {
 
                                         switch (view.getId()) {
                                             case R.id.like_btn:
-                                                likePost(feedAdapter.getData().get(position).getPostId(), position);
+                                                MaterialButton likeBtn = view.findViewById(R.id.like_btn);
+                                                likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
                                                 break;
                                             case R.id.post_option:
                                                 new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
@@ -475,16 +476,19 @@ public class timelineCalls {
     }
 
     /*liking a post*/
-    private void likePost (String postId, int position) {
+    private void likePost(String postId, int position, MaterialButton likeBtn) {
 
         /*update button*/
         if(feedAdapter.getData().get(position).isLiked()) {
             feedAdapter.getData().get(position).setLiked(false);
+            likeBtn.setIconResource(R.drawable.ic_like);
         } else {
             feedAdapter.getData().get(position).setLiked(true);
+            likeBtn.setIconResource(R.drawable.ic_liked);
         }
+
         /*notify adapter*/
-        feedAdapter.notifyItemChanged(position);
+//        feedAdapter.notifyItemChanged(position);
 
         like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
                 BuildConfig.server_key, postId, "like");
@@ -512,7 +516,7 @@ public class timelineCalls {
                         Log.d(TAG, "onError: " + e.getMessage());
                     
                         /*TODO repeat if failed*/
-                        likePost(postId, position);
+                        likePost(postId, position, likeBtn);
                     }
                 
                     @Override

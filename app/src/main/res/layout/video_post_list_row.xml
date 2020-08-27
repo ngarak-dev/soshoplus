@@ -15,7 +15,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/profile_pic"
@@ -82,13 +82,15 @@
             app:layout_constraintTop_toBottomOf="@id/profile_pic"
             android:layout_marginTop="@dimen/_10sdp" />
 
-        <ImageView
-            android:id="@+id/video_thumbnail"
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/media_player"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/_350sdp"
+            app:use_controller="false"
+            app:surface_type="surface_view"
+            app:resize_mode="fixed_width"
             app:layout_constraintTop_toBottomOf="@id/post_contents"
             android:layout_marginTop="@dimen/_10sdp"
-            android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
         <View
@@ -96,7 +98,7 @@
             style="@style/divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/video_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/media_player"
             android:layout_margin="@dimen/_10sdp" />
 
         <TextView
@@ -105,8 +107,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintTop_toTopOf="@id/like_btn"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            android:layout_marginStart="@dimen/_10sdp"
             android:textStyle="bold" />
 
         <TextView
@@ -115,17 +118,19 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/divider"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintLeft_toRightOf="@id/no_likes"
+            app:layout_constraintTop_toTopOf="@id/like_btn"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            app:layout_constraintStart_toEndOf="@id/no_likes"
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like_btn"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintRight_toLeftOf="@id/comment_btn"
-            app:rippleColor="@color/light_grey"
+            app:rippleColor="@color/transparent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"
@@ -141,9 +146,10 @@
             android:id="@+id/comment_btn"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:rippleColor="@color/light_grey"
+            app:rippleColor="@color/transparent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"

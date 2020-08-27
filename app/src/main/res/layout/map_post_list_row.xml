@@ -106,7 +106,7 @@
             style="@style/divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/location_content"
+            app:layout_constraintTop_toBottomOf="@id/navigation"
             android:layout_margin="@dimen/_10sdp" />
 
         <TextView
@@ -115,8 +115,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintTop_toTopOf="@id/like_btn"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            android:layout_marginStart="@dimen/_10sdp"
             android:textStyle="bold" />
 
         <TextView
@@ -125,17 +126,19 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/divider"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintLeft_toRightOf="@id/no_likes"
+            app:layout_constraintTop_toTopOf="@id/like_btn"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            app:layout_constraintStart_toEndOf="@id/no_likes"
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like_btn"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintRight_toLeftOf="@id/comment_btn"
-            app:rippleColor="@color/light_grey"
+            app:rippleColor="@color/transparent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"
@@ -151,9 +154,10 @@
             android:id="@+id/comment_btn"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:rippleColor="@color/light_grey"
+            app:rippleColor="@color/transparent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"
@@ -164,6 +168,7 @@
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

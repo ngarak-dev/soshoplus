@@ -6,34 +6,34 @@
 
 package com.soshoplus.timeline.feedHolders;
 
-import android.content.Context;
 import android.text.Html;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
-import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.photoMulti;
 import com.soshoplus.timeline.models.postsfeed.post;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
 
 public class MultiImage extends BaseItemProvider<post> {
     
     private static String TAG = "MULTI IMAGE POST : ";
     
-    SimpleDraweeView profile_pic;
+    ImageView profile_pic;
 //    MultiImageView post_multi_image;
     MaterialButton like;
     
@@ -49,7 +49,9 @@ public class MultiImage extends BaseItemProvider<post> {
     
     @Override
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
-    
+
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
+
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
 //        post_multi_image = baseViewHolder.findView(R.id.post_multi_image);
 
@@ -67,7 +69,14 @@ public class MultiImage extends BaseItemProvider<post> {
         }
 
         /*bind profile pic*/
-        profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getPublisherInfo().getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         /*if post is liked*/
         if (post.isLiked()) {
@@ -119,20 +128,28 @@ public class MultiImage extends BaseItemProvider<post> {
     }
 
     /*full screen image view*/
-    static class fullImageLoader implements XPopupImageLoader {
-        @Override
-        public void loadImage (int position, @NonNull Object uri, @NonNull ImageView imageView) {
-            Glide.with(imageView).load(uri).into(imageView);
-        }
-
-        @Override
-        public File getImageFile (@NonNull Context context, @NonNull Object uri) {
-            try {
-                return Glide.with(context).downloadOnly().load(uri).submit().get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
+//    static class fullImageLoader implements XPopupImageLoader {
+//        @Override
+//        public void loadImage (int position, @NonNull Object uri, @NonNull ImageView imageView) {
+//
+//            ImageLoader imageLoader = Coil.imageLoader(imageView.getContext());
+//            ImageRequest imageRequest = new ImageRequest.Builder(imageView.getContext())
+//                    .data(uri)
+//                    .placeholder(R.color.light_grey)
+//                    .crossfade(true)
+//                    .target(imageView)
+//                    .build();
+//            imageLoader.enqueue(imageRequest);
+//        }
+//
+//        @Override
+//        public File getImageFile (@NonNull Context context, @NonNull Object uri) {
+//            try {
+//                return Glide.with(context).downloadOnly().load(uri).submit().get();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//    }
 }

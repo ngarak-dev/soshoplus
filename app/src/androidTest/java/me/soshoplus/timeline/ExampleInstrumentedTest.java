@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.soshoplus.timeline;
+package me.soshoplus.timeline;
 
 import android.content.Context;
 

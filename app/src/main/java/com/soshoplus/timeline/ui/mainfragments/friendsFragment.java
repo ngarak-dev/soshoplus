@@ -34,9 +34,9 @@ public class friendsFragment extends Fragment {
     }
     
     private FragmentFriendsBinding friendsBinding;
-    private suggestedFriendsCalls suggestedFriendsCalls;
-    private followingUsersCalls followingUsersCalls;
-    private followersUsersCalls followersUsersCalls;
+    private com.soshoplus.timeline.calls.suggestedFriendsCalls suggestedFriendsCalls;
+    private com.soshoplus.timeline.calls.followingUsersCalls followingUsersCalls;
+    private com.soshoplus.timeline.calls.followersUsersCalls followersUsersCalls;
     
     /*initializing a view and inflate it */
     @Override

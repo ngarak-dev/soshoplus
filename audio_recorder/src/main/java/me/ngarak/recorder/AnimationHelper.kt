@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -24,6 +24,7 @@ import android.widget.ImageView
 
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import androidx.vectordrawable.graphics.drawable.AnimatorInflaterCompat
+import com.ngarak.recorder.R
 
 class AnimationHelper(
     private val context: Context,

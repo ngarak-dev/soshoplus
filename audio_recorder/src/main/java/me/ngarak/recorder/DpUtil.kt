@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
 import android.content.Context
 import android.util.DisplayMetrics

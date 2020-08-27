@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.viewPagerAdapter;
 import com.soshoplus.timeline.databinding.ActivitySoshotimelineBinding;
@@ -43,9 +42,6 @@ public class soshoTimeline extends AppCompatActivity {
         soshoTimelineBinding = ActivitySoshotimelineBinding.inflate(getLayoutInflater());
         View view = soshoTimelineBinding.getRoot();
         setContentView(view);
-
-        /*Fresco*/
-        Fresco.initialize(soshoTimeline.this);
 
         /*appBar*/
         setSupportActionBar(soshoTimelineBinding.transToolbar);

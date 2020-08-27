@@ -10,13 +10,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/image"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
-        app:actualImageScaleType="focusCrop"
-        app:fadeDuration="300"
-        app:placeholderImage="@drawable/ic_image_placeholder"
+        android:padding="@dimen/_5sdp"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

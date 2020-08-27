@@ -8,7 +8,6 @@ package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;

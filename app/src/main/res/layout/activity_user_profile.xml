@@ -20,11 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/cover_photo"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_120sdp"
-                app:placeholderImage="@color/dim_gray"
+                android:scaleType="centerCrop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,17 +49,14 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/profile_pic"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
-                app:roundAsCircle="true"
-                app:fadeDuration="300"
                 app:layout_constraintBottom_toBottomOf="@id/cover_photo"
                 app:layout_constraintEnd_toEndOf="@id/cover_photo"
                 app:layout_constraintStart_toStartOf="@id/cover_photo"
                 app:layout_constraintTop_toBottomOf="@id/cover_photo"
-                app:placeholderImage="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <TextView

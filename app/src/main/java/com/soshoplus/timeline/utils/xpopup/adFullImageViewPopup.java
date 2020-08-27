@@ -13,10 +13,10 @@ import androidx.annotation.NonNull;
 
 import com.lxj.xpopup.core.ImageViewerPopupView;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.adapters.userPhotosAdapter;
+import com.soshoplus.timeline.ui.user_profile.userProfile;
 
 public class adFullImageViewPopup extends ImageViewerPopupView {
-    
+
     public adFullImageViewPopup (@NonNull Context context) {
         super(context);
     }
@@ -36,7 +36,7 @@ public class adFullImageViewPopup extends ImageViewerPopupView {
         TextView headline = findViewById(R.id.ad_headline);
         
         /*getting ad info*/
-        userPhotosAdapter.getADInfo(full_name, location, description,
+        userProfile.getADInfo(full_name, location, description,
                 headline);
     }
     

@@ -23,7 +23,6 @@ import androidx.core.os.HandlerCompat;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
-import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.groupCalls;
 import com.soshoplus.timeline.databinding.ActivityViewGroupBinding;
@@ -39,6 +38,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.soshoplus.timeline.BuildConfig;
 
 public class viewGroup extends AppCompatActivity {
 

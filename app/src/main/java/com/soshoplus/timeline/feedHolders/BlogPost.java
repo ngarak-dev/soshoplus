@@ -8,21 +8,27 @@ package com.soshoplus.timeline.feedHolders;
 
 import android.text.Html;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 
 import org.jetbrains.annotations.NotNull;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
+import coil.transform.RoundedCornersTransformation;
+
 public class BlogPost extends BaseItemProvider<post> {
     
     private static String TAG = "BLOG POST : ";
     
-    SimpleDraweeView profile_pic, article_thumbnail;
+    ImageView profile_pic, article_thumbnail;
     MaterialButton like;
     
     @Override
@@ -38,6 +44,8 @@ public class BlogPost extends BaseItemProvider<post> {
     @Override
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
+
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
         article_thumbnail = baseViewHolder.findView(R.id.article_thumbnail);
@@ -59,10 +67,24 @@ public class BlogPost extends BaseItemProvider<post> {
         baseViewHolder.setText(R.id.article_description, Html.fromHtml(post.getBlog().getDescription()));
 
         /*bind profile pic*/
-        profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getPublisherInfo().getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         /*bind article thumbnail*/
-        article_thumbnail.setImageURI(post.getBlog().getThumbnail());
+        imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getBlog().getThumbnail())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new RoundedCornersTransformation(15))
+                .target(article_thumbnail)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         /*if post is liked*/
         if (post.isLiked()) {

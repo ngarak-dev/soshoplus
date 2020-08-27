@@ -4,8 +4,11 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
-interface OnBasketAnimationEnd {
-    fun onAnimationEnd()
+import android.view.View
+
+
+interface OnRecordClickListener {
+    fun onClick(v: View)
 }

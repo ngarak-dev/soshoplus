@@ -1,3 +1,9 @@
+/*******************************************************************************
+ * Ngara K. Android Application Developer
+ * ngarakiringo@gmail.com
+ * Copyright (c) 2020
+ ******************************************************************************/
+
 package com.soshoplus.timeline.utils;
 
 import android.app.Activity;
@@ -12,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.bumptech.glide.Glide;
 import com.soshoplus.timeline.R;
 import com.ypx.imagepicker.adapter.PickerItemAdapter;
 import com.ypx.imagepicker.bean.ImageItem;
@@ -29,26 +34,37 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
 
-/**
- * 小红书剪裁样式Presenter实现类
- */
+
 public class RedBookPresenter implements IPickerPresenter {
 
     @Override
     public void displayImage(View view, ImageItem item, int size, boolean isThumbnail) {
         Object object = item.getUri() != null ? item.getUri() : item.path;
 
-//        Glide.with(view.getContext()).load(object).apply(new RequestOptions()
-//                .format(isThumbnail ? DecodeFormat.PREFER_RGB_565 : DecodeFormat.PREFER_ARGB_8888))
-//                .override(isThumbnail ? size : Target.SIZE_ORIGINAL)
-//                .into((ImageView) view);
-        Glide.with(view.getContext()).load(object).into((ImageView) view);
+        ImageLoader imageLoader = Coil.imageLoader(view.getContext());
+
+        if (item.isImage()) {
+            ImageRequest imageRequest = new ImageRequest.Builder(view.getContext())
+                    .data(object)
+                    .crossfade(true)
+                    .target((ImageView) view)
+                    .build();
+            imageLoader.enqueue(imageRequest);
+        }
+        else {
+            ImageRequest imageRequest = new ImageRequest.Builder(view.getContext())
+                    .data(item.getVideoImageUri())
+                    .crossfade(true)
+                    .target((ImageView) view)
+                    .build();
+            imageLoader.enqueue(imageRequest);
+        }
     }
-    /**
-     * @param context 上下文
-     * @return PickerUiConfig UI配置类
-     */
+
     @NotNull
     @Override
     public PickerUiConfig getUiConfig(Context context) {
@@ -72,12 +88,6 @@ public class RedBookPresenter implements IPickerPresenter {
         Toast.makeText(context.getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * 选择超过数量限制提示
-     *
-     * @param context  上下文
-     * @param maxCount 最大数量
-     */
     @Override
     public void overMaxCountTip(Context context, int maxCount) {
         if (context == null) {
@@ -102,13 +112,6 @@ public class RedBookPresenter implements IPickerPresenter {
         return false;
     }
 
-    /**
-     * 拦截选择器取消操作，用于弹出二次确认框
-     *
-     * @param activity     当前选择器页面
-     * @param selectedList 当前已经选择的文件列表
-     * @return true:则拦截选择器取消， false，不处理选择器取消操作
-     */
     @Override
     public boolean interceptPickerCancel(final Activity activity, ArrayList<ImageItem> selectedList) {
         if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
@@ -139,27 +142,6 @@ public class RedBookPresenter implements IPickerPresenter {
         return true;
     }
 
-    /**
-     * <p>
-     * 图片点击事件拦截，如果返回true，则不会执行选中操纵，如果要拦截此事件并且要执行选中
-     * 请调用如下代码：
-     * <p>
-     * adapter.preformCheckItem()
-     * <p>
-     * <p>
-     * 此方法可以用来跳转到任意一个页面，比如自定义的预览
-     *
-     * @param activity        上下文
-     * @param imageItem       当前图片
-     * @param selectImageList 当前选中列表
-     * @param allSetImageList 当前文件夹所有图片
-     * @param selectConfig    选择器配置项，如果是微信样式，则selectConfig继承自MultiSelectConfig
-     *                        如果是小红书剪裁样式，则继承自CropSelectConfig
-     * @param adapter         当前列表适配器，用于刷新数据
-     * @param isClickCheckBox 是否点击item右上角的选中框
-     * @param reloadExecutor  刷新器
-     * @return 是否拦截
-     */
     @Override
     public boolean interceptItemClick(@Nullable Activity activity, ImageItem imageItem, ArrayList<ImageItem> selectImageList, ArrayList<ImageItem> allSetImageList, BaseSelectConfig selectConfig, PickerItemAdapter adapter,boolean isClickCheckBox, @Nullable IReloadExecutor reloadExecutor) {
         return false;

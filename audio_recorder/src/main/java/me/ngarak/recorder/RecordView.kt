@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -24,6 +24,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import com.ngarak.recorder.R
 import io.supercharge.shimmerlayout.ShimmerLayout
 import java.io.File
 import java.io.IOException

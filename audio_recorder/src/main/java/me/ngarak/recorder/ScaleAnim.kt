@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

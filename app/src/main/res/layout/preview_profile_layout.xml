@@ -16,12 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/cover_photo"
             android:layout_width="0dp"
             android:layout_height="@dimen/_120sdp"
-            app:actualImageScaleType="focusCrop"
-            app:fadeDuration="300"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,16 +46,14 @@
             android:insetBottom="0dp"
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_65sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            app:fadeDuration="300"
             app:layout_constraintBottom_toBottomOf="@id/cover_photo"
             app:layout_constraintStart_toStartOf="@id/cover_photo"
             app:layout_constraintTop_toBottomOf="@id/cover_photo"
-            app:roundAsCircle="true"
             tools:ignore="ContentDescription" />
 
         <ImageView

@@ -16,32 +16,22 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/soshoDayNight_noActionBar">
-        <activity
-            android:name=".ui.user_profile.myProfile" />
-        <activity
-            android:name=".ui.audioRecorderPost" />
-        <activity
-            android:name=".ui.imageVideoPost" />
-        <activity
-            android:name=".ui.groups.groups" />
-        <activity
-            android:name=".ui.user_profile.userProfile" />
+        <activity android:name=".ui.user_profile.myProfile" />
+        <activity android:name=".ui.audioRecorderPost" />
+        <activity android:name=".ui.imageVideoPost" />
+        <activity android:name=".ui.groups.groups" />
+        <activity android:name=".ui.user_profile.userProfile" />
         <activity
             android:name=".ui.viewVideo"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_video"
             android:theme="@style/sosho_FullScreen" />
-        <activity
-            android:name=".ui.groups.viewGroup" />
+        <activity android:name=".ui.groups.viewGroup" />
         <activity android:name=".ui.soshoTimeline" />
-        <activity
-            android:name=".ui.auth.forgotPassword" />
-        <activity
-            android:name=".ui.auth.signUp" />
-        <activity
-            android:name=".ui.auth.signIn" />
-        <activity
-            android:name=".ui.splash">
+        <activity android:name=".ui.auth.forgotPassword" />
+        <activity android:name=".ui.auth.signUp" />
+        <activity android:name=".ui.auth.signIn" />
+        <activity android:name=".ui.splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

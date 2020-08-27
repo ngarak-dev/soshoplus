@@ -22,14 +22,14 @@ import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.utils.queries;
+import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.adapters.suggestedGroupsAdapter;
 import com.soshoplus.timeline.models.groups.groupInfo;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.groups.join.join_unjoin;
 import com.soshoplus.timeline.ui.groups.viewGroup;
-import com.soshoplus.timeline.utils.queries;
-import com.soshoplus.timeline.utils.retrofitInstance;
 
 import java.util.List;
 

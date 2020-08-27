@@ -24,9 +24,9 @@ import com.soshoplus.timeline.calls.simpleProfileCalls;
 import com.soshoplus.timeline.databinding.ActivityMyProfileBinding;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.simpleResponse;
-import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.ui.auth.signIn;
 import com.soshoplus.timeline.utils.xpopup.changePasswordPopup;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -47,7 +47,7 @@ public class myProfile extends AppCompatActivity {
     private simpleProfileCalls calls;
     /*.........*/
     private queries rxJavaQueries;
-    private Observable<simpleResponse> simpleResponse;
+    private Observable<com.soshoplus.timeline.models.simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
 
     @Override
@@ -111,7 +111,7 @@ public class myProfile extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(com.soshoplus.timeline.models.@NonNull simpleResponse simpleResponse) {
+                    public void onNext(com.soshoplus.timeline.models.simpleResponse simpleResponse) {
                         if (simpleResponse.getApiStatus() == 200) {
 
                             try {

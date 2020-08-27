@@ -17,16 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:actualImageScaleType="focusCrop"
-            app:fadeDuration="300"
-            app:placeholderImage="@color/light_grey"
-            app:roundAsCircle="true"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -116,15 +112,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/divider" />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/article_thumbnail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
                 android:layout_below="@id/article_description"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:viewAspectRatio="1.5"
-                app:fadeDuration="300"
-                app:placeholderImage="@color/dim_gray"
+                android:scaleType="centerCrop"
                 tools:ignore="ContentDescription" />
 
             <View

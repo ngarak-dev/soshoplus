@@ -8,21 +8,26 @@ package com.soshoplus.timeline.feedHolders;
 
 import android.text.Html;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 
 import org.jetbrains.annotations.NotNull;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
+
 public class MapPost extends BaseItemProvider<post> {
     
     private static String TAG = "MAP POST : ";
     
-    SimpleDraweeView profile_pic;
+    ImageView profile_pic;
     MaterialButton like;
     
     @Override
@@ -38,6 +43,8 @@ public class MapPost extends BaseItemProvider<post> {
     @Override
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
+
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
 
@@ -59,7 +66,14 @@ public class MapPost extends BaseItemProvider<post> {
         }
 
         /*bind profile pic*/
-        profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getPublisherInfo().getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         /*if post is liked*/
         if (post.isLiked()) {

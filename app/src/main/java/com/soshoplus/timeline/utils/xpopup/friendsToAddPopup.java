@@ -19,14 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
-import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.adapters.friendsToAddToGroupAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.groups.addingUser;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.adapters.friendsToAddToGroupAdapter;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -34,6 +33,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.soshoplus.timeline.BuildConfig;
 
 public class friendsToAddPopup extends FullScreenPopupView {
 

@@ -4,11 +4,12 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
-import android.view.View
-
-
-interface OnRecordClickListener {
-    fun onClick(v: View)
+interface OnRecordListener {
+    fun onStart()
+    fun onCancel()
+    fun onFinish(recordTime: Long, audioPath: String)
+    fun onLessThanSecond()
+    fun onTickListener(recordTime: Long)
 }

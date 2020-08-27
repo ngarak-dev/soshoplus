@@ -8,17 +8,13 @@ package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.Looper;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.os.HandlerCompat;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
-import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.core.CenterPopupView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.previewProfileCalls;
@@ -42,8 +38,8 @@ public class previewProfilePopup extends CenterPopupView {
     protected void onCreate () {
         super.onCreate();
 
-        SimpleDraweeView cover_photo = findViewById(R.id.cover_photo);
-        SimpleDraweeView profile_pic = findViewById(R.id.profile_pic);
+        ImageView cover_photo = findViewById(R.id.cover_photo);
+        ImageView profile_pic = findViewById(R.id.profile_pic);
         TextView username = findViewById(R.id.username);
         ImageView verified_badge = findViewById(R.id.verified_badge);
         ImageView level_badge = findViewById(R.id.level_badge);

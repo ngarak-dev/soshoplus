@@ -42,7 +42,7 @@ public class changePasswordPopup extends CenterPopupView {
     /*........*/
     private String userId, timezone, accessToken;
     private queries rxJavaQueries;
-    private Observable<simpleResponse> simpleResponse;
+    private Observable<com.soshoplus.timeline.models.simpleResponse> simpleResponse;
 
     public changePasswordPopup(@NonNull Context context) {
         super(context);
@@ -106,8 +106,7 @@ public class changePasswordPopup extends CenterPopupView {
                     }
 
                     @Override
-                    public void onNext(com.soshoplus.timeline.models.@io.reactivex.rxjava3.annotations.NonNull
-                                               simpleResponse simpleResponse) {
+                    public void onNext(com.soshoplus.timeline.models.simpleResponse simpleResponse) {
                         if (simpleResponse.getApiStatus() == 200) {
                             Log.d(TAG, "onNext: " + "password changed");
 

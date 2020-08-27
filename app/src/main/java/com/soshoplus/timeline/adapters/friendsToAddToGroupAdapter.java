@@ -6,9 +6,10 @@
 
 package com.soshoplus.timeline.adapters;
 
+import android.widget.ImageView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.friends.followers;
 
@@ -16,6 +17,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
 
 public class friendsToAddToGroupAdapter extends BaseQuickAdapter<followers, BaseViewHolder> {
 
@@ -36,7 +42,14 @@ public class friendsToAddToGroupAdapter extends BaseQuickAdapter<followers, Base
     
         baseViewHolder.setText(R.id.first_name, followers.getFirstName());
     
-        SimpleDraweeView profile_pic = baseViewHolder.findView(R.id.profile_pic);
-        profile_pic.setImageURI(followers.getAvatar());
+        ImageView profile_pic = baseViewHolder.findView(R.id.profile_pic);
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(followers.getAvatar())
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
     }
 }

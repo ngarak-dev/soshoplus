@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package com.ngarak.recorder
+package me.ngarak.recorder
 
 import android.content.Context
 import android.util.AttributeSet
@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.ngarak.recorder.R
 
 class RecordButton : FloatingActionButton, View.OnTouchListener, View.OnClickListener {
 

@@ -44,18 +44,14 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:id="@+id/profile_pic"
-            app:roundAsCircle="true"
-            app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_3sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:placeholderImage="@color/light_grey" />
+            android:layout_marginTop="@dimen/_10sdp" />
 
         <TextView
             android:layout_width="wrap_content"

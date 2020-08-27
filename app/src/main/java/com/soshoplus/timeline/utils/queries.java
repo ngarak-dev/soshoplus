@@ -55,6 +55,7 @@ public interface queries {
     Observable<postList> getTimelinePosts (@Query("access_token") String access_token,
                                          @Field("server_key") String server_key,
                                            @Field("type") String type,
+                                           @Field("hash") String hashtag,
                                            @Field("limit") String limit,
                                            @Field("after_post_id") String after_post_id);
 

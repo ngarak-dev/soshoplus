@@ -116,6 +116,7 @@ dependencies {
     implementation project(path: ':audio_recorder')
 
     implementation 'com.hendraanggrian.appcompat:socialview:0.3-rc1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

@@ -16,6 +16,7 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/soshoDayNight_noActionBar">
+        <activity android:name=".ui.hashTagsPosts"></activity>
         <activity android:name=".ui.user_profile.myProfile" />
         <activity android:name=".ui.audioRecorderPost" />
         <activity android:name=".ui.imageVideoPost" />

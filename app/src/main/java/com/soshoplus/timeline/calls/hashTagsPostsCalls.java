@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -29,8 +28,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
-import com.hendraanggrian.appcompat.widget.SocialTextView;
-import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
@@ -40,19 +37,19 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
+import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.postAction;
-import com.soshoplus.timeline.models.simpleResponse;
-import com.soshoplus.timeline.ui.hashTagsPosts;
-import com.soshoplus.timeline.utils.queries;
-import com.soshoplus.timeline.utils.retrofitInstance;
-import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.ui.auth.signIn;
+import com.soshoplus.timeline.utils.queries;
+import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.utils.xpopup.adHashPopup;
+import com.soshoplus.timeline.utils.xpopup.imageHashPopup;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 import com.soshoplus.timeline.utils.xpopup.timelineAdFullViewPopup;
@@ -74,75 +71,65 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class timelineCalls {
-    
-    private final static String TAG = "Timeline Calls";
+public class hashTagsPostsCalls {
+    private final static String TAG = "hashtags Calls";
     /*context*/
     private Context context;
     /*......*/
     private queries rxJavaQueries;
-    private String accessToken, userId, timezone;
+    private String accessToken, userId;
     private BasePopupView popupView;
-    
+
     /*TIMELINE FEED*/
     private Observable<postList> postListObserve;
     private List<post> timelinePosts;
-    private static String firstData = null;
     private timelineFeedAdapter feedAdapter;
-    
+
     /*POST LIKE_DISLIKE*/
     private Observable<like_dislike> like_dislikeObservable;
-    
+
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
     private static String share_post_on_timeline = "share_post_on_timeline";
-    
+
     /*.......*/
     private KSnack snack;
-    /*........*/
-    private static int totalItems;
-    private static String lastItemID;
-    
     /*........*/
     private static String fullName, timeAgo, noLikes, noComments;
     private static boolean isLiked;
     /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
-    
+
     /*......*/
     private Observable<postAction> postActionObservable;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
 
-    /*......*/
-    private Observable<simpleResponse> createPostResponse;
-    
     /*constructor*/
-    public timelineCalls (Context context) {
+    public hashTagsPostsCalls (Context context) {
         this.context = context;
-    
+
         userId = SecurePreferences.getStringValue(context, "userId", "0");
-        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
         accessToken = SecurePreferences.getStringValue(context, "accessToken"
                 , "0");
-    
+
         /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
-    
+
     public void getTimelineFeed(RecyclerView timelinePostsList,
-                                ProgressBar progressBarTimeline, String type, RelativeLayout timelineErrorLayout,
-                                MaterialButton tryAgain, SmartRefreshLayout refreshPostsLayout, String hashTag) {
+                                ProgressBar progressBarTimeline, String type,
+                                RelativeLayout timelineErrorLayout, MaterialButton tryAgain,
+                                SmartRefreshLayout refreshPostsLayout, String hashTag) {
 
         /*load posts*/
-        Log.d(TAG, "LOADING : " + firstData);
         loadPosts(timelinePostsList, timelineErrorLayout,
                 tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
-        
+
         tryAgain.setOnClickListener(view -> {
             /*hide error layout*
             disable refreshing*/
             timelineErrorLayout.setVisibility(View.GONE);
-            
+
             /*.........*/
             timelinePostsList.setVisibility(View.GONE);
             progressBarTimeline.setVisibility(View.VISIBLE);
@@ -156,23 +143,20 @@ public class timelineCalls {
         refreshPostsLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@androidx.annotation.NonNull RefreshLayout refreshLayout) {
-                firstData = "0";
                 loadPosts(timelinePostsList, timelineErrorLayout,
                         tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
             }
         });
-
     }
-    
-    private void loadPosts(RecyclerView timelinePostsList,
-                           RelativeLayout timelineErrorLayout, MaterialButton tryAgain,
-                           ProgressBar progressBarTimeline, SmartRefreshLayout refreshPostsLayout,
-                           String type, String hashTag) {
-    
+
+    private void loadPosts(RecyclerView timelinePostsList, RelativeLayout timelineErrorLayout,
+                           MaterialButton tryAgain, ProgressBar progressBarTimeline,
+                           SmartRefreshLayout refreshPostsLayout, String type, String hashTag) {
+
         postListObserve =
                 rxJavaQueries.getTimelinePosts(accessToken,
-                BuildConfig.server_key, type, hashTag, "10", firstData);
-    
+                        BuildConfig.server_key, type, hashTag, null, null);
+
         postListObserve.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postList>() {
@@ -180,249 +164,147 @@ public class timelineCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
                     public void onNext (@NonNull postList postList) {
-                        
-                        if (firstData == null) {
-        
-                            if(postList.getApiStatus() == 200) {
-                                Log.d(TAG, "onNext: LOAD FIRST DATA");
 
-                                timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
-            
-                                timelinePosts = getAll(postList);
-            
-                                if (timelinePosts != null) {
-                                    for (post firstPosts : timelinePosts) {
-                                        Log.d(TAG, "onNext: POSTS ID : " + firstPosts.getPostId());
-                                    }
+                        if(postList.getApiStatus() == 200) {
+                            timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
 
-                                    /*last item ID*/
-                                    totalItems = timelinePosts.size();
-                                    if (totalItems > 2) {
-                                        lastItemID = timelinePosts.get(totalItems - 2).getPostId();
-                                        firstData = lastItemID;
-                                        Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
-                                    }
-                                }
+                            timelinePosts = getAll(postList);
 
-                                /*pullTorefesh */
-                                if (refreshPostsLayout.isRefreshing()) {
-                                    refreshPostsLayout.finishRefresh();
-                                }
-    
-                                /*hide progress*/
-                                new Handler().postDelayed(() -> progressBarTimeline.setVisibility(View.GONE), 500);
-                                
-                                /*initialize adapter*/
-                                feedAdapter = new timelineFeedAdapter(timelinePosts);
-                                feedAdapter.setAnimationEnable(false);
-            
-                                /*setting adapter*/
-                                timelinePostsList.setAdapter(feedAdapter);
+                            /*pullTorefesh */
+                            if (refreshPostsLayout.isRefreshing()) {
+                                refreshPostsLayout.finishRefresh();
+                            }
 
-                                /*.........*/
-                                timelinePostsList.setVisibility(View.VISIBLE);
+                            /*hide progress*/
+                            new Handler().postDelayed(() -> progressBarTimeline.setVisibility(View.GONE), 500);
 
-                                /*setting loadmore module*/
-                                if (totalItems > 2) {
-                                    /*setting loadmore module*/
-                                    feedAdapter.getLoadMoreModule().setAutoLoadMore(true);
-                                    feedAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-                                        /*load more posts*/
-                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain,
-                                                progressBarTimeline, refreshPostsLayout, type, hashTag);
-                                    });
-                                }
-                                feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-                                    @Override
-                                    public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
-                                                                  @androidx.annotation.NonNull View view, int position) {
+                            /*initialize adapter*/
+                            feedAdapter = new timelineFeedAdapter(timelinePosts);
+                            feedAdapter.setAnimationEnable(false);
 
-                                        switch (view.getId()) {
-                                            case R.id.like_btn:
-                                                MaterialButton likeBtn = view.findViewById(R.id.like_btn);
-                                                likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
-                                                break;
-                                            case R.id.post_option:
-                                                new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
+                            /*setting adapter*/
+                            timelinePostsList.setAdapter(feedAdapter);
 
-                                                    switch (option_position) {
+                            /*.........*/
+                            timelinePostsList.setVisibility(View.VISIBLE);
 
-                                                        case 0:
-                                                            reportPOST(feedAdapter.getData().get(position).getPostId());
-                                                            break;
-                                                        case 1:
-                                                            copyLink(feedAdapter.getData().get(position).getUrl(), view.getContext());
-                                                            break;
-                                                        case 2:
-                                                            sharePOST(feedAdapter.getData().get(position));
-                                                            break;
-                                                        case 3:
-                                                            savePOST(feedAdapter.getData().get(position).getPostId());
-                                                            break;
-                                                        case 4:
-                                                            hidePOST(feedAdapter, position);
-                                                            break;
-                                                        default:
-                                                            Log.d(TAG, "onSelect: " + feedAdapter.getData().get(position).getPostId());
-                                                    }
-                                                }).show();
-                                                break;
-                                            case R.id.profile_pic:
-                                                new Handler().postDelayed(() -> {
-                                                    new XPopup.Builder(context).asCustom(new previewProfilePopup(context,
-                                                            feedAdapter.getData().get(position).getUserId()).show());
+                            feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+                                @Override
+                                public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
+                                                              @androidx.annotation.NonNull View view, int position) {
 
-                                                }, 1000);
-                                                break;
-                                            case R.id.ad_media:
-                                                ImageView ad_media = view.findViewById(R.id.ad_media);
-                                                showAdViewPopup(ad_media, feedAdapter.getData().get(position).getAdMedia(), position);
-                                                break;
-                                            case R.id.post_image: {
-                                                ImageView post_image = view.findViewById(R.id.post_image);
-                                                /*......*/
-                                                showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
-                                                break;
-                                            }
-                                            case R.id.shared_post_image: {
-                                                ImageView post_image = view.findViewById(R.id.shared_post_image);
+                                    switch (view.getId()) {
+                                        case R.id.like_btn:
+                                            MaterialButton likeBtn = view.findViewById(R.id.like_btn);
+                                            likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
+                                            break;
+                                        case R.id.post_option:
+                                            new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
 
-                                                /*......*/
-                                                showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
-                                                break;
-                                            }
-                                            case R.id.article_thumbnail: {
-                                                ImageView post_image = view.findViewById(R.id.article_thumbnail);
-                                                /*......*/
-                                                showViewPopup(post_image, feedAdapter.getData().get(position).getBlog().getThumbnail(), position);
-                                                break;
-                                            }
+                                                switch (option_position) {
 
-                                            /*mentions/ hashtags/ links*/
-                                            case R.id.post_contents: {
-                                                SocialTextView socialTextView = view.findViewById(R.id.post_contents);
-                                                socialTextView.setOnLongClickListener(null);
-                                                socialTextView.setOnHashtagClickListener(new SocialView.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
-                                                                        @androidx.annotation.NonNull CharSequence text) {
+                                                    case 0:
+                                                        reportPOST(feedAdapter.getData().get(position).getPostId());
+                                                        break;
+                                                    case 1:
+                                                        copyLink(feedAdapter.getData().get(position).getUrl(), view.getContext());
+                                                        break;
+                                                    case 2:
+                                                        sharePOST(feedAdapter.getData().get(position));
+                                                        break;
+                                                    case 3:
+                                                        savePOST(feedAdapter.getData().get(position).getPostId());
+                                                        break;
+                                                    case 4:
+                                                        hidePOST(feedAdapter, position);
+                                                        break;
+                                                    default:
+                                                        Log.d(TAG, "onSelect: " + feedAdapter.getData().get(position).getPostId());
+                                                }
+                                            }).show();
+                                            break;
+                                        case R.id.profile_pic:
+                                            new Handler().postDelayed(() -> {
+                                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context,
+                                                        feedAdapter.getData().get(position).getUserId()).show());
 
-                                                        Intent intent = new Intent(context, hashTagsPosts.class);
-                                                        intent.putExtra("hashTag", text.toString());
-                                                        context.startActivity(intent);
-                                                    }
-                                                });
+                                            }, 1000);
+                                            break;
+                                        case R.id.ad_media:
+                                            ImageView ad_media = view.findViewById(R.id.ad_media);
+                                            showAdViewPopup(ad_media, feedAdapter.getData().get(position).getAdMedia(), position);
+                                            break;
+                                        case R.id.post_image: {
+                                            ImageView post_image = view.findViewById(R.id.post_image);
+                                            /*......*/
+                                            showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
+                                            break;
+                                        }
+                                        case R.id.shared_post_image: {
+                                            ImageView post_image = view.findViewById(R.id.shared_post_image);
 
-                                                socialTextView.setOnMentionClickListener(new SocialView.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
-                                                                        @androidx.annotation.NonNull CharSequence text) {
-                                                        Log.d(TAG, "onClick: " + text);
-                                                    }
-                                                });
-                                                break;
-                                            }
+                                            /*......*/
+                                            showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
+                                            break;
+                                        }
+                                        case R.id.article_thumbnail: {
+                                            ImageView post_image = view.findViewById(R.id.article_thumbnail);
+                                            /*......*/
+                                            showViewPopup(post_image, feedAdapter.getData().get(position).getBlog().getThumbnail(), position);
+                                            break;
                                         }
                                     }
-                                });
-                            }
-                            else {
-                                apiErrors errors = postList.getErrors();
-                                Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
-
-                                if (errors.getErrorId().equals("2")) {
-                                    popupView = new XPopup.Builder(context).asConfirm("Oops..!", "Sorry session expired please sign in again",
-                                            null, "Dismiss", () -> {
-
-                                        popupView.delayDismissWith(500, new Runnable() {
-                                            @Override
-                                            public void run() {
-
-                                                try {
-                                                    SecurePreferences.clearAllValues(context);
-                                                    Log.d(TAG, "onNext: " + "USER LOGGED OUT");
-
-                                                    Intent intent = new Intent(context, signIn.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                                    context.startActivity(intent);
-                                                    ((FragmentActivity) context).finish();
-
-                                                } catch (SecureStorageException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-
-                                    }, null, true, 0).show();
                                 }
-                                else {
-                                    /*displaying error*/
-                                    timelineErrorLayout.setVisibility(View.VISIBLE);
-                                }
-                            }
+                            });
                         }
                         else {
-                            if (postList.getApiStatus() == 200) {
-                                Log.d(TAG, "onNext: LOAD MORE DATA");
-                                
-                                /*getting new posts*/
-                                List<post> tobeAdded = getAll(postList);
-    
-                                if (tobeAdded != null) {
-                                    
-                                    for (post firstPosts : tobeAdded) {
-                                        Log.d(TAG, "onNext: POSTS ID : " + firstPosts.getPostId());
-                                    }
+                            apiErrors errors = postList.getErrors();
+                            Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
 
-                                    if (feedAdapter == null) {
-                                        /*refresh data*/
-                                        firstData = "0";
-                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
-                                    }
-                                    else {
-                                        feedAdapter.addData(tobeAdded);
-                                        /*last item ID*/
-                                        /*last item ID*/
-                                        totalItems = tobeAdded.size();
+                            if (errors.getErrorId().equals("2")) {
+                                popupView = new XPopup.Builder(context).asConfirm("Oops..!", "Sorry session expired please sign in again",
+                                        null, "Dismiss", () -> {
 
-                                        if (totalItems > 2) {
-                                            lastItemID = tobeAdded.get(totalItems - 2).getPostId();
-                                            firstData = lastItemID;
-                                            Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
+                                            popupView.delayDismissWith(500, new Runnable() {
+                                                @Override
+                                                public void run() {
 
-                                            feedAdapter.getLoadMoreModule().loadMoreComplete();
-                                        }
-                                        else {
-                                            feedAdapter.getLoadMoreModule().loadMoreEnd();
-                                        }
+                                                    try {
+                                                        SecurePreferences.clearAllValues(context);
+                                                        Log.d(TAG, "onNext: " + "USER LOGGED OUT");
 
-                                        Log.d(TAG, "ADAPTER ITEM COUNT : " + feedAdapter.getItemCount());
-                                    }
-                                }
+                                                        Intent intent = new Intent(context, signIn.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                        context.startActivity(intent);
+                                                        ((FragmentActivity) context).finish();
+
+                                                    } catch (SecureStorageException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+
+                                        }, null, true, 0).show();
                             }
                             else {
-                                apiErrors errors = postList.getErrors();
-                                Log.d(TAG, "ERROR FROM API : " + errors.getErrorId());
-                                Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
-
-                                /*displaying load more failed*/
-                                feedAdapter.getLoadMoreModule().loadMoreFail();
+                                /*displaying error*/
+                                timelineErrorLayout.setVisibility(View.VISIBLE);
                             }
                         }
                     }
-    
+
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-    
+
                         /*displaying error*/
                         timelineErrorLayout.setVisibility(View.VISIBLE);
                     }
-                
+
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");
@@ -432,7 +314,7 @@ public class timelineCalls {
 
     private void showAdViewPopup(ImageView ad_media, String adMedia, int position) {
 
-        timelineAdFullViewPopup adFullViewPopup= new timelineAdFullViewPopup(context);
+        adHashPopup adFullViewPopup= new adHashPopup(context);
         adFullViewPopup.isShowSaveButton(false);
         adFullViewPopup.setSingleSrcView(ad_media, adMedia);
         adFullViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
@@ -470,7 +352,7 @@ public class timelineCalls {
 
     private void showViewPopup(ImageView post_image, String postFile, int position) {
 
-        timelineImageViewPopup imageViewPopup = new timelineImageViewPopup(context);
+        imageHashPopup imageViewPopup = new imageHashPopup(context);
         imageViewPopup.setSingleSrcView(post_image, postFile);
         imageViewPopup.isShowSaveButton(false);
         imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
@@ -529,7 +411,7 @@ public class timelineCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
                     public void onNext (@NonNull like_dislike like_dislike) {
                         if (like_dislike.getApiStatus() == 200) {
@@ -540,35 +422,35 @@ public class timelineCalls {
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                         }
                     }
-                
+
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
+
                         /*TODO repeat if failed*/
                         likePost(postId, position, likeBtn);
                     }
-                
+
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
-    
+
     /*get all post first round*/
     private List<post> getAll (postList postList) {
         timelinePosts=  postList.getPostList();
         return timelinePosts != null ? postList.getPostList(): null;
     }
-    
+
     /*share post direct to timeline*/
     public void shareOnTimeline (String postId) {
-        
+
         snack = new KSnack((FragmentActivity) context);
         snack.setMessage("Sharing to your timeline ...");
         snack.show();
-    
+
         shareResponseObservable =
                 rxJavaQueries.sharePostInTimeline(accessToken, BuildConfig.server_key,
                         share_post_on_timeline,
@@ -580,12 +462,12 @@ public class timelineCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
                     public void onNext (@NonNull shareResponse shareResponse) {
                         if (shareResponse.getApiStatus() == 200) {
                             Log.d(TAG, "onNext: SHARED");
-                        
+
                             snack.setBackColor(R.color.green);
                             snack.setMessage("Post shared");
                             snack.setDuration(3500);
@@ -593,7 +475,7 @@ public class timelineCalls {
                         else {
                             apiErrors apiErrors = shareResponse.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                        
+
                             snack.setMessage("Error occurred while sharing");
                             snack.setBackColor(R.color.indian_red);
                             snack.setDuration(5000);
@@ -603,11 +485,11 @@ public class timelineCalls {
                             });
                         }
                     }
-                
+
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
+
                         snack.setMessage("Error occurred while sharing");
                         snack.setBackColor(R.color.indian_red);
                         snack.setDuration(5000);
@@ -616,14 +498,14 @@ public class timelineCalls {
                             shareOnTimeline(postId);
                         });
                     }
-                
+
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
-    
+
     /*share on other apps*/
     public void shareOnOtherApps (String postUrl, String fullName) {
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -633,7 +515,7 @@ public class timelineCalls {
         context.startActivity(Intent.createChooser(intent, "choose " +
                 "one"));
     }
-    
+
     /*AD info*/
     public static void getADInfo (TextView full_name, TextView location, TextView description,
                                   TextView headline) {
@@ -647,13 +529,13 @@ public class timelineCalls {
     /*post image info*/
     public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
                                 TextView no_comments, MaterialButton like, MaterialButton comment) {
-    
+
         /*setting up*/
         full_name.setText(fullName);
         time_ago.setText(timeAgo);
         no_likes.setText(noLikes + " likes");
         no_comments.setText(noComments + " comments");
-    
+
         /*setting like btn*/
         if (isLiked) {
             like.setIconResource(R.drawable.ic_liked);
@@ -673,12 +555,12 @@ public class timelineCalls {
 
         Toast.makeText(context, "Link copied", Toast.LENGTH_SHORT).show();
     }
-    
+
     /*report post*/
     public void reportPOST (String postId) {
         postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "report");
-        
+
         postActionObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postAction>() {
@@ -686,7 +568,7 @@ public class timelineCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-    
+
                     @Override
                     public void onNext (@NonNull postAction postAction) {
                         if (postAction.getApiStatus() == 200) {
@@ -697,32 +579,32 @@ public class timelineCalls {
                         else {
                             apiErrors errors = postAction.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
-    
+
                             Toast.makeText(context, "Failed to report post",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-    
+
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                         Toast.makeText(context, "Failed to report post",
                                 Toast.LENGTH_LONG).show();
                     }
-    
+
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
-    
+
     /*save post*/
     private void savePOST (String postId) {
-    
+
         postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "save");
-    
+
         postActionObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postAction>() {
@@ -730,7 +612,7 @@ public class timelineCalls {
                     public void onSubscribe (@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
                     public void onNext (@NonNull postAction postAction) {
                         if (postAction.getApiStatus() == 200) {
@@ -740,19 +622,19 @@ public class timelineCalls {
                         else {
                             apiErrors errors = postAction.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
-                        
+
                             Toast.makeText(context, "Failed to save post",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-                
+
                     @Override
                     public void onError (@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                         Toast.makeText(context, "Failed to save post",
                                 Toast.LENGTH_LONG).show();
                     }
-                
+
                     @Override
                     public void onComplete () {
                         Log.d(TAG, "onComplete: ");
@@ -767,64 +649,10 @@ public class timelineCalls {
                     post.getPublisherInfo().getName()).show());
         }, 500);
     }
-    
+
     /*hide post*/
     public static void hidePOST(timelineFeedAdapter feedAdapter, int position) {
         feedAdapter.getData().remove(position);
         feedAdapter.notifyItemRemoved(position);
-    }
-
-    /*create a new post*/
-    public void createNewPost(String postText, ProgressBar progressBar, String post_color) {
-        createPostResponse = rxJavaQueries.createPost(accessToken,
-                BuildConfig.server_key, userId, postText,post_color, null, "");
-
-        createPostResponse.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<simpleResponse>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
-                    }
-
-                    @Override
-                    public void onNext(@NonNull simpleResponse simpleResponse) {
-                        if (simpleResponse.getApiStatus() == 200) {
-                            Log.d(TAG, "onNext: " + simpleResponse.getApiStatus());
-
-                            progressBar.setProgress(100);
-
-                            Toast toast = Toast.makeText(context, "Post created successful ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                            toast.show();
-                        }
-                        else {
-                            apiErrors errors  = simpleResponse.getErrors();
-                            Log.d(TAG, "ERROR: " + errors.getErrorId());
-
-                            progressBar.setProgress(0);
-                            Toast toast = Toast.makeText(context, "Failed to create post ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                            toast.show();
-                        }
-                        progressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
-
-                        progressBar.setProgress(0);
-                        Toast toast = Toast.makeText(context, "Failed to create post ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                        toast.show();
-                        progressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete: ");
-                    }
-                });
     }
 }

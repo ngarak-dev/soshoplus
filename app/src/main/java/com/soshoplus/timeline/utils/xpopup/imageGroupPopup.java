@@ -17,9 +17,9 @@ import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.groupCalls;
 import com.soshoplus.timeline.calls.timelineCalls;
 
-public class timelineImageViewPopup extends ImageViewerPopupView {
-    
-    public timelineImageViewPopup (@NonNull Context context) {
+public class imageGroupPopup extends ImageViewerPopupView {
+
+    public imageGroupPopup(@NonNull Context context) {
         super(context);
     }
     
@@ -42,7 +42,7 @@ public class timelineImageViewPopup extends ImageViewerPopupView {
         MaterialButton comment = findViewById(R.id.comment_btn);
     
         /*getting post image info*/
-        timelineCalls.getInfo(full_name, time_ago, no_likes, no_comments,
+        groupCalls.getInfo(full_name, time_ago, no_likes, no_comments,
                 like, comment);
     }
     

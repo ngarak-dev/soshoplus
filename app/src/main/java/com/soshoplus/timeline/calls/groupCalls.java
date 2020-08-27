@@ -44,6 +44,8 @@ import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.userprofile.userData;
+import com.soshoplus.timeline.utils.xpopup.adGroupPopup;
+import com.soshoplus.timeline.utils.xpopup.imageGroupPopup;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 import com.soshoplus.timeline.utils.xpopup.timelineAdFullViewPopup;
@@ -412,7 +414,7 @@ public class groupCalls {
 
     private void showAdViewPopup(ImageView ad_media, String adMedia, int position) {
 
-        timelineAdFullViewPopup adFullViewPopup= new timelineAdFullViewPopup(context);
+        adGroupPopup adFullViewPopup= new adGroupPopup(context);
         adFullViewPopup.isShowSaveButton(false);
         adFullViewPopup.setSingleSrcView(ad_media, adMedia);
         adFullViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
@@ -449,7 +451,7 @@ public class groupCalls {
 
     private void showViewPopup(ImageView post_image, String postFile, int position) {
 
-        timelineImageViewPopup imageViewPopup = new timelineImageViewPopup(context);
+        imageGroupPopup imageViewPopup = new imageGroupPopup(context);
         imageViewPopup.setSingleSrcView(post_image, postFile);
         imageViewPopup.isShowSaveButton(false);
         imageViewPopup.setXPopupImageLoader(new XPopupImageLoader() {

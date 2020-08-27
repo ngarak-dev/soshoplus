@@ -79,7 +79,7 @@ public class ColouredPost extends BaseItemProvider<post> {
                 break;
         }
 
-        baseViewHolder.setText(R.id.coloured_post_text, Html.fromHtml(post.getPostTextAPI()));
+        baseViewHolder.setText(R.id.coloured_post_text, post.getPostText());
 
         /*bind profile pic*/
         ImageLoader imageLoader = Coil.imageLoader(getContext());

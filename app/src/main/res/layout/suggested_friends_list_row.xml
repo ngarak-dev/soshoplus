@@ -36,13 +36,16 @@
             app:layout_constraintStart_toEndOf="@id/profile_pic"
             app:layout_constraintTop_toTopOf="@id/profile_pic" />
 
-        <TextView
+        <com.hendraanggrian.appcompat.widget.SocialTextView
             android:id="@+id/about_me"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:ellipsize="end"
             android:maxLines="3"
+            app:socialFlags="hashtag|mention|hyperlink"
+            app:hashtagColor="@color/colorPrimary"
+            app:mentionColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_pic"

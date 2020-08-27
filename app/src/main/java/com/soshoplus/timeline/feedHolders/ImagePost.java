@@ -60,7 +60,7 @@ public class ImagePost extends BaseItemProvider<post> {
         if (post.getPostTextAPI().isEmpty()) {
             baseViewHolder.setGone(R.id.post_contents, true);
         } else {
-            baseViewHolder.setText(R.id.post_contents, Html.fromHtml(post.getPostTextAPI()));
+            baseViewHolder.setText(R.id.post_contents, post.getOrginaltext());
         }
 
         /*bind profile pic*/

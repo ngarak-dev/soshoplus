@@ -82,7 +82,7 @@
             app:layout_constraintTop_toBottomOf="@id/profile_pic"
             android:layout_marginTop="@dimen/_10sdp">
 
-            <TextView
+            <com.hendraanggrian.appcompat.widget.SocialTextView
                 android:id="@+id/coloured_post_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +90,12 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_18ssp" />
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintTop_toBottomOf="@id/profile_pic"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:socialFlags="hashtag|mention|hyperlink"
+                app:hashtagColor="@color/colorPrimary"
+                app:mentionColor="@color/colorAccent" />
 
         </LinearLayout>
 

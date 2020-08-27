@@ -29,6 +29,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.hendraanggrian.appcompat.widget.SocialTextView;
+import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
@@ -230,7 +232,6 @@ public class timelineCalls {
                                         loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout);
                                     });
                                 }
-                                
                                 feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                                     @Override
                                     public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
@@ -294,6 +295,27 @@ public class timelineCalls {
                                                 ImageView post_image = view.findViewById(R.id.article_thumbnail);
                                                 /*......*/
                                                 showViewPopup(post_image, feedAdapter.getData().get(position).getBlog().getThumbnail(), position);
+                                                break;
+                                            }
+
+                                            /*mentions/ hashtags/ links*/
+                                            case R.id.post_contents: {
+                                                SocialTextView socialTextView = view.findViewById(R.id.post_contents);
+                                                socialTextView.setOnHashtagClickListener(new SocialView.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
+                                                                        @androidx.annotation.NonNull CharSequence text) {
+                                                        Log.d(TAG, "onClick: " + text);
+                                                    }
+                                                });
+
+                                                socialTextView.setOnMentionClickListener(new SocialView.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
+                                                                        @androidx.annotation.NonNull CharSequence text) {
+                                                        Log.d(TAG, "onClick: " + text);
+                                                    }
+                                                });
                                                 break;
                                             }
                                         }

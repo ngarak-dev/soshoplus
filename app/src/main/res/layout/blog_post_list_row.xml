@@ -75,12 +75,15 @@
             android:insetBottom="0dp"
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
-        <TextView
+        <com.hendraanggrian.appcompat.widget.SocialTextView
             android:id="@+id/post_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/profile_pic"
-            android:layout_marginTop="@dimen/_10sdp" />
+            android:layout_marginTop="@dimen/_10sdp"
+            app:socialFlags="hashtag|mention|hyperlink"
+            app:hashtagColor="@color/colorPrimary"
+            app:mentionColor="@color/colorAccent" />
 
         <RelativeLayout
             android:id="@+id/article_container"
@@ -106,11 +109,15 @@
                 android:layout_below="@id/article_title"
                 android:layout_margin="@dimen/_10sdp" />
 
-            <TextView
+            <com.hendraanggrian.appcompat.widget.SocialTextView
                 android:id="@+id/article_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/divider" />
+                android:layout_below="@id/divider"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:socialFlags="hashtag|mention|hyperlink"
+                app:hashtagColor="@color/colorPrimary"
+                app:mentionColor="@color/colorAccent" />
 
             <ImageView
                 android:id="@+id/article_thumbnail"

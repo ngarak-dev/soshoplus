@@ -60,7 +60,7 @@ public class MapPost extends BaseItemProvider<post> {
         baseViewHolder.setText(R.id.location_content, post.getPostMap());
 
         if (!post.getPostTextAPI().isEmpty()) {
-            baseViewHolder.setText(R.id.post_contents, Html.fromHtml(post.getPostTextAPI()));
+            baseViewHolder.setText(R.id.post_contents, post.getOrginaltext());
         } else {
             baseViewHolder.setGone(R.id.post_contents, true);
         }

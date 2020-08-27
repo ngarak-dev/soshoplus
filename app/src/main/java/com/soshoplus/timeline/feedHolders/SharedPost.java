@@ -64,7 +64,7 @@ public class SharedPost extends BaseItemProvider<post> {
         if (post.getPostTextAPI().isEmpty()) {
             baseViewHolder.setGone(R.id.post_contents, true);
         } else {
-            baseViewHolder.setText(R.id.post_contents, Html.fromHtml(post.getPostTextAPI()));
+            baseViewHolder.setText(R.id.post_contents, post.getOrginaltext());
         }
 
         /*bind profile pic*/
@@ -94,7 +94,7 @@ public class SharedPost extends BaseItemProvider<post> {
         baseViewHolder.setText(R.id.shared_full_name, sharedInfo.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.shared_time_ago, sharedInfo.getPostTime());
         if (!sharedInfo.getPostTextAPI().isEmpty()) {
-            baseViewHolder.setText(R.id.shared_post_contents, Html.fromHtml(sharedInfo.getPostTextAPI()));
+            baseViewHolder.setText(R.id.shared_post_contents, sharedInfo.getPostText());
         }
 
         /*bind profile pic*/

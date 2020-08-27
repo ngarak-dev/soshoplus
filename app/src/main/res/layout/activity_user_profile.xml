@@ -232,11 +232,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/follow_btn" />
 
-            <TextView
+            <com.hendraanggrian.appcompat.widget.SocialTextView
                 android:id="@+id/about_me"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp"
+                app:socialFlags="hashtag|mention|hyperlink"
+                app:hashtagColor="@color/colorPrimary"
+                app:mentionColor="@color/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/about_title" />

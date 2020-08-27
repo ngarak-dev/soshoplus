@@ -76,12 +76,15 @@
             app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
 
-        <TextView
+        <com.hendraanggrian.appcompat.widget.SocialTextView
             android:id="@+id/post_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/profile_pic"
-            android:layout_marginTop="@dimen/_10sdp" />
+            android:layout_marginTop="@dimen/_10sdp"
+            app:socialFlags="hashtag|mention|hyperlink"
+            app:hashtagColor="@color/colorPrimary"
+            app:mentionColor="@color/colorAccent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/shared_container"
@@ -118,12 +121,16 @@
                 app:layout_constraintBottom_toBottomOf="@id/shared_profile_pic"
                 android:textColor="@color/colorPrimary" />
 
-            <TextView
+            <com.hendraanggrian.appcompat.widget.SocialTextView
                 android:id="@+id/shared_post_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/shared_profile_pic"
-                android:visibility="gone" />
+                android:layout_marginTop="@dimen/_10sdp"
+                app:socialFlags="hashtag|mention|hyperlink"
+                app:hashtagColor="@color/colorPrimary"
+                app:mentionColor="@color/colorAccent" />
 
             <ImageView
                 android:id="@+id/shared_post_image"

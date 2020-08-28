@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ad_profile_pic"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ad_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:padding="@dimen/_2sdp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/ad_location"
+        app:layout_constraintStart_toEndOf="@id/ad_profile_pic"
+        app:layout_constraintTop_toTopOf="@id/ad_profile_pic" />
+
+    <TextView
+        android:id="@+id/ad_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:drawableStart="@drawable/ic_cursor_blue"
+        android:drawablePadding="@dimen/_5sdp"
+        android:padding="@dimen/_2sdp"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/ad_profile_pic"
+        app:layout_constraintStart_toEndOf="@id/ad_profile_pic"
+        app:layout_constraintTop_toBottomOf="@id/ad_full_name" />
+
+    <com.hendraanggrian.appcompat.widget.SocialTextView
+        android:id="@+id/ad_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ad_profile_pic"
+        android:layout_margin="@dimen/_10sdp"
+        app:socialFlags="hashtag|mention|hyperlink"
+        app:hashtagColor="@color/colorPrimary"
+        app:mentionColor="@color/colorAccent" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/divider"
+        android:layout_marginTop="@dimen/_5sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_description" />
+
+    <TextView
+        android:id="@+id/ad_headline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:drawableStart="@drawable/ic_link"
+        android:drawablePadding="@dimen/_10sdp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/ad_media"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <ImageView
+        android:id="@+id/ad_media"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ad_headline"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        android:elevation="@dimen/_10sdp"
+        android:text="AD"
+        android:textAlignment="center"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="@+id/ad_media"
+        app:layout_constraintStart_toStartOf="@+id/ad_media" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

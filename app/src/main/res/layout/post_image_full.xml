@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:textAlignment="center"
+        android:textColor="@color/white_smoke"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/time_ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white_smoke"
+        app:layout_constraintStart_toStartOf="@id/full_name"
+        app:layout_constraintTop_toBottomOf="@id/full_name" />
+
+    <TextView
+        android:id="@+id/no_likes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:textAlignment="center"
+        android:textColor="@color/white_smoke"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_divider"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/no_comments"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:textAlignment="center"
+        android:textColor="@color/white_smoke"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/horizontal_divider"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/horizontal_divider"
+        style="@style/divider"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@id/like_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/like_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25sdp"
+        android:text="Like"
+        android:textAllCaps="false"
+        android:textColor="@color/white_smoke"
+        android:textStyle="bold"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_like"
+        app:iconGravity="textStart"
+        app:iconSize="@dimen/_10sdp"
+        app:iconTint="@color/white_smoke"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/comment_btn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_25sdp"
+        android:text="Comment"
+        android:textAllCaps="false"
+        android:textColor="@color/white_smoke"
+        android:textStyle="bold"
+        app:cornerRadius="0dp"
+        app:icon="@drawable/ic_comment"
+        app:iconGravity="textStart"
+        app:iconSize="@dimen/_12sdp"
+        app:iconTint="@color/white_smoke"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

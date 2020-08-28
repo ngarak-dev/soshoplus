@@ -1,12 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-    <color name="textPrimary"></color>
-    <color name="textSecondary"></color>
-    <color name="bgPrimary"></color>
+<resources>
+    <color name="colorPrimary">#0079BB</color>
+    <color name="colorPrimaryDark">#0F273C</color>
+    <color name="colorAccent">#008CC9</color>
+
+
+    <color name="textPrimary">#0F273C</color>
+    <color name="bgPrimary">#F5F5F5</color>
+
+    <!-- NAV BAR COLORS   -->
+    <color name="home">#0F273C</color>
+    <color name="friends">#0079BB</color>
+    <color name="groups">#CD5C5C</color>
+    <color name="profile">#483D8B</color>
+    <color name="more">#8B4513</color>
+    <color name="faint">#0F273C</color>
+
+    <color name="transparent">#00F0F8FF</color>
+
+    <!--COLOURED POST-->
+    <!--six-->
+    <color name="endSix">#FB0404</color>
+    <color name="startSix">#08F7F7</color>
+    <!--five-->
+    <color name="endFive">#08F7F7</color>
+    <color name="startFive">#FB0404</color>
+    <!--four-->
+    <color name="endFour">#0503FF</color>
+    <color name="startFour">#F6AAFF</color>
+    <!--three-->
+    <color name="endThree">#7C84BA</color>
+    <color name="startThree">#04FB05</color>
+    <!--two-->
+    <color name="endTwo">#FF0600</color>
+    <color name="startTwo">#FFF900</color>
+    <!--one-->
+    <color name="endOne">#8481C2</color>
+    <color name="startOne">#FBAEFD</color>
 
     //custom colors
     <color name="white">#FFFFFF</color>
@@ -149,5 +184,7 @@
     <color name="dark_blue">#00008B</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="ic_launcher_background">#00F0F8FF</color>
 
 </resources>

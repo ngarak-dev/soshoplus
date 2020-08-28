@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~ Ngara K. Android Application Developer
+  ~ ngarakiringo@gmail.com
+  ~ Copyright (c) 2020
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/_8sdp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/cover_photo"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_120sdp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back_arrow"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/_5sdp"
+            app:rippleColor="@color/light_grey"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:iconGravity="textStart"
+            android:padding="0dp"
+            app:iconTint="@color/white_smoke"
+            app:iconPadding="0dp"
+            app:icon="@drawable/ic_arrow_back"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+
+        <ImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="@id/cover_photo"
+            app:layout_constraintStart_toStartOf="@id/cover_photo"
+            app:layout_constraintTop_toBottomOf="@id/cover_photo"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/level_badge"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/cover_photo"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintStart_toEndOf="@id/profile_pic"
+            tools:ignore="ContentDescription" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/follow_btn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:textAllCaps="false"
+            android:textSize="@dimen/_10ssp"
+            android:visibility="visible"
+            app:cornerRadius="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="@dimen/_1sdp" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_follow"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:elevation="@dimen/_10sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/follow_btn"
+            app:layout_constraintEnd_toEndOf="@id/follow_btn"
+            app:layout_constraintStart_toStartOf="@id/follow_btn"
+            app:layout_constraintTop_toTopOf="@id/follow_btn" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textAlignment="textStart"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/profile_pic" />
+
+        <TextView
+            android:id="@+id/following_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/follow_btn" />
+
+        <ImageView
+            android:id="@+id/verified_badge"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:src="@drawable/ic_verified"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/username"
+            app:layout_constraintStart_toEndOf="@id/username"
+            app:layout_constraintTop_toTopOf="@id/username"
+            tools:ignore="ContentDescription" />
+
+        <com.hendraanggrian.appcompat.widget.SocialTextView
+            android:id="@+id/about_me"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            app:socialFlags="hashtag|mention|hyperlink"
+            app:hashtagColor="@color/colorPrimary"
+            app:mentionColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/username"
+            app:layout_constraintTop_toBottomOf="@+id/username" />
+
+        <View
+            android:id="@+id/divider"
+            style="@style/divider"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/about_me" />
+
+        <TextView
+            android:id="@+id/number_of_followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <TextView
+            android:id="@+id/number_of_following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintStart_toEndOf="@id/number_of_followers"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

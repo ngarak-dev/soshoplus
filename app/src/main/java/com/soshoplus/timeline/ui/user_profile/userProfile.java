@@ -41,6 +41,7 @@ import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.models.userprofile.userInfo;
+import com.soshoplus.timeline.ui.audioRecorderPost;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.adFullImageViewPopup;
@@ -68,7 +69,7 @@ public class userProfile extends AppCompatActivity {
     private ActivityUserProfileBinding userProfileBinding;
     private queries rxJavaQueries;
     private static String accessToken, userId, timezone;
-    private static String user_id, followPrivacy, fullName;
+    private static String user_id, followPrivacy, fullName, username;
     private Observable<userInfo> userInfoObservable;
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     private final static String TAG = "user Profile Calls";
@@ -125,12 +126,10 @@ public class userProfile extends AppCompatActivity {
         /*get user id to view profile*/
         Bundle bundle = getIntent().getExtras();
         user_id  = bundle.getString("user_id");
+        username = bundle.getString("username");
 
         /*getting user profile data */
         HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getUserProfile, 500);
-
-        /*getting user photos*/
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(this::getUserPhotos, 500);
 
         /*refreshing groups*/
         userProfileBinding.profileRefreshLayout.setOnRefreshListener(() -> {
@@ -146,9 +145,15 @@ public class userProfile extends AppCompatActivity {
         /*initializing retrofit instance*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     
-        userInfoObservable = rxJavaQueries.getUserData(accessToken,
-                BuildConfig.server_key,
-                fetch_profile, user_id);
+        if (username == null) {
+            userInfoObservable = rxJavaQueries.getUserData(accessToken,
+                    BuildConfig.server_key,
+                    fetch_profile, user_id);
+        } else {
+            userInfoObservable = rxJavaQueries.getUserDataByUsername(accessToken,
+                    BuildConfig.server_key,
+                    fetch_profile,  username);
+        }
         
         /*making a call to network*/
         userInfoObservable.subscribeOn(Schedulers.io())
@@ -163,14 +168,30 @@ public class userProfile extends AppCompatActivity {
                     public void onNext (@NonNull userInfo userInfo) {
                         if (userInfo.getApiStatus() == 200) {
                             /*binding user data*/
+                            user_id = userInfo.getUserData().getUserId();
                             bindUserInfo(userInfo);
+
+                            /*getting user photos*/
+                            HandlerCompat.createAsync(Looper.getMainLooper())
+                                    .postDelayed(userProfile.this::getUserPhotos, 500);
                         }
                         else {
                             apiErrors apiErrors =userInfo.getErrors();
-                            Log.d(TAG, "onNext: " + apiErrors.getErrorText());
-                        
-                            snack.setMessage("Oops !\nSomething went " +
-                                    "wrong");
+
+                            if (apiErrors.getErrorId().equals("6")) {
+
+                                snack.setMessage("User profile not found");
+
+                                Toast toast = Toast.makeText(userProfile.this, "User profile not found ... ", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
+
+                                new Handler().postDelayed(() -> onBackPressed(), 2500);
+                            }
+                            else {
+                                snack.setMessage("Oops !\nSomething went " +
+                                        "wrong");
+                            }
                             snack.setAction("DISMISS", view -> {
                                 snack.dismiss();
                             });

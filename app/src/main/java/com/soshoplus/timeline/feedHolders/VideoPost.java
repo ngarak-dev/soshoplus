@@ -39,7 +39,7 @@ public class VideoPost extends BaseItemProvider<post> {
 
     private SimpleExoPlayer exoPlayer;
     private PlayerView playerView;
-    private boolean playWhenReady = true;
+    private boolean playWhenReady = false;
     private int currentWindow = 0;
     private long playbackPosition = 0;
 

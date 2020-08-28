@@ -59,7 +59,7 @@ public class simpleProfileCalls {
 
         userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
-                fetch_profile, userId);
+                fetch_profile,  userId);
 
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

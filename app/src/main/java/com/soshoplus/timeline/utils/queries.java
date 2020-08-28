@@ -47,7 +47,15 @@ public interface queries {
     @POST("get-user-data")
     Observable<userInfo> getUserData (@Query("access_token") String access_token,
                                       @Field("server_key") String server_key,
-                                      @Field("fetch") String fetch, @Field("user_id") String user_id);
+                                      @Field("fetch") String fetch,
+                                      @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("get-user-data-username")
+    Observable<userInfo> getUserDataByUsername (@Query("access_token") String access_token,
+                                      @Field("server_key") String server_key,
+                                      @Field("fetch") String fetch,
+                                      @Field("username") String username);
 
     /*Timeline Posts*/
     @FormUrlEncoded

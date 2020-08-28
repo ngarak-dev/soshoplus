@@ -89,7 +89,7 @@
             android:id="@+id/media_player"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_350sdp"
-            app:use_controller="false"
+            app:use_controller="true"
             app:surface_type="surface_view"
             app:resize_mode="fixed_width"
             app:layout_constraintTop_toBottomOf="@id/post_contents"

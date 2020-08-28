@@ -44,6 +44,7 @@ import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.postAction;
 import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.ui.hashTagsPosts;
+import com.soshoplus.timeline.ui.user_profile.userProfile;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.adapters.timelineFeedAdapter;
@@ -320,7 +321,10 @@ public class timelineCalls {
                                                     @Override
                                                     public void onClick(@androidx.annotation.NonNull SocialView view,
                                                                         @androidx.annotation.NonNull CharSequence text) {
-                                                        Log.d(TAG, "onClick: " + text);
+
+                                                        Intent intent = new Intent(context, userProfile.class);
+                                                        intent.putExtra("username", text.toString());
+                                                        context.startActivity(intent);
                                                     }
                                                 });
                                                 break;

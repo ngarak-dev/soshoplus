@@ -16,13 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/group_profile_pic"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
             android:scaleType="centerCrop"
-            app:placeholderImage="@color/light_grey"
-            app:fadeDuration="300"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"

@@ -17,16 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:actualImageScaleType="focusCrop"
-            app:fadeDuration="300"
-            app:placeholderImage="@color/light_grey"
-            app:roundAsCircle="true"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -72,7 +68,7 @@
             android:padding="0dp"
             app:iconTint="@color/gray"
             app:iconPadding="0dp"
-            app:icon="@drawable/ic_baseline_more"
+            app:icon="@drawable/ic_more_horiz"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -86,7 +82,7 @@
             app:layout_constraintTop_toBottomOf="@id/profile_pic"
             android:layout_marginTop="@dimen/_10sdp">
 
-            <TextView
+            <com.hendraanggrian.appcompat.widget.SocialTextView
                 android:id="@+id/coloured_post_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,7 +90,12 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_18ssp" />
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintTop_toBottomOf="@id/profile_pic"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:socialFlags="hashtag|mention|hyperlink"
+                app:hashtagColor="@color/colorPrimary"
+                app:mentionColor="@color/colorAccent" />
 
         </LinearLayout>
 
@@ -112,8 +113,9 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            app:layout_constraintTop_toTopOf="@id/like_btn"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            android:layout_marginStart="@dimen/_10sdp"
             android:textStyle="bold" />
 
         <TextView
@@ -122,17 +124,19 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/divider_"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            app:layout_constraintLeft_toRightOf="@id/no_likes"
+            app:layout_constraintTop_toTopOf="@id/like_btn"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            app:layout_constraintStart_toEndOf="@id/no_likes"
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like_btn"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider_"
             app:layout_constraintRight_toLeftOf="@id/comment_btn"
-            app:rippleColor="@color/light_grey"
+            app:rippleColor="@color/transparent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"
@@ -148,9 +152,10 @@
             android:id="@+id/comment_btn"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider_"
             app:layout_constraintEnd_toEndOf="parent"
-            app:rippleColor="@color/light_grey"
+            app:rippleColor="@color/transparent"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"

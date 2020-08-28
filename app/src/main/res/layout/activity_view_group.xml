@@ -15,11 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/group_cover"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
-            app:placeholderImage="@color/dim_gray"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +44,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/group_profile_pic"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
@@ -52,10 +52,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/group_cover"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/group_cover"
-            app:actualImageScaleType="focusCrop"
-            app:fadeDuration="300"
-            app:placeholderImage="@color/light_grey"
-            app:roundAsCircle="true"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.button.MaterialButton
@@ -117,14 +113,30 @@
             android:id="@+id/posts_title"
             android:textStyle="bold" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/group_post_list"
+
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:id="@+id/refreshPostsLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/posts_title" />
+            app:layout_constraintTop_toBottomOf="@id/posts_title">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srlEnableLastTime="false"
+                app:srlTextFinish="."
+                app:layout_srlBackgroundColor="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/group_post_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

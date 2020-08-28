@@ -7,10 +7,10 @@
 package com.soshoplus.timeline.feedHolders;
 
 import android.text.Html;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
@@ -18,11 +18,16 @@ import com.soshoplus.timeline.models.userprofile.userData;
 
 import org.jetbrains.annotations.NotNull;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
+
 public class AdPost extends BaseItemProvider<post> {
     
     private static String TAG = "AD POST : ";
     
-    SimpleDraweeView profile_pic, media;
+    ImageView profile_pic, media;
     
     @Override
     public int getItemViewType () {
@@ -36,6 +41,8 @@ public class AdPost extends BaseItemProvider<post> {
     
     @Override
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
 
         profile_pic = baseViewHolder.findView(R.id.ad_profile_pic);
         media = baseViewHolder.findView(R.id.ad_media);
@@ -51,7 +58,21 @@ public class AdPost extends BaseItemProvider<post> {
         baseViewHolder.setText(R.id.ad_description, Html.fromHtml(post.getDescription()));
         baseViewHolder.setText(R.id.ad_headline, post.getHeadline());
 
-        profile_pic.setImageURI(user_data.getAvatar());
-        media.setImageURI(post.getAdMedia());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(user_data.getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
+
+        imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getAdMedia())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .target(media)
+                .build();
+        imageLoader.enqueue(imageRequest);
     }
 }

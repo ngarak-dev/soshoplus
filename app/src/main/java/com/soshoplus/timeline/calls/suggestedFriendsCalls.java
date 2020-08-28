@@ -20,12 +20,9 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.lxj.xpopup.XPopup;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
 import com.soshoplus.timeline.models.apiErrors;
-import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
-import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -34,6 +31,9 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.soshoplus.timeline.adapters.suggestedFriendsAdapter;
+import com.soshoplus.timeline.models.friends.suggested.suggestedList;
+import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 
 public class suggestedFriendsCalls {
     
@@ -148,7 +148,6 @@ public class suggestedFriendsCalls {
             suggestedFriendsList.setVisibility(View.GONE);
             refreshSuggested.setVisibility(View.GONE);
             progressBarSuggested.setVisibility(View.VISIBLE);
-
         });
     }
 }

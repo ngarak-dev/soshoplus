@@ -8,15 +8,20 @@ package com.soshoplus.timeline.calls;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.soshoplus.timeline.BuildConfig;
+import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.apiErrors;
-import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.models.userprofile.userInfo;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -50,11 +55,11 @@ public class simpleProfileCalls {
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
-    public void getProfile(SimpleDraweeView profilePic, TextView fullName, TextView userEmail) {
+    public void getProfile(ImageView profilePic, TextView fullName, TextView userEmail) {
 
         userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
-                fetch_profile, userId);
+                fetch_profile,  userId);
 
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -69,7 +74,16 @@ public class simpleProfileCalls {
                         if(userInfo.getApiStatus() == 200) {
                             fullName.setText(userInfo.getUserData().getName());
                             userEmail.setText(userInfo.getUserData().getEmail());
-                            profilePic.setImageURI(userInfo.getUserData().getAvatar());
+
+                            ImageLoader imageLoader = Coil.imageLoader(context);
+                            ImageRequest imageRequest = new ImageRequest.Builder(context)
+                                    .data(userInfo.getUserData().getAvatar())
+                                    .placeholder(R.color.light_grey)
+                                    .crossfade(true)
+                                    .transformations(new CircleCropTransformation())
+                                    .target(profilePic)
+                                    .build();
+                            imageLoader.enqueue(imageRequest);
                         }
                         else {
                             apiErrors apiErrors =userInfo.getErrors();

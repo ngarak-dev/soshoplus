@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
-import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.databinding.ActivitySignupBinding;
 import com.soshoplus.timeline.models.accessToken;
 import com.soshoplus.timeline.models.apiErrors;
@@ -36,6 +35,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.soshoplus.timeline.BuildConfig;
 
 public class signUp extends AppCompatActivity {
     

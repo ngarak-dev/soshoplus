@@ -16,16 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/profile_pic"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
-            app:actualImageScaleType="focusCrop"
-            app:fadeDuration="300"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:placeholderImage="@drawable/ic_image_placeholder"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -39,13 +36,16 @@
             app:layout_constraintStart_toEndOf="@id/profile_pic"
             app:layout_constraintTop_toTopOf="@id/profile_pic" />
 
-        <TextView
+        <com.hendraanggrian.appcompat.widget.SocialTextView
             android:id="@+id/about_me"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:ellipsize="end"
             android:maxLines="3"
+            app:socialFlags="hashtag|mention|hyperlink"
+            app:hashtagColor="@color/colorPrimary"
+            app:mentionColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_pic"

@@ -8,7 +8,6 @@ package com.soshoplus.timeline.adapters;
 
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.soshoplus.timeline.R;
@@ -18,6 +17,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import coil.Coil;
+import coil.ComponentRegistry;
+import coil.ImageLoader;
+import coil.bitmap.BitmapPool;
+import coil.decode.Options;
+import coil.fetch.FetchResult;
+import coil.fetch.Fetcher;
+import coil.request.ImageRequest;
+import coil.size.Size;
+import kotlin.coroutines.Continuation;
 
 public class previewImagesAdapter extends BaseQuickAdapter<ImageItem, BaseViewHolder> {
 
@@ -30,13 +40,23 @@ public class previewImagesAdapter extends BaseQuickAdapter<ImageItem, BaseViewHo
     @Override
     protected void convert(@NotNull BaseViewHolder baseViewHolder, ImageItem imageItem) {
         ImageView imageView = baseViewHolder.findView(R.id.image);
-//        imageView.setImageURI(Uri.parse(imageItem.getCropUrl()));
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
 
         if (imageItem.isImage()) {
-            Glide.with(getContext()).load(imageItem.getCropUrl()).into(imageView);
+            ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                    .data(imageItem.getUri())
+                    .crossfade(true)
+                    .target(imageView)
+                    .build();
+            imageLoader.enqueue(imageRequest);
         }
         else {
-            Glide.with(getContext()).load(imageItem.getVideoImageUri()).into(imageView);
+            ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                    .data(imageItem.getVideoImageUri())
+                    .crossfade(true)
+                    .target(imageView)
+                    .build();
+            imageLoader.enqueue(imageRequest);
         }
     }
 }

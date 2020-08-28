@@ -7,7 +7,6 @@
 package com.soshoplus.timeline.calls;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Looper;
 import android.text.Html;
 import android.util.Log;
@@ -19,20 +18,19 @@ import android.widget.TextView;
 import androidx.core.os.HandlerCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.bumptech.glide.Priority;
-import com.bumptech.glide.load.DecodeFormat;
-import com.bumptech.glide.request.RequestOptions;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.follow_unfollow;
-import com.soshoplus.timeline.models.userprofile.userInfo;
 import com.soshoplus.timeline.utils.queries;
 import com.soshoplus.timeline.utils.retrofitInstance;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -41,6 +39,8 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DefaultObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+
+import com.soshoplus.timeline.models.userprofile.userInfo;
 
 public class previewProfileCalls {
     
@@ -60,13 +60,6 @@ public class previewProfileCalls {
     private static String followPrivacy;
     private Observable<follow_unfollow> followUnfollowObservable;
     
-    /*GLIDE OPTIONS*/
-    RequestOptions options = new RequestOptions()
-            .format(DecodeFormat.PREFER_RGB_565)
-            .placeholder(R.drawable.ic_image_placeholder)
-            .error(R.drawable.ic_image_placeholder)
-            .priority(Priority.LOW);
-    
     /*constructor*/
     public previewProfileCalls (Context context) {
         this.context = context;
@@ -80,7 +73,7 @@ public class previewProfileCalls {
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
     
-    public void previewProfile (SimpleDraweeView cover_photo, SimpleDraweeView profile_pic,
+    public void previewProfile (ImageView cover_photo, ImageView profile_pic,
                                 TextView name, ImageView verified_badge,
                                 ImageView level_badge, TextView no_followers, TextView no_following,
                                 MaterialButton follow, TextView about, ProgressBar progressBar_follow,
@@ -176,9 +169,23 @@ public class previewProfileCalls {
                                 }
 
                                 /*profile*/
-                                profile_pic.setImageURI(userInfo.getUserData().getAvatar());
+                                ImageLoader imageLoader = Coil.imageLoader(context);
+                                ImageRequest imageRequest = new ImageRequest.Builder(context)
+                                        .data(userInfo.getUserData().getAvatar())
+                                        .crossfade(true)
+                                        .transformations(new CircleCropTransformation())
+                                        .target(profile_pic)
+                                        .build();
+                                imageLoader.enqueue(imageRequest);
+
                                 /*cover*/
-                                cover_photo.setImageURI(userInfo.getUserData().getCover());
+                                imageRequest = new ImageRequest.Builder(context)
+                                        .data(userInfo.getUserData().getCover())
+                                        .placeholder(R.color.light_grey)
+                                        .crossfade(true)
+                                        .target(cover_photo)
+                                        .build();
+                                imageLoader.enqueue(imageRequest);
                             });
                         }
                         else {

@@ -8,7 +8,6 @@ package com.soshoplus.timeline.utils.xpopup;
 
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,6 +18,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.hendraanggrian.appcompat.widget.SocialEditText;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.timelineCalls;
@@ -51,7 +51,7 @@ public class newNormalPostPopup extends FullScreenPopupView {
         MaterialButton close = findViewById(R.id.close_btn);
         ExpandableLayout layout = findViewById(R.id.collapsingLayout);
         MaterialButton send = findViewById(R.id.send_post_btn);
-        TextInputEditText post_contents = findViewById(R.id.post_txt_contents);
+        SocialEditText post_contents = findViewById(R.id.post_txt_contents);
 
         LinearLayout color_0 = findViewById(R.id.color_0);
         LinearLayout color_1 = findViewById(R.id.color_1);

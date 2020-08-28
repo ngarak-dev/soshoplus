@@ -44,9 +44,6 @@ public class timelineImageViewPopup extends ImageViewerPopupView {
         /*getting post image info*/
         timelineCalls.getInfo(full_name, time_ago, no_likes, no_comments,
                 like, comment);
-
-        groupCalls.getInfo(full_name, time_ago, no_likes, no_comments,
-                like, comment);
     }
     
     @Override

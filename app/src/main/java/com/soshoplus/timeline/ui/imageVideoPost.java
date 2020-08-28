@@ -6,7 +6,6 @@
 
 package com.soshoplus.timeline.ui;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 
@@ -25,7 +23,6 @@ import com.lxj.xpopup.core.BasePopupView;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.adapters.previewImagesAdapter;
-import com.soshoplus.timeline.calls.timelineCalls;
 import com.soshoplus.timeline.databinding.ActivityImagePostBinding;
 import com.soshoplus.timeline.utils.RedBookPresenter;
 import com.ypx.imagepicker.ImagePicker;
@@ -90,7 +87,6 @@ public class imageVideoPost extends AppCompatActivity {
         postBinding.pickImage.setOnClickListener(view_ -> {
 
             if (type == 1) {
-
                 ImagePicker.withCrop(new RedBookPresenter())
                         .setMaxCount(1)
                         .showCamera(true)
@@ -128,13 +124,24 @@ public class imageVideoPost extends AppCompatActivity {
         });
 
         postBinding.sendPostBtn.setOnClickListener(view_ -> {
-            if (photos.size() == 0) {
-                Toast toast = Toast.makeText(imageVideoPost.this, "Select an image to post ... ", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                toast.show();
-            }
-            else {
-                sendPost();
+            if (type == 1) {
+                if (photos.size() == 0) {
+                    Toast toast = Toast.makeText(imageVideoPost.this, "Select an image to post ... ", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.show();
+                }
+                else {
+                    sendPost();
+                }
+            } else {
+                if (photos.size() == 0) {
+                    Toast toast = Toast.makeText(imageVideoPost.this, "Select a video to post ... ", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.show();
+                }
+                else {
+                    sendPost();
+                }
             }
         });
 

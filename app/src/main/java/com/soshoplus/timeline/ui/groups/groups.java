@@ -8,13 +8,11 @@ package com.soshoplus.timeline.ui.groups;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 
-import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.calls.joinedGroupsCalls;
 import com.soshoplus.timeline.calls.recommendedGroupsCalls;
 import com.soshoplus.timeline.databinding.ActivityGroupsBinding;
@@ -22,8 +20,8 @@ import com.soshoplus.timeline.databinding.ActivityGroupsBinding;
 public class groups extends AppCompatActivity {
 
     private ActivityGroupsBinding groupsBinding;
-    private recommendedGroupsCalls recommendedGroupsCalls;
-    private joinedGroupsCalls joinedGroupsCalls;
+    private com.soshoplus.timeline.calls.recommendedGroupsCalls recommendedGroupsCalls;
+    private com.soshoplus.timeline.calls.joinedGroupsCalls joinedGroupsCalls;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

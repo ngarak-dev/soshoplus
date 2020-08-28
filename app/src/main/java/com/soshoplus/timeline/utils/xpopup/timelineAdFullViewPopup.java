@@ -39,9 +39,6 @@ public class timelineAdFullViewPopup extends ImageViewerPopupView {
         /*getting ad info*/
         timelineCalls.getADInfo(full_name, location, description,
                 headline);
-
-        groupCalls.getADInfo(full_name, location, description,
-                headline);
     }
     
     @Override

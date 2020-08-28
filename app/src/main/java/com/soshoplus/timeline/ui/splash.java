@@ -13,7 +13,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.soshoplus.timeline.databinding.ActivitySplashBinding;
 import com.soshoplus.timeline.ui.auth.signIn;
 

@@ -25,9 +25,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
 import androidx.loader.content.CursorLoader;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.ngarak.recorder.OnRecordListener;
+import me.ngarak.recorder.OnRecordListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.databinding.ActivityAudioRecorderPostBinding;
 
@@ -57,6 +63,11 @@ public class audioRecorderPost extends AppCompatActivity {
     private ActivityAudioRecorderPostBinding binding;
     private static String recordPath;
     private BasePopupView popupView;
+
+    private SimpleExoPlayer exoPlayer;
+    private boolean playWhenReady = false;
+    private int currentWindow = 0;
+    private long playbackPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +133,10 @@ public class audioRecorderPost extends AppCompatActivity {
                 binding.recordView.setVisibility(View.GONE);
                 binding.recordButton.setVisibility(View.GONE);
 
-                binding.recording.setVisibility(View.VISIBLE);
+                binding.mediaPlayer.setVisibility(View.VISIBLE);
                 binding.removeAudio.setVisibility(View.VISIBLE);
+
+                initializePlayer();
             }
 
             @Override
@@ -144,6 +157,7 @@ public class audioRecorderPost extends AppCompatActivity {
         });
 
         binding.removeAudio.setOnClickListener(view_ -> {
+            releasePlayer();
             recordPath = null;
 
             if (type == 1) {
@@ -154,7 +168,7 @@ public class audioRecorderPost extends AppCompatActivity {
                 binding.recordButton.setVisibility(View.VISIBLE);
             }
 
-            binding.recording.setVisibility(View.GONE);
+            binding.mediaPlayer.setVisibility(View.GONE);
             binding.removeAudio.setVisibility(View.GONE);
 
             Log.d(TAG, "onCreate: " + recordPath);
@@ -227,6 +241,7 @@ public class audioRecorderPost extends AppCompatActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) {
+                Log.d(TAG, "onResponse: " + response.code());
                 if (response.isSuccessful()) {
                     HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
                         Toast toast = Toast.makeText(audioRecorderPost.this, "Post created successful ... ", Toast.LENGTH_LONG);
@@ -239,7 +254,6 @@ public class audioRecorderPost extends AppCompatActivity {
                         /*move task back*/
                         onBackPressed();
                     });
-
                 }
                 else {
                     Log.d(TAG, "onResponse: " + response.code());
@@ -264,6 +278,8 @@ public class audioRecorderPost extends AppCompatActivity {
                     else {
                         Log.d(TAG, "AUDIO PATH: " + recordPath);
                         hidePickBtn();
+
+                        initializePlayer();
                     }
                 }
             }
@@ -284,10 +300,7 @@ public class audioRecorderPost extends AppCompatActivity {
     private void hidePickBtn() {
         binding.pickAudio.setVisibility(View.GONE);
         binding.removeAudio.setVisibility(View.VISIBLE);
-        binding.recording.setVisibility(View.VISIBLE);
-
-//        binding.recording.setCompoundDrawablesRelative(getResources().getDrawable(R.drawable.ic_audio_post), null, null, null);
-        binding.recording.setText("Audio file added");
+        binding.mediaPlayer.setVisibility(View.VISIBLE);
     }
 
     private void permissionRequest() {
@@ -319,5 +332,67 @@ public class audioRecorderPost extends AppCompatActivity {
                 PermissionUtils.getDeniedPermissionStatus(audioRecorderPost.this, true, Manifest.permission_group.MICROPHONE);
             }
         }).request(audioRecorderPost.this);
+    }
+
+    private void initializePlayer () {
+        exoPlayer = new SimpleExoPlayer.Builder(audioRecorderPost.this).build();
+        binding.mediaPlayer.setPlayer(exoPlayer);
+
+        Uri uri = Uri.parse(recordPath);
+        MediaSource mediaSource = buildMediaSource(uri);
+
+        exoPlayer.setPlayWhenReady(playWhenReady);
+        exoPlayer.seekTo(currentWindow, playbackPosition);
+        exoPlayer.prepare(mediaSource, false, false);
+    }
+
+    private MediaSource buildMediaSource(Uri uri) {
+        DataSource.Factory dataSourceFactory =
+                new DefaultDataSourceFactory(audioRecorderPost.this, "soshoplay");
+        return new ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(uri);
+    }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (Util.SDK_INT >= 24) {
+//            initializePlayer();
+//        }
+//    }
+//
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if ((Util.SDK_INT < 24 || exoPlayer == null)) {
+//            initializePlayer();
+//        }
+//    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Util.SDK_INT < 24) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (Util.SDK_INT >= 24) {
+            releasePlayer();
+        }
+    }
+
+    private void releasePlayer() {
+        if (exoPlayer != null) {
+            playWhenReady = exoPlayer.getPlayWhenReady();
+            playbackPosition = exoPlayer.getCurrentPosition();
+            currentWindow = exoPlayer.getCurrentWindowIndex();
+            exoPlayer.release();
+            exoPlayer = null;
+        }
     }
 }

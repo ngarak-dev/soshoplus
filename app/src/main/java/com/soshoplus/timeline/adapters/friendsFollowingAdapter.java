@@ -6,9 +6,10 @@
 
 package com.soshoplus.timeline.adapters;
 
+import android.widget.ImageView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.friends.following;
 
@@ -16,6 +17,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.RoundedCornersTransformation;
 
 public class friendsFollowingAdapter extends BaseQuickAdapter<following, BaseViewHolder> {
     
@@ -34,8 +40,17 @@ public class friendsFollowingAdapter extends BaseQuickAdapter<following, BaseVie
         }
     
         baseViewHolder.setText(R.id.full_name, followings.getName());
-    
-        SimpleDraweeView profile_pic = baseViewHolder.findView(R.id.profile_pic);
-        profile_pic.setImageURI(followings.getAvatar());
+
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
+        ImageView profile_pic = baseViewHolder.findView(R.id.profile_pic);
+
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(followings.getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new RoundedCornersTransformation(10))
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
     }
 }

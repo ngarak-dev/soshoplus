@@ -19,13 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.models.apiErrors;
+import com.soshoplus.timeline.utils.queries;
+import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.adapters.friendsFollowersAdapter;
 import com.soshoplus.timeline.models.friends.followers;
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.ui.user_profile.userProfile;
-import com.soshoplus.timeline.utils.queries;
-import com.soshoplus.timeline.utils.retrofitInstance;
 
 import java.util.List;
 

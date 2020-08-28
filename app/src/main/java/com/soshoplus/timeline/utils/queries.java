@@ -6,39 +6,26 @@
 
 package com.soshoplus.timeline.utils;
 
-import android.graphics.Bitmap;
-
 import com.soshoplus.timeline.models.accessToken;
-import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.follow_unfollow;
+import com.soshoplus.timeline.models.postAction;
+import com.soshoplus.timeline.models.block_unblock;
 import com.soshoplus.timeline.models.friends.friends;
 import com.soshoplus.timeline.models.friends.suggested.suggestedList;
 import com.soshoplus.timeline.models.groups.addingUser;
 import com.soshoplus.timeline.models.groups.group;
 import com.soshoplus.timeline.models.groups.groupList;
 import com.soshoplus.timeline.models.groups.join.join_unjoin;
-import com.soshoplus.timeline.models.postAction;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.models.userprofile.userInfo;
 
-import java.io.File;
-import java.util.HashMap;
-
 import io.reactivex.rxjava3.core.Observable;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava3.Result;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Headers;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface queries {
@@ -60,7 +47,15 @@ public interface queries {
     @POST("get-user-data")
     Observable<userInfo> getUserData (@Query("access_token") String access_token,
                                       @Field("server_key") String server_key,
-                                      @Field("fetch") String fetch, @Field("user_id") String user_id);
+                                      @Field("fetch") String fetch,
+                                      @Field("user_id") String user_id);
+
+    @FormUrlEncoded
+    @POST("get-user-data-username")
+    Observable<userInfo> getUserDataByUsername (@Query("access_token") String access_token,
+                                      @Field("server_key") String server_key,
+                                      @Field("fetch") String fetch,
+                                      @Field("username") String username);
 
     /*Timeline Posts*/
     @FormUrlEncoded
@@ -68,6 +63,7 @@ public interface queries {
     Observable<postList> getTimelinePosts (@Query("access_token") String access_token,
                                          @Field("server_key") String server_key,
                                            @Field("type") String type,
+                                           @Field("hash") String hashtag,
                                            @Field("limit") String limit,
                                            @Field("after_post_id") String after_post_id);
 

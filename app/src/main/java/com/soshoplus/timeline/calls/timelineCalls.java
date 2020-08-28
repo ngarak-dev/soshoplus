@@ -25,30 +25,35 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
+import com.hendraanggrian.appcompat.widget.SocialTextView;
+import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.soshoplus.timeline.BuildConfig;
 import com.soshoplus.timeline.R;
-import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.apiErrors;
 import com.soshoplus.timeline.models.postAction;
+import com.soshoplus.timeline.models.simpleResponse;
+import com.soshoplus.timeline.ui.hashTagsPosts;
+import com.soshoplus.timeline.ui.user_profile.userProfile;
+import com.soshoplus.timeline.utils.queries;
+import com.soshoplus.timeline.utils.retrofitInstance;
+import com.soshoplus.timeline.adapters.timelineFeedAdapter;
 import com.soshoplus.timeline.models.postsfeed.post;
 import com.soshoplus.timeline.models.postsfeed.postList;
 import com.soshoplus.timeline.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.timeline.models.postsfeed.sharepost.shareResponse;
-import com.soshoplus.timeline.models.simpleResponse;
 import com.soshoplus.timeline.models.userprofile.userData;
 import com.soshoplus.timeline.ui.auth.signIn;
-import com.soshoplus.timeline.utils.queries;
-import com.soshoplus.timeline.utils.retrofitInstance;
 import com.soshoplus.timeline.utils.xpopup.previewProfilePopup;
 import com.soshoplus.timeline.utils.xpopup.sharePopup;
 import com.soshoplus.timeline.utils.xpopup.timelineAdFullViewPopup;
@@ -57,6 +62,10 @@ import com.soshoplus.timeline.utils.xpopup.timelineImageViewPopup;
 import java.io.File;
 import java.util.List;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import de.adorsys.android.securestoragelibrary.SecureStorageException;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -77,10 +86,9 @@ public class timelineCalls {
     private BasePopupView popupView;
     
     /*TIMELINE FEED*/
-    private final static String get_news_feed = "get_news_feed";
     private Observable<postList> postListObserve;
     private List<post> timelinePosts;
-    private static String firstData = "0";
+    private static String firstData = null;
     private timelineFeedAdapter feedAdapter;
     
     /*POST LIKE_DISLIKE*/
@@ -123,12 +131,13 @@ public class timelineCalls {
     }
     
     public void getTimelineFeed(RecyclerView timelinePostsList,
-                                ProgressBar progressBarTimeline, RelativeLayout timelineErrorLayout, MaterialButton tryAgain) {
-    
+                                ProgressBar progressBarTimeline, String type, RelativeLayout timelineErrorLayout,
+                                MaterialButton tryAgain, SmartRefreshLayout refreshPostsLayout, String hashTag) {
+
         /*load posts*/
         Log.d(TAG, "LOADING : " + firstData);
         loadPosts(timelinePostsList, timelineErrorLayout,
-                tryAgain, progressBarTimeline);
+                tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
         
         tryAgain.setOnClickListener(view -> {
             /*hide error layout*
@@ -138,23 +147,32 @@ public class timelineCalls {
             /*.........*/
             timelinePostsList.setVisibility(View.GONE);
             progressBarTimeline.setVisibility(View.VISIBLE);
-    
-            /*refresh data*/
-            loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
-            /*finish refresh*/
+
             /*hide progress*/
             new Handler().postDelayed(() -> {
                 progressBarTimeline.setVisibility(View.GONE);
             }, 500);
         });
+
+        refreshPostsLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@androidx.annotation.NonNull RefreshLayout refreshLayout) {
+                firstData = "0";
+                loadPosts(timelinePostsList, timelineErrorLayout,
+                        tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
+            }
+        });
+
     }
     
-    private void loadPosts (RecyclerView timelinePostsList,
-                            RelativeLayout timelineErrorLayout, MaterialButton tryAgain, ProgressBar progressBarTimeline) {
+    private void loadPosts(RecyclerView timelinePostsList,
+                           RelativeLayout timelineErrorLayout, MaterialButton tryAgain,
+                           ProgressBar progressBarTimeline, SmartRefreshLayout refreshPostsLayout,
+                           String type, String hashTag) {
     
         postListObserve =
                 rxJavaQueries.getTimelinePosts(accessToken,
-                BuildConfig.server_key, get_news_feed, "10", firstData);
+                BuildConfig.server_key, type, hashTag, "10", firstData);
     
         postListObserve.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -167,7 +185,7 @@ public class timelineCalls {
                     @Override
                     public void onNext (@NonNull postList postList) {
                         
-                        if (firstData.equals("0")) {
+                        if (firstData == null) {
         
                             if(postList.getApiStatus() == 200) {
                                 Log.d(TAG, "onNext: LOAD FIRST DATA");
@@ -189,6 +207,11 @@ public class timelineCalls {
                                         Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
                                     }
                                 }
+
+                                /*pullTorefesh */
+                                if (refreshPostsLayout.isRefreshing()) {
+                                    refreshPostsLayout.finishRefresh();
+                                }
     
                                 /*hide progress*/
                                 new Handler().postDelayed(() -> progressBarTimeline.setVisibility(View.GONE), 500);
@@ -209,10 +232,10 @@ public class timelineCalls {
                                     feedAdapter.getLoadMoreModule().setAutoLoadMore(true);
                                     feedAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
                                         /*load more posts*/
-                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
+                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain,
+                                                progressBarTimeline, refreshPostsLayout, type, hashTag);
                                     });
                                 }
-                                
                                 feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                                     @Override
                                     public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
@@ -220,7 +243,8 @@ public class timelineCalls {
 
                                         switch (view.getId()) {
                                             case R.id.like_btn:
-                                                likePost(feedAdapter.getData().get(position).getPostId(), position);
+                                                MaterialButton likeBtn = view.findViewById(R.id.like_btn);
+                                                likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
                                                 break;
                                             case R.id.post_option:
                                                 new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
@@ -255,26 +279,54 @@ public class timelineCalls {
                                                 }, 1000);
                                                 break;
                                             case R.id.ad_media:
-                                                SimpleDraweeView ad_media = view.findViewById(R.id.ad_media);
+                                                ImageView ad_media = view.findViewById(R.id.ad_media);
                                                 showAdViewPopup(ad_media, feedAdapter.getData().get(position).getAdMedia(), position);
                                                 break;
                                             case R.id.post_image: {
-                                                SimpleDraweeView post_image = view.findViewById(R.id.post_image);
+                                                ImageView post_image = view.findViewById(R.id.post_image);
                                                 /*......*/
                                                 showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
                                                 break;
                                             }
                                             case R.id.shared_post_image: {
-                                                SimpleDraweeView post_image = view.findViewById(R.id.shared_post_image);
+                                                ImageView post_image = view.findViewById(R.id.shared_post_image);
 
                                                 /*......*/
                                                 showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
                                                 break;
                                             }
                                             case R.id.article_thumbnail: {
-                                                SimpleDraweeView post_image = view.findViewById(R.id.article_thumbnail);
+                                                ImageView post_image = view.findViewById(R.id.article_thumbnail);
                                                 /*......*/
                                                 showViewPopup(post_image, feedAdapter.getData().get(position).getBlog().getThumbnail(), position);
+                                                break;
+                                            }
+
+                                            /*mentions/ hashtags/ links*/
+                                            case R.id.post_contents: {
+                                                SocialTextView socialTextView = view.findViewById(R.id.post_contents);
+                                                socialTextView.setOnLongClickListener(null);
+                                                socialTextView.setOnHashtagClickListener(new SocialView.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
+                                                                        @androidx.annotation.NonNull CharSequence text) {
+
+                                                        Intent intent = new Intent(context, hashTagsPosts.class);
+                                                        intent.putExtra("hashTag", text.toString());
+                                                        context.startActivity(intent);
+                                                    }
+                                                });
+
+                                                socialTextView.setOnMentionClickListener(new SocialView.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
+                                                                        @androidx.annotation.NonNull CharSequence text) {
+
+                                                        Intent intent = new Intent(context, userProfile.class);
+                                                        intent.putExtra("username", text.toString());
+                                                        context.startActivity(intent);
+                                                    }
+                                                });
                                                 break;
                                             }
                                         }
@@ -333,7 +385,7 @@ public class timelineCalls {
                                     if (feedAdapter == null) {
                                         /*refresh data*/
                                         firstData = "0";
-                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline);
+                                        loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
                                     }
                                     else {
                                         feedAdapter.addData(tobeAdded);
@@ -359,7 +411,8 @@ public class timelineCalls {
                             else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorId());
-                                
+                                Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
+
                                 /*displaying load more failed*/
                                 feedAdapter.getLoadMoreModule().loadMoreFail();
                             }
@@ -381,7 +434,7 @@ public class timelineCalls {
                 });
     }
 
-    private void showAdViewPopup(SimpleDraweeView ad_media, String adMedia, int position) {
+    private void showAdViewPopup(ImageView ad_media, String adMedia, int position) {
 
         timelineAdFullViewPopup adFullViewPopup= new timelineAdFullViewPopup(context);
         adFullViewPopup.isShowSaveButton(false);
@@ -390,7 +443,15 @@ public class timelineCalls {
             @Override
             public void loadImage(int position, @androidx.annotation.NonNull Object uri,
                                   @androidx.annotation.NonNull ImageView imageView) {
-                Glide.with(imageView).load(uri).into(imageView);
+
+                ImageLoader imageLoader = Coil.imageLoader(context);
+                ImageRequest imageRequest = new ImageRequest.Builder(context)
+                        .data(uri)
+                        .crossfade(true)
+                        .transformations(new CircleCropTransformation())
+                        .target(imageView)
+                        .build();
+                imageLoader.enqueue(imageRequest);
             }
 
             @Override
@@ -411,7 +472,7 @@ public class timelineCalls {
         adHeadline = feedAdapter.getData().get(position).getHeadline();
     }
 
-    private void showViewPopup(SimpleDraweeView post_image, String postFile, int position) {
+    private void showViewPopup(ImageView post_image, String postFile, int position) {
 
         timelineImageViewPopup imageViewPopup = new timelineImageViewPopup(context);
         imageViewPopup.setSingleSrcView(post_image, postFile);
@@ -420,7 +481,14 @@ public class timelineCalls {
             @Override
             public void loadImage(int position, @androidx.annotation.NonNull Object uri,
                                   @androidx.annotation.NonNull ImageView imageView) {
-                Glide.with(imageView).load(uri).into(imageView);
+
+                ImageLoader imageLoader = Coil.imageLoader(context);
+                ImageRequest imageRequest = new ImageRequest.Builder(context)
+                        .data(uri)
+                        .crossfade(true)
+                        .target(imageView)
+                        .build();
+                imageLoader.enqueue(imageRequest);
             }
 
             @Override
@@ -442,16 +510,19 @@ public class timelineCalls {
     }
 
     /*liking a post*/
-    private void likePost (String postId, int position) {
+    private void likePost(String postId, int position, MaterialButton likeBtn) {
 
         /*update button*/
         if(feedAdapter.getData().get(position).isLiked()) {
             feedAdapter.getData().get(position).setLiked(false);
+            likeBtn.setIconResource(R.drawable.ic_like);
         } else {
             feedAdapter.getData().get(position).setLiked(true);
+            likeBtn.setIconResource(R.drawable.ic_liked);
         }
+
         /*notify adapter*/
-        feedAdapter.notifyDataSetChanged();
+//        feedAdapter.notifyItemChanged(position);
 
         like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
                 BuildConfig.server_key, postId, "like");
@@ -479,7 +550,7 @@ public class timelineCalls {
                         Log.d(TAG, "onError: " + e.getMessage());
                     
                         /*TODO repeat if failed*/
-                        likePost(postId, position);
+                        likePost(postId, position, likeBtn);
                     }
                 
                     @Override
@@ -760,9 +831,4 @@ public class timelineCalls {
                     }
                 });
     }
-
-    /*post with attachment*/
-//    public void createNewMediaPost(String postText, File file) throws IOException {
-//
-//    }
 }

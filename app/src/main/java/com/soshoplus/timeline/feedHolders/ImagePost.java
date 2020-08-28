@@ -9,21 +9,27 @@ package com.soshoplus.timeline.feedHolders;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.soshoplus.timeline.R;
 import com.soshoplus.timeline.models.postsfeed.post;
 
 import org.jetbrains.annotations.NotNull;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
+import coil.transform.RoundedCornersTransformation;
+
 public class ImagePost extends BaseItemProvider<post> {
     
     private static String TAG = "IMAGE POST : ";
     
-    SimpleDraweeView profile_pic, post_image;
+    ImageView profile_pic, post_image;
     MaterialButton like;
     
     @Override
@@ -39,6 +45,7 @@ public class ImagePost extends BaseItemProvider<post> {
     @Override
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
         post_image = baseViewHolder.findView(R.id.post_image);
@@ -53,17 +60,31 @@ public class ImagePost extends BaseItemProvider<post> {
         if (post.getPostTextAPI().isEmpty()) {
             baseViewHolder.setGone(R.id.post_contents, true);
         } else {
-            baseViewHolder.setText(R.id.post_contents, Html.fromHtml(post.getPostTextAPI()));
+            baseViewHolder.setText(R.id.post_contents, post.getOrginaltext());
         }
 
         /*bind profile pic*/
-        profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getPublisherInfo().getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         if (post.getPostFile().isEmpty()) {
             post_image.setVisibility(View.GONE);
         } else {
             /*bind post pic*/
-            post_image.setImageURI( post.getPostFile());
+            imageRequest = new ImageRequest.Builder(getContext())
+                    .data(post.getPostFile())
+                    .placeholder(R.color.light_grey)
+                    .crossfade(true)
+                    .transformations(new RoundedCornersTransformation(15))
+                    .target(post_image)
+                    .build();
+            imageLoader.enqueue(imageRequest);
         }
 
         /*if post is liked*/

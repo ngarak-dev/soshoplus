@@ -8,10 +8,10 @@ package com.soshoplus.timeline.feedHolders;
 
 import android.text.Html;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.soshoplus.timeline.R;
@@ -20,11 +20,17 @@ import com.soshoplus.timeline.models.postsfeed.sharedInfo;
 
 import org.jetbrains.annotations.NotNull;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
+import coil.transform.RoundedCornersTransformation;
+
 public class SharedPost extends BaseItemProvider<post> {
     
     private static String TAG = "SHARED POST : ";
     
-    SimpleDraweeView profile_pic, shared_profile_pic, shared_post_image;
+    ImageView profile_pic, shared_profile_pic, shared_post_image;
     MaterialButton like;
     
     @Override
@@ -41,6 +47,8 @@ public class SharedPost extends BaseItemProvider<post> {
     public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
 
+        ImageLoader imageLoader = Coil.imageLoader(getContext());
+
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
         shared_profile_pic = baseViewHolder.findView(R.id.shared_profile_pic);
         shared_post_image = baseViewHolder.findView(R.id.shared_post_image);
@@ -56,11 +64,18 @@ public class SharedPost extends BaseItemProvider<post> {
         if (post.getPostTextAPI().isEmpty()) {
             baseViewHolder.setGone(R.id.post_contents, true);
         } else {
-            baseViewHolder.setText(R.id.post_contents, Html.fromHtml(post.getPostTextAPI()));
+            baseViewHolder.setText(R.id.post_contents, post.getOrginaltext());
         }
 
         /*bind profile pic*/
-        profile_pic.setImageURI(post.getPublisherInfo().getAvatar());
+        ImageRequest imageRequest = new ImageRequest.Builder(getContext())
+                .data(post.getPublisherInfo().getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         /*if post is liked*/
         if (post.isLiked()) {
@@ -79,17 +94,31 @@ public class SharedPost extends BaseItemProvider<post> {
         baseViewHolder.setText(R.id.shared_full_name, sharedInfo.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.shared_time_ago, sharedInfo.getPostTime());
         if (!sharedInfo.getPostTextAPI().isEmpty()) {
-            baseViewHolder.setText(R.id.shared_post_contents, Html.fromHtml(sharedInfo.getPostTextAPI()));
+            baseViewHolder.setText(R.id.shared_post_contents, sharedInfo.getPostText());
         }
 
         /*bind profile pic*/
-        shared_profile_pic.setImageURI(sharedInfo.getPublisherInfo().getAvatar());
+        imageRequest = new ImageRequest.Builder(getContext())
+                .data(sharedInfo.getPublisherInfo().getAvatar())
+                .placeholder(R.color.light_grey)
+                .crossfade(true)
+                .transformations(new CircleCropTransformation())
+                .target(shared_profile_pic)
+                .build();
+        imageLoader.enqueue(imageRequest);
 
         if (sharedInfo.getPostFile().isEmpty()) {
             baseViewHolder.setGone(R.id.shared_post_image, true);
         } else {
             /*bind post pic*/
-            shared_post_image.setImageURI(post.getPostFile());
+            imageRequest = new ImageRequest.Builder(getContext())
+                    .data(post.getPostFile())
+                    .placeholder(R.color.light_grey)
+                    .crossfade(true)
+                    .transformations(new RoundedCornersTransformation(10))
+                    .target(shared_post_image)
+                    .build();
+            imageLoader.enqueue(imageRequest);
         }
     }
 }

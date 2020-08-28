@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.soshoplus.timeline"
+        applicationId 'com.soshoplus.lite'
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

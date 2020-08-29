@@ -16,6 +16,7 @@ import com.soshoplus.lite.models.groups.addingUser;
 import com.soshoplus.lite.models.groups.group;
 import com.soshoplus.lite.models.groups.groupList;
 import com.soshoplus.lite.models.groups.join.join_unjoin;
+import com.soshoplus.lite.models.postsfeed.commentsList;
 import com.soshoplus.lite.models.postsfeed.postList;
 import com.soshoplus.lite.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.lite.models.postsfeed.sharepost.shareResponse;
@@ -226,11 +227,12 @@ public interface queries {
                                    @Field("post_color") String color,
                                    @Field("postFile") String postFile,
                                    @Field("postMap") String postMap);
-//
-//    @Multipart
-//    @POST("new_post")
-//    Observable<simpleResponse> createMediaPost (@Query("access_token") String access_token,
-//                                                @Part ("server_key") RequestBody server_key,
-//                                                @Part("postText") String postText,
-//                                                @Part MultipartBody.Part postFile);
+
+    /*Post comments*/
+    @FormUrlEncoded
+    @POST("comments")
+    Observable<commentsList> getPostComments (@Query("access_token") String access_token,
+                                              @Field("server_key") String server_key,
+                                              @Field("type") String type,
+                                              @Field("post_id") String post_id);
 }

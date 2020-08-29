@@ -54,6 +54,7 @@ import com.soshoplus.lite.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.lite.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.ui.auth.signIn;
+import com.soshoplus.lite.utils.xpopup.commentsPopup;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
 import com.soshoplus.lite.utils.xpopup.sharePopup;
 import com.soshoplus.lite.utils.xpopup.timelineAdFullViewPopup;
@@ -157,7 +158,7 @@ public class timelineCalls {
         refreshPostsLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(@androidx.annotation.NonNull RefreshLayout refreshLayout) {
-                firstData = "0";
+                firstData = null;
                 loadPosts(timelinePostsList, timelineErrorLayout,
                         tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
             }
@@ -245,6 +246,9 @@ public class timelineCalls {
                                             case R.id.like_btn:
                                                 MaterialButton likeBtn = view.findViewById(R.id.like_btn);
                                                 likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
+                                                break;
+                                            case R.id.comment_btn:
+                                                new XPopup.Builder(context).asCustom(new commentsPopup(context, feedAdapter.getData().get(position).getPostId())).show();
                                                 break;
                                             case R.id.post_option:
                                                 new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
@@ -384,7 +388,7 @@ public class timelineCalls {
 
                                     if (feedAdapter == null) {
                                         /*refresh data*/
-                                        firstData = "0";
+                                        firstData = null;
                                         loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
                                     }
                                     else {

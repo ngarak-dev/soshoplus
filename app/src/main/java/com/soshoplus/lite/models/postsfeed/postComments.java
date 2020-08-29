@@ -65,12 +65,15 @@ public class postComments implements Serializable {
 
 	@SerializedName("time")
 	private String time;
+
+	@SerializedName("replies")
+	private String replies;
 	
 	public postComments () {
 	
 	}
 	
-	public postComments (String commentWonders, String cFile, boolean isCommentLiked, String orginaltext, String fullurl, boolean onwer, boolean isCommentWondered, String url, String pageId, boolean postOnwer, String postId, String userId, String record, String commentLikes, com.soshoplus.lite.models.postsfeed.publisherInfo publisherInfo, String id, String text, String time) {
+	public postComments(String commentWonders, String cFile, boolean isCommentLiked, String orginaltext, String fullurl, boolean onwer, boolean isCommentWondered, String url, String pageId, boolean postOnwer, String postId, String userId, String record, String commentLikes, com.soshoplus.lite.models.postsfeed.publisherInfo publisherInfo, String id, String text, String time, String replies) {
 		this.commentWonders = commentWonders;
 		this.cFile = cFile;
 		this.isCommentLiked = isCommentLiked;
@@ -89,6 +92,7 @@ public class postComments implements Serializable {
 		this.id = id;
 		this.text = text;
 		this.time = time;
+		this.replies = replies;
 	}
 	
 	public String getCommentWonders () {
@@ -233,5 +237,13 @@ public class postComments implements Serializable {
 	
 	public void setTime (String time) {
 		this.time = time;
+	}
+
+	public String getReplies() {
+		return replies;
+	}
+
+	public void setReplies(String replies) {
+		this.replies = replies;
 	}
 }

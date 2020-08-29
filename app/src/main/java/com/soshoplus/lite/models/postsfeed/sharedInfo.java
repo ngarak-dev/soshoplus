@@ -1232,11 +1232,11 @@ public class sharedInfo implements Serializable {
         this.postText = postText;
     }
     
-    public List<com.soshoplus.lite.models.postsfeed.postComments> getGetPostComments () {
+    public List<postComments> getGetPostComments () {
         return getPostComments;
     }
     
-    public void setGetPostComments (List<com.soshoplus.lite.models.postsfeed.postComments> getPostComments) {
+    public void setGetPostComments (List<postComments> getPostComments) {
         this.getPostComments = getPostComments;
     }
     

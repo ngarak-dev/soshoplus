@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
@@ -40,17 +41,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class commentsPopup extends BottomPopupView {
 
     private static String TAG = "comments popup";
+    private static String type = "fetch_comments";
 
-    private static String post_id;
+    private static String _id;
     private RecyclerView commentsRv;
     private ProgressBar progressBar;
 
+    private Observable<commentsList> commentsListObservable;
     private queries rxJavaQueries;
     private String accessToken;
 
-    public commentsPopup(@NonNull Context context, String postId) {
+    public commentsPopup(@NonNull Context context, String Id) {
         super(context);
-        post_id = postId;
+        _id = Id;
     }
 
     @Override
@@ -78,31 +81,48 @@ public class commentsPopup extends BottomPopupView {
 
     private void fetchComments() {
 
-        Observable<commentsList> commentsListObservable;
-        String type = "fetch_comments";
-
-
-        commentsListObservable = rxJavaQueries.getPostComments(accessToken, BuildConfig.server_key, type, post_id);
-        commentsListObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<commentsList>() {
-                    @Override
-                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
-                    }
-
-                    @Override
-                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull commentsList comments) {
-                        if (comments.getApiStatus() == 200) {
-                            commentsRv.setLayoutManager(new LinearLayoutManager(getContext()));
-                            commentsAdapter adapter = new commentsAdapter(R.layout.comment_view, comments.getPostComments());
-                            commentsRv.setAdapter(adapter);
-
-                            progressBar.setVisibility(View.GONE);
+        if (type.equals("fetch_comments")) {
+            commentsListObservable = rxJavaQueries.getPostComments(accessToken, BuildConfig.server_key, type, _id);
+            commentsListObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<commentsList>() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                            Log.d(TAG, "onSubscribe: ");
                         }
-                        else {
-                            apiErrors errors = comments.getErrors();
-                            Log.d(TAG, "onNext: " + errors.getErrorId());
+
+                        @Override
+                        public void onNext(@io.reactivex.rxjava3.annotations.NonNull commentsList comments) {
+                            if (comments.getApiStatus() == 200) {
+                                commentsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                                commentsAdapter adapter = new commentsAdapter(R.layout.comment_view, comments.getPostComments());
+                                commentsRv.setAdapter(adapter);
+
+                                progressBar.setVisibility(View.GONE);
+
+                                adapter.setOnItemChildClickListener((adapter_, view, position) -> {
+                                    /*show comments reply*/
+                                    type = "fetch_comments_reply";
+                                    new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
+                                            adapter.getData().get(position).getId())).show();
+                                });
+                            }
+                            else {
+                                apiErrors errors = comments.getErrors();
+                                Log.d(TAG, "onNext: " + errors.getErrorId());
+
+                                Toast toast = Toast.makeText(getContext(), "Failed to get comments ... ", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
+
+                                progressBar.setVisibility(View.GONE);
+                                smartDismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                            Log.d(TAG, "onError: " + e.getMessage());
 
                             Toast toast = Toast.makeText(getContext(), "Failed to get comments ... ", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
@@ -111,24 +131,68 @@ public class commentsPopup extends BottomPopupView {
                             progressBar.setVisibility(View.GONE);
                             smartDismiss();
                         }
-                    }
 
-                    @Override
-                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
+                        @Override
+                        public void onComplete() {
+                            Log.d(TAG, "onComplete: ");
+                        }
+                    });
+        }
+        else {
+            commentsListObservable = rxJavaQueries.commentsActions(accessToken, BuildConfig.server_key, type, _id);
+            commentsListObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<commentsList>() {
+                        @Override
+                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                            Log.d(TAG, "onSubscribe: ");
+                        }
 
-                        Toast toast = Toast.makeText(getContext(), "Failed to get comments ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
-                        toast.show();
+                        @Override
+                        public void onNext(@io.reactivex.rxjava3.annotations.NonNull commentsList comments) {
+                            if (comments.getApiStatus() == 200) {
+                                commentsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                                commentsAdapter adapter = new commentsAdapter(R.layout.comment_view, comments.getPostComments());
+                                commentsRv.setAdapter(adapter);
 
-                        progressBar.setVisibility(View.GONE);
-                        smartDismiss();
-                    }
+                                progressBar.setVisibility(View.GONE);
 
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete: ");
-                    }
-                });
+                                adapter.setOnItemChildClickListener((adapter_, view, position) -> {
+                                    /*show comments reply*/
+                                    new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
+                                            adapter.getData().get(position).getId())).show();
+                                });
+                            }
+                            else {
+                                apiErrors errors = comments.getErrors();
+                                Log.d(TAG, "onNext: " + errors.getErrorId());
+
+                                Toast toast = Toast.makeText(getContext(), "Failed to get comments ... ", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.show();
+
+                                progressBar.setVisibility(View.GONE);
+                                smartDismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                            Log.d(TAG, "onError: " + e.getMessage());
+
+                            Toast toast = Toast.makeText(getContext(), "Failed to get comments ... ", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.show();
+
+                            progressBar.setVisibility(View.GONE);
+                            smartDismiss();
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            Log.d(TAG, "onComplete: ");
+                        }
+                    });
+        }
     }
 }

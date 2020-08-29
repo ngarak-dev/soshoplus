@@ -235,4 +235,11 @@ public interface queries {
                                               @Field("server_key") String server_key,
                                               @Field("type") String type,
                                               @Field("post_id") String post_id);
+    /*Comments Reply*/
+    @FormUrlEncoded
+    @POST("comments")
+    Observable<commentsList> commentsActions (@Query("access_token") String access_token,
+                                              @Field("server_key") String server_key,
+                                              @Field("type") String type,
+                                              @Field("comment_id") String comment_id);
 }

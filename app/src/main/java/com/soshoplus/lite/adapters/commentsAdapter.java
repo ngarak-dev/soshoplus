@@ -23,6 +23,7 @@ import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
+import me.ngarak.timeagotextview.TimeAgoTextView;
 
 public class commentsAdapter extends BaseQuickAdapter<postComments, BaseViewHolder> {
 
@@ -31,7 +32,7 @@ public class commentsAdapter extends BaseQuickAdapter<postComments, BaseViewHold
     public commentsAdapter(int layoutResId, @Nullable List<postComments> data) {
         super(layoutResId, data);
 
-        addChildClickViewIds(R.id.no_reply);
+        addChildClickViewIds(R.id.no_reply, R.id.no_likes, R.id.reply_comment);
     }
 
     @Override
@@ -44,22 +45,19 @@ public class commentsAdapter extends BaseQuickAdapter<postComments, BaseViewHold
         baseViewHolder.setText(R.id.full_name, postComments.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.comment_txt, postComments.getOrginaltext());
 
-        if (postComments.getCommentLikes() == null) {
-            baseViewHolder.setGone(R.id.no_likes, true);
-        }
-        else if (postComments.getCommentLikes().equals("0")) {
-            baseViewHolder.setGone(R.id.no_likes, true);
-        } else {
-            baseViewHolder.setText(R.id.no_likes, postComments.getCommentLikes() + " like");
-        }
+        TimeAgoTextView textView = baseViewHolder.findView(R.id.time_ago_txt);
+        textView.setDate(Long.parseLong(postComments.getTime()));
+
+        baseViewHolder.setText(R.id.no_likes, postComments.getCommentLikes());
 
         if (postComments.getReplies() == null) {
             baseViewHolder.setGone(R.id.no_reply, true);
         }
         else if (postComments.getReplies().equals("0")) {
             baseViewHolder.setGone(R.id.no_reply, true);
-        } else {
-            baseViewHolder.setText(R.id.no_reply, postComments.getReplies() + " reply");
+        }
+        else {
+            baseViewHolder.setText(R.id.no_reply, postComments.getReplies());
         }
 
         ImageLoader imageLoader = Coil.imageLoader(getContext());

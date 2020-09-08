@@ -21,15 +21,13 @@
         tools:ignore="ContentDescription" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_250sdp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp"
         android:orientation="vertical"
         android:id="@+id/comment_holder"
-        android:background="@color/grey_tran10"
-        app:layout_constraintStart_toEndOf="@id/profile_pic"
-        app:layout_constraintTop_toTopOf="@id/profile_pic">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profile_pic">
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,24 +38,94 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
             android:id="@+id/comment_txt" />
+
+        <me.ngarak.timeagotextview.TimeAgoTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_8ssp"
+            android:layout_gravity="end"
+            android:id="@+id/time_ago_txt" />
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/no_likes"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/comment_holder"
+        app:layout_constraintBottom_toBottomOf="@id/comment_holder"
         app:layout_constraintStart_toStartOf="@id/comment_holder"
-        app:layout_constraintTop_toBottomOf="@id/comment_holder" />
+        app:rippleColor="@color/light_grey"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:iconGravity="textStart"
+        app:backgroundTint="@color/grey_tran10"
+        android:padding="0dp"
+        app:iconPadding="2dp"
+        app:icon="@drawable/ic_like"
+        app:iconSize="@dimen/_10sdp"
+        app:iconTint="@color/black_tran80"
+        android:textSize="@dimen/_8ssp"
+        android:textColor="@color/black_tran80"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5sdp"
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/no_reply"
+        android:layout_width="@dimen/_35sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/comment_holder"
+        app:layout_constraintBottom_toBottomOf="@id/comment_holder"
         app:layout_constraintStart_toEndOf="@id/no_likes"
-        app:layout_constraintTop_toBottomOf="@id/comment_holder" />
+        app:rippleColor="@color/light_grey"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:iconGravity="textStart"
+        app:backgroundTint="@color/grey_tran10"
+        android:padding="0dp"
+        app:iconPadding="2dp"
+        app:icon="@drawable/ic_comment"
+        app:iconSize="@dimen/_10sdp"
+        android:textSize="@dimen/_8ssp"
+        app:iconTint="@color/black_tran80"
+        android:textColor="@color/black_tran80"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reply_comment"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_margin="@dimen/_5sdp"
+        app:layout_constraintTop_toBottomOf="@id/comment_holder"
+        app:layout_constraintBottom_toBottomOf="@id/comment_holder"
+        app:layout_constraintStart_toEndOf="@id/no_reply"
+        app:rippleColor="@color/light_grey"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:iconGravity="textStart"
+        app:backgroundTint="@color/grey_tran10"
+        android:padding="0dp"
+        app:iconPadding="2dp"
+        app:icon="@drawable/ic_reply"
+        app:iconSize="@dimen/_10sdp"
+        android:textSize="@dimen/_8ssp"
+        android:text="Reply"
+        android:textAllCaps="false"
+        app:iconTint="@color/black_tran80"
+        android:textColor="@color/black_tran80"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

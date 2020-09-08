@@ -113,9 +113,12 @@ dependencies {
     //smart refresh
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'
     implementation  'com.scwang.smart:refresh-header-classics:2.0.1'
+    /*audio recorder*/
     implementation project(path: ':audio_recorder')
-
+    /*hash, mentions, links*/
     implementation 'com.hendraanggrian.appcompat:socialview:0.3-rc1'
+    /*time ago*/
+    implementation project (path: ':time_ago')
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     testImplementation 'junit:junit:4.13'

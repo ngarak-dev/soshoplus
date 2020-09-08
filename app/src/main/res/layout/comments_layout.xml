@@ -66,24 +66,27 @@
             style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp"
             android:id="@+id/comments_rv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fetch_progress"
-            app:layout_constraintBottom_toTopOf="@id/add_comment"/>
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/fetch_progress" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.hendraanggrian.appcompat.widget.SocialEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
+            android:focusable="false"
             android:hint="Add comments"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/add_comment"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/comments_rv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:socialFlags="hashtag|mention|hyperlink"
+            app:hashtagColor="@color/colorPrimary"
+            app:mentionColor="@color/colorAccent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

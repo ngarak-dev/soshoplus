@@ -248,7 +248,8 @@ public class timelineCalls {
                                                 likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
                                                 break;
                                             case R.id.comment_btn:
-                                                new XPopup.Builder(context).asCustom(new commentsPopup(context, feedAdapter.getData().get(position).getPostId())).show();
+                                                String type = "fetch_comments";
+                                                new XPopup.Builder(context).asCustom(new commentsPopup(context, feedAdapter.getData().get(position).getPostId(), type)).show();
                                                 break;
                                             case R.id.post_option:
                                                 new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {

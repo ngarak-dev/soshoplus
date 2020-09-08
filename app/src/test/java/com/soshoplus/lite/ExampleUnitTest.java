@@ -4,7 +4,7 @@
  * Copyright (c) 2020
  ******************************************************************************/
 
-package me.soshoplus.lite;
+package com.soshoplus.lite;
 
 import org.junit.Test;
 

@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/audio_recorder" />
+            <option value="$PROJECT_DIR$/time_ago" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

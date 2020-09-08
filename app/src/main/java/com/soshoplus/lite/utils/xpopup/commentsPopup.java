@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.hendraanggrian.appcompat.widget.SocialEditText;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.soshoplus.lite.BuildConfig;
@@ -41,19 +42,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class commentsPopup extends BottomPopupView {
 
     private static String TAG = "comments popup";
-    private static String type = "fetch_comments";
+    private static String type;
 
     private static String _id;
     private RecyclerView commentsRv;
     private ProgressBar progressBar;
+    private SocialEditText addComment;
 
     private Observable<commentsList> commentsListObservable;
     private queries rxJavaQueries;
     private String accessToken;
 
-    public commentsPopup(@NonNull Context context, String Id) {
+    public commentsPopup(@NonNull Context context, String Id, String _type) {
         super(context);
         _id = Id;
+        type = _type;
     }
 
     @Override
@@ -70,11 +73,13 @@ public class commentsPopup extends BottomPopupView {
         MaterialButton back = findViewById(R.id.back_arrow);
         commentsRv = findViewById(R.id.comments_rv);
         progressBar = findViewById(R.id.fetch_progress);
+        addComment = findViewById(R.id.add_comment);
 
         back.setOnClickListener(view -> smartDismiss());
 
         /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+        Log.d(TAG, "TYPE : " + type);
         /*fetch comments*/
         new Handler().postDelayed(this::fetchComments, 1000);
     }
@@ -99,12 +104,19 @@ public class commentsPopup extends BottomPopupView {
                                 commentsRv.setAdapter(adapter);
 
                                 progressBar.setVisibility(View.GONE);
+                                commentsRv.setVisibility(View.VISIBLE);
 
                                 adapter.setOnItemChildClickListener((adapter_, view, position) -> {
                                     /*show comments reply*/
                                     type = "fetch_comments_reply";
-                                    new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
-                                            adapter.getData().get(position).getId())).show();
+                                    if (view.getId() == R.id.no_reply) {
+                                        new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
+                                                adapter.getData().get(position).getId(), type)).show();
+                                    }
+                                    else if (view.getId() == R.id.reply_comment) {
+                                        addComment.setText(null);
+                                        addComment.append("@" + adapter.getData().get(position).getPublisherInfo().getUsername() + " ");
+                                    }
                                 });
                             }
                             else {
@@ -156,11 +168,18 @@ public class commentsPopup extends BottomPopupView {
                                 commentsRv.setAdapter(adapter);
 
                                 progressBar.setVisibility(View.GONE);
+                                commentsRv.setVisibility(View.VISIBLE);
 
                                 adapter.setOnItemChildClickListener((adapter_, view, position) -> {
                                     /*show comments reply*/
-                                    new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
-                                            adapter.getData().get(position).getId())).show();
+                                    if (view.getId() == R.id.no_reply) {
+                                        new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
+                                                adapter.getData().get(position).getId(), type)).show();
+                                    }
+                                    else if (view.getId() == R.id.reply_comment) {
+                                        addComment.setText(null);
+                                        addComment.append("@" + adapter.getData().get(position).getPublisherInfo().getUsername() + " ");
+                                    }
                                 });
                             }
                             else {

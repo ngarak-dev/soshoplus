@@ -241,5 +241,16 @@ public interface queries {
     Observable<commentsList> commentsActions (@Query("access_token") String access_token,
                                               @Field("server_key") String server_key,
                                               @Field("type") String type,
-                                              @Field("comment_id") String comment_id);
+                                              @Field("comment_id") String comment_id,
+                                              @Field("post_id") String post_id,
+                                              @Field("text") String text);
+
+    @FormUrlEncoded
+    @POST("comments")
+    Observable<simpleResponse> createComment (@Query("access_token") String access_token,
+                                              @Field("server_key") String server_key,
+                                              @Field("type") String type,
+                                              @Field("comment_id") String comment_id,
+                                              @Field("post_id") String post_id,
+                                              @Field("text") String text);
 }

@@ -8,19 +8,26 @@ package com.soshoplus.lite.utils.xpopup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.hendraanggrian.appcompat.widget.SocialEditText;
+import com.hendraanggrian.appcompat.widget.SocialTextView;
+import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.soshoplus.lite.BuildConfig;
@@ -28,10 +35,17 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.adapters.commentsAdapter;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.postsfeed.commentsList;
+import com.soshoplus.lite.models.postsfeed.postComments;
 import com.soshoplus.lite.models.simpleResponse;
+import com.soshoplus.lite.ui.hashTagsPosts;
+import com.soshoplus.lite.ui.user_profile.userProfile;
 import com.soshoplus.lite.utils.queries;
 import com.soshoplus.lite.utils.retrofitInstance;
 
+import coil.Coil;
+import coil.ImageLoader;
+import coil.request.ImageRequest;
+import coil.transform.CircleCropTransformation;
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.DevUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -48,9 +62,10 @@ public class commentsPopup extends FullScreenPopupView {
 
     private static String _id;
     private RecyclerView commentsRv;
-    private ProgressBar progressBar;
     private SocialEditText addComment;
     private MaterialButton sendComment;
+    private ImageView circle_loader;
+    private MaterialTextView no_comment_tv;
 
     private Observable<commentsList> commentsListObservable;
     private Observable<simpleResponse> simpleResponseObservable;
@@ -76,10 +91,14 @@ public class commentsPopup extends FullScreenPopupView {
         accessToken = SecurePreferences.getStringValue(getContext(), "accessToken", "0");
 
         MaterialButton back = findViewById(R.id.back_arrow);
+        circle_loader = findViewById(R.id.circle_loader);
         commentsRv = findViewById(R.id.comments_rv);
-        progressBar = findViewById(R.id.fetch_progress);
         addComment = findViewById(R.id.add_comment);
         sendComment = findViewById(R.id.send_comment);
+
+        no_comment_tv = findViewById(R.id.no_comments_tv);
+
+        Glide.with(getContext()).load(R.drawable.circles_loader).into(circle_loader);
 
         back.setOnClickListener(view -> smartDismiss());
 
@@ -119,21 +138,38 @@ public class commentsPopup extends FullScreenPopupView {
                                 commentsAdapter = new commentsAdapter(R.layout.comment_view, comments.getPostComments());
                                 commentsRv.setAdapter(commentsAdapter);
 
-                                progressBar.setVisibility(View.GONE);
+                                circle_loader.setVisibility(View.GONE);
                                 commentsRv.setVisibility(View.VISIBLE);
 
                                 commentsAdapter.setOnItemChildClickListener((adapter_, view, position) -> {
                                     /*show comments reply*/
                                     type = "fetch_comments_reply";
+
                                     if (view.getId() == R.id.no_reply) {
                                         new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
                                                 commentsAdapter.getData().get(position).getId(), type)).show();
+                                    }
+                                    else if (view.getId() == R.id.no_likes) {
+                                        MaterialButton like = view.findViewById(R.id.no_likes);
+                                        likeComment(commentsAdapter.getData().get(position).getId(), like);
                                     }
                                     else if (view.getId() == R.id.reply_comment) {
                                         addComment.setText(null);
                                         addComment.append("@" + commentsAdapter.getData().get(position).getPublisherInfo().getUsername() + " ");
                                     }
+                                    else if (view.getId() == R.id.comment_txt) {
+                                        SocialTextView socialTextView = view.findViewById(R.id.comment_txt);
+                                        socialTextView.setOnLongClickListener(null);
+                                        openHashMention(socialTextView);
+                                    }
                                 });
+
+                                if (comments.getPostComments().size() == 0) {
+                                    no_comment_tv.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    no_comment_tv.setVisibility(View.GONE);
+                                }
                             }
                             else {
                                 apiErrors errors = comments.getErrors();
@@ -144,7 +180,7 @@ public class commentsPopup extends FullScreenPopupView {
                                 toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                                 toast.show();
 
-                                progressBar.setVisibility(View.GONE);
+                                circle_loader.setVisibility(View.GONE);
                                 smartDismiss();
                             }
                         }
@@ -157,7 +193,7 @@ public class commentsPopup extends FullScreenPopupView {
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                             toast.show();
 
-                            progressBar.setVisibility(View.GONE);
+                            circle_loader.setVisibility(View.GONE);
                             smartDismiss();
                         }
 
@@ -184,7 +220,7 @@ public class commentsPopup extends FullScreenPopupView {
                                 replyCommentAdapter = new commentsAdapter(R.layout.comment_view, comments.getPostComments());
                                 commentsRv.setAdapter(replyCommentAdapter);
 
-                                progressBar.setVisibility(View.GONE);
+                                circle_loader.setVisibility(View.GONE);
                                 commentsRv.setVisibility(View.VISIBLE);
 
                                 replyCommentAdapter.setOnItemChildClickListener((adapter_, view, position) -> {
@@ -193,11 +229,27 @@ public class commentsPopup extends FullScreenPopupView {
                                         new XPopup.Builder(getContext()).asCustom(new commentsPopup(getContext(),
                                                 replyCommentAdapter.getData().get(position).getId(), type)).show();
                                     }
+                                    else if (view.getId() == R.id.no_likes) {
+                                        MaterialButton like = view.findViewById(R.id.no_likes);
+                                        likeComment(replyCommentAdapter.getData().get(position).getId(), like);
+                                    }
                                     else if (view.getId() == R.id.reply_comment) {
                                         addComment.setText(null);
                                         addComment.append("@" + replyCommentAdapter.getData().get(position).getPublisherInfo().getUsername() + " ");
                                     }
+                                    else if (view.getId() == R.id.comment_txt) {
+                                        SocialTextView socialTextView = view.findViewById(R.id.comment_txt);
+                                        socialTextView.setOnLongClickListener(null);
+                                        openHashMention(socialTextView);
+                                    }
                                 });
+
+                                if (comments.getPostComments().size() == 0) {
+                                    no_comment_tv.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    no_comment_tv.setVisibility(View.GONE);
+                                }
                             }
                             else {
                                 apiErrors errors = comments.getErrors();
@@ -208,7 +260,7 @@ public class commentsPopup extends FullScreenPopupView {
                                 toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                                 toast.show();
 
-                                progressBar.setVisibility(View.GONE);
+                                circle_loader.setVisibility(View.GONE);
                                 smartDismiss();
                             }
                         }
@@ -221,7 +273,7 @@ public class commentsPopup extends FullScreenPopupView {
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                             toast.show();
 
-                            progressBar.setVisibility(View.GONE);
+                            circle_loader.setVisibility(View.GONE);
                             smartDismiss();
                         }
 
@@ -233,22 +285,10 @@ public class commentsPopup extends FullScreenPopupView {
         }
     }
 
-    private void sendComment() {
-        /*
-        * type
-        *
-        * -- create -> post_id
-        * -- create_reply  -> comment_id
-        *
-        * */
+    private void likeComment(String comment_id, MaterialButton like) {
+        simpleResponseObservable = rxJavaQueries.simpleCommentActions(accessToken, BuildConfig.server_key, "comment_like", comment_id, null,
+                null);
 
-        progressBar.setVisibility(View.VISIBLE);
-
-        addComment.setEnabled(false);
-        sendComment.setEnabled(false);
-
-        simpleResponseObservable = rxJavaQueries.createComment(accessToken, BuildConfig.server_key, "create", null, _id,
-                addComment.getText().toString());
         simpleResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<simpleResponse>() {
@@ -261,6 +301,106 @@ public class commentsPopup extends FullScreenPopupView {
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull simpleResponse simpleResponse) {
                         if (simpleResponse.getApiStatus() == 200) {
 
+                            /*
+                            * Response
+                            * - 0 - Unlike
+                            * - 1 - Like
+                            *
+                            * Log.d(TAG, "CODE RESPONSE: " + simpleResponse.getCode());
+                            * */
+
+                            if (simpleResponse.getCode() == 0) {
+                                like.setIconResource(R.drawable.ic_like);
+
+                                int i = Integer.parseInt(like.getText().toString());
+                                like.setText(String.valueOf(i - 1));
+                            }
+                            else {
+                                like.setIconResource(R.drawable.ic_liked);
+
+                                int i = Integer.parseInt(like.getText().toString());
+                                like.setText(String.valueOf(i + 1));
+                            }
+                        }
+                        else {
+                            apiErrors errors = simpleResponse.getErrors();
+                            Log.d(TAG, "onNext: " + errors.getErrorId());
+                            Log.d(TAG, "onNext: " + errors. getErrorText());
+
+                            Toast toast = Toast.makeText(getContext(), "Oops error ... ", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+
+                        Toast toast = Toast.makeText(getContext(), "Comment not sent ... ", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
+    }
+
+    private void openHashMention(SocialTextView socialTextView) {
+        socialTextView.setOnHashtagClickListener(new SocialView.OnClickListener() {
+            @Override
+            public void onClick(@androidx.annotation.NonNull SocialView view,
+                                @androidx.annotation.NonNull CharSequence text) {
+
+                Intent intent = new Intent(getContext(), hashTagsPosts.class);
+                intent.putExtra("hashTag", text.toString());
+                getContext().startActivity(intent);
+            }
+        });
+
+        socialTextView.setOnMentionClickListener(new SocialView.OnClickListener() {
+            @Override
+            public void onClick(@androidx.annotation.NonNull SocialView view,
+                                @androidx.annotation.NonNull CharSequence text) {
+
+                Intent intent = new Intent(getContext(), userProfile.class);
+                intent.putExtra("username", text.toString());
+                getContext().startActivity(intent);
+            }
+        });
+    }
+
+    private void sendComment() {
+        /*
+        * type
+        *
+        * -- create -> post_id
+        * -- create_reply  -> comment_id
+        *
+        * */
+
+        circle_loader.setVisibility(View.VISIBLE);
+
+        addComment.setEnabled(false);
+        sendComment.setEnabled(false);
+
+        simpleResponseObservable = rxJavaQueries.simpleCommentActions(accessToken, BuildConfig.server_key, "create", null, _id,
+                addComment.getText().toString());
+
+        simpleResponseObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<simpleResponse>() {
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                        Log.d(TAG, "onSubscribe: ");
+                    }
+
+                    @Override
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull simpleResponse simpleResponse) {
+                        if (simpleResponse.getApiStatus() == 200) {
                             fetchComments();
 
                             DevUtils.getHandler().postDelayed(() -> {
@@ -279,8 +419,9 @@ public class commentsPopup extends FullScreenPopupView {
                             toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                             toast.show();
 
-                            progressBar.setVisibility(View.GONE);
+                            circle_loader.setVisibility(View.GONE);
 
+                            addComment.setText(null);
                             addComment.setEnabled(true);
                             sendComment.setEnabled(true);
                         }
@@ -294,8 +435,9 @@ public class commentsPopup extends FullScreenPopupView {
                         toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
                         toast.show();
 
-                        progressBar.setVisibility(View.GONE);
+                        circle_loader.setVisibility(View.GONE);
 
+                        addComment.setText(null);
                         addComment.setEnabled(true);
                         sendComment.setEnabled(true);
                     }
@@ -304,8 +446,8 @@ public class commentsPopup extends FullScreenPopupView {
                     public void onComplete() {
                         Log.d(TAG, "onComplete: ");
 
-                        addComment.setEnabled(true);
                         addComment.setText(null);
+                        addComment.setEnabled(true);
                         sendComment.setEnabled(true);
                     }
                 });

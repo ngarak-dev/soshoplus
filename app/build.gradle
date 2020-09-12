@@ -92,9 +92,10 @@ dependencies {
     //image library
     //Coil_Kotlin
     implementation 'io.coil-kt:coil:1.0.0-rc1'
-    implementation 'io.coil-kt:coil-gif:1.0.0-rc1'
     implementation 'io.coil-kt:coil-svg:1.0.0-rc1'
-    implementation 'io.coil-kt:coil-video:0.12.0'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     //multi image
 //    implementation 'com.github.ydslib:MultiImageView:1.0.4'

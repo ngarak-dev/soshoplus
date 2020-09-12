@@ -25,7 +25,7 @@ public class commentsList implements Serializable {
 
 	}
 
-	public commentsList(int apiStatus, List<com.soshoplus.lite.models.postsfeed.postComments> postComments, apiErrors errors) {
+	public commentsList(int apiStatus, List<postComments> postComments, apiErrors errors) {
 		this.apiStatus = apiStatus;
 		this.postComments = postComments;
 		this.errors = errors;
@@ -39,11 +39,11 @@ public class commentsList implements Serializable {
 		this.apiStatus = apiStatus;
 	}
 
-	public List<com.soshoplus.lite.models.postsfeed.postComments> getPostComments() {
+	public List<postComments> getPostComments() {
 		return postComments;
 	}
 
-	public void setPostComments(List<com.soshoplus.lite.models.postsfeed.postComments> postComments) {
+	public void setPostComments(List<postComments> postComments) {
 		this.postComments = postComments;
 	}
 

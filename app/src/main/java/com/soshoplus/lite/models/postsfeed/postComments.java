@@ -207,11 +207,11 @@ public class postComments implements Serializable {
 		this.commentLikes = commentLikes;
 	}
 	
-	public com.soshoplus.lite.models.postsfeed.publisherInfo getPublisherInfo () {
+	public publisherInfo getPublisherInfo () {
 		return publisherInfo;
 	}
 	
-	public void setPublisherInfo (com.soshoplus.lite.models.postsfeed.publisherInfo publisherInfo) {
+	public void setPublisherInfo (publisherInfo publisherInfo) {
 		this.publisherInfo = publisherInfo;
 	}
 	

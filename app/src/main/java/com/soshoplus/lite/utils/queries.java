@@ -247,7 +247,7 @@ public interface queries {
 
     @FormUrlEncoded
     @POST("comments")
-    Observable<simpleResponse> createComment (@Query("access_token") String access_token,
+    Observable<simpleResponse> simpleCommentActions (@Query("access_token") String access_token,
                                               @Field("server_key") String server_key,
                                               @Field("type") String type,
                                               @Field("comment_id") String comment_id,

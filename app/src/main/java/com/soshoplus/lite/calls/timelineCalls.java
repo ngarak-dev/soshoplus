@@ -76,6 +76,8 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static dev.DevUtils.getContext;
+
 public class timelineCalls {
     
     private final static String TAG = "Timeline Calls";
@@ -237,6 +239,7 @@ public class timelineCalls {
                                                 progressBarTimeline, refreshPostsLayout, type, hashTag);
                                     });
                                 }
+
                                 feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                                     @Override
                                     public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
@@ -247,10 +250,12 @@ public class timelineCalls {
                                                 MaterialButton likeBtn = view.findViewById(R.id.like_btn);
                                                 likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
                                                 break;
+
                                             case R.id.comment_btn:
                                                 String type = "fetch_comments";
                                                 new XPopup.Builder(context).asCustom(new commentsPopup(context, feedAdapter.getData().get(position).getPostId(), type)).show();
                                                 break;
+
                                             case R.id.post_option:
                                                 new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
 
@@ -276,6 +281,7 @@ public class timelineCalls {
                                                     }
                                                 }).show();
                                                 break;
+
                                             case R.id.profile_pic:
                                                 new Handler().postDelayed(() -> {
                                                     new XPopup.Builder(context).asCustom(new previewProfilePopup(context,
@@ -283,16 +289,19 @@ public class timelineCalls {
 
                                                 }, 1000);
                                                 break;
+
                                             case R.id.ad_media:
                                                 ImageView ad_media = view.findViewById(R.id.ad_media);
                                                 showAdViewPopup(ad_media, feedAdapter.getData().get(position).getAdMedia(), position);
                                                 break;
+
                                             case R.id.post_image: {
                                                 ImageView post_image = view.findViewById(R.id.post_image);
                                                 /*......*/
                                                 showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
                                                 break;
                                             }
+
                                             case R.id.shared_post_image: {
                                                 ImageView post_image = view.findViewById(R.id.shared_post_image);
 
@@ -300,6 +309,7 @@ public class timelineCalls {
                                                 showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
                                                 break;
                                             }
+
                                             case R.id.article_thumbnail: {
                                                 ImageView post_image = view.findViewById(R.id.article_thumbnail);
                                                 /*......*/
@@ -526,9 +536,6 @@ public class timelineCalls {
             likeBtn.setIconResource(R.drawable.ic_liked);
         }
 
-        /*notify adapter*/
-//        feedAdapter.notifyItemChanged(position);
-
         like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
                 BuildConfig.server_key, postId, "like");
         like_dislikeObservable.subscribeOn(Schedulers.io())
@@ -542,7 +549,13 @@ public class timelineCalls {
                     @Override
                     public void onNext (@NonNull like_dislike like_dislike) {
                         if (like_dislike.getApiStatus() == 200) {
-                            Log.d(TAG, "onNext: liked/disliked");
+                            Log.d(TAG, "onNext: " + like_dislike.getAction());
+
+                            likeBtn.setText(like_dislike.getLikesData().getCount());
+
+                            Toast toast = Toast.makeText(getContext(), like_dislike.getAction() + " ... ", Toast.LENGTH_SHORT);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.show();
                         }
                         else {
                             apiErrors apiErrors = like_dislike.getErrors();

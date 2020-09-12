@@ -52,8 +52,8 @@ public class ProfilePic extends BaseItemProvider<post> {
 
         baseViewHolder.setText(R.id.full_name, post.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.time_ago, post.getPostTime());
-        baseViewHolder.setText(R.id.no_likes, post.getPostLikes() + " likes");
-        baseViewHolder.setText(R.id.no_comments, post.getPostComments() + " comments");
+        baseViewHolder.setText(R.id.like_btn, post.getPostLikes());
+        baseViewHolder.setText(R.id.comment_btn, post.getPostComments());
 
         baseViewHolder.setText(R.id.update_profile_cover, "updated profile photo");
 

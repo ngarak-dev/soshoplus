@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.bumptech.glide.Glide;
 import com.soshoplus.lite.R;
 import com.ypx.imagepicker.adapter.PickerItemAdapter;
 import com.ypx.imagepicker.bean.ImageItem;
@@ -44,25 +45,7 @@ public class RedBookPresenter implements IPickerPresenter {
     @Override
     public void displayImage(View view, ImageItem item, int size, boolean isThumbnail) {
         Object object = item.getUri() != null ? item.getUri() : item.path;
-
-        ImageLoader imageLoader = Coil.imageLoader(view.getContext());
-
-        if (item.isImage()) {
-            ImageRequest imageRequest = new ImageRequest.Builder(view.getContext())
-                    .data(object)
-                    .crossfade(true)
-                    .target((ImageView) view)
-                    .build();
-            imageLoader.enqueue(imageRequest);
-        }
-        else {
-            ImageRequest imageRequest = new ImageRequest.Builder(view.getContext())
-                    .data(item.getVideoImageUri())
-                    .crossfade(true)
-                    .target((ImageView) view)
-                    .build();
-            imageLoader.enqueue(imageRequest);
-        }
+        Glide.with(view.getContext()).load(object).into((ImageView) view);
     }
 
     @NotNull

@@ -11,7 +11,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="@dimen/_15sdp"
-    android:background="@color/bgPrimary"
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.google.android.material.button.MaterialButton
@@ -54,22 +54,33 @@
         app:layout_constraintTop_toBottomOf="@id/back_arrow"
         android:layout_marginTop="@dimen/_5sdp" />
 
-    <ProgressBar
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@id/divider"
-        android:id="@+id/fetch_progress"
-        android:indeterminate="true"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
+        android:layout_height="@dimen/_50sdp"
+        android:id="@+id/circle_loader"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="@dimen/_5sdp"
         android:id="@+id/comments_rv"
-        android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/fetch_progress"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/circle_loader"
+        app:layout_constraintBottom_toTopOf="@id/add_comment"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/no_comments_tv"
+        android:visibility="gone"
+        android:drawableTop="@drawable/ic_comment"
+        app:drawableTint="@color/dim_gray"
+        android:text="No comments"
+        android:textColor="@color/grey"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         app:layout_constraintBottom_toTopOf="@id/add_comment"/>
 
     <com.hendraanggrian.appcompat.widget.SocialEditText

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.google.android.material.button.MaterialButton;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.postsfeed.postComments;
 
@@ -32,7 +33,7 @@ public class commentsAdapter extends BaseQuickAdapter<postComments, BaseViewHold
     public commentsAdapter(int layoutResId, @Nullable List<postComments> data) {
         super(layoutResId, data);
 
-        addChildClickViewIds(R.id.no_reply, R.id.no_likes, R.id.reply_comment);
+        addChildClickViewIds(R.id.no_reply, R.id.no_likes, R.id.reply_comment, R.id.comment_txt);
     }
 
     @Override
@@ -49,6 +50,12 @@ public class commentsAdapter extends BaseQuickAdapter<postComments, BaseViewHold
         textView.setDate(Long.parseLong(postComments.getTime()));
 
         baseViewHolder.setText(R.id.no_likes, postComments.getCommentLikes());
+
+        MaterialButton like = baseViewHolder.findView(R.id.no_likes);
+
+        if (postComments.isCommentLiked()) {
+            like.setIconResource(R.drawable.ic_liked);
+        }
 
         if (postComments.getReplies() == null) {
             baseViewHolder.setGone(R.id.no_reply, true);

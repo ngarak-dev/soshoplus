@@ -105,7 +105,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like_btn"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
@@ -125,7 +125,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/comment_btn"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"

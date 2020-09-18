@@ -13,10 +13,12 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.soshoplus.lite.BuildConfig;
+import com.soshoplus.lite.R;
 import com.soshoplus.lite.databinding.ActivitySigninBinding;
 import com.soshoplus.lite.models.accessToken;
 import com.soshoplus.lite.models.apiErrors;
@@ -52,6 +54,8 @@ public class signIn extends AppCompatActivity {
         signInBinding = ActivitySigninBinding.inflate(getLayoutInflater());
         View view = signInBinding.getRoot();
         setContentView(view);
+
+        Glide.with(signIn.this).load(R.drawable.front_page).into(signInBinding.frontGif);
         
         /*initializing loading dialog*/
         popupView = new XPopup.Builder(signIn.this)

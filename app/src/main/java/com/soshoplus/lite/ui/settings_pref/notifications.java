@@ -9,14 +9,24 @@ package com.soshoplus.lite.ui.settings_pref;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.databinding.ActivityNotificationsBinding;
 
 public class notifications extends AppCompatActivity {
+
+    private ActivityNotificationsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifications);
+        binding = ActivityNotificationsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        binding.backArrow.setOnClickListener(view_ -> {
+            onBackPressed();
+        });
     }
 }

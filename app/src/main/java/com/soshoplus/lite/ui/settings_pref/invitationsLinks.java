@@ -9,14 +9,24 @@ package com.soshoplus.lite.ui.settings_pref;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.databinding.ActivityInvitationsLinksBinding;
 
-public class general_account extends AppCompatActivity {
+public class invitationsLinks extends AppCompatActivity {
+
+    private ActivityInvitationsLinksBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_general_account);
+        binding = ActivityInvitationsLinksBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        binding.backArrow.setOnClickListener(view_ -> {
+            onBackPressed();
+        });
     }
 }

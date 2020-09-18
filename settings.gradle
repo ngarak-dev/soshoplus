@@ -1,3 +1,4 @@
+include ':time_ago'
 include ':audio_recorder' /*******************************************************************************
  * Ngara K. Android Application Developer
  * ngarakiringo@gmail.com

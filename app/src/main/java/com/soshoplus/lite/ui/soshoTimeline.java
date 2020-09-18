@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowInsets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -102,7 +103,7 @@ public class soshoTimeline extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.options) {
-            startActivity(new Intent(soshoTimeline.this, myProfile.class));
+            startActivity(new Intent(soshoTimeline.this, settings.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -14,9 +14,11 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.soshoplus.lite.R;
 import com.soshoplus.lite.databinding.ActivitySignupBinding;
 import com.soshoplus.lite.models.accessToken;
 import com.soshoplus.lite.models.apiErrors;
@@ -53,7 +55,9 @@ public class signUp extends AppCompatActivity {
         signUpBinding = ActivitySignupBinding.inflate(getLayoutInflater());
         View view = signUpBinding.getRoot();
         setContentView(view);
-    
+
+        Glide.with(signUp.this).load(R.drawable.front_page).into(signUpBinding.frontGif);
+
         /*initializing loading dialog*/
         popupView = new XPopup.Builder(signUp.this)
                 .dismissOnBackPressed(false)

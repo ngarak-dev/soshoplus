@@ -18,54 +18,22 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/_200sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             app:layout_constraintBottom_toTopOf="@id/email_inLayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/default_gradient"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
-                android:id="@+id/squircles"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
+                android:id="@+id/front_gif"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_180sdp"
+                android:src="@drawable/front_page"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:src="@drawable/ic_brand_squircles"
-                app:layout_constraintBottom_toTopOf="@id/txt_welcome"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_welcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="Get Started"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@color/white_smoke"
-                app:layout_constraintBottom_toTopOf="@id/txt_to_continue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/txt_to_continue"
-                android:layout_width="@dimen/_265sdp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_20sdp"
-                android:textAlignment="center"
-                android:text="A new way to communicate with your family, friends and people you know  24/7."
-                android:textColor="@color/white_smoke"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

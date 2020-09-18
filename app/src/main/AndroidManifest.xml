@@ -16,23 +16,31 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/soshoDayNight_noActionBar">
-        <activity android:name="com.soshoplus.lite.ui.hashTagsPosts" />
-        <activity android:name="com.soshoplus.lite.ui.user_profile.myProfile" />
-        <activity android:name="com.soshoplus.lite.ui.audioRecorderPost" />
-        <activity android:name="com.soshoplus.lite.ui.imageVideoPost" />
-        <activity android:name="com.soshoplus.lite.ui.groups.groups" />
-        <activity android:name="com.soshoplus.lite.ui.user_profile.userProfile" />
+        <activity android:name=".ui.settings_pref.earnings"></activity>
+        <activity android:name=".ui.settings_pref.my_information" />
+        <activity android:name=".ui.settings_pref.invitations_links" />
+        <activity android:name=".ui.settings_pref.notifications" />
+        <activity android:name=".ui.settings_pref.privacy" />
+        <activity android:name=".ui.settings_pref.general_account" />
+        <activity android:name=".ui.settings_pref.help_support" />
+        <activity android:name=".ui.settings" />
+        <activity android:name=".ui.hashTagsPosts" />
+        <activity android:name=".ui.user_profile.myProfile" />
+        <activity android:name=".ui.audioRecorderPost" />
+        <activity android:name=".ui.imageVideoPost" />
+        <activity android:name=".ui.groups.groups" />
+        <activity android:name=".ui.user_profile.userProfile" />
         <activity
-            android:name="com.soshoplus.lite.ui.viewVideo"
+            android:name=".ui.viewVideo"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_view_video"
             android:theme="@style/sosho_FullScreen" />
-        <activity android:name="com.soshoplus.lite.ui.groups.viewGroup" />
-        <activity android:name="com.soshoplus.lite.ui.soshoTimeline" />
-        <activity android:name="com.soshoplus.lite.ui.auth.forgotPassword" />
-        <activity android:name="com.soshoplus.lite.ui.auth.signUp" />
-        <activity android:name="com.soshoplus.lite.ui.auth.signIn" />
-        <activity android:name="com.soshoplus.lite.ui.splash">
+        <activity android:name=".ui.groups.viewGroup" />
+        <activity android:name=".ui.soshoTimeline" />
+        <activity android:name=".ui.auth.forgotPassword" />
+        <activity android:name=".ui.auth.signUp" />
+        <activity android:name=".ui.auth.signIn" />
+        <activity android:name=".ui.splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

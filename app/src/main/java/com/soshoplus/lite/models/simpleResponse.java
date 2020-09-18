@@ -17,6 +17,10 @@ public class simpleResponse implements Serializable {
     @Expose
     private int apiStatus;
 
+    @SerializedName("code")
+    @Expose
+    private int code;
+
     @SerializedName("errors")
     @Expose
     private apiErrors errors;
@@ -25,8 +29,9 @@ public class simpleResponse implements Serializable {
 
     }
 
-    public simpleResponse(int apiStatus, apiErrors errors) {
+    public simpleResponse(int apiStatus, int code, apiErrors errors) {
         this.apiStatus = apiStatus;
+        this.code = code;
         this.errors = errors;
     }
 
@@ -36,5 +41,13 @@ public class simpleResponse implements Serializable {
 
     public apiErrors getErrors() {
         return errors;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

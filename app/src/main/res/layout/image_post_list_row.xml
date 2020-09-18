@@ -103,31 +103,9 @@
             app:layout_constraintTop_toBottomOf="@id/post_image"
             android:layout_margin="@dimen/_10sdp" />
 
-        <TextView
-            android:id="@+id/no_likes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            app:layout_constraintTop_toTopOf="@id/like_btn"
-            app:layout_constraintBottom_toBottomOf="@id/like_btn"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/no_comments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="@id/like_btn"
-            app:layout_constraintBottom_toBottomOf="@id/like_btn"
-            app:layout_constraintStart_toEndOf="@id/no_likes"
-            android:textStyle="bold" />
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like_btn"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
@@ -137,8 +115,9 @@
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"
             android:padding="0dp"
-            app:iconPadding="0dp"
+            app:iconPadding="5dp"
             app:icon="@drawable/ic_like"
+            android:textSize="@dimen/_10ssp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
@@ -146,7 +125,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/comment_btn"
-            android:layout_width="@dimen/_40sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintTop_toBottomOf="@id/divider"
@@ -156,7 +135,8 @@
             app:iconGravity="textStart"
             app:iconSize="@dimen/_15sdp"
             android:padding="0dp"
-            app:iconPadding="0dp"
+            app:iconPadding="5dp"
+            android:textSize="@dimen/_10ssp"
             app:icon="@drawable/ic_comment"
             android:insetLeft="0dp"
             android:insetTop="0dp"

@@ -9,6 +9,7 @@ package com.soshoplus.lite.calls;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
@@ -35,6 +36,8 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.postAction;
+import com.soshoplus.lite.ui.hashTagsPosts;
+import com.soshoplus.lite.ui.user_profile.userProfile;
 import com.soshoplus.lite.utils.queries;
 import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.adapters.timelineFeedAdapter;
@@ -314,7 +317,10 @@ public class groupCalls {
                                                     @Override
                                                     public void onClick(@androidx.annotation.NonNull SocialView view,
                                                                         @androidx.annotation.NonNull CharSequence text) {
-                                                        Log.d(TAG, "onClick: " + text);
+
+                                                        Intent intent = new Intent(context, hashTagsPosts.class);
+                                                        intent.putExtra("hashTag", text.toString());
+                                                        context.startActivity(intent);
                                                     }
                                                 });
 
@@ -322,7 +328,10 @@ public class groupCalls {
                                                     @Override
                                                     public void onClick(@androidx.annotation.NonNull SocialView view,
                                                                         @androidx.annotation.NonNull CharSequence text) {
-                                                        Log.d(TAG, "onClick: " + text);
+
+                                                        Intent intent = new Intent(context, userProfile.class);
+                                                        intent.putExtra("username", text.toString());
+                                                        context.startActivity(intent);
                                                     }
                                                 });
                                                 break;

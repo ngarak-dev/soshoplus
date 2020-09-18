@@ -253,4 +253,20 @@ public interface queries {
                                               @Field("comment_id") String comment_id,
                                               @Field("post_id") String post_id,
                                               @Field("text") String text);
+
+    @FormUrlEncoded
+    @POST("update-user-data")
+    Observable<simpleResponse> updateUserData (@Query("access_token") String access_token,
+                                                     @Field("server_key") String server_key,
+                                                     @Field("username") String username,
+                                                     @Field("first_name") String first_name,
+                                                     @Field("last_name") String last_name,
+                                                     @Field("phone_number") String phone_number,
+                                                     @Field("email") String email,
+                                                     @Field("gender") String gender,
+                                                     @Field("working") String working,
+                                                     @Field("website") String website,
+                                                     @Field("school") String school,
+                                                     @Field("address") String address );
+
 }

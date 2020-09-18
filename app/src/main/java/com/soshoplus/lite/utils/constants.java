@@ -18,4 +18,7 @@ public class constants {
 
     /*initializing query*/
     public static queries rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+
+    /*..........*/
+    public static String fetch_profile_user_data = "user_data";
 }

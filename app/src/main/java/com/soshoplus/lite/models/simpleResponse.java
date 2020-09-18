@@ -21,17 +21,19 @@ public class simpleResponse implements Serializable {
     @Expose
     private int code;
 
+    @SerializedName("message")
+    @Expose
+    private String message;
+
     @SerializedName("errors")
     @Expose
     private apiErrors errors;
 
-    simpleResponse () {
-
-    }
-
-    public simpleResponse(int apiStatus, int code, apiErrors errors) {
+    simpleResponse(int apiStatus, int code, String message, apiErrors errors) {
         this.apiStatus = apiStatus;
         this.code = code;
+
+        this.message = message;
         this.errors = errors;
     }
 
@@ -49,5 +51,13 @@ public class simpleResponse implements Serializable {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

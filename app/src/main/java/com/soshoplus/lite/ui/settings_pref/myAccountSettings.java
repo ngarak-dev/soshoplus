@@ -18,9 +18,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.interfaces.OnCancelListener;
-import com.lxj.xpopup.interfaces.OnConfirmListener;
-import com.lxj.xpopup.util.XPopupUtils;
 import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.databinding.ActivityMyAccountSettingsBinding;
@@ -28,12 +25,9 @@ import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.models.userprofile.userInfo;
-import com.soshoplus.lite.ui.settings;
 import com.soshoplus.lite.utils.constants;
 
-import dev.DevUtils;
 import dev.utils.app.HandlerUtils;
-import dev.utils.app.toast.toaster.IToast;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -192,7 +186,7 @@ public class myAccountSettings extends AppCompatActivity {
                 BuildConfig.server_key, binding.username.getText().toString(), binding.fName.getText().toString(),
                 binding.lName.getText().toString(), binding.phone.getText().toString(), binding.email.getText().toString(),
                 gender, binding.workingAt.getText().toString(), binding.website.getText().toString(), binding.university.getText().toString(),
-                binding.address.getText().toString());
+                binding.address.getText().toString(), null, null, null, null, null, null);
 
         simpleResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -211,12 +205,11 @@ public class myAccountSettings extends AppCompatActivity {
                                 @Override
                                 public void run() {
 
+                                    /*move task back*/
                                     new XPopup.Builder(myAccountSettings.this)
                                         .asConfirm(simpleResponse.getMessage(), "", null,
-                                            "Okay", () -> {
-                                                /*move task back*/
-                                                onBackPressed();
-                                            }, null, true, 0).show();
+                                            "Okay", myAccountSettings.this::onBackPressed, null,
+                                                true, 0).show();
                                 }
                             });
                         }

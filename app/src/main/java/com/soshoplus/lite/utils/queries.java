@@ -267,6 +267,12 @@ public interface queries {
                                                      @Field("working") String working,
                                                      @Field("website") String website,
                                                      @Field("school") String school,
-                                                     @Field("address") String address );
+                                                     @Field("address") String address,
+                                                     @Field("about") String about,
+                                                     @Field("facebook") String facebook,
+                                                     @Field("twitter") String twitter,
+                                                     @Field("linkedin") String linkedin,
+                                                     @Field("instagram") String instagram,
+                                                     @Field("youtube") String youtube);
 
 }

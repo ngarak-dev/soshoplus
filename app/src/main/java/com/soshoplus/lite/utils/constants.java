@@ -6,6 +6,9 @@
 
 package com.soshoplus.lite.utils;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.DevUtils;
 
@@ -15,10 +18,8 @@ public class constants {
     public static String timezone = SecurePreferences.getStringValue(DevUtils.getContext(), "timezone", "UTC");
     public static String accessToken = SecurePreferences.getStringValue(DevUtils.getContext(), "accessToken"
             , "0");
-
     /*initializing query*/
     public static queries rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
-
     /*..........*/
     public static String fetch_profile_user_data = "user_data";
 }

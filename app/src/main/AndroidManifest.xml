@@ -16,7 +16,8 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/soshoDayNight_noActionBar">
-        <activity android:name=".ui.settings_pref.myAccountSettings"></activity>
+        <activity android:name=".ui.workthrough.welcome"></activity>
+        <activity android:name=".ui.settings_pref.myAccountSettings" />
         <activity android:name=".ui.settings_pref.earnings" />
         <activity android:name=".ui.settings_pref.myInformation" />
         <activity android:name=".ui.settings_pref.invitationsLinks" />

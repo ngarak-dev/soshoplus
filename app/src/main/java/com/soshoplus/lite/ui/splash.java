@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.soshoplus.lite.databinding.ActivitySplashBinding;
 import com.soshoplus.lite.ui.auth.signIn;
+import com.soshoplus.lite.ui.workthrough.welcome;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 
@@ -41,7 +42,7 @@ public class splash extends Activity {
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted
-                startActivity(new Intent(splash.this, signIn.class));
+                startActivity(new Intent(splash.this, welcome.class));
             }
             finish();
             

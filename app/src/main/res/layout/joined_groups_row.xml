@@ -20,31 +20,31 @@
             android:id="@+id/group_profile_pic"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
-            android:scaleType="centerCrop"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/group_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:layout_below="@id/group_profile_pic"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_below="@id/group_profile_pic"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/total_members"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/group_title"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_below="@id/group_title"/>
+            android:layout_marginBottom="@dimen/_5sdp" />
 
     </RelativeLayout>
 

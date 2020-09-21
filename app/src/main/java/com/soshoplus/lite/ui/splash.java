@@ -15,37 +15,36 @@ import android.view.View;
 
 import com.soshoplus.lite.databinding.ActivitySplashBinding;
 import com.soshoplus.lite.ui.auth.signIn;
-import com.soshoplus.lite.ui.workthrough.welcome;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 
 public class splash extends Activity {
-    
+
     private static final String TAG = "splash Activity ";
     ActivitySplashBinding splashBinding;
-    
+
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+
         /*binding*/
         splashBinding = ActivitySplashBinding.inflate(getLayoutInflater());
         View view = splashBinding.getRoot();
         setContentView(view);
-        
+
         new Handler().postDelayed(() -> {
-            
+
             //retrieving user session
             if (SecurePreferences.contains(splash.this, "userId")) {
                 startActivity(new Intent(splash.this, soshoTimeline.class));
-    
+
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted
                 startActivity(new Intent(splash.this, signIn.class));
             }
             finish();
-            
+
         }, 2000);
     }
 }

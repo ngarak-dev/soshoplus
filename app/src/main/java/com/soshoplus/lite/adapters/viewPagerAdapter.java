@@ -14,24 +14,24 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.List;
 
 public class viewPagerAdapter extends FragmentStateAdapter {
-    
+
     /*list of fragments*/
     List<Fragment> fragments;
-    
-    public viewPagerAdapter (@NonNull FragmentActivity fragmentActivity, List<Fragment> fragments) {
+
+    public viewPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<Fragment> fragments) {
         super(fragmentActivity);
-        this.fragments  = fragments;
+        this.fragments = fragments;
     }
-    
+
     /*creating a new fragment*/
     @NonNull
     @Override
-    public Fragment createFragment (int position) {
+    public Fragment createFragment(int position) {
         return fragments.get(position);
     }
-    
+
     @Override
-    public int getItemCount () {
+    public int getItemCount() {
         return fragments == null ? 0 : fragments.size();
     }
 

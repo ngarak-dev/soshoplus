@@ -23,24 +23,24 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 
 public class ColouredPost extends BaseItemProvider<post> {
-    
+
     private static String TAG = "COLOURED POST : ";
-    
+
     ImageView profile_pic;
     MaterialButton like;
-    
+
     @Override
-    public int getItemViewType () {
+    public int getItemViewType() {
         return post.COLOURED_POST;
     }
-    
+
     @Override
-    public int getLayoutId () {
+    public int getLayoutId() {
         return R.layout.coloured_post_list_row;
     }
-    
+
     @Override
-    public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+    public void convert(@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);

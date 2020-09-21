@@ -28,27 +28,26 @@ import org.jetbrains.annotations.NotNull;
  * A simple {@link Fragment} subclass.
  */
 public class friendsFragment extends Fragment {
-    
-    public friendsFragment () {
+
+    private FragmentFriendsBinding friendsBinding;
+    private suggestedFriendsCalls suggestedFriendsCalls;
+    private followingUsersCalls followingUsersCalls;
+    private followersUsersCalls followersUsersCalls;
+    public friendsFragment() {
         // Required empty public constructor
     }
-    
-    private FragmentFriendsBinding friendsBinding;
-    private com.soshoplus.lite.calls.suggestedFriendsCalls suggestedFriendsCalls;
-    private com.soshoplus.lite.calls.followingUsersCalls followingUsersCalls;
-    private com.soshoplus.lite.calls.followersUsersCalls followersUsersCalls;
-    
+
     /*initializing a view and inflate it */
     @Override
-    public View onCreateView (@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friends, container, false);
     }
-    
+
     @Override
-    public void onViewCreated (@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         friendsBinding = FragmentFriendsBinding.bind(view);
         friendsBinding.getRoot();
 
@@ -62,7 +61,7 @@ public class friendsFragment extends Fragment {
                 1000);
     }
 
-    private void getSuggestedFriends () {
+    private void getSuggestedFriends() {
         suggestedFriendsCalls = new suggestedFriendsCalls(requireContext());
         suggestedFriendsCalls.getSuggestedFriends(friendsBinding.suggestedFriendsList,
                 friendsBinding.suggestedTitle,
@@ -70,7 +69,7 @@ public class friendsFragment extends Fragment {
                 friendsBinding.refreshSuggested);
     }
 
-    private void getFriends () {
+    private void getFriends() {
         /*following*/
         followingUsersCalls = new followingUsersCalls(requireContext());
         followingUsersCalls.getFollowing(friendsBinding.friendsFollowingList,

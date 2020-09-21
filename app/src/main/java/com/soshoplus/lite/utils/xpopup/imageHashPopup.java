@@ -18,17 +18,17 @@ import com.soshoplus.lite.calls.hashTagsPostsCalls;
 
 public class imageHashPopup extends ImageViewerPopupView {
 
-    public imageHashPopup (@NonNull Context context) {
+    public imageHashPopup(@NonNull Context context) {
         super(context);
     }
 
     @Override
-    protected int getImplLayoutId () {
+    protected int getImplLayoutId() {
         return R.layout.post_image_full;
     }
 
     @Override
-    protected void onCreate () {
+    protected void onCreate() {
         super.onCreate();
 
         TextView full_name = findViewById(R.id.full_name);
@@ -46,22 +46,22 @@ public class imageHashPopup extends ImageViewerPopupView {
     }
 
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
 
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
 
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
 
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

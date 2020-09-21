@@ -26,22 +26,22 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 
 public class newNormalPostPopup extends FullScreenPopupView {
 
+    private static String post_color;
     private timelineCalls calls;
     private ProgressBar progressBar;
-    private static String post_color;
 
     public newNormalPostPopup(@NonNull Context context, ProgressBar postProgress) {
         super(context);
         this.progressBar = postProgress;
     }
-    
+
     @Override
-    protected int getImplLayoutId () {
+    protected int getImplLayoutId() {
         return R.layout.new_normal_post_layout;
     }
-    
+
     @Override
-    protected void onCreate () {
+    protected void onCreate() {
         super.onCreate();
 
         calls = new timelineCalls(getContext());
@@ -128,14 +128,10 @@ public class newNormalPostPopup extends FullScreenPopupView {
             if (post_contents.getText().toString().isEmpty()) {
                 post_contents.setError("Post text cant be empty");
                 Toast.makeText(getContext(), "Post text cant be empty", Toast.LENGTH_SHORT).show();
-            }
-
-            else if (post_contents.getText().toString().length() < 2 ) {
+            } else if (post_contents.getText().toString().length() < 2) {
                 post_contents.setError("Post is too short");
                 Toast.makeText(getContext(), "Post is too short", Toast.LENGTH_SHORT).show();
-            }
-
-            else {
+            } else {
                 smartDismiss();
 
                 new Handler().postDelayed(() -> {
@@ -147,22 +143,22 @@ public class newNormalPostPopup extends FullScreenPopupView {
     }
 
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
-    
+
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
-    
+
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
-    
+
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

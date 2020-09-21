@@ -33,9 +33,9 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import me.ngarak.recorder.OnRecordListener;
 import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.databinding.ActivityAudioRecorderPostBinding;
+import com.soshoplus.lite.utils.constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,9 +43,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.utils.LogPrintUtils;
 import dev.utils.app.permission.PermissionUtils;
+import me.ngarak.recorder.OnRecordListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -58,10 +58,9 @@ import okhttp3.Response;
 public class audioRecorderPost extends AppCompatActivity {
 
     private static String TAG = "Audio Record";
-    private String accessToken;
     private static int type;
-    private ActivityAudioRecorderPostBinding binding;
     private static String recordPath;
+    private ActivityAudioRecorderPostBinding binding;
     private BasePopupView popupView;
 
     private SimpleExoPlayer exoPlayer;
@@ -73,19 +72,15 @@ public class audioRecorderPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAudioRecorderPostBinding.inflate(getLayoutInflater());
-        View view  = binding.getRoot();
+        View view = binding.getRoot();
         setContentView(view);
-
-        accessToken = SecurePreferences.getStringValue(audioRecorderPost.this, "accessToken"
-                , "0");
 
         permissionRequest();
 
         if (PermissionUtils.isGranted(Manifest.permission.RECORD_AUDIO)) {
             binding.recordButton.setEnabled(true);
             binding.pickAudio.setEnabled(true);
-        }
-        else {
+        } else {
             permissionRequest();
         }
 
@@ -96,8 +91,7 @@ public class audioRecorderPost extends AppCompatActivity {
             binding.recordView.setVisibility(View.GONE);
             binding.recordButton.setVisibility(View.GONE);
             binding.pickAudio.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             binding.recordView.setVisibility(View.VISIBLE);
             binding.recordButton.setVisibility(View.VISIBLE);
             binding.pickAudio.setVisibility(View.GONE);
@@ -162,8 +156,7 @@ public class audioRecorderPost extends AppCompatActivity {
 
             if (type == 1) {
                 binding.pickAudio.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 binding.recordView.setVisibility(View.VISIBLE);
                 binding.recordButton.setVisibility(View.VISIBLE);
             }
@@ -177,10 +170,9 @@ public class audioRecorderPost extends AppCompatActivity {
         binding.sendPostBtn.setOnClickListener(view_ -> {
             if (recordPath == null) {
                 Toast toast = Toast.makeText(audioRecorderPost.this, "Record audio first to post ... ", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                 toast.show();
-            }
-            else {
+            } else {
                 sendPost();
             }
         });
@@ -189,7 +181,7 @@ public class audioRecorderPost extends AppCompatActivity {
             Intent intent_upload = new Intent();
             intent_upload.setType("audio/*");
             intent_upload.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent_upload,1);
+            startActivityForResult(intent_upload, 1);
         });
     }
 
@@ -210,13 +202,13 @@ public class audioRecorderPost extends AppCompatActivity {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("server_key", BuildConfig.server_key)
                 .addFormDataPart("postText", postText)
-                .addFormDataPart("postFile",file.getName(),
+                .addFormDataPart("postFile", file.getName(),
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File(file.getAbsolutePath())))
                 .build();
 
         Request request = new Request.Builder()
-                .url("https://soshoplus.com/api/new_post?access_token=" + accessToken)
+                .url("https://soshoplus.com/api/new_post?access_token=" + constants.accessToken)
                 .method("POST", body)
                 .build();
 
@@ -228,7 +220,7 @@ public class audioRecorderPost extends AppCompatActivity {
 
                 HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
                     Toast toast = Toast.makeText(audioRecorderPost.this, "Failed to create post ... ", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
 
                     binding.postProgress.setVisibility(View.GONE);
@@ -245,7 +237,7 @@ public class audioRecorderPost extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
                         Toast toast = Toast.makeText(audioRecorderPost.this, "Post created successful ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         binding.postProgress.setVisibility(View.GONE);
@@ -254,8 +246,7 @@ public class audioRecorderPost extends AppCompatActivity {
                         /*move task back*/
                         onBackPressed();
                     });
-                }
-                else {
+                } else {
                     Log.d(TAG, "onResponse: " + response.code());
                 }
             }
@@ -264,18 +255,17 @@ public class audioRecorderPost extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == 1){
-            if(resultCode == RESULT_OK){
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 if (data != null) {
                     Uri uri = data.getData();
                     recordPath = getAudioPath(uri);
 
                     if (recordPath == null) {
                         Toast toast = Toast.makeText(audioRecorderPost.this, "Failed to pick audio ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
-                    }
-                    else {
+                    } else {
                         Log.d(TAG, "AUDIO PATH: " + recordPath);
                         hidePickBtn();
 
@@ -334,7 +324,7 @@ public class audioRecorderPost extends AppCompatActivity {
         }).request(audioRecorderPost.this);
     }
 
-    private void initializePlayer () {
+    private void initializePlayer() {
         exoPlayer = new SimpleExoPlayer.Builder(audioRecorderPost.this).build();
         binding.mediaPlayer.setPlayer(exoPlayer);
 

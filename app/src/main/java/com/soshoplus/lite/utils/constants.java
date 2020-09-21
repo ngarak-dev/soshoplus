@@ -6,13 +6,12 @@
 
 package com.soshoplus.lite.utils;
 
-import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
-
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.DevUtils;
 
 public class constants {
+
+    public static String SOSHOPLUS_BASE_URL = "https://soshoplus.com/api/";
 
     public static String userId = SecurePreferences.getStringValue(DevUtils.getContext(), "userId", "0");
     public static String timezone = SecurePreferences.getStringValue(DevUtils.getContext(), "timezone", "UTC");

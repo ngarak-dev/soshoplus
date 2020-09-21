@@ -29,25 +29,25 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 
 public class MultiImage extends BaseItemProvider<post> {
-    
+
     private static String TAG = "MULTI IMAGE POST : ";
-    
+
     ImageView profile_pic;
-//    MultiImageView post_multi_image;
+    //    MultiImageView post_multi_image;
     MaterialButton like;
-    
+
     @Override
-    public int getItemViewType () {
+    public int getItemViewType() {
         return post.MULTI_IMAGE_POST;
     }
-    
+
     @Override
-    public int getLayoutId () {
+    public int getLayoutId() {
         return R.layout.multi_image_post_list_row;
     }
-    
+
     @Override
-    public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+    public void convert(@NotNull BaseViewHolder baseViewHolder, post post) {
 
         ImageLoader imageLoader = Coil.imageLoader(getContext());
 
@@ -59,7 +59,8 @@ public class MultiImage extends BaseItemProvider<post> {
         baseViewHolder.setText(R.id.full_name, post.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.time_ago, post.getPostTime());
         baseViewHolder.setText(R.id.like_btn, post.getPostLikes());
-        baseViewHolder.setText(R.id.comment_btn, post.getPostComments());;
+        baseViewHolder.setText(R.id.comment_btn, post.getPostComments());
+        ;
 
         if (post.getPostTextAPI().isEmpty()) {
             baseViewHolder.setGone(R.id.post_contents, true);
@@ -87,10 +88,10 @@ public class MultiImage extends BaseItemProvider<post> {
         /*.......*/
         List<photoMulti> photos = post.getPhotoMulti();
         List<String> imageList = new ArrayList<>();
-        for(photoMulti multi_photos : new Iterable<photoMulti>() {
+        for (photoMulti multi_photos : new Iterable<photoMulti>() {
             @NonNull
             @Override
-            public Iterator<photoMulti> iterator () {
+            public Iterator<photoMulti> iterator() {
                 return photos.iterator();
             }
         }) {

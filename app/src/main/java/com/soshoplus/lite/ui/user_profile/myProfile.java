@@ -24,9 +24,8 @@ import com.soshoplus.lite.calls.simpleProfileCalls;
 import com.soshoplus.lite.databinding.ActivityMyProfileBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.ui.auth.signIn;
+import com.soshoplus.lite.utils.constants;
 import com.soshoplus.lite.utils.xpopup.changePasswordPopup;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -40,13 +39,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class myProfile extends AppCompatActivity {
 
-    private ActivityMyProfileBinding binding;
     private static String TAG = "my Profile ";
-    private String userId, timezone, accessToken;
-    /*..........*/
+    private ActivityMyProfileBinding binding;
     private simpleProfileCalls calls;
-    /*.........*/
-    private queries rxJavaQueries;
+
     private Observable<com.soshoplus.lite.models.simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
 
@@ -61,14 +57,6 @@ public class myProfile extends AppCompatActivity {
         setSupportActionBar(binding.transToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        userId = SecurePreferences.getStringValue(myProfile.this, "userId", "0");
-        timezone = SecurePreferences.getStringValue(myProfile.this, "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(myProfile.this, "accessToken"
-                , "0");
-
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         new Handler().postDelayed(this::loadProfile, 500);
 
@@ -100,7 +88,7 @@ public class myProfile extends AppCompatActivity {
         /*show loading dialog*/
         basePopupView.show();
 
-        simpleResponse = rxJavaQueries.logOutUser(accessToken, BuildConfig.server_key, userId);
+        simpleResponse = constants.rxJavaQueries.logOutUser(constants.accessToken, BuildConfig.server_key, constants.userId);
 
         simpleResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -132,8 +120,7 @@ public class myProfile extends AppCompatActivity {
                             } catch (SecureStorageException e) {
                                 e.printStackTrace();
                             }
-                        }
-                        else {
+                        } else {
                             apiErrors errors = simpleResponse.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
                         }
@@ -141,7 +128,7 @@ public class myProfile extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Log.d(TAG, "onError: "  + e.getMessage());
+                        Log.d(TAG, "onError: " + e.getMessage());
                     }
 
                     @Override

@@ -33,7 +33,6 @@ import com.soshoplus.lite.ui.settings_pref.myInformation;
 import com.soshoplus.lite.ui.settings_pref.notifications;
 import com.soshoplus.lite.ui.settings_pref.privacy;
 import com.soshoplus.lite.utils.constants;
-import com.soshoplus.lite.utils.queries;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import de.adorsys.android.securestoragelibrary.SecureStorageException;
@@ -47,18 +46,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class settings extends AppCompatActivity {
 
     private static String TAG = "Settings Activity";
-    private ActivitySettingsBinding binding;
-    private static String [] strings = {"General Account", "Privacy", "Notifications", "Invitations Links", "My Information",
+    private static String[] strings = {"General Account", "Privacy", "Notifications", "Invitations Links", "My Information",
             "Earnings", "Help & Support", "Log out"};
-
-    private queries rxJavaQueries;
+    private ActivitySettingsBinding binding;
     private Observable<simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding  = ActivitySettingsBinding.inflate(getLayoutInflater());
+        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -73,7 +70,7 @@ public class settings extends AppCompatActivity {
             onBackPressed();
         });
 
-        ArrayAdapter<String> arrayAdapter  = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, strings);
         binding.settingsList.setAdapter(arrayAdapter);
 
@@ -148,25 +145,24 @@ public class settings extends AppCompatActivity {
                                     } catch (SecureStorageException e) {
                                         e.printStackTrace();
                                     }
-                                }
-                                else {
+                                } else {
                                     apiErrors errors = simpleResponse.getErrors();
                                     Log.d(TAG, "onNext: " + errors.getErrorId());
 
                                     basePopupView.smartDismiss();
                                     Toast toast = Toast.makeText(settings.this, "Failed ... ", Toast.LENGTH_LONG);
-                                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                     toast.show();
                                 }
                             }
 
                             @Override
                             public void onError(@NonNull Throwable e) {
-                                Log.d(TAG, "onError: "  + e.getMessage());
+                                Log.d(TAG, "onError: " + e.getMessage());
 
                                 basePopupView.smartDismiss();
                                 Toast toast = Toast.makeText(settings.this, "Failed ... ", Toast.LENGTH_LONG);
-                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                 toast.show();
                             }
 

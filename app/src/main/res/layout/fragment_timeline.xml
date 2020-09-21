@@ -17,19 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_25sdp"
         android:layout_alignParentTop="true"
-        app:indicatorRadius="0dp"
-        app:indicatorColor="@color/colorPrimaryDark"
-        app:iconTintActive="@color/colorPrimary"
-        app:sideMargins="0dp"
-        app:iconMargin="@dimen/_5sdp"
         app:backgroundColor="@color/colorPrimaryDark"
-        app:menu="@menu/tab_navigation" />
+        app:iconMargin="@dimen/_5sdp"
+        app:iconTintActive="@color/colorPrimary"
+        app:indicatorColor="@color/colorPrimaryDark"
+        app:indicatorRadius="0dp"
+        app:menu="@menu/tab_navigation"
+        app:sideMargins="0dp" />
 
     <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/timelineViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_navigation"
-        android:id="@+id/timelineViewPager" />
+        android:layout_below="@id/tab_navigation" />
 
 </RelativeLayout>
 

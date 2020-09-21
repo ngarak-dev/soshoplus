@@ -30,12 +30,12 @@ public class moreFragment extends Fragment {
     private FragmentMoreBinding moreBinding;
     private simpleProfileCalls calls;
 
-    public moreFragment () {
+    public moreFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_more, container, false);
     }
@@ -52,7 +52,7 @@ public class moreFragment extends Fragment {
             new Handler().postDelayed(() -> {
                 startActivity(new Intent(requireContext(), groups.class));
             }, 500);
-        } );
+        });
     }
 
     private void loadProfile() {

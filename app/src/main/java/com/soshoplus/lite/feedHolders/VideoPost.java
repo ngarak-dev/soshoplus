@@ -30,32 +30,29 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 
 public class VideoPost extends BaseItemProvider<post> {
-    
+
     private static String TAG = "VIDEO POST : ";
-    
+    private static String videoLink;
     ImageView profile_pic;
     MaterialButton like;
-
     private SimpleExoPlayer exoPlayer;
     private PlayerView playerView;
     private boolean playWhenReady = false;
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
-    private static String videoLink;
-    
     @Override
-    public int getItemViewType () {
+    public int getItemViewType() {
         return post.VIDEO_POST;
     }
-    
+
     @Override
-    public int getLayoutId () {
+    public int getLayoutId() {
         return R.layout.video_post_list_row;
     }
-    
+
     @Override
-    public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+    public void convert(@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);

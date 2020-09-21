@@ -24,21 +24,21 @@ import coil.request.ImageRequest;
 import coil.transform.RoundedCornersTransformation;
 
 public class friendsFollowingAdapter extends BaseQuickAdapter<following, BaseViewHolder> {
-    
+
     private static String TAG = "Friends";
-    
-    public friendsFollowingAdapter (int layoutResId, @Nullable List<following> data) {
+
+    public friendsFollowingAdapter(int layoutResId, @Nullable List<following> data) {
         super(layoutResId, data);
     }
-    
+
     @Override
-    protected void convert (@NotNull BaseViewHolder baseViewHolder,
-                            following followings) {
-    
+    protected void convert(@NotNull BaseViewHolder baseViewHolder,
+                           following followings) {
+
         if (followings == null) {
             return;
         }
-    
+
         baseViewHolder.setText(R.id.full_name, followings.getName());
 
         ImageLoader imageLoader = Coil.imageLoader(getContext());

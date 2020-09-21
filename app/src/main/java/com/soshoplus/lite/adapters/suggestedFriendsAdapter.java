@@ -29,28 +29,28 @@ import coil.request.ImageRequest;
 import coil.transform.RoundedCornersTransformation;
 
 public class suggestedFriendsAdapter extends BaseQuickAdapter<suggestedInfo, BaseViewHolder> {
-    
+
     private static String TAG = "Suggested Friends Adapter";
 
-    public suggestedFriendsAdapter (int layoutResId, @Nullable List<suggestedInfo> data) {
+    public suggestedFriendsAdapter(int layoutResId, @Nullable List<suggestedInfo> data) {
         super(layoutResId, data);
     }
-    
+
     @Override
-    protected void convert (@NotNull BaseViewHolder baseViewHolder, suggestedInfo suggestedInfo) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, suggestedInfo suggestedInfo) {
         if (suggestedInfo == null) {
             return;
         }
 
         HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
-            
+
             baseViewHolder.setText(R.id.full_name, suggestedInfo.getName());
 
             TextView aboutMe = baseViewHolder.findView(R.id.about_me);
 
             ImageLoader imageLoader = Coil.imageLoader(getContext());
             ImageView profile_pic = baseViewHolder.findView(R.id.profile_pic);
-            
+
             if (suggestedInfo.getAbout() == null) {
                 aboutMe.setText("Hello there, I am using soshoplus");
             } else {
@@ -65,7 +65,7 @@ public class suggestedFriendsAdapter extends BaseQuickAdapter<suggestedInfo, Bas
                     .target(profile_pic)
                     .build();
             imageLoader.enqueue(imageRequest);
-            
+
         });
     }
 }

@@ -6,22 +6,21 @@
 
 package com.soshoplus.lite.ui.settings_pref;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import com.soshoplus.lite.R;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.soshoplus.lite.databinding.ActivityHelpSupportBinding;
 
 public class helpSupport extends AppCompatActivity {
 
     private static String TAG = "Help Support Activity";
+    private static String[] strings = {"Help Center", "Privacy Policy", "Terms of use", "About Us"};
     private ActivityHelpSupportBinding binding;
-    private static String [] strings = {"Help Center", "Privacy Policy", "Terms of use", "About Us"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class helpSupport extends AppCompatActivity {
             onBackPressed();
         });
 
-        ArrayAdapter<String> arrayAdapter  = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, strings);
         binding.settingsAbout.setAdapter(arrayAdapter);
 

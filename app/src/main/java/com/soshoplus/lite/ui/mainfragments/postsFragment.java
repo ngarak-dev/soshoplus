@@ -27,12 +27,11 @@ import com.soshoplus.lite.utils.xpopup.newNormalPostPopup;
 
 public class postsFragment extends Fragment {
 
+    private final static String type = "get_news_feed";
     private static String TAG = "posts Fragment";
-
+    private static String hashTag = null;
     private FragmentPostsBinding postsBinding;
     private timelineCalls calls;
-    private static String hashTag = null;
-    private final static String type = "get_news_feed";
 
     public postsFragment() {
         // Required empty public constructor
@@ -109,11 +108,11 @@ public class postsFragment extends Fragment {
         });
     }
 
-    private void getTimelineFeed () {
-    calls = new timelineCalls(requireContext());
-    calls.getTimelineFeed(postsBinding.timelinePostsList,
-            postsBinding.progressBarTimeline, type,
-            postsBinding.timelineErrorLayout, postsBinding.tryAgain,
-            postsBinding.refreshPostsLayout, hashTag);
+    private void getTimelineFeed() {
+        calls = new timelineCalls(requireContext());
+        calls.getTimelineFeed(postsBinding.timelinePostsList,
+                postsBinding.progressBarTimeline, type,
+                postsBinding.timelineErrorLayout, postsBinding.tryAgain,
+                postsBinding.refreshPostsLayout, hashTag);
     }
 }

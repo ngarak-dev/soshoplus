@@ -46,8 +46,7 @@ import com.soshoplus.lite.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.lite.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.ui.auth.signIn;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
+import com.soshoplus.lite.utils.constants;
 import com.soshoplus.lite.utils.xpopup.adHashPopup;
 import com.soshoplus.lite.utils.xpopup.imageHashPopup;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
@@ -69,49 +68,69 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static com.soshoplus.lite.utils.constants.accessToken;
+import static com.soshoplus.lite.utils.constants.rxJavaQueries;
+
 public class hashTagsPostsCalls {
     private final static String TAG = "hashtags Calls";
-    /*context*/
-    private Context context;
-    /*......*/
-    private queries rxJavaQueries;
-    private String accessToken, userId;
-    private BasePopupView popupView;
-
-    /*TIMELINE FEED*/
-    private Observable<postList> postListObserve;
-    private List<post> timelinePosts;
-    private timelineFeedAdapter feedAdapter;
-
-    /*POST LIKE_DISLIKE*/
-    private Observable<like_dislike> like_dislikeObservable;
-
-    /*SHARE ON TIMELINE*/
-    private Observable<shareResponse> shareResponseObservable;
     private static String share_post_on_timeline = "share_post_on_timeline";
-
-    /*.......*/
-    private KSnack snack;
     /*........*/
     private static String fullName, timeAgo, noLikes, noComments;
     private static boolean isLiked;
     /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
-
+    private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
+    private Context context;
+    private BasePopupView popupView;
+    /*TIMELINE FEED*/
+    private Observable<postList> postListObserve;
+    private List<post> timelinePosts;
+    private timelineFeedAdapter feedAdapter;
+    /*POST LIKE_DISLIKE*/
+    private Observable<like_dislike> like_dislikeObservable;
+    /*SHARE ON TIMELINE*/
+    private Observable<shareResponse> shareResponseObservable;
+    /*.......*/
+    private KSnack snack;
     /*......*/
     private Observable<postAction> postActionObservable;
-    private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
 
     /*constructor*/
-    public hashTagsPostsCalls (Context context) {
+    public hashTagsPostsCalls(Context context) {
         this.context = context;
+    }
 
-        userId = SecurePreferences.getStringValue(context, "userId", "0");
-        accessToken = SecurePreferences.getStringValue(context, "accessToken"
-                , "0");
+    /*AD info*/
+    public static void getADInfo(TextView full_name, TextView location, TextView description,
+                                 TextView headline) {
+        /*setting up*/
+        full_name.setText(adFullName);
+        location.setText(adLocation);
+        description.setText(Html.fromHtml(adDescription));
+        headline.setText(adHeadline);
+    }
 
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+    /*post image info*/
+    public static void getInfo(TextView full_name, TextView time_ago, TextView no_likes,
+                               TextView no_comments, MaterialButton like, MaterialButton comment) {
+
+        /*setting up*/
+        full_name.setText(fullName);
+        time_ago.setText(timeAgo);
+        no_likes.setText(noLikes + " likes");
+        no_comments.setText(noComments + " comments");
+
+        /*setting like btn*/
+        if (isLiked) {
+            like.setIconResource(R.drawable.ic_liked);
+            like.setText("Liked");
+        }
+    }
+
+    /*hide post*/
+    public static void hidePOST(timelineFeedAdapter feedAdapter, int position) {
+        feedAdapter.getData().remove(position);
+        feedAdapter.notifyItemRemoved(position);
     }
 
     public void getTimelineFeed(RecyclerView timelinePostsList,
@@ -159,14 +178,14 @@ public class hashTagsPostsCalls {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postList>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
-                    public void onNext (@NonNull postList postList) {
+                    public void onNext(@NonNull postList postList) {
 
-                        if(postList.getApiStatus() == 200) {
+                        if (postList.getApiStatus() == 200) {
                             timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
 
                             timelinePosts = getAll(postList);
@@ -191,8 +210,8 @@ public class hashTagsPostsCalls {
 
                             feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                                 @Override
-                                public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
-                                                              @androidx.annotation.NonNull View view, int position) {
+                                public void onItemChildClick(@androidx.annotation.NonNull BaseQuickAdapter adapter,
+                                                             @androidx.annotation.NonNull View view, int position) {
 
                                     switch (view.getId()) {
                                         case R.id.like_btn:
@@ -257,8 +276,7 @@ public class hashTagsPostsCalls {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             apiErrors errors = postList.getErrors();
                             Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
 
@@ -287,8 +305,7 @@ public class hashTagsPostsCalls {
                                             });
 
                                         }, null, true, 0).show();
-                            }
-                            else {
+                            } else {
                                 /*displaying error*/
                                 timelineErrorLayout.setVisibility(View.VISIBLE);
                             }
@@ -296,7 +313,7 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         /*displaying error*/
@@ -304,7 +321,7 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
@@ -312,7 +329,7 @@ public class hashTagsPostsCalls {
 
     private void showAdViewPopup(ImageView ad_media, String adMedia, int position) {
 
-        adHashPopup adFullViewPopup= new adHashPopup(context);
+        adHashPopup adFullViewPopup = new adHashPopup(context);
         adFullViewPopup.isShowSaveButton(false);
         adFullViewPopup.setSingleSrcView(ad_media, adMedia);
         adFullViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
@@ -389,7 +406,7 @@ public class hashTagsPostsCalls {
     private void likePost(String postId, int position, MaterialButton likeBtn) {
 
         /*update button*/
-        if(feedAdapter.getData().get(position).isLiked()) {
+        if (feedAdapter.getData().get(position).isLiked()) {
             feedAdapter.getData().get(position).setLiked(false);
             likeBtn.setIconResource(R.drawable.ic_like);
         } else {
@@ -400,29 +417,28 @@ public class hashTagsPostsCalls {
         /*notify adapter*/
 //        feedAdapter.notifyItemChanged(position);
 
-        like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
+        like_dislikeObservable = constants.rxJavaQueries.like_dislikePost(constants.accessToken,
                 BuildConfig.server_key, postId, "like");
         like_dislikeObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<like_dislike>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
-                    public void onNext (@NonNull like_dislike like_dislike) {
+                    public void onNext(@NonNull like_dislike like_dislike) {
                         if (like_dislike.getApiStatus() == 200) {
                             Log.d(TAG, "onNext: liked/disliked");
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = like_dislike.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                         }
                     }
 
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         /*TODO repeat if failed*/
@@ -430,47 +446,46 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
 
     /*get all post first round*/
-    private List<post> getAll (postList postList) {
-        timelinePosts=  postList.getPostList();
-        return timelinePosts != null ? postList.getPostList(): null;
+    private List<post> getAll(postList postList) {
+        timelinePosts = postList.getPostList();
+        return timelinePosts != null ? postList.getPostList() : null;
     }
 
     /*share post direct to timeline*/
-    public void shareOnTimeline (String postId) {
+    public void shareOnTimeline(String postId) {
 
         snack = new KSnack((FragmentActivity) context);
         snack.setMessage("Sharing to your timeline ...");
         snack.show();
 
         shareResponseObservable =
-                rxJavaQueries.sharePostInTimeline(accessToken, BuildConfig.server_key,
+                constants.rxJavaQueries.sharePostInTimeline(constants.accessToken, BuildConfig.server_key,
                         share_post_on_timeline,
-                        postId, userId, "");
+                        postId, constants.userId, null);
         shareResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<shareResponse>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
-                    public void onNext (@NonNull shareResponse shareResponse) {
+                    public void onNext(@NonNull shareResponse shareResponse) {
                         if (shareResponse.getApiStatus() == 200) {
                             Log.d(TAG, "onNext: SHARED");
 
                             snack.setBackColor(R.color.green);
                             snack.setMessage("Post shared");
                             snack.setDuration(3500);
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = shareResponse.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
 
@@ -485,7 +500,7 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         snack.setMessage("Error occurred while sharing");
@@ -498,14 +513,14 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
 
     /*share on other apps*/
-    public void shareOnOtherApps (String postUrl, String fullName) {
+    public void shareOnOtherApps(String postUrl, String fullName) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, fullName);
@@ -514,35 +529,8 @@ public class hashTagsPostsCalls {
                 "one"));
     }
 
-    /*AD info*/
-    public static void getADInfo (TextView full_name, TextView location, TextView description,
-                                  TextView headline) {
-        /*setting up*/
-        full_name.setText(adFullName);
-        location.setText(adLocation);
-        description.setText(Html.fromHtml(adDescription));
-        headline.setText(adHeadline);
-    }
-
-    /*post image info*/
-    public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
-                                TextView no_comments, MaterialButton like, MaterialButton comment) {
-
-        /*setting up*/
-        full_name.setText(fullName);
-        time_ago.setText(timeAgo);
-        no_likes.setText(noLikes + " likes");
-        no_comments.setText(noComments + " comments");
-
-        /*setting like btn*/
-        if (isLiked) {
-            like.setIconResource(R.drawable.ic_liked);
-            like.setText("Liked");
-        }
-    }
-
     /*copy post link*/
-    private void copyLink (String postLink, Context context) {
+    private void copyLink(String postLink, Context context) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("post link", postLink);
@@ -555,26 +543,25 @@ public class hashTagsPostsCalls {
     }
 
     /*report post*/
-    public void reportPOST (String postId) {
-        postActionObservable = rxJavaQueries.postAction(accessToken,
+    public void reportPOST(String postId) {
+        postActionObservable = constants.rxJavaQueries.postAction(constants.accessToken,
                 BuildConfig.server_key, postId, "report");
 
         postActionObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postAction>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
-                    public void onNext (@NonNull postAction postAction) {
+                    public void onNext(@NonNull postAction postAction) {
                         if (postAction.getApiStatus() == 200) {
                             /*TODO update UI on report*/
                             Toast.makeText(context, "Post reported",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                        } else {
                             apiErrors errors = postAction.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
 
@@ -584,40 +571,39 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                         Toast.makeText(context, "Failed to report post",
                                 Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
 
     /*save post*/
-    private void savePOST (String postId) {
+    private void savePOST(String postId) {
 
-        postActionObservable = rxJavaQueries.postAction(accessToken,
+        postActionObservable = constants.rxJavaQueries.postAction(constants.accessToken,
                 BuildConfig.server_key, postId, "save");
 
         postActionObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postAction>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
-                    public void onNext (@NonNull postAction postAction) {
+                    public void onNext(@NonNull postAction postAction) {
                         if (postAction.getApiStatus() == 200) {
                             Toast.makeText(context, "Post saved",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                        } else {
                             apiErrors errors = postAction.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
 
@@ -627,30 +613,24 @@ public class hashTagsPostsCalls {
                     }
 
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                         Toast.makeText(context, "Failed to save post",
                                 Toast.LENGTH_LONG).show();
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
 
     /*share post*/
-    private void sharePOST (post post) {
+    private void sharePOST(post post) {
         new Handler().postDelayed(() -> {
             new XPopup.Builder(context).asCustom(new sharePopup(context, post.getPostId(), post.getUrl(),
                     post.getPublisherInfo().getName()).show());
         }, 500);
-    }
-
-    /*hide post*/
-    public static void hidePOST(timelineFeedAdapter feedAdapter, int position) {
-        feedAdapter.getData().remove(position);
-        feedAdapter.notifyItemRemoved(position);
     }
 }

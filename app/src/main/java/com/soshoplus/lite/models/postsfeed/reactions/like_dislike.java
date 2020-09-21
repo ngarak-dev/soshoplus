@@ -13,63 +13,63 @@ import com.soshoplus.lite.models.apiErrors;
 import java.io.Serializable;
 
 public class like_dislike implements Serializable {
-    
+
     @SerializedName("action")
     @Expose
     private String action;
-    
+
     @SerializedName("api_status")
     @Expose
     private int apiStatus;
-    
+
     @SerializedName("likes_data")
     @Expose
     private likeStatus likesData;
-    
+
     @SerializedName("errors")
     @Expose
     private apiErrors errors;
-    
-    like_dislike () {
-    
+
+    like_dislike() {
+
     }
-    
-    public like_dislike (String action, int apiStatus, likeStatus likesData, apiErrors errors) {
+
+    public like_dislike(String action, int apiStatus, likeStatus likesData, apiErrors errors) {
         this.action = action;
         this.apiStatus = apiStatus;
         this.likesData = likesData;
         this.errors = errors;
     }
-    
-    public String getAction () {
+
+    public String getAction() {
         return action;
     }
-    
-    public void setAction (String action) {
+
+    public void setAction(String action) {
         this.action = action;
     }
-    
-    public int getApiStatus () {
+
+    public int getApiStatus() {
         return apiStatus;
     }
-    
-    public void setApiStatus (int apiStatus) {
+
+    public void setApiStatus(int apiStatus) {
         this.apiStatus = apiStatus;
     }
-    
-    public likeStatus getLikesData () {
+
+    public likeStatus getLikesData() {
         return likesData;
     }
-    
-    public void setLikesData (likeStatus likesData) {
+
+    public void setLikesData(likeStatus likesData) {
         this.likesData = likesData;
     }
-    
-    public apiErrors getErrors () {
+
+    public apiErrors getErrors() {
         return errors;
     }
-    
-    public void setErrors (apiErrors errors) {
+
+    public void setErrors(apiErrors errors) {
         this.errors = errors;
     }
 }

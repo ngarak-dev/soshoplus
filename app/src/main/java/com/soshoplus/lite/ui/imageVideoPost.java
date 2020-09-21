@@ -25,6 +25,7 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.adapters.previewImagesAdapter;
 import com.soshoplus.lite.databinding.ActivityImagePostBinding;
 import com.soshoplus.lite.utils.RedBookPresenter;
+import com.soshoplus.lite.utils.constants;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.MimeType;
@@ -39,7 +40,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -52,7 +52,6 @@ import okhttp3.Response;
 public class imageVideoPost extends AppCompatActivity {
 
     private static String TAG = "Image Post : ";
-    private String accessToken;
     private static int type;
     private previewImagesAdapter imagesAdapter;
     private ArrayList<ImageItem> photos = new ArrayList<>();
@@ -66,10 +65,6 @@ public class imageVideoPost extends AppCompatActivity {
         postBinding = ActivityImagePostBinding.inflate(getLayoutInflater());
         View view = postBinding.getRoot();
         setContentView(view);
-
-
-        accessToken = SecurePreferences.getStringValue(imageVideoPost.this, "accessToken"
-                , "0");
 
         Bundle bundle = getIntent().getExtras();
         type = bundle.getInt("type");
@@ -99,8 +94,7 @@ public class imageVideoPost extends AppCompatActivity {
                             }
                             onPhotosReturned(items);
                         });
-            }
-            else {
+            } else {
                 ImagePicker.withCrop(new RedBookPresenter())
                         .setMaxCount(1)
                         .setVideoSinglePick(true)
@@ -127,19 +121,17 @@ public class imageVideoPost extends AppCompatActivity {
             if (type == 1) {
                 if (photos.size() == 0) {
                     Toast toast = Toast.makeText(imageVideoPost.this, "Select an image to post ... ", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
-                }
-                else {
+                } else {
                     sendPost();
                 }
             } else {
                 if (photos.size() == 0) {
                     Toast toast = Toast.makeText(imageVideoPost.this, "Select a video to post ... ", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
-                }
-                else {
+                } else {
                     sendPost();
                 }
             }
@@ -155,8 +147,7 @@ public class imageVideoPost extends AppCompatActivity {
 
                 if (imagesAdapter.getData().size() == 0) {
                     imagesAdapter.getData().removeAll(photos);
-                }
-                else {
+                } else {
                     imagesAdapter.getData().remove(position);
                 }
 
@@ -184,13 +175,13 @@ public class imageVideoPost extends AppCompatActivity {
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("server_key", BuildConfig.server_key)
                 .addFormDataPart("postText", postText)
-                .addFormDataPart("postFile",file.getName(),
+                .addFormDataPart("postFile", file.getName(),
                         RequestBody.create(MediaType.parse("application/octet-stream"),
                                 new File(file.getAbsolutePath())))
                 .build();
 
         Request request = new Request.Builder()
-                .url("https://soshoplus.com/api/new_post?access_token=" + accessToken)
+                .url("https://soshoplus.com/api/new_post?access_token=" + constants.accessToken)
                 .method("POST", body)
                 .build();
 
@@ -202,7 +193,7 @@ public class imageVideoPost extends AppCompatActivity {
 
                 HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
                     Toast toast = Toast.makeText(imageVideoPost.this, "Failed to create post ... ", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                     toast.show();
 
                     postBinding.postProgress.setVisibility(View.GONE);
@@ -218,7 +209,7 @@ public class imageVideoPost extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
                         Toast toast = Toast.makeText(imageVideoPost.this, "Post created successful ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         postBinding.postProgress.setVisibility(View.GONE);
@@ -227,8 +218,7 @@ public class imageVideoPost extends AppCompatActivity {
                         /*move task back*/
                         onBackPressed();
                     });
-                }
-                else {
+                } else {
                     Log.d(TAG, "onResponse: " + response.code());
                 }
             }

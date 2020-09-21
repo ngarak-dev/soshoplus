@@ -18,17 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
-import com.soshoplus.lite.models.apiErrors;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.adapters.joinedGroupsAdapter;
+import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.groups.groupInfo;
 import com.soshoplus.lite.models.groups.groupList;
 import com.soshoplus.lite.ui.groups.viewGroup;
+import com.soshoplus.lite.utils.constants;
 
 import java.util.List;
 
-import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -37,58 +35,44 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class joinedGroupsCalls {
-    
+
     private final static String TAG = "Joined groups Calls";
-    /*context*/
-    private Context context;
-    /*......*/
-    private queries rxJavaQueries;
-    private String accessToken, userId, timezone;
-    
-    /*........*/
     private static String joined_groups = "joined_groups";
+    private Context context;
     private Observable<groupList> groupListObservable;
     private List<groupInfo> groupInfoList = null;
-    
-    public joinedGroupsCalls (Context context) {
+
+    public joinedGroupsCalls(Context context) {
         this.context = context;
-    
-        userId = SecurePreferences.getStringValue(context, "userId", "0");
-        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(context, "accessToken"
-                , "0");
-    
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
-    
-    
-    public void getJoined (RecyclerView joinedGroupsList, ProgressBar progressBarJoined,
-                           ImageView joinedGroupsShowHereImg, TextView joinedGroupsShowHereTxt) {
-        
-        groupListObservable = rxJavaQueries.getJoinedGroups(accessToken,
-                BuildConfig.server_key, joined_groups, userId);
+
+
+    public void getJoined(RecyclerView joinedGroupsList, ProgressBar progressBarJoined,
+                          ImageView joinedGroupsShowHereImg, TextView joinedGroupsShowHereTxt) {
+
+        groupListObservable = constants.rxJavaQueries.getJoinedGroups(constants.accessToken,
+                BuildConfig.server_key, joined_groups, constants.userId);
         groupListObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<groupList>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
-                    public void onNext (@NonNull groupList groupList) {
+                    public void onNext(@NonNull groupList groupList) {
                         if (groupList.getApiStatus() == 200) {
 
                             /*initializing list*/
                             groupInfoList = groupList.getInfo();
-                        
+
                             /*initializing adapter*/
                             joinedGroupsAdapter groupsAdapter = new joinedGroupsAdapter(R.layout.joined_groups_row, groupInfoList);
-                        
+
                             /*Setting Adapter*/
                             joinedGroupsList.setAdapter(groupsAdapter);
-                        
+
                             /*......*/
                             /*After fetching Data*/
                             updateUI();
@@ -102,39 +86,38 @@ public class joinedGroupsCalls {
                                 intent.putExtra("is_joined", true);
                                 context.startActivity(intent);
                             });
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = groupList.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                         }
                     }
-                
-                    private void updateUI () {
+
+                    private void updateUI() {
                         if (groupInfoList.size() == 0) {
                             /*Show all set*/
                             joinedGroupsList.setVisibility(View.GONE);
                             progressBarJoined.setVisibility(View.GONE);
-                        
+
                             joinedGroupsShowHereImg.setVisibility(View.VISIBLE);
                             joinedGroupsShowHereTxt.setVisibility(View.VISIBLE);
-                        
+
                         } else {
                             /*Show recyclerview*/
                             joinedGroupsShowHereImg.setVisibility(View.GONE);
                             joinedGroupsShowHereTxt.setVisibility(View.GONE);
-                        
+
                             progressBarJoined.setVisibility(View.GONE);
                             joinedGroupsList.setVisibility(View.VISIBLE);
                         }
                     }
-                
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });

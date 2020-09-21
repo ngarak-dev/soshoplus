@@ -35,10 +35,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import coil.Coil;
-import coil.ImageLoader;
-import coil.request.ImageRequest;
-
 
 public class RedBookPresenter implements IPickerPresenter {
 
@@ -126,7 +122,7 @@ public class RedBookPresenter implements IPickerPresenter {
     }
 
     @Override
-    public boolean interceptItemClick(@Nullable Activity activity, ImageItem imageItem, ArrayList<ImageItem> selectImageList, ArrayList<ImageItem> allSetImageList, BaseSelectConfig selectConfig, PickerItemAdapter adapter,boolean isClickCheckBox, @Nullable IReloadExecutor reloadExecutor) {
+    public boolean interceptItemClick(@Nullable Activity activity, ImageItem imageItem, ArrayList<ImageItem> selectImageList, ArrayList<ImageItem> allSetImageList, BaseSelectConfig selectConfig, PickerItemAdapter adapter, boolean isClickCheckBox, @Nullable IReloadExecutor reloadExecutor) {
         return false;
     }
 

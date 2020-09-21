@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_8sdp"
-    app:contentPadding="@dimen/_8sdp"
-    android:layout_margin="@dimen/_5sdp">
+    app:contentPadding="@dimen/_8sdp">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,112 +21,112 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/title"
-                android:textAlignment="center"
-                style="@style/TextAppearance.AppCompat.Title"
                 android:text="Social Links"
+                android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/facebook"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_facebook"
                 android:drawablePadding="@dimen/_10sdp"
-                android:layout_margin="@dimen/_5sdp"
-                android:maxLines="3"
                 android:gravity="start"
                 android:hint="Facebook"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:id="@+id/facebook"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/title" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/twitter"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_twitter"
                 android:drawablePadding="@dimen/_10sdp"
-                android:layout_margin="@dimen/_5sdp"
-                android:maxLines="3"
                 android:gravity="start"
                 android:hint="Twitter"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:id="@+id/twitter"
-                app:layout_constraintTop_toBottomOf="@id/facebook"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/facebook" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/linkedin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_linkedin"
                 android:drawablePadding="@dimen/_10sdp"
-                android:layout_margin="@dimen/_5sdp"
-                android:maxLines="3"
                 android:gravity="start"
                 android:hint="Linkedin"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:id="@+id/linkedin"
-                app:layout_constraintTop_toBottomOf="@id/twitter"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/twitter" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/instagram"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_instagram"
                 android:drawablePadding="@dimen/_10sdp"
-                android:layout_margin="@dimen/_5sdp"
-                android:maxLines="3"
                 android:gravity="start"
                 android:hint="Instagram"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:id="@+id/instagram"
-                app:layout_constraintTop_toBottomOf="@id/linkedin"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/linkedin" />
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/youtube"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_youtube"
                 android:drawablePadding="@dimen/_10sdp"
-                android:layout_margin="@dimen/_5sdp"
-                android:maxLines="3"
                 android:gravity="start"
                 android:hint="Youtube"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:id="@+id/youtube"
-                app:layout_constraintTop_toBottomOf="@id/instagram"
+                android:maxLines="3"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/instagram" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
-                android:textColor="@color/black"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="cancel"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toStartOf="@id/send"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/youtube"
-                android:id="@+id/cancel" />
+                app:layout_constraintTop_toBottomOf="@id/youtube" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/send"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
-                android:textColor="@color/black"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:text="change"
-                app:layout_constraintStart_toEndOf="@id/cancel"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/youtube"
-                android:id="@+id/send" />
+                app:layout_constraintStart_toEndOf="@id/cancel"
+                app:layout_constraintTop_toBottomOf="@id/youtube" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

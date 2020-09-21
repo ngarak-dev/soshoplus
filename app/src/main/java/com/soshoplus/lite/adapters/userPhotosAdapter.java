@@ -26,13 +26,13 @@ import coil.transform.RoundedCornersTransformation;
 
 public class userPhotosAdapter extends BaseQuickAdapter<post, BaseViewHolder> {
 
-    public userPhotosAdapter (int layoutResId, @Nullable List<post> data) {
+    public userPhotosAdapter(int layoutResId, @Nullable List<post> data) {
         super(layoutResId, data);
         addChildClickViewIds(R.id.image);
     }
-    
+
     @Override
-    protected void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, post post) {
 
         ImageLoader imageLoader = Coil.imageLoader(getContext());
         ImageView imageView = baseViewHolder.findView(R.id.image);
@@ -47,8 +47,7 @@ public class userPhotosAdapter extends BaseQuickAdapter<post, BaseViewHolder> {
                     .target(imageView)
                     .build();
             imageLoader.enqueue(imageRequest);
-        }
-        else {
+        } else {
             ImageRequest imageRequest = new ImageRequest.Builder(getContext())
                     .data(post.getPostFileFull())
                     .crossfade(true)

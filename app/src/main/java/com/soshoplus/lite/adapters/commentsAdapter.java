@@ -6,7 +6,6 @@
 
 package com.soshoplus.lite.adapters;
 
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -59,11 +58,9 @@ public class commentsAdapter extends BaseQuickAdapter<postComments, BaseViewHold
 
         if (postComments.getReplies() == null) {
             baseViewHolder.setGone(R.id.no_reply, true);
-        }
-        else if (postComments.getReplies().equals("0")) {
+        } else if (postComments.getReplies().equals("0")) {
             baseViewHolder.setGone(R.id.no_reply, true);
-        }
-        else {
+        } else {
             baseViewHolder.setText(R.id.no_reply, postComments.getReplies());
         }
 

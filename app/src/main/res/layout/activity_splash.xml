@@ -14,17 +14,17 @@
         android:id="@+id/squircles"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
-        android:src="@drawable/ic_brand_squircles"
         android:layout_centerInParent="true"
+        android:src="@drawable/ic_brand_squircles"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_20sdp"
-        android:src="@drawable/ic_soshoplus_txt"
-        android:layout_alignEnd="@id/squircles"
-        android:layout_alignStart="@id/squircles"
         android:layout_below="@id/squircles"
+        android:layout_alignStart="@id/squircles"
+        android:layout_alignEnd="@id/squircles"
+        android:src="@drawable/ic_soshoplus_txt"
         tools:ignore="ContentDescription" />
 
 </RelativeLayout>

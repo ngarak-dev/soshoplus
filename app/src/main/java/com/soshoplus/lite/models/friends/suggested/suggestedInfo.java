@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class suggestedInfo implements Serializable {
-    
+
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -38,18 +38,18 @@ public class suggestedInfo implements Serializable {
     @Expose
     private String about;
     private String name;
-    
+
     /**
      * No args constructor for use in serialization
      */
-    
-    public suggestedInfo () {
-    
+
+    public suggestedInfo() {
+
     }
-    
-    public suggestedInfo (String userId, String username, String email,
-                          String firstName, String lastName, String avatar,
-                          String cover) {
+
+    public suggestedInfo(String userId, String username, String email,
+                         String firstName, String lastName, String avatar,
+                         String cover) {
         super();
         this.userId = userId;
         this.username = username;
@@ -60,120 +60,120 @@ public class suggestedInfo implements Serializable {
         this.cover = cover;
         this.name = name;
     }
-    
-    public String getUserId () {
+
+    public String getUserId() {
         return userId;
     }
-    
-    public void setUserId (String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-    
-    public suggestedInfo withUserId (String userId) {
+
+    public suggestedInfo withUserId(String userId) {
         this.userId = userId;
         return this;
     }
-    
-    public String getUsername () {
+
+    public String getUsername() {
         return username;
     }
-    
-    public void setUsername (String username) {
+
+    public void setUsername(String username) {
         this.username = username;
     }
-    
-    public suggestedInfo withUsername (String username) {
+
+    public suggestedInfo withUsername(String username) {
         this.username = username;
         return this;
     }
-    
-    public String getEmail () {
+
+    public String getEmail() {
         return email;
     }
-    
-    public void setEmail (String email) {
+
+    public void setEmail(String email) {
         this.email = email;
     }
-    
-    public suggestedInfo withEmail (String email) {
+
+    public suggestedInfo withEmail(String email) {
         this.email = email;
         return this;
     }
-    
-    public String getFirstName () {
+
+    public String getFirstName() {
         return firstName;
     }
-    
-    public void setFirstName (String firstName) {
+
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
-    public suggestedInfo withFirstName (String firstName) {
+
+    public suggestedInfo withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
-    
-    public String getLastName () {
+
+    public String getLastName() {
         return lastName;
     }
-    
-    public void setLastName (String lastName) {
+
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    
-    public suggestedInfo withLastName (String lastName) {
+
+    public suggestedInfo withLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
-    
-    public String getAvatar () {
+
+    public String getAvatar() {
         return avatar;
     }
-    
-    public void setAvatar (String avatar) {
+
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-    
-    public suggestedInfo withAvatar (String avatar) {
+
+    public suggestedInfo withAvatar(String avatar) {
         this.avatar = avatar;
         return this;
     }
-    
-    public String getCover () {
+
+    public String getCover() {
         return cover;
     }
-    
-    public void setCover (String cover) {
+
+    public void setCover(String cover) {
         this.cover = cover;
     }
-    
-    public suggestedInfo withCover (String cover) {
+
+    public suggestedInfo withCover(String cover) {
         this.cover = cover;
         return this;
     }
-    
-    public String getAbout () {
+
+    public String getAbout() {
         return about;
     }
-    
-    public void setAbout (String about) {
+
+    public void setAbout(String about) {
         this.about = about;
     }
-    
-    public suggestedInfo withAbout (String about) {
+
+    public suggestedInfo withAbout(String about) {
         this.about = about;
         return this;
     }
-    
-    public String getName () {
+
+    public String getName() {
         return name;
     }
-    
-    public void setName (String name) {
+
+    public void setName(String name) {
         this.name = name;
     }
-    
-    public suggestedInfo withName (String name) {
+
+    public suggestedInfo withName(String name) {
         this.name = name;
         return this;
     }

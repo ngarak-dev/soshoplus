@@ -19,25 +19,25 @@ public class apiErrors implements Serializable {
     @SerializedName("error_text")
     @Expose
     private String errorText;
-    
-    public apiErrors (String errorId, String errorText) {
+
+    public apiErrors(String errorId, String errorText) {
         this.errorId = errorId;
         this.errorText = errorText;
     }
-    
-    public String getErrorText () {
+
+    public String getErrorText() {
         return errorText;
     }
-    
-    public void setErrorText (String errorText) {
+
+    public void setErrorText(String errorText) {
         this.errorText = errorText;
     }
-    
-    public String getErrorId () {
+
+    public String getErrorId() {
         return errorId;
     }
-    
-    public void setErrorId (String errorId) {
+
+    public void setErrorId(String errorId) {
         this.errorId = errorId;
     }
 }

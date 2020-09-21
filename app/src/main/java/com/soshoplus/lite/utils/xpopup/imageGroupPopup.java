@@ -21,47 +21,47 @@ public class imageGroupPopup extends ImageViewerPopupView {
     public imageGroupPopup(@NonNull Context context) {
         super(context);
     }
-    
+
     @Override
-    protected int getImplLayoutId () {
+    protected int getImplLayoutId() {
         return R.layout.post_image_full;
     }
-    
+
     @Override
-    protected void onCreate () {
+    protected void onCreate() {
         super.onCreate();
-        
+
         TextView full_name = findViewById(R.id.full_name);
         TextView time_ago = findViewById(R.id.time_ago);
-        
+
         TextView no_likes = findViewById(R.id.no_likes);
         TextView no_comments = findViewById(R.id.no_comments);
-        
+
         MaterialButton like = findViewById(R.id.like_btn);
         MaterialButton comment = findViewById(R.id.comment_btn);
-    
+
         /*getting post image info*/
         groupCalls.getInfo(full_name, time_ago, no_likes, no_comments,
                 like, comment);
     }
-    
+
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
-    
+
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
-    
+
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
-    
+
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

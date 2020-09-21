@@ -17,24 +17,24 @@ import com.soshoplus.lite.databinding.ActivityForgotPasswordBinding;
 import java.util.Objects;
 
 public class forgotPassword extends AppCompatActivity {
-    
+
     private static String TAG = "signUp Activity ";
     private boolean validate = true;
     private ActivityForgotPasswordBinding forgotPasswordBinding;
-    
+
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         forgotPasswordBinding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
         View view = forgotPasswordBinding.getRoot();
         setContentView(view);
-        
+
         /*initialize progress dialog*/
         /*TODO*/
-        
+
         forgotPasswordBinding.btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 //validate input
                 if (!validate()) {
                     return;
@@ -43,8 +43,8 @@ public class forgotPassword extends AppCompatActivity {
                 /*TODO*/
                 callResetInfo();
             }
-            
-            private boolean validate () {
+
+            private boolean validate() {
                 if (Objects.requireNonNull(forgotPasswordBinding.email.getText()).toString().isEmpty()) {
                     forgotPasswordBinding.emailInLayout.setError("Email is empty");
                     validate = false;
@@ -52,13 +52,13 @@ public class forgotPassword extends AppCompatActivity {
                     forgotPasswordBinding.emailInLayout.setError("Invalid Email format");
                     validate = false;
                 }
-                
+
                 return validate;
             }
         });
     }
-    
-    private void callResetInfo () {
+
+    private void callResetInfo() {
         /*TODO Documentation imeshapatikana implement reseting password*/
     }
 }

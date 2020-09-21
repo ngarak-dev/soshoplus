@@ -24,35 +24,35 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 
 public class AdPost extends BaseItemProvider<post> {
-    
+
     private static String TAG = "AD POST : ";
-    
+
     ImageView profile_pic, media;
-    
+
     @Override
-    public int getItemViewType () {
+    public int getItemViewType() {
         return post.ADS;
     }
-    
+
     @Override
-    public int getLayoutId () {
+    public int getLayoutId() {
         return R.layout.timeline_feed_ad;
     }
-    
+
     @Override
-    public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+    public void convert(@NotNull BaseViewHolder baseViewHolder, post post) {
 
         ImageLoader imageLoader = Coil.imageLoader(getContext());
 
         profile_pic = baseViewHolder.findView(R.id.ad_profile_pic);
         media = baseViewHolder.findView(R.id.ad_media);
-    
+
         /*Converting Object to json data*/
         Gson gson = new Gson();
         String toJson = gson.toJson(post.getUserData());
         /*getting data from json string using pojo class*/
         userData user_data = gson.fromJson(toJson, userData.class);
-    
+
         baseViewHolder.setText(R.id.ad_full_name, user_data.getName());
         baseViewHolder.setText(R.id.ad_location, post.getLocation());
         baseViewHolder.setText(R.id.ad_description, Html.fromHtml(post.getDescription()));

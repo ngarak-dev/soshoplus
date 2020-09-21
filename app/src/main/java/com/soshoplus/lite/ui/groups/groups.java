@@ -6,12 +6,12 @@
 
 package com.soshoplus.lite.ui.groups;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.os.HandlerCompat;
-
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.HandlerCompat;
 
 import com.soshoplus.lite.calls.joinedGroupsCalls;
 import com.soshoplus.lite.calls.recommendedGroupsCalls;
@@ -37,7 +37,7 @@ public class groups extends AppCompatActivity {
 
         groupsBinding.backArrow.setOnClickListener(view_ -> {
             onBackPressed();
-        } );
+        });
 
         /*refreshing groups*/
         groupsBinding.groupsRefreshLayout.setOnRefreshListener(() -> {
@@ -50,7 +50,7 @@ public class groups extends AppCompatActivity {
         });
     }
 
-    private void getRecommended () {
+    private void getRecommended() {
         /*recommended*/
         recommendedGroupsCalls = new recommendedGroupsCalls(groups.this);
         recommendedGroupsCalls.getRecommends(groupsBinding.suggestedGroupsList,
@@ -58,7 +58,7 @@ public class groups extends AppCompatActivity {
                 groupsBinding.allSetUpText, groupsBinding.progressBarSuggested);
     }
 
-    private void getJoined () {
+    private void getJoined() {
         /*joined*/
         joinedGroupsCalls = new joinedGroupsCalls(groups.this);
         joinedGroupsCalls.getJoined(groupsBinding.joinedGroupsList,

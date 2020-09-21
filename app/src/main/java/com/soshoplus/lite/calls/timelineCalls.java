@@ -40,20 +40,18 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.adapters.timelineFeedAdapter;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.postAction;
-import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.ui.hashTagsPosts;
-import com.soshoplus.lite.ui.user_profile.userProfile;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
-import com.soshoplus.lite.adapters.timelineFeedAdapter;
 import com.soshoplus.lite.models.postsfeed.post;
 import com.soshoplus.lite.models.postsfeed.postList;
 import com.soshoplus.lite.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.lite.models.postsfeed.sharepost.shareResponse;
+import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.ui.auth.signIn;
+import com.soshoplus.lite.ui.hashTagsPosts;
+import com.soshoplus.lite.ui.user_profile.userProfile;
 import com.soshoplus.lite.utils.xpopup.commentsPopup;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
 import com.soshoplus.lite.utils.xpopup.sharePopup;
@@ -76,63 +74,81 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+import static com.soshoplus.lite.utils.constants.accessToken;
+import static com.soshoplus.lite.utils.constants.rxJavaQueries;
+import static com.soshoplus.lite.utils.constants.userId;
 import static dev.DevUtils.getContext;
 
 public class timelineCalls {
-    
+
     private final static String TAG = "Timeline Calls";
-    /*context*/
-    private Context context;
-    /*......*/
-    private queries rxJavaQueries;
-    private String accessToken, userId, timezone;
-    private BasePopupView popupView;
-    
-    /*TIMELINE FEED*/
-    private Observable<postList> postListObserve;
-    private List<post> timelinePosts;
     private static String firstData = null;
-    private timelineFeedAdapter feedAdapter;
-    
-    /*POST LIKE_DISLIKE*/
-    private Observable<like_dislike> like_dislikeObservable;
-    
-    /*SHARE ON TIMELINE*/
-    private Observable<shareResponse> shareResponseObservable;
     private static String share_post_on_timeline = "share_post_on_timeline";
-    
-    /*.......*/
-    private KSnack snack;
     /*........*/
     private static int totalItems;
     private static String lastItemID;
-    
     /*........*/
     private static String fullName, timeAgo, noLikes, noComments;
     private static boolean isLiked;
     /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
-    
+    private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
+    /*context*/
+    private Context context;
+    private BasePopupView popupView;
+    /*TIMELINE FEED*/
+    private Observable<postList> postListObserve;
+    private List<post> timelinePosts;
+    private timelineFeedAdapter feedAdapter;
+    /*POST LIKE_DISLIKE*/
+    private Observable<like_dislike> like_dislikeObservable;
+    /*SHARE ON TIMELINE*/
+    private Observable<shareResponse> shareResponseObservable;
+    /*.......*/
+    private KSnack snack;
     /*......*/
     private Observable<postAction> postActionObservable;
-    private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
-
     /*......*/
     private Observable<simpleResponse> createPostResponse;
-    
+
     /*constructor*/
-    public timelineCalls (Context context) {
+    public timelineCalls(Context context) {
         this.context = context;
-    
-        userId = SecurePreferences.getStringValue(context, "userId", "0");
-        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(context, "accessToken"
-                , "0");
-    
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
-    
+
+    /*AD info*/
+    public static void getADInfo(TextView full_name, TextView location, TextView description,
+                                 TextView headline) {
+        /*setting up*/
+        full_name.setText(adFullName);
+        location.setText(adLocation);
+        description.setText(Html.fromHtml(adDescription));
+        headline.setText(adHeadline);
+    }
+
+    /*post image info*/
+    public static void getInfo(TextView full_name, TextView time_ago, TextView no_likes,
+                               TextView no_comments, MaterialButton like, MaterialButton comment) {
+
+        /*setting up*/
+        full_name.setText(fullName);
+        time_ago.setText(timeAgo);
+        no_likes.setText(noLikes + " likes");
+        no_comments.setText(noComments + " comments");
+
+        /*setting like btn*/
+        if (isLiked) {
+            like.setIconResource(R.drawable.ic_liked);
+            like.setText("Liked");
+        }
+    }
+
+    /*hide post*/
+    public static void hidePOST(timelineFeedAdapter feedAdapter, int position) {
+        feedAdapter.getData().remove(position);
+        feedAdapter.notifyItemRemoved(position);
+    }
+
     public void getTimelineFeed(RecyclerView timelinePostsList,
                                 ProgressBar progressBarTimeline, String type, RelativeLayout timelineErrorLayout,
                                 MaterialButton tryAgain, SmartRefreshLayout refreshPostsLayout, String hashTag) {
@@ -141,12 +157,12 @@ public class timelineCalls {
         Log.d(TAG, "LOADING : " + firstData);
         loadPosts(timelinePostsList, timelineErrorLayout,
                 tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
-        
+
         tryAgain.setOnClickListener(view -> {
             /*hide error layout*
             disable refreshing*/
             timelineErrorLayout.setVisibility(View.GONE);
-            
+
             /*.........*/
             timelinePostsList.setVisibility(View.GONE);
             progressBarTimeline.setVisibility(View.VISIBLE);
@@ -167,36 +183,36 @@ public class timelineCalls {
         });
 
     }
-    
+
     private void loadPosts(RecyclerView timelinePostsList,
                            RelativeLayout timelineErrorLayout, MaterialButton tryAgain,
                            ProgressBar progressBarTimeline, SmartRefreshLayout refreshPostsLayout,
                            String type, String hashTag) {
-    
+
         postListObserve =
                 rxJavaQueries.getTimelinePosts(accessToken,
-                BuildConfig.server_key, type, hashTag, "10", firstData);
-    
+                        BuildConfig.server_key, type, hashTag, "10", firstData);
+
         postListObserve.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postList>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
-                    public void onNext (@NonNull postList postList) {
-                        
+                    public void onNext(@NonNull postList postList) {
+
                         if (firstData == null) {
-        
-                            if(postList.getApiStatus() == 200) {
+
+                            if (postList.getApiStatus() == 200) {
                                 Log.d(TAG, "onNext: LOAD FIRST DATA");
 
                                 timelinePostsList.setLayoutManager(new LinearLayoutManager(context));
-            
+
                                 timelinePosts = getAll(postList);
-            
+
                                 if (timelinePosts != null) {
                                     for (post firstPosts : timelinePosts) {
                                         Log.d(TAG, "onNext: POSTS ID : " + firstPosts.getPostId());
@@ -215,14 +231,14 @@ public class timelineCalls {
                                 if (refreshPostsLayout.isRefreshing()) {
                                     refreshPostsLayout.finishRefresh();
                                 }
-    
+
                                 /*hide progress*/
                                 new Handler().postDelayed(() -> progressBarTimeline.setVisibility(View.GONE), 500);
-                                
+
                                 /*initialize adapter*/
                                 feedAdapter = new timelineFeedAdapter(timelinePosts);
                                 feedAdapter.setAnimationEnable(false);
-            
+
                                 /*setting adapter*/
                                 timelinePostsList.setAdapter(feedAdapter);
 
@@ -242,8 +258,8 @@ public class timelineCalls {
 
                                 feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
                                     @Override
-                                    public void onItemChildClick (@androidx.annotation.NonNull BaseQuickAdapter adapter,
-                                                                  @androidx.annotation.NonNull View view, int position) {
+                                    public void onItemChildClick(@androidx.annotation.NonNull BaseQuickAdapter adapter,
+                                                                 @androidx.annotation.NonNull View view, int position) {
 
                                         switch (view.getId()) {
                                             case R.id.like_btn:
@@ -347,8 +363,7 @@ public class timelineCalls {
                                         }
                                     }
                                 });
-                            }
-                            else {
+                            } else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
 
@@ -356,43 +371,41 @@ public class timelineCalls {
                                     popupView = new XPopup.Builder(context).asConfirm("Oops..!", "Sorry session expired please sign in again",
                                             null, "Dismiss", () -> {
 
-                                        popupView.delayDismissWith(500, new Runnable() {
-                                            @Override
-                                            public void run() {
+                                                popupView.delayDismissWith(500, new Runnable() {
+                                                    @Override
+                                                    public void run() {
 
-                                                try {
-                                                    SecurePreferences.clearAllValues(context);
-                                                    Log.d(TAG, "onNext: " + "USER LOGGED OUT");
+                                                        try {
+                                                            SecurePreferences.clearAllValues(context);
+                                                            Log.d(TAG, "onNext: " + "USER LOGGED OUT");
 
-                                                    Intent intent = new Intent(context, signIn.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                                    context.startActivity(intent);
-                                                    ((FragmentActivity) context).finish();
+                                                            Intent intent = new Intent(context, signIn.class);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                                            context.startActivity(intent);
+                                                            ((FragmentActivity) context).finish();
 
-                                                } catch (SecureStorageException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
+                                                        } catch (SecureStorageException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
 
-                                    }, null, true, 0).show();
-                                }
-                                else {
+                                            }, null, true, 0).show();
+                                } else {
                                     /*displaying error*/
                                     timelineErrorLayout.setVisibility(View.VISIBLE);
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             if (postList.getApiStatus() == 200) {
                                 Log.d(TAG, "onNext: LOAD MORE DATA");
-                                
+
                                 /*getting new posts*/
                                 List<post> tobeAdded = getAll(postList);
-    
+
                                 if (tobeAdded != null) {
-                                    
+
                                     for (post firstPosts : tobeAdded) {
                                         Log.d(TAG, "onNext: POSTS ID : " + firstPosts.getPostId());
                                     }
@@ -401,8 +414,7 @@ public class timelineCalls {
                                         /*refresh data*/
                                         firstData = null;
                                         loadPosts(timelinePostsList, timelineErrorLayout, tryAgain, progressBarTimeline, refreshPostsLayout, type, hashTag);
-                                    }
-                                    else {
+                                    } else {
                                         feedAdapter.addData(tobeAdded);
                                         /*last item ID*/
                                         /*last item ID*/
@@ -414,16 +426,14 @@ public class timelineCalls {
                                             Log.d(TAG, "onNext: AFTER POST ID : " + lastItemID);
 
                                             feedAdapter.getLoadMoreModule().loadMoreComplete();
-                                        }
-                                        else {
+                                        } else {
                                             feedAdapter.getLoadMoreModule().loadMoreEnd();
                                         }
 
                                         Log.d(TAG, "ADAPTER ITEM COUNT : " + feedAdapter.getItemCount());
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorId());
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
@@ -433,17 +443,17 @@ public class timelineCalls {
                             }
                         }
                     }
-    
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-    
+
                         /*displaying error*/
                         timelineErrorLayout.setVisibility(View.VISIBLE);
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
@@ -451,7 +461,7 @@ public class timelineCalls {
 
     private void showAdViewPopup(ImageView ad_media, String adMedia, int position) {
 
-        timelineAdFullViewPopup adFullViewPopup= new timelineAdFullViewPopup(context);
+        timelineAdFullViewPopup adFullViewPopup = new timelineAdFullViewPopup(context);
         adFullViewPopup.isShowSaveButton(false);
         adFullViewPopup.setSingleSrcView(ad_media, adMedia);
         adFullViewPopup.setXPopupImageLoader(new XPopupImageLoader() {
@@ -528,7 +538,7 @@ public class timelineCalls {
     private void likePost(String postId, int position, MaterialButton likeBtn) {
 
         /*update button*/
-        if(feedAdapter.getData().get(position).isLiked()) {
+        if (feedAdapter.getData().get(position).isLiked()) {
             feedAdapter.getData().get(position).setLiked(false);
             likeBtn.setIconResource(R.drawable.ic_like);
         } else {
@@ -542,55 +552,54 @@ public class timelineCalls {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<like_dislike>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
-                    public void onNext (@NonNull like_dislike like_dislike) {
+                    public void onNext(@NonNull like_dislike like_dislike) {
                         if (like_dislike.getApiStatus() == 200) {
                             Log.d(TAG, "onNext: " + like_dislike.getAction());
 
                             likeBtn.setText(like_dislike.getLikesData().getCount());
 
                             Toast toast = Toast.makeText(getContext(), like_dislike.getAction() + " ... ", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = like_dislike.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                         }
                     }
-                
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
+
                         /*TODO repeat if failed*/
                         likePost(postId, position, likeBtn);
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
-    
+
     /*get all post first round*/
-    private List<post> getAll (postList postList) {
-        timelinePosts=  postList.getPostList();
-        return timelinePosts != null ? postList.getPostList(): null;
+    private List<post> getAll(postList postList) {
+        timelinePosts = postList.getPostList();
+        return timelinePosts != null ? postList.getPostList() : null;
     }
-    
+
     /*share post direct to timeline*/
-    public void shareOnTimeline (String postId) {
-        
+    public void shareOnTimeline(String postId) {
+
         snack = new KSnack((FragmentActivity) context);
         snack.setMessage("Sharing to your timeline ...");
         snack.show();
-    
+
         shareResponseObservable =
                 rxJavaQueries.sharePostInTimeline(accessToken, BuildConfig.server_key,
                         share_post_on_timeline,
@@ -599,23 +608,22 @@ public class timelineCalls {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<shareResponse>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
-                    public void onNext (@NonNull shareResponse shareResponse) {
+                    public void onNext(@NonNull shareResponse shareResponse) {
                         if (shareResponse.getApiStatus() == 200) {
                             Log.d(TAG, "onNext: SHARED");
-                        
+
                             snack.setBackColor(R.color.green);
                             snack.setMessage("Post shared");
                             snack.setDuration(3500);
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = shareResponse.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                        
+
                             snack.setMessage("Error occurred while sharing");
                             snack.setBackColor(R.color.indian_red);
                             snack.setDuration(5000);
@@ -625,11 +633,11 @@ public class timelineCalls {
                             });
                         }
                     }
-                
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
+
                         snack.setMessage("Error occurred while sharing");
                         snack.setBackColor(R.color.indian_red);
                         snack.setDuration(5000);
@@ -638,16 +646,16 @@ public class timelineCalls {
                             shareOnTimeline(postId);
                         });
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
-    
+
     /*share on other apps*/
-    public void shareOnOtherApps (String postUrl, String fullName) {
+    public void shareOnOtherApps(String postUrl, String fullName) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, fullName);
@@ -655,36 +663,9 @@ public class timelineCalls {
         context.startActivity(Intent.createChooser(intent, "choose " +
                 "one"));
     }
-    
-    /*AD info*/
-    public static void getADInfo (TextView full_name, TextView location, TextView description,
-                                  TextView headline) {
-        /*setting up*/
-        full_name.setText(adFullName);
-        location.setText(adLocation);
-        description.setText(Html.fromHtml(adDescription));
-        headline.setText(adHeadline);
-    }
-
-    /*post image info*/
-    public static void getInfo (TextView full_name, TextView time_ago, TextView no_likes,
-                                TextView no_comments, MaterialButton like, MaterialButton comment) {
-    
-        /*setting up*/
-        full_name.setText(fullName);
-        time_ago.setText(timeAgo);
-        no_likes.setText(noLikes + " likes");
-        no_comments.setText(noComments + " comments");
-    
-        /*setting like btn*/
-        if (isLiked) {
-            like.setIconResource(R.drawable.ic_liked);
-            like.setText("Liked");
-        }
-    }
 
     /*copy post link*/
-    private void copyLink (String postLink, Context context) {
+    private void copyLink(String postLink, Context context) {
         ClipboardManager clipboard =
                 (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("post link", postLink);
@@ -695,111 +676,103 @@ public class timelineCalls {
 
         Toast.makeText(context, "Link copied", Toast.LENGTH_SHORT).show();
     }
-    
+
     /*report post*/
-    public void reportPOST (String postId) {
+    public void reportPOST(String postId) {
         postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "report");
-        
+
         postActionObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postAction>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-    
+
                     @Override
-                    public void onNext (@NonNull postAction postAction) {
+                    public void onNext(@NonNull postAction postAction) {
                         if (postAction.getApiStatus() == 200) {
                             /*TODO update UI on report*/
                             Toast.makeText(context, "Post reported",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                        } else {
                             apiErrors errors = postAction.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
-    
+
                             Toast.makeText(context, "Failed to report post",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-    
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                         Toast.makeText(context, "Failed to report post",
                                 Toast.LENGTH_LONG).show();
                     }
-    
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
-    
+
     /*save post*/
-    private void savePOST (String postId) {
-    
+    private void savePOST(String postId) {
+
         postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "save");
-    
+
         postActionObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<postAction>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
-                    public void onNext (@NonNull postAction postAction) {
+                    public void onNext(@NonNull postAction postAction) {
                         if (postAction.getApiStatus() == 200) {
                             Toast.makeText(context, "Post saved",
                                     Toast.LENGTH_LONG).show();
-                        }
-                        else {
+                        } else {
                             apiErrors errors = postAction.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
-                        
+
                             Toast.makeText(context, "Failed to save post",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
-                
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
                         Toast.makeText(context, "Failed to save post",
                                 Toast.LENGTH_LONG).show();
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
     }
 
     /*share post*/
-    private void sharePOST (post post) {
+    private void sharePOST(post post) {
         new Handler().postDelayed(() -> {
             new XPopup.Builder(context).asCustom(new sharePopup(context, post.getPostId(), post.getUrl(),
                     post.getPublisherInfo().getName()).show());
         }, 500);
     }
-    
-    /*hide post*/
-    public static void hidePOST(timelineFeedAdapter feedAdapter, int position) {
-        feedAdapter.getData().remove(position);
-        feedAdapter.notifyItemRemoved(position);
-    }
 
     /*create a new post*/
     public void createNewPost(String postText, ProgressBar progressBar, String post_color) {
         createPostResponse = rxJavaQueries.createPost(accessToken,
-                BuildConfig.server_key, userId, postText,post_color, null, "");
+                BuildConfig.server_key, userId, postText, post_color, null, "");
 
         createPostResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -817,16 +790,15 @@ public class timelineCalls {
                             progressBar.setProgress(100);
 
                             Toast toast = Toast.makeText(context, "Post created successful ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
-                        }
-                        else {
-                            apiErrors errors  = simpleResponse.getErrors();
+                        } else {
+                            apiErrors errors = simpleResponse.getErrors();
                             Log.d(TAG, "ERROR: " + errors.getErrorId());
 
                             progressBar.setProgress(0);
                             Toast toast = Toast.makeText(context, "Failed to create post ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
                         }
                         progressBar.setVisibility(View.GONE);
@@ -838,7 +810,7 @@ public class timelineCalls {
 
                         progressBar.setProgress(0);
                         Toast toast = Toast.makeText(context, "Failed to create post ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
                         progressBar.setVisibility(View.GONE);
                     }

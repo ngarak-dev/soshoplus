@@ -24,8 +24,8 @@
             android:id="@+id/front_gif"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp"
-            android:src="@drawable/front_page"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:src="@drawable/front_page"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -111,10 +111,10 @@
         android:layout_width="@dimen/_265sdp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_20sdp"
+        android:text="Not registered yet? Sign Up"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="Not registered yet? Sign Up"
-        android:textAllCaps="false" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

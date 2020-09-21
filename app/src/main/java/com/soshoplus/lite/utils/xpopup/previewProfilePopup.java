@@ -6,6 +6,7 @@
 
 package com.soshoplus.lite.utils.xpopup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.widget.ImageView;
@@ -19,23 +20,24 @@ import com.lxj.xpopup.core.CenterPopupView;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.calls.previewProfileCalls;
 
+@SuppressLint("ViewConstructor")
 public class previewProfilePopup extends CenterPopupView {
-    
-    private previewProfileCalls calls;
+
     private static String user_id;
-    
-    public previewProfilePopup (@NonNull Context context, String userId) {
+    private previewProfileCalls calls;
+
+    public previewProfilePopup(@NonNull Context context, String userId) {
         super(context);
         user_id = userId;
     }
-    
+
     @Override
-    protected int getImplLayoutId () {
+    protected int getImplLayoutId() {
         return R.layout.preview_profile_layout;
     }
-    
+
     @Override
-    protected void onCreate () {
+    protected void onCreate() {
         super.onCreate();
 
         ImageView cover_photo = findViewById(R.id.cover_photo);
@@ -46,7 +48,7 @@ public class previewProfilePopup extends CenterPopupView {
 
         TextView no_followers = findViewById(R.id.number_of_followers);
         TextView no_following = findViewById(R.id.number_of_following);
-        
+
         MaterialButton follow = findViewById(R.id.follow_btn);
         TextView follows_me = findViewById(R.id.following_me);
 
@@ -69,24 +71,24 @@ public class previewProfilePopup extends CenterPopupView {
             smartDismiss();
         });
     }
-    
+
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
-    
+
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
-    
+
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
-    
+
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

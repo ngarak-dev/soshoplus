@@ -34,10 +34,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class timelineFeedAdapter extends BaseProviderMultiAdapter<post> implements LoadMoreModule, UpFetchModule {
-    
+
     private static String TAG = "timelineFeed Adapter";
-    
-    public timelineFeedAdapter (@Nullable List<post> posts) {
+
+    public timelineFeedAdapter(@Nullable List<post> posts) {
         super(posts);
         /*default post*/
         addItemProvider(new DefaultPost());
@@ -68,15 +68,15 @@ public class timelineFeedAdapter extends BaseProviderMultiAdapter<post> implemen
                 R.id.post_image, R.id.shared_post_image, R.id.article_thumbnail,
                 R.id.post_contents, R.id.comment_btn);
     }
-    
+
     @Override
-    protected int getItemType (@NotNull List<? extends post> postList, int position) {
-        
+    protected int getItemType(@NotNull List<? extends post> postList, int position) {
+
         /*checking file extension*/
         String extension = MimeTypeMap.getFileExtensionFromUrl(postList.get(position).getPostFile());
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         String type = mime.getMimeTypeFromExtension(extension);
-        
+
         if (postList.get(position).getPostType().equals(getContext().getString(R.string.profile_pic_type_post))) {
             return post.PROFILE_PIC;
         } else if (postList.get(position).getPostType().equals(getContext().getString(R.string.cover_pic_type_post))) {
@@ -120,7 +120,7 @@ public class timelineFeedAdapter extends BaseProviderMultiAdapter<post> implemen
         else if (postList.get(position).getMultiImage().equals("1")) {
             return post.MULTI_IMAGE_POST;
         }
-        
+
         return post.DEFAULT_POST;
     }
 }

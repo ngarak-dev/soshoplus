@@ -15,63 +15,64 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.calls.timelineCalls;
 
 public class sharePopup extends BottomPopupView {
-    
-    private timelineCalls calls;
+
     private static String postId, postUrl, fullName;
-    public sharePopup (@NonNull Context context, String post_Id, String url, String name) {
+    private timelineCalls calls;
+
+    public sharePopup(@NonNull Context context, String post_Id, String url, String name) {
         super(context);
         calls = new timelineCalls(context);
         postId = post_Id;
         postUrl = url;
         fullName = name;
     }
-    
+
     @Override
-    protected int getImplLayoutId () {
+    protected int getImplLayoutId() {
         return R.layout.share_post_layout;
     }
-    
+
     @Override
-    protected void onCreate () {
+    protected void onCreate() {
         super.onCreate();
-        
+
         findViewById(R.id.share_on_social_media).setOnClickListener(view ->
                 calls.shareOnOtherApps(postUrl, fullName));
-    
+
         findViewById(R.id.share_on_timeline).setOnClickListener(view -> {
             /*dismiss dialog while performing sharing*/
             dismissWith(() -> {
                 calls.shareOnTimeline(postId);
             });
         });
-        
+
         findViewById(R.id.share_on_group).setOnClickListener(view -> {
-    
+
         });
-        
+
         findViewById(R.id.share_on_page).setOnClickListener(view -> {
-    
+
         });
     }
-    
+
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
-    
+
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
-    
+
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
 //        return super.getPopupWidth();
         return 0;
     }
-    
+
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
 //        return super.getPopupHeight();
         return 0;
     }

@@ -23,46 +23,39 @@ import androidx.core.os.HandlerCompat;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.calls.groupCalls;
 import com.soshoplus.lite.databinding.ActivityViewGroupBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.groups.join.join_unjoin;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
+import com.soshoplus.lite.utils.constants;
 import com.soshoplus.lite.utils.xpopup.friendsToAddPopup;
 
-import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import com.soshoplus.lite.BuildConfig;
 
 public class viewGroup extends AppCompatActivity {
 
     private static String TAG = "View group Calls";
+    private static String group_id, no_members, group_info, group_url;
     private ActivityViewGroupBinding viewGroupBinding;
     private groupCalls calls;
-    private static String group_id, no_members, group_info, group_url;
     private boolean isJoined;
     private BasePopupView popupView;
 
     /*bottom popup*/
     private String[] joinedOptions = {"Group info", "Share", "Add friend", "Leave group"};
-    private int [] joinedIcons = {R.drawable.ic_info, R.drawable.ic_share, R.drawable.ic_add, R.drawable.ic_minus};
-    private String[] recOptions  ={"Group info", "Share"};
-    private int [] recIcons = {R.drawable.ic_info, R.drawable.ic_share};
+    private String[] recOptions = {"Group info", "Share"};
 
-    /*.......*/
-    private queries rxJavaQueries;
-    private String accessToken, userId, timezone;
     private Observable<join_unjoin> unJoinObservable;
     private KSnack snack;
 
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewGroupBinding = ActivityViewGroupBinding.inflate(getLayoutInflater());
         View view = viewGroupBinding.getRoot();
@@ -72,14 +65,6 @@ public class viewGroup extends AppCompatActivity {
         setSupportActionBar(viewGroupBinding.transToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        userId = SecurePreferences.getStringValue(this, "userId", "0");
-        timezone = SecurePreferences.getStringValue(this, "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(this, "accessToken"
-                , "0");
-
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         /*initializing snack*/
         snack = new KSnack(this);
@@ -96,10 +81,10 @@ public class viewGroup extends AppCompatActivity {
     }
 
     /*get group info*/
-    private void getGroupInfo () {
+    private void getGroupInfo() {
         calls = new groupCalls(this);
         calls.getGroupInfo(viewGroupBinding.groupProfilePic, viewGroupBinding.groupCover,
-                viewGroupBinding.noMembers,viewGroupBinding.groupPrivacy,
+                viewGroupBinding.noMembers, viewGroupBinding.groupPrivacy,
                 viewGroupBinding.groupCategory, group_id, no_members, viewGroupBinding.joinBtn);
 
         /*get group posts*/
@@ -130,8 +115,7 @@ public class viewGroup extends AppCompatActivity {
             case R.id.options:
                 if (isJoined) {
                     new Handler().postDelayed(this::joinedMenu, 300);
-                }
-                else {
+                } else {
                     new Handler().postDelayed(this::recommendedMenu, 300);
                 }
                 return true;
@@ -181,18 +165,18 @@ public class viewGroup extends AppCompatActivity {
         snack.show();
 
         unJoinObservable =
-                rxJavaQueries.joinGroup(accessToken, BuildConfig.server_key, group_id);
+                constants.rxJavaQueries.joinGroup(constants.accessToken, BuildConfig.server_key, group_id);
 
         unJoinObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<join_unjoin>() {
                     @Override
-                    public void onSubscribe (@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
 
                     @Override
-                    public void onNext (@io.reactivex.rxjava3.annotations.NonNull join_unjoin join_unjoin) {
+                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull join_unjoin join_unjoin) {
                         if (join_unjoin.getApiStatus() == 200) {
 
                             if (join_unjoin.getJoinStatus().equals("left")) {
@@ -202,8 +186,7 @@ public class viewGroup extends AppCompatActivity {
                                 /*go back*/
                                 onBackPressed();
                             }
-                        }
-                        else {
+                        } else {
                             apiErrors errors = join_unjoin.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorId());
 
@@ -218,7 +201,7 @@ public class viewGroup extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError (@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         snack.setMessage("Oops !\nSomething went " +
@@ -228,7 +211,7 @@ public class viewGroup extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
@@ -248,7 +231,7 @@ public class viewGroup extends AppCompatActivity {
 
     private void showGroupInfo() {
         popupView = new XPopup.Builder(this).asConfirm("About this group", group_info, null, "Dismiss", () -> {
-                popupView.delayDismiss(300);
+            popupView.delayDismiss(300);
         }, null, true, 0).show();
     }
 }

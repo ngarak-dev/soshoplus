@@ -78,7 +78,7 @@ public class socialLinksPopup extends CenterPopupView {
         instagram_.setText(instagram);
         youtube_.setText(youtube);
 
-        send_btn  = findViewById(R.id.send);
+        send_btn = findViewById(R.id.send);
         cancel_btn = findViewById(R.id.cancel);
 
         /*initializing loading dialog*/
@@ -93,11 +93,11 @@ public class socialLinksPopup extends CenterPopupView {
         });
 
         cancel_btn.setOnClickListener(view -> {
-           smartDismiss();
+            smartDismiss();
         });
     }
 
-    private void updateSocialLinks () {
+    private void updateSocialLinks() {
         dismissWith(() -> {
             basePopupView.show();
 
@@ -126,14 +126,12 @@ public class socialLinksPopup extends CenterPopupView {
                                                     /*dismiss*/
                                                     smartDismiss();
                                                 }, null, true, 0).show());
-                            }
-
-                            else {
+                            } else {
                                 apiErrors apiErrors = simpleResponse.getErrors();
                                 Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                                 Toast toast = Toast.makeText(getContext(), "Something went wrong ... ", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                 toast.show();
 
                                 basePopupView.dismiss();
@@ -145,7 +143,7 @@ public class socialLinksPopup extends CenterPopupView {
                             Log.d(TAG, "onError: " + e.getMessage());
 
                             Toast toast = Toast.makeText(getContext(), "Something went wrong ... ", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             basePopupView.dismiss();
@@ -160,22 +158,22 @@ public class socialLinksPopup extends CenterPopupView {
     }
 
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
 
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
 
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
 
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

@@ -12,50 +12,50 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class follow_unfollow implements Serializable {
-    
+
     @SerializedName("follow_status")
     @Expose
     private String followStatus;
-    
+
     @SerializedName("api_status")
     @Expose
     private int apiStatus;
-    
+
     @SerializedName("errors")
     @Expose
     private apiErrors errors;
-    
-    follow_unfollow () {
-    
+
+    follow_unfollow() {
+
     }
-    
-    public follow_unfollow (String followStatus, int apiStatus, apiErrors errors) {
+
+    public follow_unfollow(String followStatus, int apiStatus, apiErrors errors) {
         this.followStatus = followStatus;
         this.apiStatus = apiStatus;
         this.errors = errors;
     }
-    
-    public String getFollowStatus () {
+
+    public String getFollowStatus() {
         return followStatus;
     }
-    
-    public void setFollowStatus (String followStatus) {
+
+    public void setFollowStatus(String followStatus) {
         this.followStatus = followStatus;
     }
-    
-    public int getApiStatus () {
+
+    public int getApiStatus() {
         return apiStatus;
     }
-    
-    public void setApiStatus (int apiStatus) {
+
+    public void setApiStatus(int apiStatus) {
         this.apiStatus = apiStatus;
     }
-    
-    public apiErrors getErrors () {
+
+    public apiErrors getErrors() {
         return errors;
     }
-    
-    public void setErrors (apiErrors errors) {
+
+    public void setErrors(apiErrors errors) {
         this.errors = errors;
     }
 }

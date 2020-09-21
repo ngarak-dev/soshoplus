@@ -32,11 +32,6 @@
         <activity android:name=".ui.imageVideoPost" />
         <activity android:name=".ui.groups.groups" />
         <activity android:name=".ui.user_profile.userProfile" />
-        <activity
-            android:name=".ui.viewVideo"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_view_video"
-            android:theme="@style/sosho_FullScreen" />
         <activity android:name=".ui.groups.viewGroup" />
         <activity android:name=".ui.soshoTimeline" />
         <activity android:name=".ui.auth.forgotPassword" />

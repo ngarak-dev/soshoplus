@@ -38,11 +38,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class myAccountSettings extends AppCompatActivity {
 
     private static String TAG = "My Account Settings";
+    private static String gender;
     private ActivityMyAccountSettingsBinding binding;
     private Observable<userInfo> userInfoObservable;
     private Observable<simpleResponse> simpleResponseObservable;
     private BasePopupView basePopupView;
-    private static String gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +94,12 @@ public class myAccountSettings extends AppCompatActivity {
                             binding.circleLoader.setVisibility(View.GONE);
                             /*update UI data*/
                             HandlerUtils.postRunnable(() -> setData(userInfo.getUserData()));
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = userInfo.getErrors();
                             Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                             Toast toast = Toast.makeText(myAccountSettings.this, "Something went wrong ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             onBackPressed();
@@ -112,7 +111,7 @@ public class myAccountSettings extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         Toast toast = Toast.makeText(myAccountSettings.this, "Something went wrong ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         onBackPressed();
@@ -141,12 +140,10 @@ public class myAccountSettings extends AppCompatActivity {
         if (userData.getGender().equals("male")) {
             binding.maleRadio.setChecked(true);
             gender = "male";
-        }
-        else if (userData.getGender().equals("female")) {
+        } else if (userData.getGender().equals("female")) {
             binding.femaleRadio.setChecked(true);
             gender = "female";
-        }
-        else {
+        } else {
             binding.cantSayRadio.setChecked(true);
             gender = "1906";
         }
@@ -207,19 +204,17 @@ public class myAccountSettings extends AppCompatActivity {
 
                                     /*move task back*/
                                     new XPopup.Builder(myAccountSettings.this)
-                                        .asConfirm(simpleResponse.getMessage(), "", null,
-                                            "Okay", myAccountSettings.this::onBackPressed, null,
-                                                true, 0).show();
+                                            .asConfirm(simpleResponse.getMessage(), "", null,
+                                                    "Okay", myAccountSettings.this::onBackPressed, null,
+                                                    true, 0).show();
                                 }
                             });
-                        }
-
-                        else {
+                        } else {
                             apiErrors apiErrors = simpleResponse.getErrors();
                             Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                             Toast toast = Toast.makeText(myAccountSettings.this, "Something went wrong ... ", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             onBackPressed();
@@ -231,7 +226,7 @@ public class myAccountSettings extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         Toast toast = Toast.makeText(myAccountSettings.this, "Something went wrong ... ", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         onBackPressed();

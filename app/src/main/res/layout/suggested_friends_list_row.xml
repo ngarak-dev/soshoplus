@@ -43,13 +43,13 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:ellipsize="end"
             android:maxLines="3"
-            app:socialFlags="hashtag|mention|hyperlink"
             app:hashtagColor="@color/colorPrimary"
-            app:mentionColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@id/full_name" />
+            app:layout_constraintTop_toBottomOf="@id/full_name"
+            app:mentionColor="@color/colorAccent"
+            app:socialFlags="hashtag|mention|hyperlink" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

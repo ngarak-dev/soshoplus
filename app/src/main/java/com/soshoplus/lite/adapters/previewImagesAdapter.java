@@ -33,8 +33,7 @@ public class previewImagesAdapter extends BaseQuickAdapter<ImageItem, BaseViewHo
 
         if (imageItem.isImage()) {
             Glide.with(getContext()).load(imageItem.getCropUrl()).into(imageView);
-        }
-        else {
+        } else {
             Glide.with(getContext()).load(imageItem.getVideoImageUri()).into(imageView);
         }
     }

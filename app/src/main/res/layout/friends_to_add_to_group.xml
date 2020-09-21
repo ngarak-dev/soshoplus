@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
@@ -17,33 +16,33 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/profile_pic"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="@dimen/_45sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:id="@+id/profile_pic"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/first_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
-            android:id="@+id/first_name"
-            app:layout_constraintTop_toBottomOf="@id/profile_pic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/profile_pic" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_to_group"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"
-            android:id="@+id/add_to_group"
             android:text="Add to group"
-            android:textSize="@dimen/_8ssp"
             android:textAllCaps="false"
-            app:layout_constraintTop_toBottomOf="@id/first_name"
+            android:textSize="@dimen/_8ssp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/first_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

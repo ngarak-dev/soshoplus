@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
@@ -8,19 +7,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:icon="@drawable/ic_article"
-        android:title="Posts"
+        android:id="@+id/fragment_timeline"
         android:checked="true"
-        android:id="@+id/fragment_timeline" />
+        android:icon="@drawable/ic_article"
+        android:title="Posts" />
 
     <item
+        android:id="@+id/fragment_notification"
         android:icon="@drawable/ic_search"
-        android:title="Search"
-        android:id="@+id/fragment_notification" />
+        android:title="Search" />
 
     <item
+        android:id="@+id/fragment_more"
         android:icon="@drawable/ic_groups"
-        android:title="Friends"
-        android:id="@+id/fragment_more" />
+        android:title="Friends" />
 
 </menu>

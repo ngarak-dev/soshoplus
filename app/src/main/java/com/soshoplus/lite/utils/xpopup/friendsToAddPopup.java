@@ -19,31 +19,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.adapters.friendsToAddToGroupAdapter;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.friends.friends;
 import com.soshoplus.lite.models.groups.addingUser;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
-import com.soshoplus.lite.adapters.friendsToAddToGroupAdapter;
+import com.soshoplus.lite.utils.constants;
 
-import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import com.soshoplus.lite.BuildConfig;
 
 public class friendsToAddPopup extends FullScreenPopupView {
 
     private static String TAG = "Friends popup";
-
-    /*......*/
-    private queries rxJavaQueries;
-    private String accessToken, userId, timezone, group_id;
-    private Observable<friends> friendsObservable;
+    private static String group_id;
     private static String friends_list = "followers,following";
+    private Observable<friends> friendsObservable;
     private KSnack snack;
     /*......*/
     private RecyclerView friendsRV;
@@ -67,14 +62,6 @@ public class friendsToAddPopup extends FullScreenPopupView {
         friendsRV = findViewById(R.id.friends_to_add_list);
         MaterialButton back = findViewById(R.id.back_arrow);
 
-        userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
-        timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(getContext(), "accessToken"
-                , "0");
-
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
-
         /*get friendsToAdd*/
         new Handler().postDelayed(this::geFriendsToAdd, 1000);
 
@@ -85,8 +72,8 @@ public class friendsToAddPopup extends FullScreenPopupView {
 
     private void geFriendsToAdd() {
 
-        friendsObservable = rxJavaQueries.getFriendsFollowing(accessToken,
-                BuildConfig.server_key, friends_list, userId, "12");
+        friendsObservable = constants.rxJavaQueries.getFriendsFollowing(constants.accessToken,
+                BuildConfig.server_key, friends_list, constants.userId, "12");
 
         friendsObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -128,79 +115,80 @@ public class friendsToAddPopup extends FullScreenPopupView {
                             apiErrors apiErrors = friends.getErrors();
                             Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
                         }
-            }
+                    }
 
-            private void addUserToGroup(String userId, MaterialButton addToGroup) {
-                addingUserObservable = rxJavaQueries.addMemberToGroup(accessToken, BuildConfig.server_key, group_id, userId);
+                    private void addUserToGroup(String userId, MaterialButton addToGroup) {
+                        addingUserObservable = constants.rxJavaQueries.addMemberToGroup(constants.accessToken, BuildConfig.server_key,
+                                group_id, userId);
 
-                addingUserObservable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<addingUser>() {
-                            @Override
-                            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                                Log.d(TAG, "onSubscribe: ");
-                            }
+                        addingUserObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<addingUser>() {
+                                    @Override
+                                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+                                        Log.d(TAG, "onSubscribe: ");
+                                    }
 
-                            @Override
-                            public void onNext(@io.reactivex.rxjava3.annotations.NonNull addingUser addingUser) {
-                                if (addingUser.getApiStatus() == 200) {
+                                    @Override
+                                    public void onNext(@io.reactivex.rxjava3.annotations.NonNull addingUser addingUser) {
+                                        if (addingUser.getApiStatus() == 200) {
 
-                                    addToGroup.setEnabled(false);
-                                    addToGroup.setText("Added");
+                                            addToGroup.setEnabled(false);
+                                            addToGroup.setText("Added");
 
-                                    snack = new KSnack((FragmentActivity) getContext());
-                                    snack.setMessage("Friend added to group");
+                                            snack = new KSnack((FragmentActivity) getContext());
+                                            snack.setMessage("Friend added to group");
 
-                                } else {
-                                    snack = new KSnack((FragmentActivity) getContext());
-                                    snack.setMessage("User is already in a group");
-                                }
-                                snack.show();
-                                snack.setDuration(3000);
-                            }
+                                        } else {
+                                            snack = new KSnack((FragmentActivity) getContext());
+                                            snack.setMessage("User is already in a group");
+                                        }
+                                        snack.show();
+                                        snack.setDuration(3000);
+                                    }
 
-                            @Override
-                            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                                addToGroup.setEnabled(true);
-                                Log.d(TAG, "onError: ");
-                            }
+                                    @Override
+                                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                                        addToGroup.setEnabled(true);
+                                        Log.d(TAG, "onError: ");
+                                    }
 
-                            @Override
-                            public void onComplete() {
-                                Log.d(TAG, "onComplete: ");
-                            }
-                        });
-            }
+                                    @Override
+                                    public void onComplete() {
+                                        Log.d(TAG, "onComplete: ");
+                                    }
+                                });
+                    }
 
-            @Override
-            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                Log.d(TAG, "onError: " + e.getMessage());
-            }
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                    }
 
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete: ");
-            }
-        });
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "onComplete: ");
+                    }
+                });
     }
 
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
 
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
 
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
 
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

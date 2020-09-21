@@ -6,22 +6,22 @@
 
 package com.soshoplus.lite.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.soshoplus.lite.calls.hashTagsPostsCalls;
 import com.soshoplus.lite.databinding.ActivityHashTagsPostsBinding;
 
 public class hashTagsPosts extends AppCompatActivity {
 
+    private final static String type = "hashtag";
+    private static String hashTag;
     private ActivityHashTagsPostsBinding binding;
     private hashTagsPostsCalls calls;
-    private static String hashTag;
-    private final static String type = "hashtag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class hashTagsPosts extends AppCompatActivity {
         new Handler().postDelayed(this::getTimelineFeed, 1000);
     }
 
-    private void getTimelineFeed () {
+    private void getTimelineFeed() {
         calls = new hashTagsPostsCalls(hashTagsPosts.this);
         calls.getTimelineFeed(binding.timelinePostsList,
                 binding.progressBarTimeline,

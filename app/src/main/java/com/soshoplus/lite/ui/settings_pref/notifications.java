@@ -6,12 +6,11 @@
 
 package com.soshoplus.lite.ui.settings_pref;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 
-import com.soshoplus.lite.R;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.soshoplus.lite.databinding.ActivityNotificationsBinding;
 
 public class notifications extends AppCompatActivity {

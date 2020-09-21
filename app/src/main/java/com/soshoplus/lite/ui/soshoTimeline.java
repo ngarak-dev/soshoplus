@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowInsets;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,19 +25,18 @@ import com.soshoplus.lite.databinding.ActivitySoshotimelineBinding;
 import com.soshoplus.lite.ui.mainfragments.moreFragment;
 import com.soshoplus.lite.ui.mainfragments.notificationFragment;
 import com.soshoplus.lite.ui.mainfragments.timelineFragment;
-import com.soshoplus.lite.ui.user_profile.myProfile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class soshoTimeline extends AppCompatActivity {
-    
-    private ActivitySoshotimelineBinding soshoTimelineBinding;
+
     private static String TAG = "soshoTimeline Activity";
+    private ActivitySoshotimelineBinding soshoTimelineBinding;
     private List<Fragment> fragmentList = new ArrayList<>();
-    
+
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         soshoTimelineBinding = ActivitySoshotimelineBinding.inflate(getLayoutInflater());
         View view = soshoTimelineBinding.getRoot();
@@ -48,26 +46,26 @@ public class soshoTimeline extends AppCompatActivity {
         setSupportActionBar(soshoTimelineBinding.transToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        
+
         /*adding fragments*/
         fragmentList.add(new timelineFragment());
         fragmentList.add(new notificationFragment());
         fragmentList.add(new moreFragment());
-        
+
         /*setting view pager adapter*/
         soshoTimelineBinding.soshoViewPager.setAdapter(new viewPagerAdapter(soshoTimeline.this, fragmentList));
         soshoTimelineBinding.soshoViewPager.setCurrentItem(0);
         /*on page scroll listener*/
         soshoTimelineBinding.soshoViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 Log.d(TAG, "onPageScrolled: ACTIVE POSITION : " + position);
                 soshoTimelineBinding.bottomNavigation.setItemActiveIndex(position);
             }
 
             @Override
-            public void onPageScrollStateChanged (int state) {
+            public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
             }
         });

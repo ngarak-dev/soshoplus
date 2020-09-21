@@ -24,14 +24,13 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.follow_unfollow;
-import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
+import com.soshoplus.lite.models.userprofile.userInfo;
+import com.soshoplus.lite.utils.constants;
 
 import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
-import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -40,66 +39,50 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.observers.DefaultObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import com.soshoplus.lite.models.userprofile.userInfo;
-
 public class previewProfileCalls {
-    
+
     private final static String TAG = "Preview profile Calls";
-    /*context*/
-    private Context context;
-    /*......*/
-    private queries rxJavaQueries;
-    private String accessToken, userId, timezone;
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
-    private Observable<userInfo> userInfoObservable;
-    
-    /*.......*/
-    private KSnack snack;
-    
     /*PREVIEW PROFILE*/
     private static String followPrivacy;
+    private Context context;
+    private Observable<userInfo> userInfoObservable;
+    /*.......*/
+    private KSnack snack;
     private Observable<follow_unfollow> followUnfollowObservable;
-    
+
     /*constructor*/
-    public previewProfileCalls (Context context) {
+    public previewProfileCalls(Context context) {
         this.context = context;
-    
-        userId = SecurePreferences.getStringValue(context, "userId", "0");
-        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
-        accessToken = SecurePreferences.getStringValue(context, "accessToken"
-                , "0");
-    
-        /*initializing query*/
-        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
-    
-    public void previewProfile (ImageView cover_photo, ImageView profile_pic,
-                                TextView name, ImageView verified_badge,
-                                ImageView level_badge, TextView no_followers, TextView no_following,
-                                MaterialButton follow, TextView about, ProgressBar progressBar_follow,
-                                String user_id, TextView follows_me) {
-    
-        userInfoObservable = rxJavaQueries.getUserData(accessToken,
+
+    public void previewProfile(ImageView cover_photo, ImageView profile_pic,
+                               TextView name, ImageView verified_badge,
+                               ImageView level_badge, TextView no_followers, TextView no_following,
+                               MaterialButton follow, TextView about, ProgressBar progressBar_follow,
+                               String user_id, TextView follows_me) {
+
+        userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
                 BuildConfig.server_key,
                 fetch_profile, user_id);
-    
+
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<userInfo>() {
                     @Override
-                    public void onSubscribe (@NonNull Disposable d) {
+                    public void onSubscribe(@NonNull Disposable d) {
                         Log.d(TAG, "onSubscribe: ");
                     }
-                
+
                     @Override
-                    public void onNext (@NonNull userInfo userInfo) {
-                    
-                        if(userInfo.getApiStatus() == 200) {
+                    public void onNext(@NonNull userInfo userInfo) {
+
+                        if (userInfo.getApiStatus() == 200) {
     
                             /*follow privacy
                             0 - moja kwa moja
                             1 - conform first*/
-                        
+
                             followPrivacy = userInfo.getUserData().getConfirmFollowers();
 
                             HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
@@ -110,8 +93,7 @@ public class previewProfileCalls {
 
                                 if (userInfo.getUserData().getAbout() != null) {
                                     about.setText(Html.fromHtml(userInfo.getUserData().getAbout()));
-                                }
-                                else {
+                                } else {
                                     about.setText("Hey there I am using soshoplus");
                                 }
 
@@ -148,23 +130,20 @@ public class previewProfileCalls {
                             * 0 = not following
                             * 1 = following
                             * 2 = requested*/
-    
+
                             HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
                                 if (userInfo.getUserData().getCanFollow() == 0 && userInfo.getUserData().getIsFollowing() == 0) {
                                     follow.setVisibility(View.GONE);
                                 } else if (userInfo.getUserData().getIsFollowing() == 0) {
                                     follow.setVisibility(View.VISIBLE);
                                     follow.setText("Follow");
-                                }
-
-                                else if (userInfo.getUserData().getIsFollowing() == 2) {
+                                } else if (userInfo.getUserData().getIsFollowing() == 2) {
                                     follow.setText("Requested");
-                                }
-                                else {  /*(is_following == 1) */
+                                } else {  /*(is_following == 1) */
                                     follow.setText("Following");
                                 }
 
-                                if(userInfo.getUserData().getIsFollowingMe() == 1) {
+                                if (userInfo.getUserData().getIsFollowingMe() == 1) {
                                     follows_me.setText("Follows you");
                                 }
 
@@ -187,9 +166,8 @@ public class previewProfileCalls {
                                         .build();
                                 imageLoader.enqueue(imageRequest);
                             });
-                        }
-                        else {
-                            apiErrors apiErrors =userInfo.getErrors();
+                        } else {
+                            apiErrors apiErrors = userInfo.getErrors();
                             Log.d(TAG, "main activity profile: " + apiErrors.getErrorText());
 
                             snack = new KSnack((FragmentActivity) context);
@@ -201,11 +179,11 @@ public class previewProfileCalls {
                             snack.show();
                         }
                     }
-                
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
+
                         snack = new KSnack((FragmentActivity) context);
                         snack.setMessage("Oops !\nSomething went " +
                                 "wrong");
@@ -214,9 +192,9 @@ public class previewProfileCalls {
                         });
                         snack.show();
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
@@ -227,49 +205,46 @@ public class previewProfileCalls {
                 followUser(follow, progressBar_follow, user_id);
             });
         });
-        
+
     }
-    
-    private void followUser (MaterialButton follow, ProgressBar progressBar_follow, String user_id) {
-        
-        followUnfollowObservable = rxJavaQueries.followUser(accessToken,
+
+    private void followUser(MaterialButton follow, ProgressBar progressBar_follow, String user_id) {
+
+        followUnfollowObservable = constants.rxJavaQueries.followUser(constants.accessToken,
                 BuildConfig.server_key, user_id);
-    
+
         /*set text null
          * show progress*/
         follow.setText(null);
         progressBar_follow.setVisibility(View.VISIBLE);
-    
+
         followUnfollowObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DefaultObserver<follow_unfollow>() {
                     @Override
-                    public void onNext (@NonNull follow_unfollow follow_unfollow) {
+                    public void onNext(@NonNull follow_unfollow follow_unfollow) {
                         if (follow_unfollow.getApiStatus() == 200) {
-                        
+
                             Log.d(TAG, "onNext: " + follow_unfollow.getFollowStatus());
-                        
+
                             if (follow_unfollow.getFollowStatus().equals(
                                     "unfollowed")) {
-                            
+
                                 progressBar_follow.setVisibility(View.GONE);
                                 follow.setText("Follow");
-                            }
-                            else {
+                            } else {
                                 if (followPrivacy.equals("1")) {
                                     progressBar_follow.setVisibility(View.GONE);
                                     follow.setText("Requested");
-                                }
-                                else {
+                                } else {
                                     progressBar_follow.setVisibility(View.GONE);
                                     follow.setText("Following");
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             apiErrors errors = follow_unfollow.getErrors();
                             Log.d(TAG, "onNext: " + errors.getErrorText());
-                        
+
                             snack = new KSnack((FragmentActivity) context);
                             snack.setMessage("Oops !\nSomething went " +
                                     "wrong");
@@ -279,11 +254,11 @@ public class previewProfileCalls {
                             snack.show();
                         }
                     }
-                
+
                     @Override
-                    public void onError (@NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-                    
+
                         snack = new KSnack((FragmentActivity) context);
                         snack.setMessage("Oops !\nSomething went " +
                                 "wrong");
@@ -292,12 +267,12 @@ public class previewProfileCalls {
                         });
                         snack.show();
                     }
-                
+
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
                         Log.d(TAG, "onComplete: ");
                     }
                 });
-        
+
     }
 }

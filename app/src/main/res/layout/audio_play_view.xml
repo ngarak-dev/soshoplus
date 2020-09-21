@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
@@ -7,78 +6,78 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:background="@drawable/player_bg"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/player_bg"
+    android:orientation="horizontal">
 
     <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@+id/exo_progress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_45sdp"
         android:layout_marginEnd="@dimen/_20sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/exo_play"
-        app:layout_constraintBottom_toBottomOf="@id/exo_play"
-        android:id="@+id/exo_progress"
-        app:played_color="@color/colorPrimaryDark"
-        app:unplayed_color="@color/white"
         app:buffered_color="@color/white_smoke"
-        app:scrubber_color="@color/colorPrimary" />
+        app:layout_constraintBottom_toBottomOf="@id/exo_play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/exo_play"
+        app:played_color="@color/colorPrimaryDark"
+        app:scrubber_color="@color/colorPrimary"
+        app:unplayed_color="@color/white" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exo_play"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_margin="@dimen/_5sdp"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:rippleColor="@color/light_grey"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:iconGravity="textStart"
-        android:padding="0dp"
-        app:iconTint="@null"
-        app:iconPadding="0dp"
-        app:icon="@drawable/ic_play_button_filled"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+        android:padding="0dp"
+        android:visibility="visible"
+        app:icon="@drawable/ic_play_button_filled"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/light_grey"
+        app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exo_pause"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_margin="@dimen/_5sdp"
-        android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:rippleColor="@color/light_grey"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:iconGravity="textStart"
-        android:padding="0dp"
-        app:iconTint="@null"
-        app:iconPadding="0dp"
-        app:icon="@drawable/ic_pause_button_filled"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
+        android:padding="0dp"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_pause_button_filled"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/light_grey"
         app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
     <TextView
+        android:id="@+id/exo_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/exo_duration"
-        app:layout_constraintEnd_toEndOf="@id/exo_progress"
         android:layout_marginBottom="@dimen/_2sdp"
         android:textSize="@dimen/_8ssp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/exo_progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

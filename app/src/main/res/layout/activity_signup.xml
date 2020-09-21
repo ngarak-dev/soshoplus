@@ -27,8 +27,8 @@
                 android:id="@+id/front_gif"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_180sdp"
-                android:src="@drawable/front_page"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:src="@drawable/front_page"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,14 +43,14 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@id/username_inLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="Email Address"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
             app:boxCornerRadiusBottomStart="@dimen/_5sdp"
             app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-            app:boxCornerRadiusTopStart="@dimen/_5sdp">
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@id/username_inLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email"
@@ -67,14 +67,14 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@id/phone_inLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="Username"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
             app:boxCornerRadiusBottomStart="@dimen/_5sdp"
             app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-            app:boxCornerRadiusTopStart="@dimen/_5sdp">
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@id/phone_inLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
@@ -91,14 +91,14 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@id/password_inLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="Phone Number"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
             app:boxCornerRadiusBottomStart="@dimen/_5sdp"
             app:boxCornerRadiusTopEnd="@dimen/_5sdp"
-            app:boxCornerRadiusTopStart="@dimen/_5sdp">
+            app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@id/password_inLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phone"
@@ -115,14 +115,14 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@id/re_password_inLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="Password"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
             app:boxCornerRadiusBottomStart="@dimen/_5sdp"
             app:boxCornerRadiusTopEnd="@dimen/_5sdp"
             app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@id/re_password_inLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -140,14 +140,14 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@id/btnSignUp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:hint="Confirm Password"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
             app:boxCornerRadiusBottomStart="@dimen/_5sdp"
             app:boxCornerRadiusTopEnd="@dimen/_5sdp"
             app:boxCornerRadiusTopStart="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@id/btnSignUp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -164,12 +164,12 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:layout_constraintBottom_toTopOf="@id/btnTo_signIn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:text="SIGN UP"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/_5sdp" />
+            app:cornerRadius="@dimen/_5sdp"
+            app:layout_constraintBottom_toTopOf="@id/btnTo_signIn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTo_signIn"
@@ -177,11 +177,11 @@
             android:layout_width="@dimen/_265sdp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_20sdp"
+            android:text="Have an account ? Sign in"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:text="Have an account ? Sign in"
-            android:textAllCaps="false" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

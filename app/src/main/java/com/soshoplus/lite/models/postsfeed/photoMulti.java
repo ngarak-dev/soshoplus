@@ -26,56 +26,56 @@ public class photoMulti implements Serializable {
 
     @SerializedName("image_org")
     private String imageOrg;
-    
-    public photoMulti () {
-    
+
+    public photoMulti() {
+
     }
-    
-    public photoMulti (String image, String postId, String parentId, String id, String imageOrg) {
+
+    public photoMulti(String image, String postId, String parentId, String id, String imageOrg) {
         this.image = image;
         this.postId = postId;
         this.parentId = parentId;
         this.id = id;
         this.imageOrg = imageOrg;
     }
-    
-    public String getImage () {
+
+    public String getImage() {
         return image;
     }
-    
-    public void setImage (String image) {
+
+    public void setImage(String image) {
         this.image = image;
     }
-    
-    public String getPostId () {
+
+    public String getPostId() {
         return postId;
     }
-    
-    public void setPostId (String postId) {
+
+    public void setPostId(String postId) {
         this.postId = postId;
     }
-    
-    public String getParentId () {
+
+    public String getParentId() {
         return parentId;
     }
-    
-    public void setParentId (String parentId) {
+
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
-    
-    public String getId () {
+
+    public String getId() {
         return id;
     }
-    
-    public void setId (String id) {
+
+    public void setId(String id) {
         this.id = id;
     }
-    
-    public String getImageOrg () {
+
+    public String getImageOrg() {
         return imageOrg;
     }
-    
-    public void setImageOrg (String imageOrg) {
+
+    public void setImageOrg(String imageOrg) {
         this.imageOrg = imageOrg;
     }
 }

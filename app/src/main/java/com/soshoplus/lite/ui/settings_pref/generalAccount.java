@@ -39,10 +39,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class generalAccount extends AppCompatActivity {
 
     private static String TAG = "General Settings";
-
+    private static String[] general_strings = {"About me", "Social Links", "My Profile", "Verification", "Blocked Users"};
+    private static String[] security_strings = {"Change Password", "Two-factor authentication", "Manage Sessions"};
     private ActivityGeneralAccountBinding binding;
-    private static String [] general_strings = {"About me", "Social Links", "My Profile", "Verification", "Blocked Users"};
-    private static String [] security_strings = {"Change Password", "Two-factor authentication", "Manage Sessions"};
     private BasePopupView basePopupView;
 
     private Observable<userInfo> userInfoObservable;
@@ -65,11 +64,11 @@ public class generalAccount extends AppCompatActivity {
                 .autoDismiss(false)
                 .asLoading();
 
-        ArrayAdapter<String> generalAdapter  = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> generalAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, general_strings);
         binding.generalSettingsList.setAdapter(generalAdapter);
 
-        ArrayAdapter<String> securityAdapter  = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> securityAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, security_strings);
         binding.securitySettingsList.setAdapter(securityAdapter);
 
@@ -149,13 +148,12 @@ public class generalAccount extends AppCompatActivity {
                                                     userInfo.getUserData().getAbout())).show();
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = userInfo.getErrors();
                             Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                             Toast toast = Toast.makeText(generalAccount.this, "Something went wrong ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             onBackPressed();
@@ -167,7 +165,7 @@ public class generalAccount extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         Toast toast = Toast.makeText(generalAccount.this, "Something went wrong ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         onBackPressed();
@@ -208,13 +206,12 @@ public class generalAccount extends AppCompatActivity {
                                                     userInfo.getUserData().getYoutube())).show();
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             apiErrors apiErrors = userInfo.getErrors();
                             Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                             Toast toast = Toast.makeText(generalAccount.this, "Something went wrong ... ", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             onBackPressed();
@@ -226,7 +223,7 @@ public class generalAccount extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         Toast toast = Toast.makeText(generalAccount.this, "Something went wrong ... ", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         onBackPressed();

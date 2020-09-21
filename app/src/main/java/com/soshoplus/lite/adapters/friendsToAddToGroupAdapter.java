@@ -32,16 +32,16 @@ public class friendsToAddToGroupAdapter extends BaseQuickAdapter<followers, Base
 
         addChildClickViewIds(R.id.add_to_group);
     }
-    
+
     @Override
-    protected void convert (@NotNull BaseViewHolder baseViewHolder, followers followers) {
-    
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, followers followers) {
+
         if (followers == null) {
             return;
         }
-    
+
         baseViewHolder.setText(R.id.first_name, followers.getFirstName());
-    
+
         ImageView profile_pic = baseViewHolder.findView(R.id.profile_pic);
         ImageLoader imageLoader = Coil.imageLoader(getContext());
         ImageRequest imageRequest = new ImageRequest.Builder(getContext())

@@ -30,32 +30,29 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 
 public class AudioPost extends BaseItemProvider<post> {
-    
+
     private static String TAG = "AUDIO POST : ";
-    
+    private static String audioLink;
     ImageView profile_pic;
     MaterialButton like;
-
     private SimpleExoPlayer exoPlayer;
     private PlayerControlView playerControlView;
     private boolean playWhenReady = false;
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
-    private static String audioLink;
-    
     @Override
-    public int getItemViewType () {
+    public int getItemViewType() {
         return post.AUDIO_POST;
     }
-    
+
     @Override
-    public int getLayoutId () {
+    public int getLayoutId() {
         return R.layout.audio_post_list_row;
     }
-    
+
     @Override
-    public void convert (@NotNull BaseViewHolder baseViewHolder, post post) {
+    public void convert(@NotNull BaseViewHolder baseViewHolder, post post) {
         Log.d(TAG, post.getPostId());
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);

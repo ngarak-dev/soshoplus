@@ -28,53 +28,53 @@ public class accessToken implements Serializable {
     @SerializedName("errors")
     @Expose
     private apiErrors errors;
-    
-    public accessToken (Integer apiStatus, String timezone, String accessToken, String userId, apiErrors errors) {
+
+    public accessToken(Integer apiStatus, String timezone, String accessToken, String userId, apiErrors errors) {
         this.apiStatus = apiStatus;
         this.timezone = timezone;
         this.accessToken = accessToken;
         this.userId = userId;
         this.errors = errors;
     }
-    
-    
-    public Integer getApiStatus () {
+
+
+    public Integer getApiStatus() {
         return apiStatus;
     }
-    
-    public void setApiStatus (Integer apiStatus) {
+
+    public void setApiStatus(Integer apiStatus) {
         this.apiStatus = apiStatus;
     }
-    
-    public String getTimezone () {
+
+    public String getTimezone() {
         return timezone;
     }
-    
-    public void setTimezone (String timezone) {
+
+    public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
-    
-    public String getAccessToken () {
+
+    public String getAccessToken() {
         return accessToken;
     }
-    
-    public void setAccessToken (String accessToken) {
+
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
-    
-    public String getUserId () {
+
+    public String getUserId() {
         return userId;
     }
-    
-    public void setUserId (String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-    
-    public apiErrors getErrors () {
+
+    public apiErrors getErrors() {
         return errors;
     }
-    
-    public void setErrors (apiErrors errors) {
+
+    public void setErrors(apiErrors errors) {
         this.errors = errors;
     }
 }

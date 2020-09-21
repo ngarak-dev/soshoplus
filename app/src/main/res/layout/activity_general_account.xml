@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
@@ -14,76 +13,76 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/back_arrow"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="@dimen/_25sdp"
         android:layout_height="@dimen/_25sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="@dimen/_5sdp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        app:iconGravity="textStart"
-        android:padding="0dp"
-        app:iconPadding="0dp"
-        app:icon="@drawable/ic_arrow_back"
-        app:iconSize="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+        android:padding="0dp"
+        app:icon="@drawable/ic_arrow_back"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="@dimen/_15sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_12ssp"
         android:text="General Settings"
+        android:textSize="@dimen/_12ssp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/back_arrow"
         app:layout_constraintBottom_toBottomOf="@id/back_arrow"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/back_arrow" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/back_arrow"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/back_arrow">
 
         <TextView
+            android:id="@+id/general_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="General"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12ssp"
-            android:id="@+id/general_title"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary" />
+            android:textStyle="bold" />
 
         <ListView
+            android:id="@+id/general_settings_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:divider="@null"
-            android:id="@+id/general_settings_list" />
+            android:divider="@null" />
 
         <TextView
+            android:id="@+id/security_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="Security"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_12ssp"
-            android:id="@+id/security_title"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary" />
+            android:textStyle="bold" />
 
         <ListView
+            android:id="@+id/security_settings_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:divider="@null"
-            android:id="@+id/security_settings_list" />
+            android:divider="@null" />
 
     </LinearLayout>
 

@@ -4,8 +4,7 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,23 +27,23 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back_arrow"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_margin="@dimen/_5sdp"
-            app:rippleColor="@color/light_grey"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:iconGravity="textStart"
-            android:padding="0dp"
-            app:iconTint="@color/white_smoke"
-            app:iconPadding="0dp"
-            app:icon="@drawable/ic_arrow_back"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
-            app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+            android:padding="0dp"
+            app:icon="@drawable/ic_arrow_back"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/white_smoke"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/light_grey"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
         <ImageView
             android:id="@+id/profile_pic"
@@ -61,9 +60,9 @@
             android:layout_width="@dimen/_15sdp"
             android:layout_height="@dimen/_15sdp"
             android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/cover_photo"
             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
             app:layout_constraintStart_toEndOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/cover_photo"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.button.MaterialButton
@@ -128,12 +127,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            app:socialFlags="hashtag|mention|hyperlink"
             app:hashtagColor="@color/colorPrimary"
-            app:mentionColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/username"
-            app:layout_constraintTop_toBottomOf="@+id/username" />
+            app:layout_constraintTop_toBottomOf="@+id/username"
+            app:mentionColor="@color/colorAccent"
+            app:socialFlags="hashtag|mention|hyperlink" />
 
         <View
             android:id="@+id/divider"

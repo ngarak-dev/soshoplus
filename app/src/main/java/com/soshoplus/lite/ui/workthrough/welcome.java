@@ -6,14 +6,14 @@
 
 package com.soshoplus.lite.ui.workthrough;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.lxj.xpopup.XPopup;
@@ -23,7 +23,6 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.databinding.ActivityWelcomeBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.ui.settings_pref.myAccountSettings;
 import com.soshoplus.lite.ui.soshoTimeline;
 import com.soshoplus.lite.utils.constants;
 
@@ -37,16 +36,15 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class welcome extends AppCompatActivity {
 
     private static String TAG = "Welcome Activity";
-    private ActivityWelcomeBinding binding;
     private static String gender;
-
+    private ActivityWelcomeBinding binding;
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding  = ActivityWelcomeBinding.inflate(getLayoutInflater());
+        binding = ActivityWelcomeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -60,23 +58,18 @@ public class welcome extends AppCompatActivity {
         binding.toSecondStep.setOnClickListener(view_ -> {
             if (binding.fName.getText().toString().isEmpty()) {
                 binding.fNameInLayout.setError("First Name is required");
-            }
-            else if (binding.fName.getText().toString().length() < 3) {
+            } else if (binding.fName.getText().toString().length() < 3) {
                 binding.fNameInLayout.setError("Enter a valid name");
             }
             if (binding.lName.getText().toString().isEmpty()) {
                 binding.lNameInLayout.setError("Last Name is required");
-            }
-            else if (binding.lName.getText().toString().length() < 3) {
+            } else if (binding.lName.getText().toString().length() < 3) {
                 binding.lNameInLayout.setError("Enter a valid name");
-            }
-            else if (binding.fName.getText().toString().contains("test")) {
+            } else if (binding.fName.getText().toString().contains("test")) {
                 binding.fNameInLayout.setError("Enter a valid name");
-            }
-            else if (binding.fName.getText().toString().contains("test")) {
+            } else if (binding.fName.getText().toString().contains("test")) {
                 binding.lNameInLayout.setError("Enter a valid name");
-            }
-            else {
+            } else {
                 binding.firstStepCard.setVisibility(View.GONE);
                 binding.secondStepCard.setVisibility(View.VISIBLE);
                 binding.skip.setVisibility(View.VISIBLE);
@@ -145,14 +138,12 @@ public class welcome extends AppCompatActivity {
                                 startActivity(new Intent(welcome.this, soshoTimeline.class));
                                 finish();
                             });
-                        }
-
-                        else {
+                        } else {
                             apiErrors apiErrors = simpleResponse.getErrors();
                             Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                             Toast toast = Toast.makeText(welcome.this, "Something went wrong ... ", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             basePopupView.smartDismiss();
@@ -164,7 +155,7 @@ public class welcome extends AppCompatActivity {
                         Log.d(TAG, "onError: " + e.getMessage());
 
                         Toast toast = Toast.makeText(welcome.this, "Something went wrong ... ", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                         toast.show();
 
                         basePopupView.smartDismiss();

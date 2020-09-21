@@ -23,7 +23,6 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.ui.settings_pref.myAccountSettings;
 import com.soshoplus.lite.utils.constants;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -60,7 +59,7 @@ public class changeAboutPopup extends CenterPopupView {
         super.onCreate();
 
         aboutMe = findViewById(R.id.about_me);
-        send_btn  = findViewById(R.id.send);
+        send_btn = findViewById(R.id.send);
         cancel_btn = findViewById(R.id.cancel);
 
         aboutMe.setText(about_me);
@@ -75,14 +74,13 @@ public class changeAboutPopup extends CenterPopupView {
         send_btn.setOnClickListener(view -> {
             if (aboutMe.getText().toString().length() < 8) {
                 aboutMe.setError("Minimum length is 8");
-            }
-            else {
+            } else {
                 updateAboutMe(aboutMe.getText().toString());
             }
         });
 
         cancel_btn.setOnClickListener(view -> {
-           smartDismiss();
+            smartDismiss();
         });
     }
 
@@ -114,14 +112,12 @@ public class changeAboutPopup extends CenterPopupView {
                                                     /*dismiss*/
                                                     smartDismiss();
                                                 }, null, true, 0).show());
-                            }
-
-                            else {
+                            } else {
                                 apiErrors apiErrors = simpleResponse.getErrors();
                                 Log.d(TAG, "ERROR: " + apiErrors.getErrorId());
 
                                 Toast toast = Toast.makeText(getContext(), "Something went wrong ... ", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                 toast.show();
 
                                 basePopupView.dismiss();
@@ -133,7 +129,7 @@ public class changeAboutPopup extends CenterPopupView {
                             Log.d(TAG, "onError: " + e.getMessage());
 
                             Toast toast = Toast.makeText(getContext(), "Something went wrong ... ", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0,0);
+                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                             toast.show();
 
                             basePopupView.dismiss();
@@ -148,22 +144,22 @@ public class changeAboutPopup extends CenterPopupView {
     }
 
     @Override
-    protected int getMaxWidth () {
+    protected int getMaxWidth() {
         return super.getMaxWidth();
     }
 
     @Override
-    protected int getMaxHeight () {
+    protected int getMaxHeight() {
         return super.getMaxHeight();
     }
 
     @Override
-    protected int getPopupWidth () {
+    protected int getPopupWidth() {
         return 0;
     }
 
     @Override
-    protected int getPopupHeight () {
+    protected int getPopupHeight() {
         return 0;
     }
 }

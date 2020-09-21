@@ -24,16 +24,16 @@ import coil.request.ImageRequest;
 import coil.transform.RoundedCornersTransformation;
 
 public class friendsFollowersAdapter extends BaseQuickAdapter<followers, BaseViewHolder> {
-    
+
     private static String TAG = "Friends";
-    
-    public friendsFollowersAdapter (int layoutResId, @Nullable List<followers> data) {
+
+    public friendsFollowersAdapter(int layoutResId, @Nullable List<followers> data) {
         super(layoutResId, data);
     }
-    
+
     @Override
-    protected void convert (@NotNull BaseViewHolder baseViewHolder, followers followers) {
-    
+    protected void convert(@NotNull BaseViewHolder baseViewHolder, followers followers) {
+
         if (followers == null) {
             return;
         }

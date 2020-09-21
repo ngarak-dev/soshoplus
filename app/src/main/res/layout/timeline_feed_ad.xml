@@ -47,11 +47,11 @@
         android:id="@+id/ad_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ad_profile_pic"
         android:layout_margin="@dimen/_10sdp"
-        app:socialFlags="hashtag|mention|hyperlink"
         app:hashtagColor="@color/colorPrimary"
-        app:mentionColor="@color/colorAccent" />
+        app:layout_constraintTop_toBottomOf="@id/ad_profile_pic"
+        app:mentionColor="@color/colorAccent"
+        app:socialFlags="hashtag|mention|hyperlink" />
 
     <View
         android:id="@+id/divider"
@@ -78,8 +78,8 @@
         android:id="@+id/ad_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -29,70 +29,70 @@
             android:id="@+id/full_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/profile_pic"
-            app:layout_constraintLeft_toRightOf="@id/profile_pic"
-            app:layout_constraintBottom_toTopOf="@id/new_post"
             android:layout_marginStart="@dimen/_10sdp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/new_post"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            app:layout_constraintTop_toTopOf="@id/profile_pic" />
 
         <TextView
             android:id="@+id/new_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@id/full_name"
-            app:layout_constraintBottom_toTopOf="@id/time_ago"
             android:layout_marginStart="@dimen/_10sdp"
             android:text="new blog post"
-            android:textColor="@color/dim_gray" />
+            android:textColor="@color/dim_gray"
+            app:layout_constraintBottom_toTopOf="@id/time_ago"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/full_name" />
 
         <TextView
             android:id="@+id/time_ago"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toRightOf="@id/profile_pic"
-            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@id/new_post"
             android:layout_marginStart="@dimen/_10sdp"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/new_post" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/post_option"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:rippleColor="@color/light_grey"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:iconGravity="textStart"
-            android:padding="0dp"
-            app:iconTint="@color/gray"
-            app:iconPadding="0dp"
-            app:icon="@drawable/ic_more_horiz"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
-            app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+            android:padding="0dp"
+            app:icon="@drawable/ic_more_horiz"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rippleColor="@color/light_grey"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
         <com.hendraanggrian.appcompat.widget.SocialTextView
             android:id="@+id/post_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/profile_pic"
             android:layout_marginTop="@dimen/_10sdp"
-            app:socialFlags="hashtag|mention|hyperlink"
             app:hashtagColor="@color/colorPrimary"
-            app:mentionColor="@color/colorAccent" />
+            app:layout_constraintTop_toBottomOf="@id/profile_pic"
+            app:mentionColor="@color/colorAccent"
+            app:socialFlags="hashtag|mention|hyperlink" />
 
         <RelativeLayout
             android:id="@+id/article_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/post_contents"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/rectangle"
-            android:padding="@dimen/_10sdp">
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintTop_toBottomOf="@id/post_contents">
 
             <TextView
                 android:id="@+id/article_title"
@@ -115,17 +115,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/divider"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:socialFlags="hashtag|mention|hyperlink"
                 app:hashtagColor="@color/colorPrimary"
-                app:mentionColor="@color/colorAccent" />
+                app:mentionColor="@color/colorAccent"
+                app:socialFlags="hashtag|mention|hyperlink" />
 
             <ImageView
                 android:id="@+id/article_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:adjustViewBounds="true"
                 android:layout_below="@id/article_description"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 tools:ignore="ContentDescription" />
 
@@ -135,61 +135,43 @@
                 android:layout_below="@id/article_thumbnail"
                 android:layout_margin="@dimen/_10sdp" />
 
-            <TextView
-                android:id="@+id/no_likes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/no_comments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/divider_"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_toEndOf="@id/no_likes"
-                android:textStyle="bold" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/like_btn"
-                android:layout_width="@dimen/_40sdp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_below="@id/divider_"
                 android:layout_toStartOf="@id/comment_btn"
-                app:rippleColor="@color/light_grey"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                app:iconGravity="textStart"
-                app:iconSize="@dimen/_15sdp"
-                android:padding="0dp"
-                app:iconPadding="0dp"
-                app:icon="@drawable/ic_like"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
                 android:insetRight="0dp"
-                android:insetBottom="0dp" />
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:textSize="@dimen/_10ssp"
+                app:icon="@drawable/ic_like"
+                app:iconGravity="textStart"
+                app:iconPadding="5dp"
+                app:iconSize="@dimen/_15sdp"
+                app:rippleColor="@color/light_grey" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/comment_btn"
-                android:layout_width="@dimen/_40sdp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_below="@id/divider_"
                 android:layout_alignParentEnd="true"
-                app:rippleColor="@color/light_grey"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                app:iconGravity="textStart"
-                app:iconSize="@dimen/_15sdp"
-                android:padding="0dp"
-                app:iconPadding="0dp"
-                app:icon="@drawable/ic_comment"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
                 android:insetRight="0dp"
-                android:insetBottom="0dp" />
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:textSize="@dimen/_10ssp"
+                app:icon="@drawable/ic_comment"
+                app:iconGravity="textStart"
+                app:iconPadding="5dp"
+                app:iconSize="@dimen/_15sdp"
+                app:rippleColor="@color/light_grey" />
 
         </RelativeLayout>
 

@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<?xml version="1.0" encoding="utf-8"?><!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ~ Ngara K. Android Application Developer
   ~ ngarakiringo@gmail.com
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.mainfragments.moreFragment"
-    android:background="@color/bgPrimary"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgPrimary"
+    tools:context=".ui.mainfragments.moreFragment">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/search_bar"
@@ -36,53 +35,53 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginEnd="@dimen/_5sdp"
         android:text="More"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/search_bar"
         app:layout_constraintBottom_toBottomOf="@id/search_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/_5sdp"/>
+        app:layout_constraintTop_toTopOf="@id/search_bar" />
 
     <ImageView
+        android:id="@+id/profile_pic"
         android:layout_width="@dimen/_35sdp"
         android:layout_height="@dimen/_35sdp"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:id="@+id/profile_pic"
-        app:layout_constraintTop_toBottomOf="@id/search_bar"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_bar" />
 
     <TextView
+        android:id="@+id/full_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:id="@+id/full_name"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/user_email"
-        app:layout_constraintTop_toTopOf="@id/profile_pic"
-        app:layout_constraintEnd_toStartOf="@id/profile_pic"/>
+        app:layout_constraintEnd_toStartOf="@id/profile_pic"
+        app:layout_constraintTop_toTopOf="@id/profile_pic" />
 
     <TextView
+        android:id="@+id/user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:id="@+id/user_email"
-        app:layout_constraintTop_toBottomOf="@id/full_name"
         app:layout_constraintBottom_toBottomOf="@id/profile_pic"
-        app:layout_constraintEnd_toStartOf="@id/profile_pic"/>
+        app:layout_constraintEnd_toStartOf="@id/profile_pic"
+        app:layout_constraintTop_toBottomOf="@id/full_name" />
 
     <!--    MORE CARDS-->
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/albums_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:id="@+id/albums_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/events_card"
-        app:layout_constraintTop_toBottomOf="@id/profile_pic"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/events_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_pic">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,24 +99,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:textStyle="bold"
-                android:text="Albums" />
+                android:text="Albums"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/events_card"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintStart_toEndOf="@id/albums_card"
-        app:layout_constraintEnd_toStartOf="@id/groups_card"
-        android:id="@+id/events_card"
-        app:layout_constraintTop_toBottomOf="@id/profile_pic"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/groups_card"
+        app:layout_constraintStart_toEndOf="@id/albums_card"
+        app:layout_constraintTop_toBottomOf="@id/profile_pic">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -134,25 +133,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
                 android:layout_marginBottom="@dimen/_5sdp"
-                android:text="Events" />
+                android:text="Events"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/groups_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintStart_toEndOf="@id/events_card"
-        android:id="@+id/groups_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_pic"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/events_card"
+        app:layout_constraintTop_toBottomOf="@id/profile_pic">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -180,15 +179,15 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/memories_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        android:id="@+id/memories_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/pages_card"
-        app:layout_constraintTop_toBottomOf="@id/albums_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/pages_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/albums_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -205,24 +204,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Memories"
 
-                android:text="Memories" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/pages_card"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/memories_card"
-        app:layout_constraintEnd_toStartOf="@id/blogs_card"
-        android:id="@+id/pages_card"
-        app:layout_constraintTop_toBottomOf="@id/events_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/blogs_card"
+        app:layout_constraintStart_toEndOf="@id/memories_card"
+        app:layout_constraintTop_toBottomOf="@id/events_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -238,25 +238,26 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
 
-                android:textStyle="bold"
-                android:text="Pages" />
+                android:text="Pages"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/blogs_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/pages_card"
-        android:id="@+id/blogs_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/groups_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/pages_card"
+        app:layout_constraintTop_toBottomOf="@id/groups_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -273,9 +274,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Blogs"
 
-                android:text="Blogs" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -283,15 +285,15 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/articles_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        android:id="@+id/articles_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/market_card"
-        app:layout_constraintTop_toBottomOf="@id/memories_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/market_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/memories_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -308,24 +310,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="My Articles"
 
-                android:text="My Articles" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/market_card"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/articles_card"
-        app:layout_constraintEnd_toStartOf="@id/explore_card"
-        android:id="@+id/market_card"
-        app:layout_constraintTop_toBottomOf="@id/pages_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/explore_card"
+        app:layout_constraintStart_toEndOf="@id/articles_card"
+        app:layout_constraintTop_toBottomOf="@id/pages_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -342,24 +345,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Market"
 
-                android:text="Market" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/explore_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/market_card"
-        android:id="@+id/explore_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/blogs_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/market_card"
+        app:layout_constraintTop_toBottomOf="@id/blogs_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -376,9 +380,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Explore"
 
-                android:text="Explore" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -386,15 +391,15 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/movies_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        android:id="@+id/movies_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/offers_card"
-        app:layout_constraintTop_toBottomOf="@id/articles_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/offers_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/articles_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -411,24 +416,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Movies"
 
-                android:text="Movies" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/offers_card"
         android:layout_width="@dimen/_85sdp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/movies_card"
-        app:layout_constraintEnd_toStartOf="@id/jobs_card"
-        android:id="@+id/offers_card"
-        app:layout_constraintTop_toBottomOf="@id/market_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toStartOf="@id/jobs_card"
+        app:layout_constraintStart_toEndOf="@id/movies_card"
+        app:layout_constraintTop_toBottomOf="@id/market_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -445,24 +451,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Offers"
 
-                android:text="Offers" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/jobs_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/offers_card"
-        android:id="@+id/jobs_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/explore_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/offers_card"
+        app:layout_constraintTop_toBottomOf="@id/explore_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -479,9 +486,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Jobs"
 
-                android:text="Jobs" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -489,16 +497,16 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/forums_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toStartOf="@id/funding_card"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/forums_card"
-        app:layout_constraintTop_toBottomOf="@id/movies_card"
-        app:cardCornerRadius="@dimen/_8sdp"
-        app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintTop_toBottomOf="@id/movies_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -514,26 +522,27 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
 
-                android:textStyle="bold"
-                android:text="Forums" />
+                android:text="Forums"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/funding_card"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintStart_toEndOf="@id/forums_card"
-        android:id="@+id/funding_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/jobs_card"
         app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="0dp"
         app:cardUseCompatPadding="true"
-        app:cardElevation="0dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/forums_card"
+        app:layout_constraintTop_toBottomOf="@id/jobs_card">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -550,9 +559,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:text="Funding"
 
-                android:text="Funding" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 

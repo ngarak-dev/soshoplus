@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.soshoplus.timeline">
+    package="com.soshoplus.lite">
     <!-- PERMISSION -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -16,17 +16,22 @@
         android:logo="@drawable/ic_logo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/soshoDayNight_noActionBar">
-        <activity android:name=".ui.hashTagsPosts"></activity>
+        <activity android:name=".ui.workthrough.welcome" />
+        <activity android:name=".ui.settings_pref.myAccountSettings" />
+        <activity android:name=".ui.settings_pref.earnings" />
+        <activity android:name=".ui.settings_pref.myInformation" />
+        <activity android:name=".ui.settings_pref.invitationsLinks" />
+        <activity android:name=".ui.settings_pref.notifications" />
+        <activity android:name=".ui.settings_pref.privacy" />
+        <activity android:name=".ui.settings_pref.generalAccount" />
+        <activity android:name=".ui.settings_pref.helpSupport" />
+        <activity android:name=".ui.settings" />
+        <activity android:name=".ui.hashTagsPosts" />
         <activity android:name=".ui.user_profile.myProfile" />
         <activity android:name=".ui.audioRecorderPost" />
         <activity android:name=".ui.imageVideoPost" />
         <activity android:name=".ui.groups.groups" />
         <activity android:name=".ui.user_profile.userProfile" />
-        <activity
-            android:name=".ui.viewVideo"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_view_video"
-            android:theme="@style/sosho_FullScreen" />
         <activity android:name=".ui.groups.viewGroup" />
         <activity android:name=".ui.soshoTimeline" />
         <activity android:name=".ui.auth.forgotPassword" />

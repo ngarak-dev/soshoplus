@@ -26,21 +26,21 @@
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:theme="@style/soshoDayNight_default.AppBarOverlay"
             android:translationZ="0.1dp"
             app:elevation="0dp"
-            app:layout_constraintTop_toTopOf="@id/group_cover"
-            android:id="@+id/appBarLayout">
+            app:layout_constraintTop_toTopOf="@id/group_cover">
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/trans_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:id="@+id/trans_toolbar"
                 android:background="@null"
-                app:popupTheme="@style/soshoDayNight_default.PopupOverlay"/>
+                app:popupTheme="@style/soshoDayNight_default.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -55,70 +55,69 @@
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/join_btn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:text="Join Group"
             android:textAllCaps="false"
             android:textSize="@dimen/_10ssp"
-            android:id="@+id/join_btn"
-            android:layout_marginEnd="@dimen/_5sdp"
             android:visibility="gone"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             app:cornerRadius="@dimen/_15sdp"
+            app:layout_constraintBottom_toBottomOf="@id/group_profile_pic"
+            app:layout_constraintEnd_toEndOf="parent"
             app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="@dimen/_1sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/group_profile_pic" />
+            app:strokeWidth="@dimen/_1sdp" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/no_members"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_profile_pic"
-            android:drawablePadding="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp"
-            android:drawableStart="@drawable/ic_groups"/>
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_groups"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_profile_pic" />
+
+        <TextView
             android:id="@+id/group_privacy"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/no_members"
-            android:drawablePadding="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp"
-            android:drawableStart="@drawable/ic_shield"/>
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_shield"
+            android:drawablePadding="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/no_members" />
+
+        <TextView
             android:id="@+id/group_category"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_privacy"
-            android:drawablePadding="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp"
-            android:drawableStart="@drawable/ic_conversation"/>
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_conversation"
+            android:drawablePadding="@dimen/_5sdp"
             android:padding="@dimen/_5sdp"
-            app:layout_constraintTop_toBottomOf="@id/group_category"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:text="Group posts"
-            android:id="@+id/posts_title"
-            android:textStyle="bold" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/group_privacy" />
 
+        <TextView
+            android:id="@+id/posts_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="Group posts"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/group_category" />
 
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshPostsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/refreshPostsLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/posts_title">
@@ -126,9 +125,9 @@
             <com.scwang.smart.refresh.header.ClassicsHeader
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:layout_srlBackgroundColor="@color/white"
                 app:srlEnableLastTime="false"
-                app:srlTextFinish="."
-                app:layout_srlBackgroundColor="@color/white" />
+                app:srlTextFinish="." />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/group_post_list"

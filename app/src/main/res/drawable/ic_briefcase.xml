@@ -4,8 +4,13 @@
   ~ Copyright (c) 2020
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
 
-<vector android:alpha="0.85" android:height="20dp"
-    android:viewportHeight="24" android:viewportWidth="24"
-    android:width="20dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#FF000000" android:pathData="M0,7v15h24v-15h-24zM22,20h-20v-6h6v-2h-6v-3h20v3h-6v2h6v6zM9,4.5c0,-0.276 0.224,-0.5 0.5,-0.5h5c0.276,0 0.5,0.224 0.5,0.5v1.5h2v-2c0,-1.104 -0.896,-2 -2,-2h-6c-1.104,0 -2,0.896 -2,2v2h2v-1.5zM14,11h-4v4h4v-4z"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:alpha="0.85"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M0,7v15h24v-15h-24zM22,20h-20v-6h6v-2h-6v-3h20v3h-6v2h6v6zM9,4.5c0,-0.276 0.224,-0.5 0.5,-0.5h5c0.276,0 0.5,0.224 0.5,0.5v1.5h2v-2c0,-1.104 -0.896,-2 -2,-2h-6c-1.104,0 -2,0.896 -2,2v2h2v-1.5zM14,11h-4v4h4v-4z" />
 </vector>

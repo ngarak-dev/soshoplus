@@ -19,42 +19,42 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/search_bar"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
-            android:layout_marginStart="@dimen/_5sdp"
             android:layout_alignParentTop="true"
-            app:rippleColor="@color/colorPrimaryDark"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:iconTint="@color/colorPrimaryDark"
-            app:iconGravity="textStart"
-            android:padding="0dp"
-            app:iconPadding="0dp"
-            app:icon="@drawable/ic_search"
+            android:layout_marginStart="@dimen/_5sdp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
-            app:shapeAppearanceOverlay="@style/OverlayButtonCircle"/>
+            android:padding="0dp"
+            app:icon="@drawable/ic_search"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@color/colorPrimaryDark"
+            app:rippleColor="@color/colorPrimaryDark"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:gravity="center"
-            android:text="Friends"
-            android:textStyle="bold"
             android:layout_alignTop="@id/search_bar"
             android:layout_alignBottom="@id/search_bar"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_5sdp"/>
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="Friends"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/suggested_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/search_bar"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="People you may know"
             android:textStyle="bold" />
 
@@ -94,8 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/suggested_friends_list"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="Followers"
             android:textStyle="bold" />
 

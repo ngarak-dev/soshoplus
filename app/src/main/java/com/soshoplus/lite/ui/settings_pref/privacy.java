@@ -6,17 +6,26 @@
 
 package com.soshoplus.lite.ui.settings_pref;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-
-import com.soshoplus.lite.R;
+import com.soshoplus.lite.databinding.ActivityPrivacyBinding;
 
 public class privacy extends AppCompatActivity {
+
+    private ActivityPrivacyBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_privacy);
+        binding = ActivityPrivacyBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        binding.backArrow.setOnClickListener(view_ -> {
+            onBackPressed();
+        });
     }
 }

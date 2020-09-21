@@ -10,7 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.settings_pref.invitations_links">
+    tools:context=".ui.settings_pref.invitationsLinks">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/back_arrow"

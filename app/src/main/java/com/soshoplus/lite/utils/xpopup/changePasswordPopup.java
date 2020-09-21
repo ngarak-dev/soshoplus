@@ -42,7 +42,7 @@ public class changePasswordPopup extends CenterPopupView {
     /*........*/
     private String userId, timezone, accessToken;
     private queries rxJavaQueries;
-    private Observable<com.soshoplus.lite.models.simpleResponse> simpleResponse;
+    private Observable<simpleResponse> simpleResponse;
 
     public changePasswordPopup(@NonNull Context context) {
         super(context);

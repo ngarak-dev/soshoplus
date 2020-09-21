@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.databinding.ActivityHelpSupportBinding;
 
-public class help_support extends AppCompatActivity {
+public class helpSupport extends AppCompatActivity {
 
     private static String TAG = "Help Support Activity";
     private ActivityHelpSupportBinding binding;

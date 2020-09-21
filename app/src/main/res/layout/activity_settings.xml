@@ -47,6 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:divider="@null"
         android:id="@+id/settingsList"
         app:layout_constraintStart_toStartOf="@id/back_arrow"
         app:layout_constraintEnd_toEndOf="parent"

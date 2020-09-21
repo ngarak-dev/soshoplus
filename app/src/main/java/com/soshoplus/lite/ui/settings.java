@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
@@ -27,18 +26,14 @@ import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.ui.auth.signIn;
 import com.soshoplus.lite.ui.settings_pref.earnings;
-import com.soshoplus.lite.ui.settings_pref.general_account;
-import com.soshoplus.lite.ui.settings_pref.help_support;
-import com.soshoplus.lite.ui.settings_pref.invitations_links;
-import com.soshoplus.lite.ui.settings_pref.my_information;
+import com.soshoplus.lite.ui.settings_pref.generalAccount;
+import com.soshoplus.lite.ui.settings_pref.helpSupport;
+import com.soshoplus.lite.ui.settings_pref.invitationsLinks;
+import com.soshoplus.lite.ui.settings_pref.myInformation;
 import com.soshoplus.lite.ui.settings_pref.notifications;
 import com.soshoplus.lite.ui.settings_pref.privacy;
-import com.soshoplus.lite.ui.user_profile.myProfile;
 import com.soshoplus.lite.utils.constants;
 import com.soshoplus.lite.utils.queries;
-import com.soshoplus.lite.utils.retrofitInstance;
-
-import java.util.List;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import de.adorsys.android.securestoragelibrary.SecureStorageException;
@@ -87,7 +82,7 @@ public class settings extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 switch (position) {
                     case 0:
-                        startActivity(new Intent(settings.this, general_account.class));
+                        startActivity(new Intent(settings.this, generalAccount.class));
                         break;
 
                     case 1:
@@ -99,11 +94,11 @@ public class settings extends AppCompatActivity {
                         break;
 
                     case 3:
-                        startActivity(new Intent(settings.this, invitations_links.class));
+                        startActivity(new Intent(settings.this, invitationsLinks.class));
                         break;
 
                     case 4:
-                        startActivity(new Intent(settings.this, my_information.class));
+                        startActivity(new Intent(settings.this, myInformation.class));
                         break;
 
                     case 5:
@@ -111,7 +106,7 @@ public class settings extends AppCompatActivity {
                         break;
 
                     case 6:
-                        startActivity(new Intent(settings.this, help_support.class));
+                        startActivity(new Intent(settings.this, helpSupport.class));
                         break;
 
                     case 7:

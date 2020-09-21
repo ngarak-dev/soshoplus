@@ -23,6 +23,7 @@ import com.soshoplus.lite.databinding.ActivitySignupBinding;
 import com.soshoplus.lite.models.accessToken;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.ui.soshoTimeline;
+import com.soshoplus.lite.ui.workthrough.welcome;
 import com.soshoplus.lite.utils.queries;
 import com.soshoplus.lite.utils.retrofitInstance;
 
@@ -63,7 +64,7 @@ public class signUp extends AppCompatActivity {
                 .dismissOnBackPressed(false)
                 .dismissOnTouchOutside(false)
                 .autoDismiss(false)
-                .asLoading("Please wait");
+                .asLoading();
         
         /*initializing ksnack*/
         kSnack = new KSnack(signUp.this);
@@ -144,13 +145,17 @@ public class signUp extends AppCompatActivity {
                     @Override
                     public void onNext (@io.reactivex.rxjava3.annotations.NonNull accessToken accessToken) {
                         if (accessToken.getApiStatus() == 200) {
-        
+
+                            Log.d(TAG, "onNext: " + accessToken.getAccessToken());
+                            Log.d(TAG, "onNext: " + accessToken.getTimezone());
+                            Log.d(TAG, "onNext: " + accessToken.getUserId());
+
                             //storing user session
                             try {
                                 SecurePreferences.setValue(signUp.this, "userId",
                                         accessToken.getUserId());
-                                SecurePreferences.setValue(signUp.this,
-                                        "timezone", accessToken.getTimezone());
+//                                SecurePreferences.setValue(signUp.this,
+//                                        "timezone", accessToken.getTimezone());
                                 SecurePreferences.setValue(signUp.this,
                                         "accessToken", accessToken.getAccessToken());
         
@@ -160,9 +165,13 @@ public class signUp extends AppCompatActivity {
                                  *  Handle this exception*/
                             }
         
+//                            popupView.dismissWith(() -> {
+//                                startActivity(new Intent(signUp.this,
+//                                        soshoTimeline.class));
+//                                finish();
+//                            });
                             popupView.dismissWith(() -> {
-                                startActivity(new Intent(signUp.this,
-                                        soshoTimeline.class));
+                                startActivity(new Intent(signUp.this, welcome.class));
                                 finish();
                             });
                         }

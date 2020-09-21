@@ -42,7 +42,7 @@ public class splash extends Activity {
             } else {
                 Log.d(TAG, "run: " + "we do not have session");
                 //go to getStarted
-                startActivity(new Intent(splash.this, welcome.class));
+                startActivity(new Intent(splash.this, signIn.class));
             }
             finish();
             

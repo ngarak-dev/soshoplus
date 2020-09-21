@@ -140,10 +140,7 @@ public class settings extends AppCompatActivity {
                                         basePopupView.delayDismissWith(300, new Runnable() {
                                             @Override
                                             public void run() {
-                                                Intent intent = new Intent(settings.this, signIn.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                                startActivity(intent);
+                                                startActivity(new Intent(settings.this, signIn.class));
                                                 finish();
                                             }
                                         });

@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.soshoplus.lite.databinding.ActivitySplashBinding;
 import com.soshoplus.lite.ui.auth.signIn;
+import com.soshoplus.lite.ui.workthrough.welcome;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 

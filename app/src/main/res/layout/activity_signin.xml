@@ -87,7 +87,7 @@
         android:id="@+id/btnForgotPassword"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_35sdp"
+        android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginBottom="@dimen/_5sdp"
         android:text="Forgot Password ?"
@@ -98,7 +98,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSignIn"
         android:layout_width="@dimen/_265sdp"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_height="wrap_content"
         android:text="SIGN IN"
         android:textStyle="bold"
         app:cornerRadius="@dimen/_5sdp"

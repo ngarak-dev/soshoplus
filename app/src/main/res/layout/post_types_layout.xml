@@ -12,14 +12,25 @@
     android:layout_marginTop="@dimen/_5sdp"
     android:padding="@dimen/_5sdp">
 
-    <ImageView
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/add_post"
-        android:layout_width="@dimen/_35sdp"
-        android:layout_height="@dimen/_35sdp"
-        android:src="@drawable/ic_add_post"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        app:icon="@drawable/ic_sharp_add"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="@color/black_tran60"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:rippleColor="@color/light_grey"
+        app:strokeColor="@color/black_tran60"
+        app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/new_txt_post"

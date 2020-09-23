@@ -23,8 +23,8 @@ android {
         applicationId 'com.soshoplus.lite'
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName 'v0.1-alpha'
+        versionCode 2
+        versionName 'v0.11-beta'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "server_key", server_keyProperties['server_key'])
@@ -110,7 +110,7 @@ dependencies {
     /*media picker*/
     implementation 'com.ypx.yimagepicker:androidx:3.1.4'
     // DevApp Android tool library
-    implementation 'com.afkt:DevAppX:1.9.8'
+    implementation 'com.afkt:DevAppX:2.0.3'
     //smart refresh
     implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'
     implementation 'com.scwang.smart:refresh-header-classics:2.0.1'

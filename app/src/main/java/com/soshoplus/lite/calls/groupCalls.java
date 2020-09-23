@@ -65,9 +65,6 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static com.soshoplus.lite.utils.constants.accessToken;
-import static com.soshoplus.lite.utils.constants.rxJavaQueries;
-
 public class groupCalls {
 
     private final static String TAG = "Group Calls";
@@ -138,7 +135,7 @@ public class groupCalls {
                              TextView noMembers, TextView groupPrivacy, TextView groupCategory, String group_id,
                              String no_members, MaterialButton joinBtn) {
 
-        groupInfoObservable = rxJavaQueries.getGroupInfo(accessToken, BuildConfig.server_key, group_id);
+        groupInfoObservable = constants.rxJavaQueries.getGroupInfo(constants.accessToken, BuildConfig.server_key, group_id);
 
         groupInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

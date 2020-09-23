@@ -68,9 +68,6 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static com.soshoplus.lite.utils.constants.accessToken;
-import static com.soshoplus.lite.utils.constants.rxJavaQueries;
-
 public class hashTagsPostsCalls {
     private final static String TAG = "hashtags Calls";
     private static String share_post_on_timeline = "share_post_on_timeline";
@@ -171,7 +168,7 @@ public class hashTagsPostsCalls {
                            SmartRefreshLayout refreshPostsLayout, String type, String hashTag) {
 
         postListObserve =
-                rxJavaQueries.getTimelinePosts(accessToken,
+                constants.rxJavaQueries.getTimelinePosts(constants.accessToken,
                         BuildConfig.server_key, type, hashTag, null, null);
 
         postListObserve.subscribeOn(Schedulers.io())

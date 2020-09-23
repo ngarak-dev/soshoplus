@@ -24,6 +24,7 @@ import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.friends.followers;
 import com.soshoplus.lite.models.friends.friends;
 import com.soshoplus.lite.ui.user_profile.userProfile;
+import com.soshoplus.lite.utils.constants;
 
 import java.util.List;
 
@@ -33,10 +34,6 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
-import static com.soshoplus.lite.utils.constants.accessToken;
-import static com.soshoplus.lite.utils.constants.rxJavaQueries;
-import static com.soshoplus.lite.utils.constants.userId;
 
 public class followersUsersCalls {
 
@@ -57,8 +54,8 @@ public class followersUsersCalls {
         /*show progressbar*/
         progressBarFollowers.setVisibility(View.VISIBLE);
 
-        friendsObservable = rxJavaQueries.getFriendsFollowers(accessToken,
-                BuildConfig.server_key, friends_followers, userId, "8");
+        friendsObservable = constants.rxJavaQueries.getFriendsFollowers(constants.accessToken,
+                BuildConfig.server_key, friends_followers, constants.userId, "8");
         friendsObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<friends>() {

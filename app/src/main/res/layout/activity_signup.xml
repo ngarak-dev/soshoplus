@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_180sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/front_page"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +42,7 @@
             android:id="@+id/email_inLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="@dimen/_265sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:hint="Email Address"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -55,7 +56,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="textEmailAddress">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -79,7 +80,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/username"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="textPersonName">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -89,7 +90,7 @@
             android:id="@+id/phone_inLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="@dimen/_265sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:hint="Phone Number"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -103,7 +104,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="phone">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -113,7 +114,7 @@
             android:id="@+id/password_inLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="@dimen/_265sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:hint="Password"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -138,7 +139,7 @@
             android:id="@+id/re_password_inLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="@dimen/_265sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:hint="Confirm Password"
             app:boxCornerRadiusBottomEnd="@dimen/_5sdp"
@@ -162,7 +163,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSignUp"
             android:layout_width="@dimen/_265sdp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_5sdp"
             android:text="SIGN UP"
             android:textStyle="bold"

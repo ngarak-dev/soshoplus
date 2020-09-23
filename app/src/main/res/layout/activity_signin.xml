@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:scaleType="centerCrop"
             android:src="@drawable/front_page"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

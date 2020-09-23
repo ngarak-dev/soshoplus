@@ -52,6 +52,8 @@ import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.ui.auth.signIn;
 import com.soshoplus.lite.ui.hashTagsPosts;
 import com.soshoplus.lite.ui.user_profile.userProfile;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.commentsPopup;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
 import com.soshoplus.lite.utils.xpopup.sharePopup;
@@ -67,6 +69,7 @@ import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import de.adorsys.android.securestoragelibrary.SecureStorageException;
+import dev.DevUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -74,9 +77,6 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import static com.soshoplus.lite.utils.constants.accessToken;
-import static com.soshoplus.lite.utils.constants.rxJavaQueries;
-import static com.soshoplus.lite.utils.constants.userId;
 import static dev.DevUtils.getContext;
 
 public class timelineCalls {
@@ -111,9 +111,18 @@ public class timelineCalls {
     /*......*/
     private Observable<simpleResponse> createPostResponse;
 
+    private static String userId, timezone, accessToken;
+    private static queries rxJavaQueries;
     /*constructor*/
     public timelineCalls(Context context) {
         this.context = context;
+
+        userId = SecurePreferences.getStringValue(DevUtils.getContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(DevUtils.getContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(DevUtils.getContext(), "accessToken", "0");
+
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     /*AD info*/
@@ -772,7 +781,7 @@ public class timelineCalls {
     /*create a new post*/
     public void createNewPost(String postText, ProgressBar progressBar, String post_color) {
         createPostResponse = rxJavaQueries.createPost(accessToken,
-                BuildConfig.server_key, userId, postText, post_color, null, "");
+                BuildConfig.server_key, userId, postText, post_color, null, null);
 
         createPostResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

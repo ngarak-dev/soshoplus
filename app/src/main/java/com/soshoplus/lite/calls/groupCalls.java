@@ -29,6 +29,8 @@ import com.google.gson.Gson;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.animator.BlurAnimator;
+import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -505,7 +507,8 @@ public class groupCalls {
         isLiked = feedAdapter.getData().get(position).isLiked();
 
         /*show popup*/
-        new XPopup.Builder(context).asCustom(imageViewPopup).show();
+        new XPopup.Builder(context)
+                .asCustom(imageViewPopup).show();
     }
 
     /*liking a post*/

@@ -6,12 +6,14 @@
 
 package com.soshoplus.lite.feedHolders;
 
+import android.text.util.Linkify;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.google.android.material.button.MaterialButton;
+import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.postsfeed.post;
 
@@ -21,6 +23,8 @@ import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.linkify.LinkifyPlugin;
 
 public class MapPost extends BaseItemProvider<post> {
 
@@ -28,6 +32,7 @@ public class MapPost extends BaseItemProvider<post> {
 
     ImageView profile_pic;
     MaterialButton like;
+    SocialTextView post_contents;
 
     @Override
     public int getItemViewType() {
@@ -57,8 +62,14 @@ public class MapPost extends BaseItemProvider<post> {
 
         baseViewHolder.setText(R.id.location_content, post.getPostMap());
 
+        Markwon markwon = Markwon.builder(getContext())
+                .usePlugin(LinkifyPlugin.create(
+                        Linkify.EMAIL_ADDRESSES | Linkify.PHONE_NUMBERS | Linkify.WEB_URLS
+                ))
+                .build();
+
         if (!post.getPostTextAPI().isEmpty()) {
-            baseViewHolder.setText(R.id.post_contents, post.getOrginaltext());
+            markwon.setMarkdown(post_contents, post.getPostTextAPI());
         } else {
             baseViewHolder.setGone(R.id.post_contents, true);
         }

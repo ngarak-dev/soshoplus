@@ -66,7 +66,8 @@ public class timelineFeedAdapter extends BaseProviderMultiAdapter<post> implemen
 
         addChildClickViewIds(R.id.like_btn, R.id.post_option, R.id.profile_pic,
                 R.id.post_image, R.id.shared_post_image, R.id.article_thumbnail,
-                R.id.post_contents, R.id.comment_btn);
+                R.id.post_contents, R.id.comment_btn, R.id.coloured_post_text,
+                R.id.article_title, R.id.article_description);
     }
 
     @Override

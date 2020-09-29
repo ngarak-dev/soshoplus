@@ -23,8 +23,8 @@ android {
         applicationId 'com.soshoplus.lite'
         minSdkVersion 21
         targetSdkVersion 30
-        versionName "v0.12-beta"
-        versionCode 3
+        versionName "v0.13-beta"
+        versionCode 4
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "server_key", server_keyProperties['server_key'])
@@ -63,6 +63,10 @@ android {
         }
     }
 
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
+    }
 }
 
 dependencies {
@@ -79,7 +83,7 @@ dependencies {
     /*Base Adapter Helper*/
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
     //XPopUp
-    implementation 'com.lxj:xpopup:2.0.8'
+    implementation 'com.lxj:xpopup:2.1.4'
     //Retrofit Client
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -121,6 +125,16 @@ dependencies {
     /*time ago*/
     implementation project(path: ':time_ago')
     implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    /*marking bold, italic, stroke */
+    implementation "io.noties.markwon:core:4.6.0"
+    implementation "io.noties.markwon:editor:4.6.0"
+    implementation "io.noties.markwon:html:4.6.0"
+    implementation "io.noties.markwon:simple-ext:4.6.0"
+    implementation "io.noties.markwon:ext-strikethrough:4.6.0"
+    implementation "io.noties.markwon:linkify:4.6.0"
+    implementation "io.noties.markwon:image-coil:4.6.0"
+    implementation "io.noties.markwon:syntax-highlight:4.6.0"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

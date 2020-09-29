@@ -35,7 +35,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.databinding.ActivityAudioRecorderPostBinding;
-import com.soshoplus.lite.utils.constants;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.utils.LogPrintUtils;
 import dev.utils.app.permission.PermissionUtils;
 import me.ngarak.recorder.OnRecordListener;
@@ -68,6 +68,8 @@ public class audioRecorderPost extends AppCompatActivity {
     private int currentWindow = 0;
     private long playbackPosition = 0;
 
+    private static String accessToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,8 @@ public class audioRecorderPost extends AppCompatActivity {
         setContentView(view);
 
         permissionRequest();
+
+        accessToken = SecurePreferences.getStringValue(audioRecorderPost.this, "accessToken", "0");
 
         if (PermissionUtils.isGranted(Manifest.permission.RECORD_AUDIO)) {
             binding.recordButton.setEnabled(true);
@@ -208,7 +212,7 @@ public class audioRecorderPost extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("https://soshoplus.com/api/new_post?access_token=" + constants.accessToken)
+                .url("https://soshoplus.com/api/new_post?access_token=" + accessToken)
                 .method("POST", body)
                 .build();
 

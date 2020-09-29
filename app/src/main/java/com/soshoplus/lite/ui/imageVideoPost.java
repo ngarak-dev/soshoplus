@@ -25,7 +25,6 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.adapters.previewImagesAdapter;
 import com.soshoplus.lite.databinding.ActivityImagePostBinding;
 import com.soshoplus.lite.utils.RedBookPresenter;
-import com.soshoplus.lite.utils.constants;
 import com.ypx.imagepicker.ImagePicker;
 import com.ypx.imagepicker.bean.ImageItem;
 import com.ypx.imagepicker.bean.MimeType;
@@ -40,6 +39,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -59,6 +59,8 @@ public class imageVideoPost extends AppCompatActivity {
     private ActivityImagePostBinding postBinding;
     private BasePopupView popupView;
 
+    private static String accessToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,8 @@ public class imageVideoPost extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         type = bundle.getInt("type");
+
+        accessToken = SecurePreferences.getStringValue(imageVideoPost.this, "accessToken", "0");
 
         popupView = new XPopup.Builder(imageVideoPost.this)
                 .dismissOnBackPressed(false)
@@ -181,7 +185,7 @@ public class imageVideoPost extends AppCompatActivity {
                 .build();
 
         Request request = new Request.Builder()
-                .url("https://soshoplus.com/api/new_post?access_token=" + constants.accessToken)
+                .url("https://soshoplus.com/api/new_post?access_token=" + accessToken)
                 .method("POST", body)
                 .build();
 

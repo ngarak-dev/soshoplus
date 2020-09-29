@@ -6,8 +6,6 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-//Versioning Gradle
-apply plugin: 'me.moallemi.advanced-build-version'
 
 def server_key_PropertiesFile = rootProject.file("server_key.properties")
 def server_keyProperties = new Properties()
@@ -21,29 +19,12 @@ android {
         viewBinding = true
     }
 
-    advancedVersioning {
-        nameOptions {
-            versionMajor 1
-            versionMinor 0
-            versionPatch 1
-            versionBuild 1
-        }
-
-        codeOptions {
-            versionCodeType 'GIT_COMMIT_COUNT'
-            dependsOnTasks 'debug', 'release', 'assemble'
-        }
-    }
-
-    def appVersionName = advancedVersioning.versionName
-    def appVersionCode = advancedVersioning.versionCode
-
     defaultConfig {
         applicationId 'com.soshoplus.lite'
         minSdkVersion 21
         targetSdkVersion 30
-        versionName appVersionName
-        versionCode appVersionCode
+        versionName "v0.12-beta"
+        versionCode 3
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "server_key", server_keyProperties['server_key'])

@@ -21,7 +21,7 @@ public class retrofitInstance {
             retrofit =
                     new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                            .baseUrl(constants.SOSHOPLUS_BASE_URL).build();
+                            .baseUrl("https://soshoplus.com/api/").build();
         }
 
         return retrofit;

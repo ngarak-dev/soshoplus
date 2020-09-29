@@ -25,8 +25,10 @@ import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.models.userprofile.userInfo;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.utils.app.HandlerUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -44,6 +46,10 @@ public class myAccountSettings extends AppCompatActivity {
     private Observable<simpleResponse> simpleResponseObservable;
     private BasePopupView basePopupView;
 
+    private static String userId, timezone, accessToken;
+    private static String fetch_profile_user_data = "user_data";
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +59,12 @@ public class myAccountSettings extends AppCompatActivity {
 
         Glide.with(myAccountSettings.this)
                 .load(R.drawable.circles_loader).into(binding.circleLoader);
+
+        userId = SecurePreferences.getStringValue(myAccountSettings.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(myAccountSettings.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(myAccountSettings.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         binding.backArrow.setOnClickListener(view_ -> {
             onBackPressed();
@@ -76,8 +88,8 @@ public class myAccountSettings extends AppCompatActivity {
 
     /*getting data first*/
     private void getMyInfo() {
-        userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
-                BuildConfig.server_key, constants.fetch_profile_user_data, constants.userId);
+        userInfoObservable = rxJavaQueries.getUserData(accessToken,
+                BuildConfig.server_key, fetch_profile_user_data, userId);
 
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -179,7 +191,7 @@ public class myAccountSettings extends AppCompatActivity {
         /*show progress loader*/
         basePopupView.show();
 
-        simpleResponseObservable = constants.rxJavaQueries.updateUserData(constants.accessToken,
+        simpleResponseObservable = rxJavaQueries.updateUserData(accessToken,
                 BuildConfig.server_key, binding.username.getText().toString(), binding.fName.getText().toString(),
                 binding.lName.getText().toString(), binding.phone.getText().toString(), binding.email.getText().toString(),
                 gender, binding.workingAt.getText().toString(), binding.website.getText().toString(), binding.university.getText().toString(),

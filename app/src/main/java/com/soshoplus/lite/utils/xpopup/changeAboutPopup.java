@@ -23,8 +23,10 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -44,6 +46,9 @@ public class changeAboutPopup extends CenterPopupView {
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     public changeAboutPopup(@NonNull Context context, String about) {
         super(context);
         about_me = about;
@@ -61,6 +66,12 @@ public class changeAboutPopup extends CenterPopupView {
         aboutMe = findViewById(R.id.about_me);
         send_btn = findViewById(R.id.send);
         cancel_btn = findViewById(R.id.cancel);
+
+        userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(getContext(), "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         aboutMe.setText(about_me);
 
@@ -88,7 +99,7 @@ public class changeAboutPopup extends CenterPopupView {
         dismissWith(() -> {
             basePopupView.show();
 
-            simpleResponseObservable = constants.rxJavaQueries.updateUserData(constants.accessToken,
+            simpleResponseObservable = rxJavaQueries.updateUserData(accessToken,
                     BuildConfig.server_key, null, null, null, null,
                     null, null, null, null, null, null, aboutMeText,
                     null, null, null, null, null);

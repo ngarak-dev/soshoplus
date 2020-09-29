@@ -42,7 +42,8 @@ import com.soshoplus.lite.models.postsfeed.post;
 import com.soshoplus.lite.models.postsfeed.postList;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.models.userprofile.userInfo;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.adFullImageViewPopup;
 import com.soshoplus.lite.utils.xpopup.fullImageViewPopup;
 
@@ -53,6 +54,7 @@ import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -89,6 +91,11 @@ public class userProfile extends AppCompatActivity {
     private userPhotosAdapter photosAdapter;
     private ImageLoader imageLoader;
 
+
+    private static String userId, timezone, accessToken;
+    private static String fetch_profile_user_data = "user_data";
+    private queries rxJavaQueries;
+
     /*.....*/
     public static void getInfo(TextView full_name, TextView time_ago, TextView no_likes,
                                TextView no_comments, MaterialButton like, MaterialButton comment) {
@@ -123,6 +130,13 @@ public class userProfile extends AppCompatActivity {
         View view = userProfileBinding.getRoot();
         setContentView(view);
 
+
+        userId = SecurePreferences.getStringValue(userProfile.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(userProfile.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(userProfile.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+
         /*setting up actionbar*/
         setSupportActionBar(userProfileBinding.transToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -153,11 +167,11 @@ public class userProfile extends AppCompatActivity {
     private void getUserProfile() {
 
         if (username == null) {
-            userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
+            userInfoObservable = rxJavaQueries.getUserData(accessToken,
                     BuildConfig.server_key,
                     fetch_profile, user_id);
         } else {
-            userInfoObservable = constants.rxJavaQueries.getUserDataByUsername(constants.accessToken,
+            userInfoObservable = rxJavaQueries.getUserDataByUsername(accessToken,
                     BuildConfig.server_key,
                     fetch_profile, username);
         }
@@ -346,7 +360,7 @@ public class userProfile extends AppCompatActivity {
     private void followUser(MaterialButton follow,
                             ProgressBar progressBar_follow) {
 
-        followUnFollowObservable = constants.rxJavaQueries.followUser(constants.accessToken,
+        followUnFollowObservable = rxJavaQueries.followUser(accessToken,
                 BuildConfig.server_key, user_id);
 
         follow.setText(null);
@@ -468,7 +482,7 @@ public class userProfile extends AppCompatActivity {
     }
 
     private void blockUser() {
-        blockUnblockObservable = constants.rxJavaQueries.blockUser(constants.accessToken,
+        blockUnblockObservable = rxJavaQueries.blockUser(accessToken,
                 BuildConfig.server_key, user_id, block_action);
 
         blockUnblockObservable.subscribeOn(Schedulers.io())
@@ -537,7 +551,7 @@ public class userProfile extends AppCompatActivity {
     }
 
     private void getUserPhotos() {
-        postListObservable = constants.rxJavaQueries.getUserImages(constants.accessToken,
+        postListObservable = rxJavaQueries.getUserImages(accessToken,
                 BuildConfig.server_key, user_id, "photos");
 
         postListObservable.subscribeOn(Schedulers.io())

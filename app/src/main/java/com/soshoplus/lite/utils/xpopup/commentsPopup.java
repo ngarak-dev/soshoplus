@@ -36,8 +36,10 @@ import com.soshoplus.lite.models.postsfeed.commentsList;
 import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.ui.hashTagsPosts;
 import com.soshoplus.lite.ui.user_profile.userProfile;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import dev.DevUtils;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -62,6 +64,9 @@ public class commentsPopup extends FullScreenPopupView {
     private Observable<simpleResponse> simpleResponseObservable;
     private commentsAdapter commentsAdapter, replyCommentAdapter;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     public commentsPopup(@NonNull Context context, String Id, String _type) {
         super(context);
         _id = Id;
@@ -76,8 +81,6 @@ public class commentsPopup extends FullScreenPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
-
-
         MaterialButton back = findViewById(R.id.back_arrow);
         circle_loader = findViewById(R.id.circle_loader);
         commentsRv = findViewById(R.id.comments_rv);
@@ -87,6 +90,12 @@ public class commentsPopup extends FullScreenPopupView {
         no_comment_tv = findViewById(R.id.no_comments_tv);
 
         Glide.with(getContext()).load(R.drawable.circles_loader).into(circle_loader);
+
+        userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(getContext(), "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         back.setOnClickListener(view -> smartDismiss());
 
@@ -107,7 +116,7 @@ public class commentsPopup extends FullScreenPopupView {
 
     private void fetchComments() {
         if (type.equals("fetch_comments")) {
-            commentsListObservable = constants.rxJavaQueries.getPostComments(constants.accessToken, BuildConfig.server_key, type, _id);
+            commentsListObservable = rxJavaQueries.getPostComments(accessToken, BuildConfig.server_key, type, _id);
             commentsListObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<commentsList>() {
@@ -183,7 +192,7 @@ public class commentsPopup extends FullScreenPopupView {
                         }
                     });
         } else {
-            commentsListObservable = constants.rxJavaQueries.commentsActions(constants.accessToken, BuildConfig.server_key,
+            commentsListObservable = rxJavaQueries.commentsActions(accessToken, BuildConfig.server_key,
                     type, _id, null, null);
             commentsListObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -261,7 +270,7 @@ public class commentsPopup extends FullScreenPopupView {
     }
 
     private void likeComment(String comment_id, MaterialButton like) {
-        simpleResponseObservable = constants.rxJavaQueries.simpleCommentActions(constants.accessToken,
+        simpleResponseObservable = rxJavaQueries.simpleCommentActions(accessToken,
                 BuildConfig.server_key, "comment_like", comment_id, null, null);
 
         simpleResponseObservable.subscribeOn(Schedulers.io())
@@ -360,7 +369,7 @@ public class commentsPopup extends FullScreenPopupView {
         addComment.setEnabled(false);
         sendComment.setEnabled(false);
 
-        simpleResponseObservable = constants.rxJavaQueries.simpleCommentActions(constants.accessToken, BuildConfig.server_key, "create", null, _id,
+        simpleResponseObservable = rxJavaQueries.simpleCommentActions(accessToken, BuildConfig.server_key, "create", null, _id,
                 addComment.getText().toString());
 
         simpleResponseObservable.subscribeOn(Schedulers.io())

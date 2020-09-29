@@ -25,7 +25,8 @@ import com.soshoplus.lite.databinding.ActivityMyProfileBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.ui.auth.signIn;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.changePasswordPopup;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
@@ -43,8 +44,11 @@ public class myProfile extends AppCompatActivity {
     private ActivityMyProfileBinding binding;
     private simpleProfileCalls calls;
 
-    private Observable<com.soshoplus.lite.models.simpleResponse> simpleResponse;
+    private Observable<simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,12 @@ public class myProfile extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         new Handler().postDelayed(this::loadProfile, 500);
+
+        userId = SecurePreferences.getStringValue(myProfile.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(myProfile.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(myProfile.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         /*initializing loading dialog*/
         basePopupView = new XPopup.Builder(myProfile.this)
@@ -88,7 +98,7 @@ public class myProfile extends AppCompatActivity {
         /*show loading dialog*/
         basePopupView.show();
 
-        simpleResponse = constants.rxJavaQueries.logOutUser(constants.accessToken, BuildConfig.server_key, constants.userId);
+        simpleResponse = rxJavaQueries.logOutUser(accessToken, BuildConfig.server_key, userId);
 
         simpleResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

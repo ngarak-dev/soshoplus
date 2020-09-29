@@ -23,7 +23,8 @@ import com.soshoplus.lite.databinding.ActivitySigninBinding;
 import com.soshoplus.lite.models.accessToken;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.ui.soshoTimeline;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -46,6 +47,8 @@ public class signIn extends AppCompatActivity {
     private BasePopupView popupView;
     private KSnack kSnack;
 
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +57,9 @@ public class signIn extends AppCompatActivity {
         setContentView(view);
 
         Glide.with(signIn.this).load(R.drawable.front_page).into(signInBinding.frontGif);
+
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         /*initializing loading dialog*/
         popupView = new XPopup.Builder(signIn.this)
@@ -110,7 +116,7 @@ public class signIn extends AppCompatActivity {
         String username = Objects.requireNonNull(signInBinding.username.getText()).toString();
         String password = Objects.requireNonNull(signInBinding.password.getText()).toString();
 
-        tokenObservable = constants.rxJavaQueries.signIn(BuildConfig.server_key, username
+        tokenObservable = rxJavaQueries.signIn(BuildConfig.server_key, username
                 , password);
 
         tokenObservable.subscribeOn(Schedulers.io())

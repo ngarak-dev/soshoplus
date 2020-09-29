@@ -28,10 +28,12 @@ import com.soshoplus.lite.models.groups.groupInfo;
 import com.soshoplus.lite.models.groups.groupList;
 import com.soshoplus.lite.models.groups.join.join_unjoin;
 import com.soshoplus.lite.ui.groups.viewGroup;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import java.util.List;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -52,20 +54,27 @@ public class recommendedGroupsCalls {
 
     /*JOIN GROUP*/
     private Observable<join_unjoin> joinUnjoinObservable;
-
-    /*......*/
     private KSnack snack;
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     public recommendedGroupsCalls(Context context) {
         this.context = context;
         /*initializing snack*/
         snack = new KSnack((FragmentActivity) context);
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     public void getRecommends(RecyclerView suggestedGroupsList, ImageView allSetUpImg,
                               TextView allSetUpText, ProgressBar progressBarSuggested) {
 
-        groupListObservable = constants.rxJavaQueries.getRecommended(constants.accessToken,
+        groupListObservable = rxJavaQueries.getRecommended(accessToken,
                 BuildConfig.server_key, fetch_recommended, "5");
         groupListObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,7 +125,7 @@ public class recommendedGroupsCalls {
                                             .setVisibility(View.VISIBLE);
 
                                     joinUnjoinObservable =
-                                            constants.rxJavaQueries.joinGroup(constants.accessToken, BuildConfig.server_key,
+                                            rxJavaQueries.joinGroup(accessToken, BuildConfig.server_key,
                                                     suggested_groups_adapter.getData().get(position).getGroupId());
 
                                     joinUnjoinObservable.subscribeOn(Schedulers.io())

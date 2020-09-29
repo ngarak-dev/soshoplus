@@ -24,11 +24,13 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.databinding.ActivityGeneralAccountBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.userprofile.userInfo;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.changeAboutPopup;
 import com.soshoplus.lite.utils.xpopup.changePasswordPopup;
 import com.soshoplus.lite.utils.xpopup.socialLinksPopup;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -46,6 +48,10 @@ public class generalAccount extends AppCompatActivity {
 
     private Observable<userInfo> userInfoObservable;
 
+    private static String userId, timezone, accessToken;
+    private static String fetch_profile_user_data = "user_data";
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,12 @@ public class generalAccount extends AppCompatActivity {
         binding.backArrow.setOnClickListener(view_ -> {
             onBackPressed();
         });
+
+        userId = SecurePreferences.getStringValue(generalAccount.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(generalAccount.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(generalAccount.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         /*initializing loading dialog*/
         basePopupView = new XPopup.Builder(generalAccount.this)
@@ -125,8 +137,8 @@ public class generalAccount extends AppCompatActivity {
     }
 
     private void gettingAbout() {
-        userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
-                BuildConfig.server_key, constants.fetch_profile_user_data, constants.userId);
+        userInfoObservable = rxJavaQueries.getUserData(accessToken,
+                BuildConfig.server_key, fetch_profile_user_data, userId);
 
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -179,8 +191,8 @@ public class generalAccount extends AppCompatActivity {
     }
 
     private void gettingSocialLinks() {
-        userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
-                BuildConfig.server_key, constants.fetch_profile_user_data, constants.userId);
+        userInfoObservable = rxJavaQueries.getUserData(accessToken,
+                BuildConfig.server_key, fetch_profile_user_data, userId);
 
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -29,9 +29,11 @@ import com.soshoplus.lite.calls.groupCalls;
 import com.soshoplus.lite.databinding.ActivityViewGroupBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.groups.join.join_unjoin;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.friendsToAddPopup;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -54,6 +56,9 @@ public class viewGroup extends AppCompatActivity {
     private Observable<join_unjoin> unJoinObservable;
     private KSnack snack;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +73,13 @@ public class viewGroup extends AppCompatActivity {
 
         /*initializing snack*/
         snack = new KSnack(this);
+
+        userId = SecurePreferences.getStringValue(viewGroup.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(viewGroup.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(viewGroup.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+
 
         Intent intent = getIntent();
         group_id = intent.getStringExtra("group_id");
@@ -165,7 +177,7 @@ public class viewGroup extends AppCompatActivity {
         snack.show();
 
         unJoinObservable =
-                constants.rxJavaQueries.joinGroup(constants.accessToken, BuildConfig.server_key, group_id);
+                rxJavaQueries.joinGroup(accessToken, BuildConfig.server_key, group_id);
 
         unJoinObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

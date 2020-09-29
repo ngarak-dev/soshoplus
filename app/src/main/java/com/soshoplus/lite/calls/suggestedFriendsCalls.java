@@ -23,9 +23,11 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.adapters.suggestedFriendsAdapter;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.friends.suggested.suggestedList;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -37,13 +39,20 @@ public class suggestedFriendsCalls {
 
     private final static String TAG = "Suggested friends Calls";
     private static String suggested_friends = "users";
-    ;
-    /*context*/
     private Context context;
     private Observable<suggestedList> suggestedListObservable;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     public suggestedFriendsCalls(Context context) {
         this.context = context;
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+         /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     public void getSuggestedFriends(RecyclerView suggestedFriendsList,
@@ -55,7 +64,7 @@ public class suggestedFriendsCalls {
         progressBarSuggested.setVisibility(View.VISIBLE);
 
         suggestedListObservable =
-                constants.rxJavaQueries.getPeopleYouMayKnow(constants.accessToken, BuildConfig.server_key,
+                rxJavaQueries.getPeopleYouMayKnow(accessToken, BuildConfig.server_key,
                         suggested_friends, "10");
 
         suggestedListObservable.subscribeOn(Schedulers.io())

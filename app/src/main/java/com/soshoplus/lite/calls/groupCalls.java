@@ -45,7 +45,8 @@ import com.soshoplus.lite.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.ui.hashTagsPosts;
 import com.soshoplus.lite.ui.user_profile.userProfile;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.adGroupPopup;
 import com.soshoplus.lite.utils.xpopup.imageGroupPopup;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
@@ -58,6 +59,7 @@ import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -73,10 +75,8 @@ public class groupCalls {
     private static int totalItems;
     private static String lastItemID;
     private static String share_post_on_timeline = "share_post_on_timeline";
-    /*........*/
     private static String fullName, timeAgo, noLikes, noComments;
     private static boolean isLiked;
-    /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
     private KSnack kSnack;
@@ -93,9 +93,18 @@ public class groupCalls {
     /*......*/
     private Observable<postAction> postActionObservable;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     public groupCalls(Context context) {
         this.context = context;
         kSnack = new KSnack((FragmentActivity) context);
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     /*AD info*/
@@ -135,7 +144,7 @@ public class groupCalls {
                              TextView noMembers, TextView groupPrivacy, TextView groupCategory, String group_id,
                              String no_members, MaterialButton joinBtn) {
 
-        groupInfoObservable = constants.rxJavaQueries.getGroupInfo(constants.accessToken, BuildConfig.server_key, group_id);
+        groupInfoObservable = rxJavaQueries.getGroupInfo(accessToken, BuildConfig.server_key, group_id);
 
         groupInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,7 +207,7 @@ public class groupCalls {
 
     public void getGroupPosts(RecyclerView groupPostList, String group_id, SmartRefreshLayout refreshPostsLayout) {
 
-        postListObserve = constants.rxJavaQueries.getGroupPosts(constants.accessToken, BuildConfig.server_key,
+        postListObserve = rxJavaQueries.getGroupPosts(accessToken, BuildConfig.server_key,
                 group_id, get_group_posts, "5", firstData);
 
         postListObserve.subscribeOn(Schedulers.io())
@@ -513,7 +522,7 @@ public class groupCalls {
         /*notify adapter*/
 //        feedAdapter.notifyItemChanged(position);
 
-        like_dislikeObservable = constants.rxJavaQueries.like_dislikePost(constants.accessToken,
+        like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
                 BuildConfig.server_key, postId, "like");
         like_dislikeObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -563,7 +572,7 @@ public class groupCalls {
 
     /*report post*/
     public void reportPOST(String postId) {
-        postActionObservable = constants.rxJavaQueries.postAction(constants.accessToken,
+        postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "report");
 
         postActionObservable.subscribeOn(Schedulers.io())
@@ -606,7 +615,7 @@ public class groupCalls {
     /*save post*/
     private void savePOST(String postId) {
 
-        postActionObservable = constants.rxJavaQueries.postAction(constants.accessToken,
+        postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "save");
 
         postActionObservable.subscribeOn(Schedulers.io())

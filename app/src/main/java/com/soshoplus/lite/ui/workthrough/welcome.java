@@ -24,8 +24,10 @@ import com.soshoplus.lite.databinding.ActivityWelcomeBinding;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
 import com.soshoplus.lite.ui.soshoTimeline;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -41,6 +43,9 @@ public class welcome extends AppCompatActivity {
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,12 @@ public class welcome extends AppCompatActivity {
                 .dismissOnTouchOutside(false)
                 .autoDismiss(false)
                 .asLoading();
+
+        userId = SecurePreferences.getStringValue(welcome.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(welcome.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(welcome.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         binding.toSecondStep.setOnClickListener(view_ -> {
             if (binding.fName.getText().toString().isEmpty()) {
@@ -115,7 +126,7 @@ public class welcome extends AppCompatActivity {
         /*show progress loader*/
         basePopupView.show();
 
-        simpleResponseObservable = constants.rxJavaQueries.updateUserData(constants.accessToken,
+        simpleResponseObservable = rxJavaQueries.updateUserData(accessToken,
                 BuildConfig.server_key, null, binding.fName.getText().toString(),
                 binding.lName.getText().toString(), null, null,
                 gender, binding.workingAt.getText().toString(), binding.website.getText().toString(), binding.university.getText().toString(),

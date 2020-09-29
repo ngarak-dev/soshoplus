@@ -24,7 +24,8 @@ import com.soshoplus.lite.databinding.ActivitySignupBinding;
 import com.soshoplus.lite.models.accessToken;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.ui.workthrough.welcome;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -47,6 +48,8 @@ public class signUp extends AppCompatActivity {
     private BasePopupView popupView;
     private KSnack kSnack;
 
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,9 @@ public class signUp extends AppCompatActivity {
         setContentView(view);
 
         Glide.with(signUp.this).load(R.drawable.front_page).into(signUpBinding.frontGif);
+
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         /*initializing loading dialog*/
         popupView = new XPopup.Builder(signUp.this)
@@ -125,7 +131,7 @@ public class signUp extends AppCompatActivity {
 
         //query
         tokenObservable =
-                constants.rxJavaQueries.createAccount(BuildConfig.server_key, email
+                rxJavaQueries.createAccount(BuildConfig.server_key, email
                         , username,
                         password, re_password, phone_num);
 

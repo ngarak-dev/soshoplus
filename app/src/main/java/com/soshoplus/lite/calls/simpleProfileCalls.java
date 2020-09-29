@@ -15,12 +15,14 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.userprofile.userInfo;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -32,20 +34,27 @@ public class simpleProfileCalls {
 
     private final static String TAG = "Simple Calls";
     private static String fetch_profile = "user_data";
-    /*context*/
     private Context context;
-    /*........*/
     private Observable<userInfo> userInfoObservable;
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     public simpleProfileCalls(Context context) {
         this.context = context;
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     public void getProfile(ImageView profilePic, TextView fullName, TextView userEmail) {
 
-        userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
+        userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
-                fetch_profile, constants.userId);
+                fetch_profile, userId);
 
         userInfoObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

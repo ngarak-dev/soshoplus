@@ -70,5 +70,3 @@
 #XPOPUP
 -dontwarn com.lxj.xpopup.widget.**
 -keep class com.lxj.xpopup.widget.**{*;}
-
--keep class com.soshoplus.lite.utils.constants

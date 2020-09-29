@@ -21,8 +21,10 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -37,8 +39,9 @@ public class changePasswordPopup extends CenterPopupView {
     private TextInputEditText new_pass;
     private MaterialButton send_btn;
     private BasePopupView popupView;
-
     private Observable<simpleResponse> simpleResponse;
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     public changePasswordPopup(@NonNull Context context) {
         super(context);
@@ -60,6 +63,12 @@ public class changePasswordPopup extends CenterPopupView {
                 .autoDismiss(false)
                 .asLoading("Updating..");
 
+        userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(getContext(), "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+
         old_pass = findViewById(R.id.old_password);
         new_pass = findViewById(R.id.new_password);
         send_btn = findViewById(R.id.send);
@@ -80,8 +89,8 @@ public class changePasswordPopup extends CenterPopupView {
     private void sendChangePassword(String oldPassword, String newPassword) {
         dismissWith(() -> popupView.show());
 
-        simpleResponse = constants.rxJavaQueries.changePassword(constants.accessToken, BuildConfig.server_key,
-                oldPassword, newPassword, constants.userId);
+        simpleResponse = rxJavaQueries.changePassword(accessToken, BuildConfig.server_key,
+                oldPassword, newPassword, userId);
 
         simpleResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

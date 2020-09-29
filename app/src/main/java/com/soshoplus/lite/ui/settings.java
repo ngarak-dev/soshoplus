@@ -32,7 +32,8 @@ import com.soshoplus.lite.ui.settings_pref.invitationsLinks;
 import com.soshoplus.lite.ui.settings_pref.myInformation;
 import com.soshoplus.lite.ui.settings_pref.notifications;
 import com.soshoplus.lite.ui.settings_pref.privacy;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import de.adorsys.android.securestoragelibrary.SecureStorageException;
@@ -52,6 +53,10 @@ public class settings extends AppCompatActivity {
     private Observable<simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
 
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +74,12 @@ public class settings extends AppCompatActivity {
         binding.backArrow.setOnClickListener(view_ -> {
             onBackPressed();
         });
+
+        userId = SecurePreferences.getStringValue(settings.this, "userId", "0");
+        timezone = SecurePreferences.getStringValue(settings.this, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(settings.this, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, strings);
@@ -117,7 +128,7 @@ public class settings extends AppCompatActivity {
                 /*show loading dialog*/
                 basePopupView.show();
 
-                simpleResponse = constants.rxJavaQueries.logOutUser(constants.accessToken, BuildConfig.server_key, constants.userId);
+                simpleResponse = rxJavaQueries.logOutUser(accessToken, BuildConfig.server_key, userId);
                 simpleResponse.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<simpleResponse>() {

@@ -25,12 +25,14 @@ import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.follow_unfollow;
 import com.soshoplus.lite.models.userprofile.userInfo;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -47,13 +49,21 @@ public class previewProfileCalls {
     private static String followPrivacy;
     private Context context;
     private Observable<userInfo> userInfoObservable;
-    /*.......*/
     private KSnack snack;
     private Observable<follow_unfollow> followUnfollowObservable;
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     /*constructor*/
     public previewProfileCalls(Context context) {
         this.context = context;
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     public void previewProfile(ImageView cover_photo, ImageView profile_pic,
@@ -62,7 +72,7 @@ public class previewProfileCalls {
                                MaterialButton follow, TextView about, ProgressBar progressBar_follow,
                                String user_id, TextView follows_me) {
 
-        userInfoObservable = constants.rxJavaQueries.getUserData(constants.accessToken,
+        userInfoObservable = rxJavaQueries.getUserData(accessToken,
                 BuildConfig.server_key,
                 fetch_profile, user_id);
 
@@ -210,7 +220,7 @@ public class previewProfileCalls {
 
     private void followUser(MaterialButton follow, ProgressBar progressBar_follow, String user_id) {
 
-        followUnfollowObservable = constants.rxJavaQueries.followUser(constants.accessToken,
+        followUnfollowObservable = rxJavaQueries.followUser(accessToken,
                 BuildConfig.server_key, user_id);
 
         /*set text null

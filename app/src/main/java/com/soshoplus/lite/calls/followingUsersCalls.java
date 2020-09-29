@@ -24,10 +24,12 @@ import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.friends.following;
 import com.soshoplus.lite.models.friends.friends;
 import com.soshoplus.lite.ui.user_profile.userProfile;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
 import java.util.List;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -43,8 +45,17 @@ public class followingUsersCalls {
     private Observable<friends> friendsObservable;
     private List<following> followingList = null;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     public followingUsersCalls(Context context) {
         this.context = context;
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     public void getFollowing(RecyclerView friendsFollowingList, TextView followingTitle,
@@ -53,8 +64,8 @@ public class followingUsersCalls {
         /*show progressbar*/
         progressBarFollowing.setVisibility(View.VISIBLE);
 
-        friendsObservable = constants.rxJavaQueries.getFriendsFollowing(constants.accessToken,
-                BuildConfig.server_key, friends_following, constants.userId, "8");
+        friendsObservable = rxJavaQueries.getFriendsFollowing(accessToken,
+                BuildConfig.server_key, friends_following, userId, "8");
         friendsObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<friends>() {

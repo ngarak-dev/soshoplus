@@ -23,8 +23,10 @@ import com.soshoplus.lite.BuildConfig;
 import com.soshoplus.lite.R;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.simpleResponse;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -47,6 +49,9 @@ public class socialLinksPopup extends CenterPopupView {
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
 
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
+
     public socialLinksPopup(@NonNull Context context, String facebook, String twitter,
                             String linkedin, String instagram, String youtube) {
         super(context);
@@ -65,6 +70,12 @@ public class socialLinksPopup extends CenterPopupView {
     @Override
     protected void onCreate() {
         super.onCreate();
+
+        userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(getContext(), "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
 
         facebook_ = findViewById(R.id.facebook);
         twitter_ = findViewById(R.id.twitter);
@@ -101,7 +112,7 @@ public class socialLinksPopup extends CenterPopupView {
         dismissWith(() -> {
             basePopupView.show();
 
-            simpleResponseObservable = constants.rxJavaQueries.updateUserData(constants.accessToken,
+            simpleResponseObservable = rxJavaQueries.updateUserData(accessToken,
                     BuildConfig.server_key, null, null, null, null,
                     null, null, null, null, null, null, null,
                     facebook_.getText().toString(), twitter_.getText().toString(), linkedin_.getText().toString(),

@@ -6,6 +6,7 @@
 
 package com.soshoplus.lite.utils.xpopup;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
@@ -25,14 +26,17 @@ import com.soshoplus.lite.adapters.friendsToAddToGroupAdapter;
 import com.soshoplus.lite.models.apiErrors;
 import com.soshoplus.lite.models.friends.friends;
 import com.soshoplus.lite.models.groups.addingUser;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 
+import de.adorsys.android.securestoragelibrary.SecurePreferences;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+@SuppressLint("ViewConstructor")
 public class friendsToAddPopup extends FullScreenPopupView {
 
     private static String TAG = "Friends popup";
@@ -40,10 +44,11 @@ public class friendsToAddPopup extends FullScreenPopupView {
     private static String friends_list = "followers,following";
     private Observable<friends> friendsObservable;
     private KSnack snack;
-    /*......*/
     private RecyclerView friendsRV;
-    /*.........*/
     private Observable<addingUser> addingUserObservable;
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     public friendsToAddPopup(@NonNull Context context, String groupId) {
         super(context);
@@ -62,6 +67,13 @@ public class friendsToAddPopup extends FullScreenPopupView {
         friendsRV = findViewById(R.id.friends_to_add_list);
         MaterialButton back = findViewById(R.id.back_arrow);
 
+        userId = SecurePreferences.getStringValue(getContext(), "userId", "0");
+        timezone = SecurePreferences.getStringValue(getContext(), "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(getContext(), "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
+
+
         /*get friendsToAdd*/
         new Handler().postDelayed(this::geFriendsToAdd, 1000);
 
@@ -72,8 +84,8 @@ public class friendsToAddPopup extends FullScreenPopupView {
 
     private void geFriendsToAdd() {
 
-        friendsObservable = constants.rxJavaQueries.getFriendsFollowing(constants.accessToken,
-                BuildConfig.server_key, friends_list, constants.userId, "12");
+        friendsObservable = rxJavaQueries.getFriendsFollowing(accessToken,
+                BuildConfig.server_key, friends_list, userId, "12");
 
         friendsObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -118,7 +130,7 @@ public class friendsToAddPopup extends FullScreenPopupView {
                     }
 
                     private void addUserToGroup(String userId, MaterialButton addToGroup) {
-                        addingUserObservable = constants.rxJavaQueries.addMemberToGroup(constants.accessToken, BuildConfig.server_key,
+                        addingUserObservable = rxJavaQueries.addMemberToGroup(accessToken, BuildConfig.server_key,
                                 group_id, userId);
 
                         addingUserObservable.subscribeOn(Schedulers.io())

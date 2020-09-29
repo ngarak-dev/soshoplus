@@ -46,7 +46,8 @@ import com.soshoplus.lite.models.postsfeed.reactions.like_dislike;
 import com.soshoplus.lite.models.postsfeed.sharepost.shareResponse;
 import com.soshoplus.lite.models.userprofile.userData;
 import com.soshoplus.lite.ui.auth.signIn;
-import com.soshoplus.lite.utils.constants;
+import com.soshoplus.lite.utils.queries;
+import com.soshoplus.lite.utils.retrofitInstance;
 import com.soshoplus.lite.utils.xpopup.adHashPopup;
 import com.soshoplus.lite.utils.xpopup.imageHashPopup;
 import com.soshoplus.lite.utils.xpopup.previewProfilePopup;
@@ -71,10 +72,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class hashTagsPostsCalls {
     private final static String TAG = "hashtags Calls";
     private static String share_post_on_timeline = "share_post_on_timeline";
-    /*........*/
     private static String fullName, timeAgo, noLikes, noComments;
     private static boolean isLiked;
-    /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
     private Context context;
@@ -87,14 +86,21 @@ public class hashTagsPostsCalls {
     private Observable<like_dislike> like_dislikeObservable;
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
-    /*.......*/
     private KSnack snack;
-    /*......*/
     private Observable<postAction> postActionObservable;
+
+    private static String userId, timezone, accessToken;
+    private queries rxJavaQueries;
 
     /*constructor*/
     public hashTagsPostsCalls(Context context) {
         this.context = context;
+
+        userId = SecurePreferences.getStringValue(context, "userId", "0");
+        timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
+        accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
+        /*initializing query*/
+        rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 
     /*AD info*/
@@ -168,7 +174,7 @@ public class hashTagsPostsCalls {
                            SmartRefreshLayout refreshPostsLayout, String type, String hashTag) {
 
         postListObserve =
-                constants.rxJavaQueries.getTimelinePosts(constants.accessToken,
+                rxJavaQueries.getTimelinePosts(accessToken,
                         BuildConfig.server_key, type, hashTag, null, null);
 
         postListObserve.subscribeOn(Schedulers.io())
@@ -414,7 +420,7 @@ public class hashTagsPostsCalls {
         /*notify adapter*/
 //        feedAdapter.notifyItemChanged(position);
 
-        like_dislikeObservable = constants.rxJavaQueries.like_dislikePost(constants.accessToken,
+        like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
                 BuildConfig.server_key, postId, "like");
         like_dislikeObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -463,9 +469,9 @@ public class hashTagsPostsCalls {
         snack.show();
 
         shareResponseObservable =
-                constants.rxJavaQueries.sharePostInTimeline(constants.accessToken, BuildConfig.server_key,
+                rxJavaQueries.sharePostInTimeline(accessToken, BuildConfig.server_key,
                         share_post_on_timeline,
-                        postId, constants.userId, null);
+                        postId, userId, null);
         shareResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<shareResponse>() {
@@ -541,7 +547,7 @@ public class hashTagsPostsCalls {
 
     /*report post*/
     public void reportPOST(String postId) {
-        postActionObservable = constants.rxJavaQueries.postAction(constants.accessToken,
+        postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "report");
 
         postActionObservable.subscribeOn(Schedulers.io())
@@ -584,7 +590,7 @@ public class hashTagsPostsCalls {
     /*save post*/
     private void savePOST(String postId) {
 
-        postActionObservable = constants.rxJavaQueries.postAction(constants.accessToken,
+        postActionObservable = rxJavaQueries.postAction(accessToken,
                 BuildConfig.server_key, postId, "save");
 
         postActionObservable.subscribeOn(Schedulers.io())

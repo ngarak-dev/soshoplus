@@ -39,10 +39,9 @@ public class suggestedFriendsCalls {
 
     private final static String TAG = "Suggested friends Calls";
     private static String suggested_friends = "users";
+    private static String userId, timezone, accessToken;
     private Context context;
     private Observable<suggestedList> suggestedListObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public suggestedFriendsCalls(Context context) {
@@ -51,7 +50,7 @@ public class suggestedFriendsCalls {
         userId = SecurePreferences.getStringValue(context, "userId", "0");
         timezone = SecurePreferences.getStringValue(context, "timezone", "UTC");
         accessToken = SecurePreferences.getStringValue(context, "accessToken", "0");
-         /*initializing query*/
+        /*initializing query*/
         rxJavaQueries = retrofitInstance.getInstRxJava().create(queries.class);
     }
 

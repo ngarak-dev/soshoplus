@@ -41,13 +41,12 @@ public class myAccountSettings extends AppCompatActivity {
 
     private static String TAG = "My Account Settings";
     private static String gender;
+    private static String userId, timezone, accessToken;
+    private static String fetch_profile_user_data = "user_data";
     private ActivityMyAccountSettingsBinding binding;
     private Observable<userInfo> userInfoObservable;
     private Observable<simpleResponse> simpleResponseObservable;
     private BasePopupView basePopupView;
-
-    private static String userId, timezone, accessToken;
-    private static String fetch_profile_user_data = "user_data";
     private queries rxJavaQueries;
 
     @Override

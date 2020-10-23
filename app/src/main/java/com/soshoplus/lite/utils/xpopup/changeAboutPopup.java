@@ -38,15 +38,12 @@ public class changeAboutPopup extends CenterPopupView {
 
     private static String TAG = "Change about me popup";
     private static String about_me;
-
+    private static String userId, timezone, accessToken;
     private TextInputEditText aboutMe;
     private MaterialButton send_btn;
     private MaterialButton cancel_btn;
-
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public changeAboutPopup(@NonNull Context context, String about) {

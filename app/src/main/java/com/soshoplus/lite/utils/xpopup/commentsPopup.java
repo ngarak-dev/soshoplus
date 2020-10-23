@@ -54,17 +54,15 @@ public class commentsPopup extends FullScreenPopupView {
     private static String type;
 
     private static String _id;
+    private static String userId, timezone, accessToken;
     private RecyclerView commentsRv;
     private SocialEditText addComment;
     private MaterialButton sendComment;
     private ImageView circle_loader;
     private MaterialTextView no_comment_tv;
-
     private Observable<commentsList> commentsListObservable;
     private Observable<simpleResponse> simpleResponseObservable;
     private commentsAdapter commentsAdapter, replyCommentAdapter;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public commentsPopup(@NonNull Context context, String Id, String _type) {

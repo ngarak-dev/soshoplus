@@ -37,19 +37,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class socialLinksPopup extends CenterPopupView {
 
     private static String TAG = "Social Links popup";
+    private static String userId, timezone, accessToken;
     private final String facebook;
     private final String twitter;
     private final String linkedin;
     private final String instagram;
     private final String youtube;
-
     private MaterialButton send_btn, cancel_btn;
     private TextInputEditText facebook_, twitter_, linkedin_, instagram_, youtube_;
-
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public socialLinksPopup(@NonNull Context context, String facebook, String twitter,

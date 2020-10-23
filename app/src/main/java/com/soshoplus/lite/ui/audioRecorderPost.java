@@ -60,15 +60,13 @@ public class audioRecorderPost extends AppCompatActivity {
     private static String TAG = "Audio Record";
     private static int type;
     private static String recordPath;
+    private static String accessToken;
     private ActivityAudioRecorderPostBinding binding;
     private BasePopupView popupView;
-
     private SimpleExoPlayer exoPlayer;
     private boolean playWhenReady = false;
     private int currentWindow = 0;
     private long playbackPosition = 0;
-
-    private static String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

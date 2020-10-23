@@ -12,6 +12,4 @@
         android:startColor="@color/startOne"
         android:type="linear" />
 
-    <corners android:radius="@dimen/_10sdp" />
-
 </shape>

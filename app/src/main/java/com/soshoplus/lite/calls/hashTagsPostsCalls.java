@@ -76,6 +76,7 @@ public class hashTagsPostsCalls {
     private static boolean isLiked;
     private static String adFullName, adLocation, adDescription, adHeadline;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
+    private static String userId, timezone, accessToken;
     private Context context;
     private BasePopupView popupView;
     /*TIMELINE FEED*/
@@ -88,8 +89,6 @@ public class hashTagsPostsCalls {
     private Observable<shareResponse> shareResponseObservable;
     private KSnack snack;
     private Observable<postAction> postActionObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     /*constructor*/

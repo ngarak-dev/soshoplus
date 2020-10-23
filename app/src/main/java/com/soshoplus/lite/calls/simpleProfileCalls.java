@@ -34,10 +34,9 @@ public class simpleProfileCalls {
 
     private final static String TAG = "Simple Calls";
     private static String fetch_profile = "user_data";
+    private static String userId, timezone, accessToken;
     private Context context;
     private Observable<userInfo> userInfoObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public simpleProfileCalls(Context context) {
@@ -68,7 +67,7 @@ public class simpleProfileCalls {
                     public void onNext(@NonNull userInfo userInfo) {
                         if (userInfo.getApiStatus() == 200) {
                             fullName.setText(userInfo.getUserData().getName());
-                            userEmail.setText(userInfo.getUserData().getEmail());
+//                            userEmail.setText(userInfo.getUserData().getEmail());
 
                             ImageLoader imageLoader = Coil.imageLoader(context);
                             ImageRequest imageRequest = new ImageRequest.Builder(context)

@@ -40,11 +40,10 @@ public class joinedGroupsCalls {
 
     private final static String TAG = "Joined groups Calls";
     private static String joined_groups = "joined_groups";
+    private static String userId, timezone, accessToken;
     private Context context;
     private Observable<groupList> groupListObservable;
     private List<groupInfo> groupInfoList = null;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public joinedGroupsCalls(Context context) {

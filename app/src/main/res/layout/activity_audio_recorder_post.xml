@@ -145,7 +145,6 @@
         android:enabled="false"
         android:scaleType="centerInside"
         android:visibility="gone"
-        app:backgroundTint="@color/bgPrimary"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@id/record_view"
         app:layout_constraintEnd_toEndOf="parent"

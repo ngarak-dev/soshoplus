@@ -29,8 +29,6 @@ import com.google.gson.Gson;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.animator.BlurAnimator;
-import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -81,6 +79,7 @@ public class groupCalls {
     private static boolean isLiked;
     private static String adFullName, adLocation, adDescription, adHeadline;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
+    private static String userId, timezone, accessToken;
     private KSnack kSnack;
     private Context context;
     private Observable<group> groupInfoObservable;
@@ -94,8 +93,6 @@ public class groupCalls {
     private Observable<shareResponse> shareResponseObservable;
     /*......*/
     private Observable<postAction> postActionObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public groupCalls(Context context) {

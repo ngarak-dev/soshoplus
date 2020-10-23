@@ -39,11 +39,10 @@ public class welcome extends AppCompatActivity {
 
     private static String TAG = "Welcome Activity";
     private static String gender;
+    private static String userId, timezone, accessToken;
     private ActivityWelcomeBinding binding;
     private BasePopupView basePopupView;
     private Observable<simpleResponse> simpleResponseObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     @Override

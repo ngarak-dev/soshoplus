@@ -9,14 +9,16 @@ package com.soshoplus.lite.feedHolders;
 import android.content.Intent;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.google.android.material.button.MaterialButton;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
-import com.hendraanggrian.appcompat.widget.SocialView;
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.calls.likePostCall;
 import com.soshoplus.lite.models.postsfeed.post;
 import com.soshoplus.lite.ui.hashTagsPosts;
 import com.soshoplus.lite.ui.user_profile.userProfile;
@@ -27,7 +29,6 @@ import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
-import coil.transform.RoundedCornersTransformation;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.linkify.LinkifyPlugin;
 
@@ -36,8 +37,12 @@ public class DefaultPost extends BaseItemProvider<post> {
     private static String TAG = "DEFAULT POST : ";
 
     ImageView profile_pic, post_image;
-    MaterialButton like;
+    ImageView like_btn;
+    TextView no_likes_holder;
     SocialTextView post_contents;
+
+    private int adapterPosition;
+
 
     @Override
     public int getItemViewType() {
@@ -56,14 +61,25 @@ public class DefaultPost extends BaseItemProvider<post> {
 
         post_image = baseViewHolder.findView(R.id.post_image);
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
-
-        like = baseViewHolder.findView(R.id.like_btn);
+        like_btn = baseViewHolder.findView(R.id.like_btn);
+        no_likes_holder = baseViewHolder.findView(R.id.no_likes_holder);
         post_contents = baseViewHolder.findView(R.id.post_contents);
 
         baseViewHolder.setText(R.id.full_name, post.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.time_ago, post.getPostTime());
-        baseViewHolder.setText(R.id.like_btn, post.getPostLikes());
-        baseViewHolder.setText(R.id.comment_btn, post.getPostComments());
+
+        /*getting adapter position*/
+        adapterPosition = baseViewHolder.getAdapterPosition();
+
+        /*if likes > 0*/
+        if (!post.getPostLikes().equals("0")) {
+            baseViewHolder.setText(R.id.no_likes_holder, post.getPostLikes() + " Likes");
+        }
+
+        /*if comments > 0*/
+        if (!post.getPostComments().equals("0")) {
+            baseViewHolder.setText(R.id.no_comments_holder, post.getPostComments() + " Comments");
+        }
 
         Markwon markwon = Markwon.builder(getContext())
                 .usePlugin(LinkifyPlugin.create(
@@ -77,32 +93,22 @@ public class DefaultPost extends BaseItemProvider<post> {
             markwon.setMarkdown(post_contents, post.getPostTextAPI());
         }
 
-        post_contents.setOnHashtagClickListener(new SocialView.OnClickListener() {
-            @Override
-            public void onClick(@androidx.annotation.NonNull SocialView view,
-                                @androidx.annotation.NonNull CharSequence text) {
-
-                Intent intent = new Intent(context, hashTagsPosts.class);
-                intent.putExtra("hashTag", text.toString());
-                context.startActivity(intent);
-            }
+        post_contents.setOnHashtagClickListener((view, text) -> {
+            Intent intent = new Intent(context, hashTagsPosts.class);
+            intent.putExtra("hashTag", text.toString());
+            context.startActivity(intent);
         });
 
-        post_contents.setOnMentionClickListener(new SocialView.OnClickListener() {
-            @Override
-            public void onClick(@androidx.annotation.NonNull SocialView view,
-                                @androidx.annotation.NonNull CharSequence text) {
-
-                Intent intent = new Intent(context, userProfile.class);
-                intent.putExtra("username", text.toString());
-                context.startActivity(intent);
-            }
+        post_contents.setOnMentionClickListener((view, text) -> {
+            Intent intent = new Intent(context, userProfile.class);
+            intent.putExtra("username", text.toString());
+            context.startActivity(intent);
         });
 
         /*bind profile pic*/
         ImageRequest imageRequest = new ImageRequest.Builder(getContext())
                 .data(post.getPublisherInfo().getAvatar())
-                .placeholder(R.color.light_grey)
+                .placeholder(R.color.img_placeholder_color)
                 .crossfade(true)
                 .transformations(new CircleCropTransformation())
                 .target(profile_pic)
@@ -116,9 +122,8 @@ public class DefaultPost extends BaseItemProvider<post> {
             /*bind post pic*/
             imageRequest = new ImageRequest.Builder(getContext())
                     .data(post.getPostFile())
-                    .placeholder(R.color.light_grey)
+                    .placeholder(R.color.img_placeholder_color)
                     .crossfade(true)
-                    .transformations(new RoundedCornersTransformation(15))
                     .target(post_image)
                     .build();
             imageLoader.enqueue(imageRequest);
@@ -126,9 +131,15 @@ public class DefaultPost extends BaseItemProvider<post> {
 
         /*if post is liked*/
         if (post.isLiked()) {
-            like.setIconResource(R.drawable.ic_liked);
+            like_btn.setImageResource(R.drawable.ic_liked);
         } else {
-            like.setIconResource(R.drawable.ic_like);
+            like_btn.setImageResource(R.drawable.ic_like);
         }
+
+        /*on click listeners*/
+        //like post
+        like_btn.setOnClickListener(v -> {
+            new likePostCall(getAdapter(), adapterPosition, like_btn, no_likes_holder);
+        });
     }
 }

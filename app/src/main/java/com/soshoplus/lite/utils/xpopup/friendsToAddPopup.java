@@ -42,12 +42,11 @@ public class friendsToAddPopup extends FullScreenPopupView {
     private static String TAG = "Friends popup";
     private static String group_id;
     private static String friends_list = "followers,following";
+    private static String userId, timezone, accessToken;
     private Observable<friends> friendsObservable;
     private KSnack snack;
     private RecyclerView friendsRV;
     private Observable<addingUser> addingUserObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public friendsToAddPopup(@NonNull Context context, String groupId) {

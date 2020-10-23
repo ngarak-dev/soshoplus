@@ -8,23 +8,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_10sdp">
 
     <ImageView
         android:id="@+id/ad_profile_pic"
-        android:layout_width="@dimen/_45sdp"
-        android:layout_height="@dimen/_45sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:elevation="@dimen/_10sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/ad_full_name"
+        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
-        android:padding="@dimen/_2sdp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/ad_location"
         app:layout_constraintStart_toEndOf="@id/ad_profile_pic"
@@ -35,10 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
-        android:drawableStart="@drawable/ic_cursor_blue"
         android:drawablePadding="@dimen/_5sdp"
         android:padding="@dimen/_2sdp"
         android:textColor="@color/colorPrimary"
+        app:drawableStartCompat="@drawable/ic_cursor_blue"
         app:layout_constraintBottom_toBottomOf="@id/ad_profile_pic"
         app:layout_constraintStart_toEndOf="@id/ad_profile_pic"
         app:layout_constraintTop_toBottomOf="@id/ad_full_name" />
@@ -49,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         app:hashtagColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="@id/ad_profile_pic"
         app:layout_constraintTop_toBottomOf="@id/ad_profile_pic"
         app:mentionColor="@color/colorAccent"
         app:socialFlags="hashtag|mention|hyperlink" />
@@ -66,9 +70,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
-        android:drawableStart="@drawable/ic_link"
         android:drawablePadding="@dimen/_10sdp"
         android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_link"
         app:layout_constraintBottom_toTopOf="@id/ad_media"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,13 +91,15 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:layout_width="@dimen/_50sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/post_tv_background"
         android:elevation="@dimen/_10sdp"
-        android:text="AD"
+        android:padding="@dimen/_5sdp"
+        android:text="Advert"
         android:textAlignment="center"
-        android:textColor="@color/gray"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="@+id/ad_media"
         app:layout_constraintStart_toStartOf="@+id/ad_media" />
 

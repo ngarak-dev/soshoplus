@@ -47,12 +47,11 @@ public class previewProfileCalls {
     private static String fetch_profile = "user_data,family,liked_pages,joined_groups";
     /*PREVIEW PROFILE*/
     private static String followPrivacy;
+    private static String userId, timezone, accessToken;
     private Context context;
     private Observable<userInfo> userInfoObservable;
     private KSnack snack;
     private Observable<follow_unfollow> followUnfollowObservable;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     /*constructor*/

@@ -9,19 +9,11 @@
     <color name="colorPrimaryDark">#0F273C</color>
     <color name="colorAccent">#008CC9</color>
 
-
-    <color name="textPrimary">#0F273C</color>
-    <color name="bgPrimary">#F5F5F5</color>
-
-    <!-- NAV BAR COLORS   -->
-    <color name="home">#0F273C</color>
-    <color name="friends">#0079BB</color>
-    <color name="groups">#CD5C5C</color>
-    <color name="profile">#483D8B</color>
-    <color name="more">#8B4513</color>
-    <color name="faint">#0F273C</color>
-
     <color name="transparent">#00F0F8FF</color>
+
+    <color name="textColor">@color/black_tran80</color>
+    <color name="img_placeholder_color">@color/white_tran80</color>
+    <color name="colored_post_color">@color/white</color>
 
     <!--COLOURED POST-->
     <!--six-->

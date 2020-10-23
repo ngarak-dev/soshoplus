@@ -34,13 +34,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class changePasswordPopup extends CenterPopupView {
 
     private static String TAG = "Change password popup";
-
+    private static String userId, timezone, accessToken;
     private TextInputEditText old_pass;
     private TextInputEditText new_pass;
     private MaterialButton send_btn;
     private BasePopupView popupView;
     private Observable<simpleResponse> simpleResponse;
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public changePasswordPopup(@NonNull Context context) {

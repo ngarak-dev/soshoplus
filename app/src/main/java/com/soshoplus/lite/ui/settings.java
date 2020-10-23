@@ -49,12 +49,10 @@ public class settings extends AppCompatActivity {
     private static String TAG = "Settings Activity";
     private static String[] strings = {"General Account", "Privacy", "Notifications", "Invitations Links", "My Information",
             "Earnings", "Help & Support", "Log out"};
+    private static String userId, timezone, accessToken;
     private ActivitySettingsBinding binding;
     private Observable<simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
-
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     @Override

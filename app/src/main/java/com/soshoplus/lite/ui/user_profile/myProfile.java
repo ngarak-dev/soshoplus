@@ -41,13 +41,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class myProfile extends AppCompatActivity {
 
     private static String TAG = "my Profile ";
+    private static String userId, timezone, accessToken;
     private ActivityMyProfileBinding binding;
     private simpleProfileCalls calls;
-
     private Observable<simpleResponse> simpleResponse;
     private BasePopupView basePopupView;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     @Override

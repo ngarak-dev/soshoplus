@@ -41,11 +41,10 @@ public class followingUsersCalls {
 
     private final static String TAG = "Following Calls";
     private static String friends_following = "following";
+    private static String userId, timezone, accessToken;
     private Context context;
     private Observable<friends> friendsObservable;
     private List<following> followingList = null;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public followingUsersCalls(Context context) {

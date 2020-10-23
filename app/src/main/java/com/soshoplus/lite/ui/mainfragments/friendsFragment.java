@@ -33,6 +33,7 @@ public class friendsFragment extends Fragment {
     private suggestedFriendsCalls suggestedFriendsCalls;
     private followingUsersCalls followingUsersCalls;
     private followersUsersCalls followersUsersCalls;
+
     public friendsFragment() {
         // Required empty public constructor
     }

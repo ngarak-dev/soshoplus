@@ -8,22 +8,26 @@ package com.soshoplus.lite.feedHolders;
 
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseProviderMultiAdapter;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.google.android.material.button.MaterialButton;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.calls.likePostCall;
 import com.soshoplus.lite.models.postsfeed.post;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
-import coil.transform.RoundedCornersTransformation;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.linkify.LinkifyPlugin;
 
@@ -32,8 +36,12 @@ public class CoverPic extends BaseItemProvider<post> {
     private static String TAG = "COVER POST : ";
 
     ImageView profile_pic, post_image;
-    MaterialButton like;
+    ImageView like_btn;
+    TextView no_likes_holder;
     SocialTextView post_contents;
+
+    private int adapterPosition;
+
 
     @Override
     public int getItemViewType() {
@@ -53,17 +61,25 @@ public class CoverPic extends BaseItemProvider<post> {
 
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
         post_image = baseViewHolder.findView(R.id.post_image);
-
-        like = baseViewHolder.findView(R.id.like_btn);
-
+        like_btn = baseViewHolder.findView(R.id.like_btn);
+        no_likes_holder = baseViewHolder.findView(R.id.no_likes_holder);
         post_contents = baseViewHolder.findView(R.id.post_contents);
 
         baseViewHolder.setText(R.id.full_name, post.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.time_ago, post.getPostTime());
-        baseViewHolder.setText(R.id.like_btn, post.getPostLikes());
-        baseViewHolder.setText(R.id.comment_btn, post.getPostComments());
 
-        baseViewHolder.setText(R.id.update_profile_cover, "updated cover photo");
+        /*getting adapter position*/
+        adapterPosition = baseViewHolder.getAdapterPosition();
+
+        /*if likes > 0*/
+        if (!post.getPostLikes().equals("0")) {
+            baseViewHolder.setText(R.id.no_likes_holder, post.getPostLikes() + " Likes");
+        }
+
+        /*if comments > 0*/
+        if (!post.getPostComments().equals("0")) {
+            baseViewHolder.setText(R.id.no_comments_holder, post.getPostComments() + " Comments");
+        }
 
         Markwon markwon = Markwon.builder(getContext())
                 .usePlugin(LinkifyPlugin.create(
@@ -80,7 +96,7 @@ public class CoverPic extends BaseItemProvider<post> {
         /*bind profile pic*/
         ImageRequest imageRequest = new ImageRequest.Builder(getContext())
                 .data(post.getPublisherInfo().getAvatar())
-                .placeholder(R.color.light_grey)
+                .placeholder(R.color.img_placeholder_color)
                 .crossfade(true)
                 .transformations(new CircleCropTransformation())
                 .target(profile_pic)
@@ -94,9 +110,8 @@ public class CoverPic extends BaseItemProvider<post> {
             /*bind post pic*/
             imageRequest = new ImageRequest.Builder(getContext())
                     .data(post.getPostFile())
-                    .placeholder(R.color.light_grey)
+                    .placeholder(R.color.img_placeholder_color)
                     .crossfade(true)
-                    .transformations(new RoundedCornersTransformation(15))
                     .target(post_image)
                     .build();
             imageLoader.enqueue(imageRequest);
@@ -104,9 +119,15 @@ public class CoverPic extends BaseItemProvider<post> {
 
         /*if post is liked*/
         if (post.isLiked()) {
-            like.setIconResource(R.drawable.ic_liked);
+            like_btn.setImageResource(R.drawable.ic_liked);
         } else {
-            like.setIconResource(R.drawable.ic_like);
+            like_btn.setImageResource(R.drawable.ic_like);
         }
+
+        /*on click listeners*/
+        //like post
+        like_btn.setOnClickListener(v -> {
+            new likePostCall(getAdapter(), adapterPosition, like_btn, no_likes_holder);
+        });
     }
 }

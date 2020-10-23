@@ -53,13 +53,11 @@ public class imageVideoPost extends AppCompatActivity {
 
     private static String TAG = "Image Post : ";
     private static int type;
+    private static String accessToken;
     private previewImagesAdapter imagesAdapter;
     private ArrayList<ImageItem> photos = new ArrayList<>();
-
     private ActivityImagePostBinding postBinding;
     private BasePopupView popupView;
-
-    private static String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

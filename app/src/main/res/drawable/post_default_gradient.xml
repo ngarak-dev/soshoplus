@@ -11,6 +11,5 @@
         android:endColor="@color/colorPrimary"
         android:startColor="@color/colorPrimaryDark"
         android:type="linear" />
-    <corners android:radius="@dimen/_10sdp" />
 
 </shape>

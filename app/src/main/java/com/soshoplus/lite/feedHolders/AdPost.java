@@ -6,7 +6,6 @@
 
 package com.soshoplus.lite.feedHolders;
 
-import android.text.Html;
 import android.text.util.Linkify;
 import android.widget.ImageView;
 

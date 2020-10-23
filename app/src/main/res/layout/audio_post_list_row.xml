@@ -6,31 +6,37 @@
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/_10sdp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="@dimen/_10sdp">
+    android:layout_marginTop="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_5sdp"
+    app:cardElevation="@dimen/_5sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp">
 
         <ImageView
             android:id="@+id/profile_pic"
-            android:layout_width="@dimen/_45sdp"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/full_name"
+            style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/posted_audio"
-            app:layout_constraintStart_toEndOf="@id/profile_pic"
+            app:layout_constraintBottom_toTopOf="@id/time_ago"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
             app:layout_constraintTop_toTopOf="@id/profile_pic" />
 
         <TextView
@@ -40,29 +46,29 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:textColor="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="@id/profile_pic"
-            app:layout_constraintStart_toEndOf="@id/profile_pic"
-            app:layout_constraintTop_toBottomOf="@id/posted_audio" />
-
-        <TextView
-            android:id="@+id/posted_audio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:text="posted audio"
-            android:textColor="@color/dim_gray"
-            app:layout_constraintBottom_toTopOf="@id/time_ago"
-            app:layout_constraintStart_toEndOf="@id/profile_pic"
+            app:layout_constraintLeft_toRightOf="@id/profile_pic"
             app:layout_constraintTop_toBottomOf="@id/full_name" />
 
-        <com.hendraanggrian.appcompat.widget.SocialTextView
-            android:id="@+id/post_contents"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:hashtagColor="@color/colorPrimary"
-            app:layout_constraintTop_toBottomOf="@id/profile_pic"
-            app:mentionColor="@color/colorAccent"
-            app:socialFlags="hashtag|mention|hyperlink" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/post_option"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_more_horiz"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconTint="@null"
+            app:layout_constraintBottom_toBottomOf="@id/profile_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/profile_pic"
+            app:shapeAppearanceOverlay="@style/OverlayButtonCircle" />
+
 
         <com.google.android.exoplayer2.ui.PlayerControlView
             android:id="@+id/media_player"
@@ -72,58 +78,80 @@
             app:controller_layout_id="@layout/audio_play_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/post_contents"
+            app:layout_constraintTop_toBottomOf="@id/profile_pic"
             app:show_timeout="0" />
 
-        <RelativeLayout
+        <com.hendraanggrian.appcompat.widget.SocialTextView
+            android:id="@+id/post_contents"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/media_player">
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:hashtagColor="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/media_player"
+            app:mentionColor="@color/colorAccent"
+            app:socialFlags="hashtag|mention|hyperlink" />
 
-            <View
-                android:id="@+id/divider_"
-                style="@style/divider"
-                android:layout_margin="@dimen/_10sdp" />
+        <View
+            android:id="@+id/divider"
+            style="@style/divider"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/post_contents" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/like_btn"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_below="@id/divider_"
-                android:layout_toStartOf="@id/comment_btn"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:padding="0dp"
-                android:textSize="@dimen/_10ssp"
-                app:icon="@drawable/ic_like"
-                app:iconGravity="textStart"
-                app:iconPadding="5dp"
-                app:iconSize="@dimen/_15sdp"
-                app:rippleColor="@color/transparent" />
+        <ImageView
+            android:id="@+id/like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_like"
+            app:layout_constraintStart_toStartOf="@id/profile_pic"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            tools:ignore="ContentDescription" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/comment_btn"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_20sdp"
-                android:layout_below="@id/divider_"
-                android:layout_alignParentEnd="true"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                android:padding="0dp"
-                android:textSize="@dimen/_10ssp"
-                app:icon="@drawable/ic_comment"
-                app:iconGravity="textStart"
-                app:iconPadding="5dp"
-                app:iconSize="@dimen/_15sdp"
-                app:rippleColor="@color/transparent" />
+        <TextView
+            android:id="@+id/no_likes_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="Like"
+            app:layout_constraintBottom_toBottomOf="@id/like_btn"
+            app:layout_constraintStart_toEndOf="@id/like_btn"
+            app:layout_constraintTop_toTopOf="@id/like_btn" />
 
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_chat"
+            app:layout_constraintStart_toEndOf="@+id/no_likes_holder"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/no_comments_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:text="Leave a comment"
+            app:layout_constraintBottom_toBottomOf="@id/comment_btn"
+            app:layout_constraintStart_toEndOf="@id/comment_btn"
+            app:layout_constraintTop_toTopOf="@id/comment_btn" />
+
+        <ImageView
+            android:id="@+id/show_comments_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:src="@drawable/ic_arrow_right"
+            app:layout_constraintBottom_toBottomOf="@id/comment_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/comment_btn"
+            tools:ignore="ContentDescription" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

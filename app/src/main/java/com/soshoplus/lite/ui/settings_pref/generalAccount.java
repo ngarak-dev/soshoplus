@@ -43,13 +43,11 @@ public class generalAccount extends AppCompatActivity {
     private static String TAG = "General Settings";
     private static String[] general_strings = {"About me", "Social Links", "My Profile", "Verification", "Blocked Users"};
     private static String[] security_strings = {"Change Password", "Two-factor authentication", "Manage Sessions"};
-    private ActivityGeneralAccountBinding binding;
-    private BasePopupView basePopupView;
-
-    private Observable<userInfo> userInfoObservable;
-
     private static String userId, timezone, accessToken;
     private static String fetch_profile_user_data = "user_data";
+    private ActivityGeneralAccountBinding binding;
+    private BasePopupView basePopupView;
+    private Observable<userInfo> userInfoObservable;
     private queries rxJavaQueries;
 
     @Override

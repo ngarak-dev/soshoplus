@@ -46,17 +46,15 @@ public class recommendedGroupsCalls {
     private static String TAG = "Recommended groups Calls";
     /*......*/
     private static String fetch_recommended = "groups";
+    private static String userId, timezone, accessToken;
     private Context context;
     /*ADAPTERS*/
     private suggestedGroupsAdapter suggested_groups_adapter;
     private Observable<groupList> groupListObservable;
     private List<groupInfo> groupInfoList = null;
-
     /*JOIN GROUP*/
     private Observable<join_unjoin> joinUnjoinObservable;
     private KSnack snack;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     public recommendedGroupsCalls(Context context) {

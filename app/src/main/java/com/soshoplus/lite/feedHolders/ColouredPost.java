@@ -7,55 +7,41 @@
 package com.soshoplus.lite.feedHolders;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.text.style.UnderlineSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
-import com.google.android.material.button.MaterialButton;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.soshoplus.lite.R;
+import com.soshoplus.lite.calls.likePostCall;
 import com.soshoplus.lite.models.postsfeed.post;
 import com.soshoplus.lite.ui.hashTagsPosts;
 import com.soshoplus.lite.ui.user_profile.userProfile;
 
-import org.commonmark.node.Emphasis;
 import org.jetbrains.annotations.NotNull;
 
 import coil.Coil;
 import coil.ImageLoader;
 import coil.request.ImageRequest;
 import coil.transform.CircleCropTransformation;
-import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
-import io.noties.markwon.MarkwonSpansFactory;
-import io.noties.markwon.RenderProps;
-import io.noties.markwon.SpanFactory;
-import io.noties.markwon.core.spans.EmphasisSpan;
 import io.noties.markwon.image.coil.CoilImagesPlugin;
 import io.noties.markwon.linkify.LinkifyPlugin;
-import io.noties.markwon.simple.ext.SimpleExtPlugin;
 
 public class ColouredPost extends BaseItemProvider<post> {
 
     private static String TAG = "COLOURED POST : ";
 
     ImageView profile_pic;
-    MaterialButton like;
+    ImageView like_btn;
+    TextView no_likes_holder;
     SocialTextView colored_text;
+
+    private int adapterPosition;
 
     @Override
     public int getItemViewType() {
@@ -72,15 +58,25 @@ public class ColouredPost extends BaseItemProvider<post> {
         Log.d(TAG, post.getPostId());
 
         colored_text = baseViewHolder.findView(R.id.coloured_post_text);
-
         profile_pic = baseViewHolder.findView(R.id.profile_pic);
-
-        like = baseViewHolder.findView(R.id.like_btn);
+        like_btn = baseViewHolder.findView(R.id.like_btn);
+        no_likes_holder = baseViewHolder.findView(R.id.no_likes_holder);
 
         baseViewHolder.setText(R.id.full_name, post.getPublisherInfo().getName());
         baseViewHolder.setText(R.id.time_ago, post.getPostTime());
-        baseViewHolder.setText(R.id.like_btn, post.getPostLikes());
-        baseViewHolder.setText(R.id.comment_btn, post.getPostComments());
+
+        /*getting adapter position*/
+        adapterPosition = baseViewHolder.getAdapterPosition();
+
+        /*if likes > 0*/
+        if (!post.getPostLikes().equals("0")) {
+            baseViewHolder.setText(R.id.no_likes_holder, post.getPostLikes() + " Likes");
+        }
+
+        /*if comments > 0*/
+        if (!post.getPostComments().equals("0")) {
+            baseViewHolder.setText(R.id.no_comments_holder, post.getPostComments() + " Comments");
+        }
 
         Markwon markwon = Markwon.builder(getContext())
                 .usePlugin(CoilImagesPlugin.create(getContext()))
@@ -143,9 +139,15 @@ public class ColouredPost extends BaseItemProvider<post> {
 
         /*if post is liked*/
         if (post.isLiked()) {
-            like.setIconResource(R.drawable.ic_liked);
+            like_btn.setImageResource(R.drawable.ic_liked);
         } else {
-            like.setIconResource(R.drawable.ic_like);
+            like_btn.setImageResource(R.drawable.ic_like);
         }
+
+        /*on click listeners*/
+        //like post
+        like_btn.setOnClickListener(v -> {
+            new likePostCall(getAdapter(), adapterPosition, like_btn, no_likes_holder);
+        });
     }
 }

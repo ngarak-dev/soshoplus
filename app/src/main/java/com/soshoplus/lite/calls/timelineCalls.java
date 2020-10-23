@@ -32,11 +32,7 @@ import com.google.gson.Gson;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.hendraanggrian.appcompat.widget.SocialView;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.animator.BlurAnimator;
-import com.lxj.xpopup.animator.EmptyAnimator;
-import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.interfaces.XPopupImageLoader;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -97,6 +93,8 @@ public class timelineCalls {
     /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
     private static String[] post_option = {"Report post", "Copy link", "Share post", "Save post", "Hide post"};
+    private static String userId, timezone, accessToken;
+    private static queries rxJavaQueries;
     /*context*/
     private Context context;
     private BasePopupView popupView;
@@ -104,8 +102,6 @@ public class timelineCalls {
     private Observable<postList> postListObserve;
     private List<post> timelinePosts;
     private timelineFeedAdapter feedAdapter;
-    /*POST LIKE_DISLIKE*/
-    private Observable<like_dislike> like_dislikeObservable;
     /*SHARE ON TIMELINE*/
     private Observable<shareResponse> shareResponseObservable;
     /*.......*/
@@ -115,8 +111,6 @@ public class timelineCalls {
     /*......*/
     private Observable<simpleResponse> createPostResponse;
 
-    private static String userId, timezone, accessToken;
-    private static queries rxJavaQueries;
     /*constructor*/
     public timelineCalls(Context context) {
         this.context = context;
@@ -269,113 +263,76 @@ public class timelineCalls {
                                     });
                                 }
 
-                                feedAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-                                    @Override
-                                    public void onItemChildClick(@androidx.annotation.NonNull BaseQuickAdapter adapter,
-                                                                 @androidx.annotation.NonNull View view, int position) {
-
-                                        switch (view.getId()) {
-                                            case R.id.like_btn:
-                                                MaterialButton likeBtn = view.findViewById(R.id.like_btn);
-                                                likePost(feedAdapter.getData().get(position).getPostId(), position, likeBtn);
-                                                break;
-
-                                            case R.id.comment_btn:
-                                                String type = "fetch_comments";
-                                                new XPopup.Builder(context).asCustom(new commentsPopup(context, feedAdapter.getData().get(position).getPostId(), type)).show();
-                                                break;
-
-                                            case R.id.post_option:
-                                                new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
-
-                                                    switch (option_position) {
-
-                                                        case 0:
-                                                            reportPOST(feedAdapter.getData().get(position).getPostId());
-                                                            break;
-                                                        case 1:
-                                                            copyLink(feedAdapter.getData().get(position).getUrl(), view.getContext());
-                                                            break;
-                                                        case 2:
-                                                            sharePOST(feedAdapter.getData().get(position));
-                                                            break;
-                                                        case 3:
-                                                            savePOST(feedAdapter.getData().get(position).getPostId());
-                                                            break;
-                                                        case 4:
-                                                            hidePOST(feedAdapter, position);
-                                                            break;
-                                                        default:
-                                                            Log.d(TAG, "onSelect: " + feedAdapter.getData().get(position).getPostId());
-                                                    }
-                                                }).show();
-                                                break;
-
-                                            case R.id.profile_pic:
-                                                new Handler().postDelayed(() -> {
-                                                    new XPopup.Builder(context).asCustom(new previewProfilePopup(context,
-                                                            feedAdapter.getData().get(position).getUserId()).show());
-
-                                                }, 1000);
-                                                break;
-
-                                            case R.id.ad_media:
-                                                ImageView ad_media = view.findViewById(R.id.ad_media);
-                                                showAdViewPopup(ad_media, feedAdapter.getData().get(position).getAdMedia(), position);
-                                                break;
-
-                                            case R.id.post_image: {
-                                                ImageView post_image = view.findViewById(R.id.post_image);
-                                                /*......*/
-                                                showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
-                                                break;
-                                            }
-
-                                            case R.id.shared_post_image: {
-                                                ImageView post_image = view.findViewById(R.id.shared_post_image);
-
-                                                /*......*/
-                                                showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
-                                                break;
-                                            }
-
-                                            case R.id.article_thumbnail: {
-                                                ImageView post_image = view.findViewById(R.id.article_thumbnail);
-                                                /*......*/
-                                                showViewPopup(post_image, feedAdapter.getData().get(position).getBlog().getThumbnail(), position);
-                                                break;
-                                            }
-
-                                            /*mentions/ hashtags/ links*/
-                                            case R.id.post_contents: {
-                                                SocialTextView socialTextView = view.findViewById(R.id.post_contents);
-                                                socialTextView.setOnLongClickListener(null);
-                                                socialTextView.setOnHashtagClickListener(new SocialView.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
-                                                                        @androidx.annotation.NonNull CharSequence text) {
-
-                                                        Intent intent = new Intent(context, hashTagsPosts.class);
-                                                        intent.putExtra("hashTag", text.toString());
-                                                        context.startActivity(intent);
-                                                    }
-                                                });
-
-                                                socialTextView.setOnMentionClickListener(new SocialView.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(@androidx.annotation.NonNull SocialView view,
-                                                                        @androidx.annotation.NonNull CharSequence text) {
-
-                                                        Intent intent = new Intent(context, userProfile.class);
-                                                        intent.putExtra("username", text.toString());
-                                                        context.startActivity(intent);
-                                                    }
-                                                });
-                                                break;
-                                            }
-                                        }
-                                    }
-                                });
+//                                feedAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+//
+//                                    switch (view.getId()) {
+//
+//                                        case R.id.comment_btn:
+//                                            String type1 = "fetch_comments";
+//                                            new XPopup.Builder(context).asCustom(new commentsPopup(context, feedAdapter.getData().get(position).getPostId(), type1)).show();
+//                                            break;
+//
+//                                        case R.id.post_option:
+//                                            new XPopup.Builder(context).asCenterList(null, post_option, (option_position, text) -> {
+//
+//                                                switch (option_position) {
+//
+//                                                    case 0:
+//                                                        reportPOST(feedAdapter.getData().get(position).getPostId());
+//                                                        break;
+//                                                    case 1:
+//                                                        copyLink(feedAdapter.getData().get(position).getUrl(), view.getContext());
+//                                                        break;
+//                                                    case 2:
+//                                                        sharePOST(feedAdapter.getData().get(position));
+//                                                        break;
+//                                                    case 3:
+//                                                        savePOST(feedAdapter.getData().get(position).getPostId());
+//                                                        break;
+//                                                    case 4:
+//                                                        hidePOST(feedAdapter, position);
+//                                                        break;
+//                                                    default:
+//                                                        Log.d(TAG, "onSelect: " + feedAdapter.getData().get(position).getPostId());
+//                                                }
+//                                            }).show();
+//                                            break;
+//
+//                                        case R.id.profile_pic:
+//                                            new Handler().postDelayed(() -> {
+//                                                new XPopup.Builder(context).asCustom(new previewProfilePopup(context,
+//                                                        feedAdapter.getData().get(position).getUserId()).show());
+//
+//                                            }, 1000);
+//                                            break;
+//
+//                                        case R.id.ad_media:
+//                                            ImageView ad_media = view.findViewById(R.id.ad_media);
+//                                            showAdViewPopup(ad_media, feedAdapter.getData().get(position).getAdMedia(), position);
+//                                            break;
+//
+//                                        case R.id.post_image: {
+//                                            ImageView post_image = view.findViewById(R.id.post_image);
+//                                            /*......*/
+//                                            showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
+//                                            break;
+//                                        }
+//
+//                                        case R.id.shared_post_image: {
+//                                            ImageView post_image = view.findViewById(R.id.shared_post_image);
+//                                            /*......*/
+//                                            showViewPopup(post_image, feedAdapter.getData().get(position).getPostFile(), position);
+//                                            break;
+//                                        }
+//
+//                                        case R.id.article_thumbnail: {
+//                                            ImageView post_image = view.findViewById(R.id.article_thumbnail);
+//                                            /*......*/
+//                                            showViewPopup(post_image, feedAdapter.getData().get(position).getBlog().getThumbnail(), position);
+//                                            break;
+//                                        }
+//                                    }
+//                                });
                             } else {
                                 apiErrors errors = postList.getErrors();
                                 Log.d(TAG, "ERROR FROM API : " + errors.getErrorText());
@@ -546,59 +503,6 @@ public class timelineCalls {
         /*show popup*/
         new XPopup.Builder(context)
                 .asCustom(imageViewPopup).show();
-    }
-
-    /*liking a post*/
-    private void likePost(String postId, int position, MaterialButton likeBtn) {
-
-        /*update button*/
-        if (feedAdapter.getData().get(position).isLiked()) {
-            feedAdapter.getData().get(position).setLiked(false);
-            likeBtn.setIconResource(R.drawable.ic_like);
-        } else {
-            feedAdapter.getData().get(position).setLiked(true);
-            likeBtn.setIconResource(R.drawable.ic_liked);
-        }
-
-        like_dislikeObservable = rxJavaQueries.like_dislikePost(accessToken,
-                BuildConfig.server_key, postId, "like");
-        like_dislikeObservable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<like_dislike>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
-                    }
-
-                    @Override
-                    public void onNext(@NonNull like_dislike like_dislike) {
-                        if (like_dislike.getApiStatus() == 200) {
-                            Log.d(TAG, "onNext: " + like_dislike.getAction());
-
-                            likeBtn.setText(like_dislike.getLikesData().getCount());
-
-                            Toast toast = Toast.makeText(getContext(), like_dislike.getAction() + " ... ", Toast.LENGTH_SHORT);
-                            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                            toast.show();
-                        } else {
-                            apiErrors apiErrors = like_dislike.getErrors();
-                            Log.d(TAG, "onResponse: " + apiErrors.getErrorId());
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
-
-                        /*TODO repeat if failed*/
-                        likePost(postId, position, likeBtn);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.d(TAG, "onComplete: ");
-                    }
-                });
     }
 
     /*get all post first round*/

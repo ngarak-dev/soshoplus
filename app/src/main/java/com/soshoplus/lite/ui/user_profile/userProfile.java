@@ -76,6 +76,8 @@ public class userProfile extends AppCompatActivity {
     private static boolean isLiked;
     /*......*/
     private static String adFullName, adLocation, adDescription, adHeadline;
+    private static String userId, timezone, accessToken;
+    private static String fetch_profile_user_data = "user_data";
     private ActivityUserProfileBinding userProfileBinding;
     private Observable<userInfo> userInfoObservable;
     /*......*/
@@ -90,10 +92,6 @@ public class userProfile extends AppCompatActivity {
     private List<post> photosList;
     private userPhotosAdapter photosAdapter;
     private ImageLoader imageLoader;
-
-
-    private static String userId, timezone, accessToken;
-    private static String fetch_profile_user_data = "user_data";
     private queries rxJavaQueries;
 
     /*.....*/

@@ -44,19 +44,16 @@ public class viewGroup extends AppCompatActivity {
 
     private static String TAG = "View group Calls";
     private static String group_id, no_members, group_info, group_url;
+    private static String userId, timezone, accessToken;
     private ActivityViewGroupBinding viewGroupBinding;
     private groupCalls calls;
     private boolean isJoined;
     private BasePopupView popupView;
-
     /*bottom popup*/
     private String[] joinedOptions = {"Group info", "Share", "Add friend", "Leave group"};
     private String[] recOptions = {"Group info", "Share"};
-
     private Observable<join_unjoin> unJoinObservable;
     private KSnack snack;
-
-    private static String userId, timezone, accessToken;
     private queries rxJavaQueries;
 
     @Override
